@@ -1,0 +1,26 @@
+@font-face {
+  font-family: 'Formular';
+  src: local('Formular'), url('./assets/fonts/subset-Formular.woff2') format('woff2'),
+    url('./assets/fonts/subset-Formular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Formular Light';
+  src: local('Formular-Light'), url('./assets/fonts/subset-Formular-Light.woff2') format('woff2'),
+    url('./assets/fonts/subset-Formular-Light.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Formular Thin';
+  src: local('Formular-Thin'), url('./assets/fonts/subset-Formular-Light.woff2') format('woff2'),
+    url('./assets/fonts/subset-Formular-Light.woff') format('woff');
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
