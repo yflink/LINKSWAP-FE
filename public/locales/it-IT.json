@@ -183,5 +183,9 @@
   "noPoolFound": "No pool found.",
   "youDontHaveLiquidityYet": "You don’t have liquidity in this pool yet.",
   "invalidPair": "Invalid pair",
-  "currencyPerCurrency": "{{currencyA}} per {{currencyB}}"
+  "currencyPerCurrency": "{{currencyA}} per {{currencyB}}",
+  "swappingCurrencies": "Swapping {{currencyA}} for {{currencyB}}",
+  "confirmSwap": "Confirm Swap",
+  "on": "On",
+  "off": "Off"
 }
