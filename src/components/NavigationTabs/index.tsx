@@ -11,6 +11,7 @@ import swap from '../../assets/svg/swap.png'
 import pool from '../../assets/svg/pool.png'
 import create from '../../assets/svg/create.png'
 import analyze from '../../assets/svg/soon.png'
+import { useTranslation } from 'react-i18next'
 
 const Tabs = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -100,62 +101,64 @@ export function SwapPoolTabs({ active }: { active: 'swap' | 'pool' | 'create' | 
 }
 
 export function FindPoolTabs() {
+  const { t } = useTranslation()
+
   return (
     <Tabs>
-      <RowBetween style={{ padding: '1rem' }}>
+      <RowBetween style={{ padding: '1rem 0' }}>
         <HistoryLink to="/pool">
           <StyledArrowLeft />
         </HistoryLink>
-        <ActiveText>Import Pool</ActiveText>
-        <QuestionHelper text={"Use this tool to find pairs that don't automatically appear in the interface."} />
+        <ActiveText>{t('importPool')}</ActiveText>
+        <QuestionHelper text={t('importingAPool')} />
       </RowBetween>
     </Tabs>
   )
 }
 
 export function AddRemoveTabs({ adding }: { adding: boolean }) {
+  const { t } = useTranslation()
+
   return (
     <Tabs>
-      <RowBetween style={{ padding: '1rem' }}>
+      <RowBetween style={{ padding: '1rem 0' }}>
         <HistoryLink to="/pool">
           <StyledArrowLeft />
         </HistoryLink>
-        <ActiveText>{adding ? 'Add' : 'Remove'} Liquidity</ActiveText>
-        <QuestionHelper
-          text={
-            adding
-              ? 'When you add liquidity, you are given pool tokens representing your position. These tokens automatically earn fees proportional to your share of the pool, and can be redeemed at any time.'
-              : 'Removing pool tokens converts your position back into underlying tokens at the current rate, proportional to your share of the pool. Accrued fees are included in the amounts you receive.'
-          }
-        />
+        <ActiveText>{adding ? t('addLiquidity') : t('removeLiquidity')}</ActiveText>
+        <QuestionHelper text={adding ? t('addingLiquidity') : t('removingLiquidity')} />
       </RowBetween>
     </Tabs>
   )
 }
 
 export function CreateTabs() {
+  const { t } = useTranslation()
+
   return (
     <Tabs>
-      <RowBetween style={{ padding: '1rem' }}>
+      <RowBetween style={{ padding: '1rem 0' }}>
         <div style={{ width: 32 }}></div>
         {/* <HistoryLink to="/create">
           <StyledArrowLeft />
         </HistoryLink> */}
-        <ActiveText>Create Pair</ActiveText>
-        <QuestionHelper text="When you add liquidity, you are given pool tokens representing your position. These tokens automatically earn fees proportional to your share of the pool, and can be redeemed at any time." />
+        <ActiveText>{t('createPair')}</ActiveText>
+        <QuestionHelper text={t('creatingAPair')} />
       </RowBetween>
     </Tabs>
   )
 }
 
 export function PreviewListingTabs() {
+  const { t } = useTranslation()
+
   return (
     <Tabs>
-      <RowBetween style={{ padding: '1rem' }}>
+      <RowBetween style={{ padding: '1rem 0' }}>
         <HistoryLink to="/newpool">
           <StyledArrowLeft />
         </HistoryLink>
-        <ActiveText>Preview Listing</ActiveText>
+        <ActiveText>{t('previewListing')}</ActiveText>
         <div />
       </RowBetween>
     </Tabs>

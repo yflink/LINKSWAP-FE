@@ -234,7 +234,7 @@ export default function CurrencyInputPanel({
                       style={{ display: 'inline', cursor: 'pointer' }}
                     >
                       {!hideBalance && !!currency && selectedCurrencyBalance
-                        ? 'Balance: ' + selectedCurrencyBalance?.toSignificant(6)
+                        ? t('balance', { balanceInput: selectedCurrencyBalance?.toSignificant(6) })
                         : ' -'}
                     </TYPE.body>
                   )}
@@ -457,7 +457,7 @@ export function CurrencyDoubleInputPanel({
                       style={{ display: 'inline', cursor: 'pointer' }}
                     >
                       {!hideBalance && !!currency && selectedCurrencyBalance
-                        ? 'Balance: ' + selectedCurrencyBalance?.toSignificant(6)
+                        ? t('balance', { balanceInput: selectedCurrencyBalance?.toSignificant(6) })
                         : ' -'}
                     </TYPE.body>
                   )}

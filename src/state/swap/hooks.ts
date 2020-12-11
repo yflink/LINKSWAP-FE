@@ -18,6 +18,7 @@ import { SwapState } from './reducer'
 import useToggledVersion from '../../hooks/useToggledVersion'
 import { useUserSlippageTolerance } from '../user/hooks'
 import { computeSlippageAdjustedAmounts } from '../../utils/prices'
+import { useTranslation } from 'react-i18next'
 
 export function useSwapState(): AppState['swap'] {
   return useSelector<AppState, AppState['swap']>(state => state.swap)
@@ -157,30 +158,30 @@ export function useDerivedSwapInfo(): {
 
   // get link to trade on v1, if a better rate exists
   const v1Trade = useV1Trade(isExactIn, currencies[Field.INPUT], currencies[Field.OUTPUT], parsedAmount)
-
+  const { t } = useTranslation()
   let inputError: string | undefined
   if (!account) {
-    inputError = 'Connect Wallet'
+    inputError = t('Connect Wallet')
   }
 
   if (!parsedAmount) {
-    inputError = inputError ?? 'Enter an amount'
+    inputError = inputError ?? t('enterAmount')
   }
 
   if (!currencies[Field.INPUT] || !currencies[Field.OUTPUT]) {
-    inputError = inputError ?? 'Select a token'
+    inputError = inputError ?? t('selectToken')
   }
 
   const formattedTo = isAddress(to)
   if (!to || !formattedTo) {
-    inputError = inputError ?? 'Enter a recipient'
+    inputError = inputError ?? t('enterRecipient')
   } else {
     if (
       BAD_RECIPIENT_ADDRESSES.indexOf(formattedTo) !== -1 ||
       (bestTradeExactIn && involvesAddress(bestTradeExactIn, formattedTo)) ||
       (bestTradeExactOut && involvesAddress(bestTradeExactOut, formattedTo))
     ) {
-      inputError = inputError ?? 'Invalid recipient'
+      inputError = inputError ?? t('invalidRecipient')
     }
   }
 
@@ -204,7 +205,7 @@ export function useDerivedSwapInfo(): {
   ]
 
   if (balanceIn && amountIn && balanceIn.lessThan(amountIn)) {
-    inputError = 'Insufficient ' + amountIn.currency.symbol + ' balance'
+    inputError = t('insufficientCurrencyBalance', { inputCurrency: amountIn.currency.symbol })
   }
 
   return {

@@ -16,6 +16,7 @@ import DoubleCurrencyLogo from '../../components/DoubleLogo'
 import { SwapPoolTabs, AddRemoveTabs } from '../../components/NavigationTabs'
 import { MinimalPositionCard } from '../../components/PositionCard'
 import Row, { RowBetween, RowFlat } from '../../components/Row'
+import { useTranslation } from 'react-i18next'
 // import Toggle from '../../components/Toggle'
 
 import { ROUTER_ADDRESS } from '../../constants'
@@ -121,6 +122,8 @@ export default function AddLiquidity({
   const [approvalB, approveBCallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_B], ROUTER_ADDRESS)
 
   const addTransaction = useTransactionAdder()
+
+  const { t } = useTranslation()
 
   async function onAdd() {
     if (!chainId || !library || !account) return
@@ -252,12 +255,14 @@ export default function AddLiquidity({
         </RowFlat>
         <Row>
           <Text fontSize="24px">
-            {currencies[Field.CURRENCY_A]?.symbol + '/' + currencies[Field.CURRENCY_B]?.symbol + ' Pool Tokens'}
+            {t('pairedPoolTokens', {
+              currencyA: currencies[Field.CURRENCY_A]?.symbol,
+              currencyB: currencies[Field.CURRENCY_B]?.symbol
+            })}
           </Text>
         </Row>
         <TYPE.italic fontSize={12} textAlign="left" padding={'8px 0 0 0 '}>
-          {`Output is estimated. If the price changes by more than ${allowedSlippage /
-            100}% your transaction will revert.`}
+          {t('estimatedOutput', {slippage: allowedSlippage / 100})}
         </TYPE.italic>
       </AutoColumn>
     )
@@ -276,9 +281,12 @@ export default function AddLiquidity({
     )
   }
 
-  const pendingText = `Supplying ${parsedAmounts[Field.CURRENCY_A]?.toSignificant(6)} ${
-    currencies[Field.CURRENCY_A]?.symbol
-  } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(6)} ${currencies[Field.CURRENCY_B]?.symbol}`
+  const pendingText = t('supplyingCurrencies', {
+    currencyAAmount: parsedAmounts[Field.CURRENCY_A]?.toSignificant(6),
+    currencyA: currencies[Field.CURRENCY_A]?.symbol,
+    currencyBAmount: parsedAmounts[Field.CURRENCY_B]?.toSignificant(6),
+    currencyB: currencies[Field.CURRENCY_B]?.symbol
+  })
 
   const handleCurrencyASelect = useCallback(
     (currencyA: Currency) => {
@@ -331,7 +339,7 @@ export default function AddLiquidity({
             hash={txHash}
             content={() => (
               <ConfirmationModalContent
-                title={noLiquidity ? 'You are creating a pool' : 'You will receive'}
+                title={noLiquidity ? t('youAreCreatingAPool') : t('youWillReceive')}
                 onDismiss={handleDismissConfirmation}
                 topContent={modalHeader}
                 bottomContent={modalBottom}
@@ -345,13 +353,13 @@ export default function AddLiquidity({
                 <BlueCard>
                   <AutoColumn gap="10px">
                     <TYPE.link fontWeight={600} color={'primaryText1'}>
-                      You are the first liquidity provider.
+                      {t('firstLiquidityProvider')}
                     </TYPE.link>
                     <TYPE.link fontWeight={400} color={'primaryText1'}>
-                      The ratio of tokens you add will set the price of this pool.
+                      {t('ratioSetsPrice')}
                     </TYPE.link>
                     <TYPE.link fontWeight={400} color={'primaryText1'}>
-                      Once you are happy with the rate click supply to review.
+                      {t('happyToSupply')}
                     </TYPE.link>
                   </AutoColumn>
                 </BlueCard>
@@ -405,7 +413,7 @@ export default function AddLiquidity({
             <>
               <RowBetween style={{ paddingBottom: '12px' }}>
                 <TYPE.subHeader fontWeight={500} fontSize={14}>
-                  {noLiquidity ? 'Initial prices' : 'Prices'} and pool share
+                  {noLiquidity ? t('initialPricesAndShare') : t('pricesAndShare')}
                 </TYPE.subHeader>
               </RowBetween>{' '}
               <PoolPriceBar
@@ -418,7 +426,7 @@ export default function AddLiquidity({
           )}
         </div>
         {!account ? (
-          <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
+          <ButtonLight onClick={toggleWalletModal}>{t('connectWallet')}</ButtonLight>
         ) : (
           <AutoColumn gap={'md'}>
             {(approvalA === ApprovalState.NOT_APPROVED ||
@@ -434,9 +442,9 @@ export default function AddLiquidity({
                       width={approvalB !== ApprovalState.APPROVED ? '48%' : '100%'}
                     >
                       {approvalA === ApprovalState.PENDING ? (
-                        <Dots>Approving {currencies[Field.CURRENCY_A]?.symbol}</Dots>
+                        <Dots>{t('approvingCurrency', {inputCurrency: currencies[Field.CURRENCY_A]?.symbol})}</Dots>
                       ) : (
-                        'Approve ' + currencies[Field.CURRENCY_A]?.symbol
+                        t('approveCurrency', {inputCurrency: currencies[Field.CURRENCY_A]?.symbol})
                       )}
                     </ButtonPrimary>
                   )}
@@ -447,9 +455,9 @@ export default function AddLiquidity({
                       width={approvalA !== ApprovalState.APPROVED ? '48%' : '100%'}
                     >
                       {approvalB === ApprovalState.PENDING ? (
-                        <Dots>Approving {currencies[Field.CURRENCY_B]?.symbol}</Dots>
+                        <Dots>{t('approvingCurrency', {inputCurrency: currencies[Field.CURRENCY_B]?.symbol})}</Dots>
                       ) : (
-                        'Approve ' + currencies[Field.CURRENCY_B]?.symbol
+                        t('approveCurrency', {inputCurrency: currencies[Field.CURRENCY_B]?.symbol})
                       )}
                     </ButtonPrimary>
                   )}
@@ -463,14 +471,14 @@ export default function AddLiquidity({
               error={!isValid && !!parsedAmounts[Field.CURRENCY_A] && !!parsedAmounts[Field.CURRENCY_B]}
             >
               <Text fontSize={20} fontWeight={500}>
-                {error ?? 'Supply'}
+                {error ?? t('supply')}
               </Text>
             </ButtonError>
           </AutoColumn>
         )}
       </AppBodyDark>
       {pair && !noLiquidity && pairState !== PairState.INVALID ? (
-        <AutoColumn style={{ minWidth: '420px', marginTop: '1rem' }}>
+        <AutoColumn style={{ marginTop: '1rem', maxWidth: '420px', width: '100%' }}>
           <MinimalPositionCard showUnwrapped={oneCurrencyIsWETH} pair={pair} />
         </AutoColumn>
       ) : null}

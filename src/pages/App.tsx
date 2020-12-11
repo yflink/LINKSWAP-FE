@@ -89,6 +89,9 @@ const FooterWrapper = styled.div`
   bottom: 0;
   width: 100%;
   text-align: center;
+  background-color: #2B3A4A;
+  z-index: 1;
+  padding: 5px 0;
 `
 
 export default function App() {

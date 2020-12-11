@@ -47,6 +47,7 @@ import { Wrapper } from '../Pool/styleds'
 import { currencyId } from '../../utils/currencyId'
 // import { PoolPriceBar } from './PoolPriceBar'
 import { WrappedTokenInfo } from '../../state/lists/hooks'
+import { useTranslation } from 'react-i18next'
 
 const { Step } = Steps
 
@@ -176,6 +177,8 @@ export default function CreateNewPool({
   // const [approvalB, approveBCallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_B], ROUTER_ADDRESS)
 
   const addTransaction = useTransactionAdder()
+
+  const { t } = useTranslation()
 
   async function onAdd() {
     if (!chainId || !library || !account) return
@@ -375,10 +378,10 @@ export default function CreateNewPool({
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           <div style={{ width: 320, display: 'flex', alignItems: 'flex-center', marginBottom: 16 }}>
             <Steps size="small" labelPlacement="vertical" current={step}>
-              <Step className="white" title="Pairing" />
-              <Step className="white" title="Rate" />
-              <Step className="white" title="Liquidity" />
-              <Step className="white" title="Payment" />
+              <Step className="white" title={t('pairing')} />
+              <Step className="white" title={t('rate')} />
+              <Step className="white" title={t('liquidity')} />
+              <Step className="white" title={t('payment')} />
             </Steps>
           </div>
         </div>
@@ -391,7 +394,7 @@ export default function CreateNewPool({
               hash={txHash}
               content={() => (
                 <ConfirmationModalContent
-                  title={noLiquidity ? 'You are creating a pool' : 'You will receive'}
+                  title={noLiquidity ? t('youAreCreatingAPool') : t('youWillReceive')}
                   onDismiss={handleDismissConfirmation}
                   topContent={modalHeader}
                   bottomContent={modalBottom}
@@ -405,10 +408,10 @@ export default function CreateNewPool({
                   <BlueCard>
                     <AutoColumn gap="10px">
                       <TYPE.link fontWeight={600} color={'primaryText1'}>
-                        You are the first liquidity provider.
+                        {t('firstLiquidityProvider')}
                       </TYPE.link>
                       <TYPE.link fontWeight={400} color={'primaryText1'}>
-                        The ratio of tokens you add will set the price of this pool.
+                        {t('ratioSetsPrice')}
                       </TYPE.link>
                     </AutoColumn>
                   </BlueCard>
@@ -418,10 +421,10 @@ export default function CreateNewPool({
                   <BlueCard>
                     <AutoColumn gap="10px">
                       <TYPE.link fontWeight={600} color={'primaryText1'}>
-                        No pair selected.
+                        {t('noPairSelected')}
                       </TYPE.link>
                       <TYPE.link fontWeight={400} color={'primaryText1'}>
-                        Please select both currencies before proceeding.
+                        {t('selectCurrencies')}
                       </TYPE.link>
                     </AutoColumn>
                   </BlueCard>
@@ -431,10 +434,10 @@ export default function CreateNewPool({
                   <BlueCard>
                     <AutoColumn gap="10px">
                       <TYPE.link fontWeight={600} color={'primaryText1'}>
-                        There is already existing liquidity!
+                        {t('poolAlreadyExists')}
                       </TYPE.link>
                       <TYPE.link fontWeight={400} color={'primaryText1'}>
-                        The pool cannot be created, please choose another pairing.
+                        {t('cannotCreatePool')}
                       </TYPE.link>
                     </AutoColumn>
                   </BlueCard>
@@ -526,7 +529,7 @@ export default function CreateNewPool({
               hash={txHash}
               content={() => (
                 <ConfirmationModalContent
-                  title={noLiquidity ? 'You are creating a pool' : 'You will receive'}
+                  title={noLiquidity ? t('youAreCreatingAPool') : t('youWillReceive')}
                   onDismiss={handleDismissConfirmation}
                   topContent={modalHeader}
                   bottomContent={modalBottom}
@@ -660,16 +663,16 @@ export default function CreateNewPool({
         ) : (
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <ButtonGray style={{ marginRight: 8 }} onClick={() => setStep(Math.max(0, step - 1))}>
-              Back
+              {t('back')}
             </ButtonGray>
             {!noLiquidity ||
             (step === 0 && !currencyB) ||
             (step === 1 && !rate) ||
             (step === 2 && !formattedAmounts[Field.CURRENCY_A]) ? (
-              <ButtonGray style={{ marginLeft: 8 }}>Next</ButtonGray>
+              <ButtonGray style={{ marginLeft: 8 }}>{t('next')}</ButtonGray>
             ) : (
               <ButtonPrimary style={{ marginLeft: 8 }} onClick={() => setStep(Math.min(3, step + 1))}>
-                Next
+                {t('next')}
               </ButtonPrimary>
             )}
           </div>

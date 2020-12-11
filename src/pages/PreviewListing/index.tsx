@@ -7,6 +7,7 @@ import { AutoColumn } from '../../components/Column'
 import { Text } from 'rebass'
 import { PreviewListingTabs } from '../../components/NavigationTabs'
 import { ButtonPrimary } from '../../components/Button'
+import { useTranslation } from 'react-i18next'
 
 export default function PreviewListing() {
   const theme = useContext(ThemeContext)
@@ -24,6 +25,8 @@ export default function PreviewListing() {
       </div>
     )
   }
+
+  const { t } = useTranslation()
 
   return (
     <>
@@ -57,7 +60,6 @@ export default function PreviewListing() {
       <div
         style={{
           backgroundColor: '#19222A',
-          minWidth: '420px',
           padding: '24px',
           marginTop: '-6px',
           zIndex: 2,
@@ -73,7 +75,7 @@ export default function PreviewListing() {
             </Text>
           </div>
         </div>
-        <ButtonPrimary>Create Pool and Supply</ButtonPrimary>
+        <ButtonPrimary>{ t('createPool') }</ButtonPrimary>
       </div>
     </>
   )
