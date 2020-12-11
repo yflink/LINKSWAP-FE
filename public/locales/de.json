@@ -1,5 +1,5 @@
 {
-  "noWallet": "Keine Ethereum-Wallet gefunden",
+  "noWallet": "Kein Wallet gefunden",
   "wrongNetwork": "Du bist auf dem falschen Netzwerk.",
   "switchNetwork": "Bitte wechsle zum {{ correctNetwork }}",
   "installWeb3MobileBrowser": "Bitte besuche uns mit einem web3-fähigen mobilen Browser wie z.B. Trust Wallet oder Coinbase Wallet.",
@@ -184,5 +184,9 @@
   "swappingCurrencies": "Tausche {{currencyAAmount}} {{currencyA}} gegen {{currencyBAmount}} {{currencyB}}",
   "confirmSwap": "Tausch bestätigen",
   "on": "An",
-  "off": "Aus"
+  "off": "Aus",
+  "addASend": "+ Empfänger hinzufügen (optional)",
+  "removeSend": "- Empfänger entfernen",
+  "walletAddressOrENS": "Wallet Adresse oder ENS Name",
+  "recipient": "Empfänger"
 }

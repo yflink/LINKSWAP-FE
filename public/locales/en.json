@@ -184,5 +184,11 @@
   "invalidPair": "Invalid pair",
   "currencyPerCurrency": "{{currencyA}} per {{currencyB}}",
   "swappingCurrencies": "Swapping {{currencyA}} for {{currencyB}}",
-  "confirmSwap": "Confirm Swap"
+  "confirmSwap": "Confirm Swap",
+  "on": "On",
+  "off": "Off",
+  "addASend": "+ add send (optional)",
+  "removeSend": "- remove send",
+  "walletAddressOrENS": "Wallet Address or ENS name",
+  "recipient": "Recipient"
 }

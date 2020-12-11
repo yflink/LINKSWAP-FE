@@ -187,5 +187,9 @@
   "swappingCurrencies": "Swapping {{currencyA}} for {{currencyB}}",
   "confirmSwap": "Confirm Swap",
   "on": "On",
-  "off": "Off"
+  "off": "Off",
+  "addASend": "+ add send (optional)",
+  "removeSend": "- remove send",
+  "walletAddressOrENS": "Wallet Address or ENS name",
+  "recipient": "Recipient"
 }
