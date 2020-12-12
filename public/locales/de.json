@@ -188,5 +188,17 @@
   "addASend": "+ Empfänger hinzufügen (optional)",
   "removeSend": "- Empfänger entfernen",
   "walletAddressOrENS": "Wallet Adresse oder ENS Name",
-  "recipient": "Empfänger"
+  "recipient": "Empfänger",
+  "errorConnecting": "Verbindungsfehler",
+  "newToEthereum": "Bist du noch unerfahren im Umgang mit Ethereum?",
+  "learnMoreAboutWallets": "Lerne hier mehr über Wallets",
+  "connectedWithWallet": "Verbunden mit {{ walletName }}",
+  "showPortis": "Portis anzeigen",
+  "account": "Account",
+  "disconnect": "Verbindung Trennen",
+  "copyAddress": "Adresse kopieren",
+  "viewOnEtherscan": "Auf Etherscan ansehen",
+  "recentTransactions": "Letzte Transaktionen",
+  "yourTransactionsWillApearHere": "Deine Transaktionen werden hier aufgelistet...",
+  "clearAll": "alle löschen"
 }
