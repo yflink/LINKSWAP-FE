@@ -160,14 +160,14 @@ export default function Header() {
           </Title>{' '}
           {!isMobile && (
             <HeaderElementMobile>
-              <Title style={{ marginTop: 4, marginLeft: 24 }} target="_blank" href="https://rewards.linkswap.app/">
+              <Title style={{ marginTop: 4,marginInlineStart: 24 }} target="_blank" href="https://rewards.linkswap.app/">
                 <MenuText>LP Rewards</MenuText>
               </Title>
-              <Title style={{ marginTop: 4, marginLeft: 36 }} target="_blank" href="https://yflink.io/#/vote">
+              <Title style={{ marginTop: 4,marginInlineStart: 36 }} target="_blank" href="https://yflink.io/#/vote">
                 <MenuText>VOTE</MenuText>
               </Title>
               <Title
-                style={{ marginTop: 4, marginLeft: 24 }}
+                style={{ marginTop: 4,marginInlineStart: 24 }}
                 href="https://linkswap.app/#/swap?outputCurrency=0x28cb7e841ee97947a86b06fa4090c8451f64c0be"
               >
                 <MenuText>Buy YFL</MenuText>

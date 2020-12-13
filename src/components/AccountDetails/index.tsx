@@ -147,6 +147,10 @@ const CloseIcon = styled.div`
   position: absolute;
   right: 1rem;
   top: 14px;
+  [dir='rtl'] & {
+    right: unset;
+    left: 1rem;
+  }
   &:hover {
     cursor: pointer;
     opacity: 0.6;
@@ -308,7 +312,7 @@ export default function AccountDetails({
                 <div>
                   {connector !== injected && connector !== walletlink && (
                     <WalletAction
-                      style={{ fontSize: '.825rem', fontWeight: 400, marginRight: '8px' }}
+                      style={{ fontSize: '.825rem', fontWeight: 400,marginInlineEnd: '8px' }}
                       onClick={() => {
                         ;(connector as any).close()
                       }}
@@ -352,7 +356,7 @@ export default function AccountDetails({
                       <div>
                         {account && (
                           <Copy toCopy={account}>
-                            <span style={{ marginLeft: '4px' }}></span>
+                            <span style={{marginInlineStart: '4px' }}></span>
                           </Copy>
                         )}
                         {chainId && account && (
@@ -362,7 +366,7 @@ export default function AccountDetails({
                             href={chainId && getEtherscanLink(chainId, ENSName, 'address')}
                           >
                             <LinkIcon size={16} />
-                            <span style={{ marginLeft: '4px' }}>{t('viewOnEtherscan')}</span>
+                            <span style={{marginInlineStart: '4px' }}>{t('viewOnEtherscan')}</span>
                           </AddressLink>
                         )}
                       </div>
@@ -374,7 +378,7 @@ export default function AccountDetails({
                       <div>
                         {account && (
                           <Copy toCopy={account}>
-                            <span style={{ marginLeft: '4px' }}>{t('copyAddress')}</span>
+                            <span style={{marginInlineStart: '4px' }}>{t('copyAddress')}</span>
                           </Copy>
                         )}
                         {chainId && account && (
@@ -384,7 +388,7 @@ export default function AccountDetails({
                             href={getEtherscanLink(chainId, account, 'address')}
                           >
                             <LinkIcon size={16} />
-                            <span style={{ marginLeft: '4px' }}>{t('viewOnEtherscan')}</span>
+                            <span style={{marginInlineStart: '4px' }}>{t('viewOnEtherscan')}</span>
                           </AddressLink>
                         )}
                       </div>

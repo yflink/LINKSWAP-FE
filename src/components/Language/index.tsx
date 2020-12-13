@@ -104,6 +104,7 @@ export default function LanguageTab() {
   const lang = currentLanguage.substring(0, 2)
   const { t } = useTranslation()
 
+  document.body.dir = i18next.dir(lang!)
   useOnClickOutside(node, open ? toggle : undefined)
 
   return (

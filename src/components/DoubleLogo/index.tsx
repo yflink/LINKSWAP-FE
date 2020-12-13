@@ -37,7 +37,7 @@ export default function DoubleCurrencyLogo({
       <div>
         {currency0 && <HigherLogo currency={currency0} size={size.toString() + 'px'} />}
       </div>
-      <div style={{  marginLeft: '5px' }}>
+      <div style={{ marginInlineStart: '5px' }}>
         {currency1 && <CoveredLogo currency={currency1} size={size.toString() + 'px'} sizeraw={size} />}
       </div>
     </Wrapper>

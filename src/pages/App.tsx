@@ -96,8 +96,6 @@ const FooterWrapper = styled.div`
   padding: 5px 0;
 `
 
-document.body.dir = i18next.dir()
-
 export default function App() {
   return (
     <Suspense fallback={null}>

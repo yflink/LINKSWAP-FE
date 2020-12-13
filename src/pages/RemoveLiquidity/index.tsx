@@ -344,7 +344,7 @@ export default function RemoveLiquidity({
           </Text>
           <RowFixed gap="4px">
             <CurrencyLogo currency={currencyA} size={'24px'} />
-            <Text fontSize={24} fontWeight={500} style={{ marginLeft: '10px' }}>
+            <Text fontSize={24} fontWeight={500} style={{marginInlineStart: '10px' }}>
               {currencyA?.symbol}
             </Text>
           </RowFixed>
@@ -358,7 +358,7 @@ export default function RemoveLiquidity({
           </Text>
           <RowFixed gap="4px">
             <CurrencyLogo currency={currencyB} size={'24px'} />
-            <Text fontSize={24} fontWeight={500} style={{ marginLeft: '10px' }}>
+            <Text fontSize={24} fontWeight={500} style={{marginInlineStart: '10px' }}>
               {currencyB?.symbol}
             </Text>
           </RowFixed>
@@ -539,7 +539,7 @@ export default function RemoveLiquidity({
                         {formattedAmounts[Field.CURRENCY_A] || '-'}
                       </Text>
                       <RowFixed>
-                        <CurrencyLogo currency={currencyA} style={{ marginRight: '12px' }} />
+                        <CurrencyLogo currency={currencyA} style={{marginInlineEnd: '12px' }} />
                         <Text fontSize={24} fontWeight={500} id="remove-liquidity-tokena-symbol">
                           {currencyA?.symbol}
                         </Text>
@@ -550,7 +550,7 @@ export default function RemoveLiquidity({
                         {formattedAmounts[Field.CURRENCY_B] || '-'}
                       </Text>
                       <RowFixed>
-                        <CurrencyLogo currency={currencyB} style={{ marginRight: '12px' }} />
+                        <CurrencyLogo currency={currencyB} style={{marginInlineEnd: '12px' }} />
                         <Text fontSize={24} fontWeight={500} id="remove-liquidity-tokenb-symbol">
                           {currencyB?.symbol}
                         </Text>

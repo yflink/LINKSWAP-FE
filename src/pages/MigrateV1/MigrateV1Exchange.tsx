@@ -64,7 +64,7 @@ export function V1LiquidityInfo({
     <>
       <AutoRow style={{ justifyContent: 'flex-start', width: 'fit-content' }}>
         <CurrencyLogo size="24px" currency={token} />
-        <div style={{ marginLeft: '.75rem' }}>
+        <div style={{marginInlineStart: '.75rem' }}>
           <TYPE.mediumHeader>
             {<FormattedPoolCurrencyAmount currencyAmount={liquidityTokenAmount} />}{' '}
             {chainId && token.equals(WETH[chainId]) ? 'WETH' : token.symbol}/ETH
@@ -80,7 +80,7 @@ export function V1LiquidityInfo({
           <Text fontSize={16} fontWeight={500} marginLeft={'6px'}>
             {tokenWorth.toSignificant(4)}
           </Text>
-          <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={token} />
+          <CurrencyLogo size="20px" style={{marginInlineStart: '8px' }} currency={token} />
         </RowFixed>
       </RowBetween>
       <RowBetween mb="1rem">
@@ -91,7 +91,7 @@ export function V1LiquidityInfo({
           <Text fontSize={16} fontWeight={500} marginLeft={'6px'}>
             <FormattedPoolCurrencyAmount currencyAmount={ethWorth} />
           </Text>
-          <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={Currency.ETHER} />
+          <CurrencyLogo size="20px" style={{marginInlineStart: '8px' }} currency={Currency.ETHER} />
         </RowFixed>
       </RowBetween>
     </>
@@ -283,7 +283,7 @@ function V1PairMigration({ liquidityTokenAmount, token }: { liquidityTokenAmount
         />
 
         <div style={{ display: 'flex', marginTop: '1rem' }}>
-          <AutoColumn gap="12px" style={{ flex: '1', marginRight: 12 }}>
+          <AutoColumn gap="12px" style={{ flex: '1',marginInlineEnd: 12 }}>
             <ButtonConfirmed
               confirmed={approval === ApprovalState.APPROVED}
               disabled={approval !== ApprovalState.NOT_APPROVED}

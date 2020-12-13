@@ -102,7 +102,7 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
             </FixedHeightRow>
             <AutoColumn gap="4px">
               <RowFixed style={{ display: 'flex', width: '100%' }}>
-                <Card style={{ backgroundColor: '#53606C', marginRight: 16 }}>
+                <Card style={{ backgroundColor: '#53606C',marginInlineEnd: 16 }}>
                   <Text style={{ marginBottom: 4 }}>
                     {token0Deposited ? (
                       <RowFixed>
@@ -210,9 +210,9 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
           </RowFixed>
           <RowFixed>
             {showMore ? (
-              <ChevronUp size="20" style={{ marginLeft: '10px' }} />
+              <ChevronUp size="20" style={{marginInlineStart: '10px' }} />
             ) : (
-              <ChevronDown size="20" style={{ marginLeft: '10px' }} />
+              <ChevronDown size="20" style={{marginInlineStart: '10px' }} />
             )}
           </RowFixed>
         </FixedHeightRow>
@@ -229,7 +229,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
                   <Text fontSize={16} fontWeight={500} marginLeft={'6px'}>
                     {token0Deposited?.toSignificant(6)}
                   </Text>
-                  <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={currency0} />
+                  <CurrencyLogo size="20px" style={{ marginInlineStart: '8px' }} currency={currency0} />
                 </RowFixed>
               ) : (
                 '-'
@@ -247,7 +247,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
                   <Text fontSize={16} fontWeight={500} marginLeft={'6px'}>
                     {token1Deposited?.toSignificant(6)}
                   </Text>
-                  <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={currency1} />
+                  <CurrencyLogo size="20px" style={{marginInlineStart: '8px' }} currency={currency1} />
                 </RowFixed>
               ) : (
                 '-'

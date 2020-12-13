@@ -24,6 +24,10 @@ const CloseIcon = styled.div`
   position: absolute;
   right: 1rem;
   top: 14px;
+  [dir='rtl'] & {
+    right: unset;
+    left: 1rem;
+  }
   &:hover {
     cursor: pointer;
     opacity: 0.6;

@@ -200,5 +200,6 @@
   "viewOnEtherscan": "Auf Etherscan ansehen",
   "recentTransactions": "Letzte Transaktionen",
   "yourTransactionsWillApearHere": "Deine Transaktionen werden hier aufgelistet...",
-  "clearAll": "alle löschen"
+  "clearAll": "alle löschen",
+  "interfaceLanguage": "Sprachauswahl"
 }

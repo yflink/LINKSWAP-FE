@@ -39,6 +39,10 @@ const Fader = styled.div`
   width: 100%;
   height: 2px;
   background-color: ${({ theme }) => theme.bg3};
+  [dir='rtl'] & {
+    left: unset;
+    right: 0;
+  }
 `
 
 const AnimatedFader = animated(Fader)

@@ -157,9 +157,9 @@ const ListRow = memo(function ListRow({ listUrl, onBack }: { listUrl: string; on
   return (
     <Row key={listUrl} align="center" padding="16px" id={listUrlRowHTMLId(listUrl)}>
       {list.logoURI ? (
-        <ListLogo style={{ marginRight: '1rem' }} logoURI={list.logoURI} alt={`${list.name} list logo`} />
+        <ListLogo style={{marginInlineEnd: '1rem' }} logoURI={list.logoURI} alt={`${list.name} list logo`} />
       ) : (
-        <div style={{ width: '24px', height: '24px', marginRight: '1rem' }} />
+        <div style={{ width: '24px', height: '24px',marginInlineEnd: '1rem' }} />
       )}
       <Column style={{ flex: '1' }}>
         <Row>
@@ -188,7 +188,7 @@ const ListRow = memo(function ListRow({ listUrl, onBack }: { listUrl: string; on
             padding: '.8rem .35rem',
             borderRadius: '12px',
             fontSize: '14px',
-            marginRight: '0.5rem'
+           marginInlineEnd: '0.5rem'
           }}
           onClick={toggle}
           ref={setReferenceElement}

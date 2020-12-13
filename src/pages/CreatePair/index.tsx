@@ -513,7 +513,7 @@ export default function CreateNewPool({
                       setRate(val)
                     }}
                   />
-                  <Text fontWeight={600} fontSize={18} style={{ marginRight: '4px' }}>
+                  <Text fontWeight={600} fontSize={18} style={{marginInlineEnd: '4px' }}>
                     {currencies[Field.CURRENCY_B]!.symbol}
                   </Text>
                 </div>
@@ -599,7 +599,7 @@ export default function CreateNewPool({
                     style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <CurrencyLogo currency={ETHER} size={'24px'} style={{ marginRight: '6px' }} />
+                      <CurrencyLogo currency={ETHER} size={'24px'} style={{marginInlineEnd: '6px' }} />
                       {ETHER.symbol}
                     </div>
                     <div style={{ textAlign: 'right' }}>
@@ -619,7 +619,7 @@ export default function CreateNewPool({
                     style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <CurrencyLogo currency={LINK} size={'24px'} style={{ marginRight: '6px' }} />
+                      <CurrencyLogo currency={LINK} size={'24px'} style={{marginInlineEnd: '6px' }} />
                       {LINK.symbol}
                     </div>
                     <div style={{ textAlign: 'right' }}>
@@ -639,7 +639,7 @@ export default function CreateNewPool({
                     style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <CurrencyLogo currency={YFL} size={'24px'} style={{ marginRight: '6px' }} />
+                      <CurrencyLogo currency={YFL} size={'24px'} style={{marginInlineEnd: '6px' }} />
                       {YFL.symbol}
                     </div>
                     <div style={{ textAlign: 'right' }}>
@@ -662,16 +662,16 @@ export default function CreateNewPool({
           <ButtonPrimary>Coming Soon!</ButtonPrimary>
         ) : (
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <ButtonGray style={{ marginRight: 8 }} onClick={() => setStep(Math.max(0, step - 1))}>
+            <ButtonGray style={{marginInlineEnd: 8 }} onClick={() => setStep(Math.max(0, step - 1))}>
               {t('back')}
             </ButtonGray>
             {!noLiquidity ||
             (step === 0 && !currencyB) ||
             (step === 1 && !rate) ||
             (step === 2 && !formattedAmounts[Field.CURRENCY_A]) ? (
-              <ButtonGray style={{ marginLeft: 8 }}>{t('next')}</ButtonGray>
+              <ButtonGray style={{marginInlineStart: 8 }}>{t('next')}</ButtonGray>
             ) : (
-              <ButtonPrimary style={{ marginLeft: 8 }} onClick={() => setStep(Math.min(3, step + 1))}>
+              <ButtonPrimary style={{marginInlineStart: 8 }} onClick={() => setStep(Math.min(3, step + 1))}>
                 {t('next')}
               </ButtonPrimary>
             )}

@@ -56,7 +56,7 @@ export default function SwapModalFooter({
               alignItems: 'center',
               display: 'flex',
               textAlign: 'right',
-              paddingLeft: '10px'
+              paddingInlineStart: '10px'
             }}
           >
             {formatExecutionPrice(trade, showInverted)}
