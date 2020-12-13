@@ -179,5 +179,18 @@
   "addASend": "+ add send (optional)",
   "removeSend": "- remove send",
   "walletAddressOrENS": "Wallet Address or ENS name",
-  "recipient": "Recipient"
+  "recipient": "Recipient",
+  "errorConnecting": "Error connecting",
+  "newToEthereum": "New to Ethereum?",
+  "learnMoreAboutWallets": "Learn more about wallets",
+  "connectedWithWallet": "Connected with {{ walletName }}",
+  "showPortis": "Show Portis",
+  "account": "Account",
+  "disconnect": "Disconnect",
+  "copyAddress": "Copy Address",
+  "viewOnEtherscan": "View on Etherscan",
+  "recentTransactions": "Recent Transactions",
+  "yourTransactionsWillApearHere": "Your transactions will appear here...",
+  "clearAll": "clear all",
+  "interfaceLanguage": "Select a Language"
 }

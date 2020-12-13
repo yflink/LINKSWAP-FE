@@ -202,5 +202,6 @@
   "viewOnEtherscan": "查看以太坊",
   "recentTransactions": "最近的交易",
   "yourTransactionsWillApearHere": "您的交易记录将在这显示…",
-  "clearAll": "清除所有"
+  "clearAll": "清除所有",
+  "interfaceLanguage": "Select a Language"
 }

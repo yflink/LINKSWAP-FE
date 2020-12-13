@@ -186,5 +186,18 @@
   "addASend": "+ adaugă trimitere (opțional)",
   "removeSend": "- elimină trimitire",
   "walletAddressOrENS": "Adresa portofelului sau numele ENS",
-  "recipient": "Destinatar"
+  "recipient": "Destinatar",
+  "errorConnecting": "Error connecting",
+  "newToEthereum": "New to Ethereum?",
+  "learnMoreAboutWallets": "Learn more about wallets",
+  "connectedWithWallet": "Connected with {{ walletName }}",
+  "showPortis": "Show Portis",
+  "account": "Account",
+  "disconnect": "Disconnect",
+  "copyAddress": "Copy Address",
+  "viewOnEtherscan": "View on Etherscan",
+  "recentTransactions": "Recent Transactions",
+  "yourTransactionsWillApearHere": "Your transactions will appear here...",
+  "clearAll": "clear all",
+  "interfaceLanguage": "Select a Language"
 }

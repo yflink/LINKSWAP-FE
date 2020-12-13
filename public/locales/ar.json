@@ -190,5 +190,6 @@
   "addASend": "+ add send (optional)",
   "removeSend": "- remove send",
   "walletAddressOrENS": "عنوان المحفظة أو اسم ال ENS",
-  "recipient": "مستلم"
+  "recipient": "مستلم",
+  "interfaceLanguage": "Select a Language"
 }
