@@ -39,7 +39,7 @@ const Tag = styled.div`
   text-overflow: ellipsis;
   white-space: nowrap;
   justify-self: flex-end;
-  margin-right: 4px;
+  margin-inline-end: 4px;
 `
 
 function Balance({ balance }: { balance: CurrencyAmount }) {

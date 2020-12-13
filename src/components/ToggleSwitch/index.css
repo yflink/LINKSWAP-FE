@@ -1,6 +1,6 @@
 .toggle-switch {
   position: relative;
-  margin-right: 10px;
+  margin-inline-end: 10px;
   height: 30px;
   width: 75px;
   display: inline-block;
@@ -8,7 +8,7 @@
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
-  text-align: left;
+  text-align: start;
 }
 
 .toggle-switch-checkbox {
@@ -39,7 +39,7 @@
 .toggle-switch-inner {
   display: block;
   width: 200%;
-  margin-left: -100%;
+  margin-inline-start: -100%;
   transition: margin 0.3s ease-in 0s;
 }
 
@@ -60,7 +60,7 @@
 .toggle-switch-inner:before {
   content: attr(data-yes);
   text-transform: uppercase;
-  padding-left: 10px;
+  padding-inline-start: 10px;
   background-color: #2a5bdb;
   color: #fff;
 }
@@ -78,10 +78,10 @@
 .toggle-switch-inner:after {
   content: attr(data-no);
   text-transform: uppercase;
-  padding-right: 10px;
+  padding-inline-end: 10px;
   background-color: #374049;
   color: #fff;
-  text-align: right;
+  text-align: end;
 }
 
 .toggle-switch-switch {
@@ -99,7 +99,7 @@
 }
 
 .toggle-switch-checkbox:checked + .toggle-switch-label .toggle-switch-inner {
-  margin-left: 0;
+  margin-inline-start: 0;
 }
 
 .toggle-switch-checkbox:checked + .toggle-switch-label .toggle-switch-switch {

@@ -18,8 +18,8 @@ const Tabs = styled.div`
   align-items: center;
   border-radius: 6px;
   justify-content: space-evenly;
-  margin-left: 16px;
-  margin-right: 16px;
+  margin-inline-start: 16px;
+  margin-inline-end: 16px;
 `
 
 const activeClassName = 'ACTIVE'

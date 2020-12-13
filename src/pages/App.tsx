@@ -35,6 +35,8 @@ import PreviewListing from './PreviewListing'
 
 import Analyze from './Analyze'
 
+import i18next from 'i18next'
+
 // import MigrateV1 from './MigrateV1'
 // import MigrateV1Exchange from './MigrateV1/MigrateV1Exchange'
 // import RemoveV1Exchange from './MigrateV1/RemoveV1Exchange'
@@ -89,10 +91,12 @@ const FooterWrapper = styled.div`
   bottom: 0;
   width: 100%;
   text-align: center;
-  background-color: #2B3A4A;
+  background-color: #2b3a4a;
   z-index: 1;
   padding: 5px 0;
 `
+
+document.body.dir = i18next.dir()
 
 export default function App() {
   return (

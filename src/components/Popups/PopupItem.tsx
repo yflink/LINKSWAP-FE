@@ -25,7 +25,7 @@ export const Popup = styled.div`
   position: relative;
   border-radius: 6px;
   padding: 20px;
-  padding-right: 35px;
+  padding-inline-end: 35px;
   overflow: hidden;
 
   ${({ theme }) => theme.mediaWidth.upToSmall`
@@ -34,8 +34,8 @@ export const Popup = styled.div`
 `
 const Fader = styled.div`
   position: absolute;
-  bottom: 0px;
-  left: 0px;
+  bottom: 0;
+  left: 0;
   width: 100%;
   height: 2px;
   background-color: ${({ theme }) => theme.bg3};

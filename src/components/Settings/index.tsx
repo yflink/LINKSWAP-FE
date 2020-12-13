@@ -69,13 +69,13 @@ const StyledMenuButton = styled.button`
 `
 
 const StyledMenu = styled.div`
-  margin-left: 0.5rem;
+  margin-inline-start: 0.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
   border: none;
-  text-align: left;
+  text-align: start;
 `
 
 const MenuFlyout = styled.span`

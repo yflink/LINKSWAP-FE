@@ -135,7 +135,7 @@ const AccountControl = styled.div`
 const AddressLink = styled(ExternalLink)<{ hasENS: boolean; isENS: boolean }>`
   font-size: 0.825rem;
   color: ${({ theme }) => theme.text3};
-  margin-left: 1rem;
+  margin-inline-start: 1rem;
   font-size: 0.825rem;
   display: flex;
   :hover {
@@ -170,7 +170,7 @@ const IconWrapper = styled.div<{ size?: number }>`
   ${({ theme }) => theme.flexColumnNoWrap};
   align-items: center;
   justify-content: center;
-  margin-right: 8px;
+  margin-inline-end: 8px;
   & > img,
   span {
     height: ${({ size }) => (size ? size + 'px' : '32px')};
@@ -188,7 +188,7 @@ const TransactionListWrapper = styled.div`
 const WalletAction = styled(ButtonSecondary)`
   width: fit-content;
   font-weight: 400;
-  margin-left: 8px;
+  margin-inline-start: 8px;
   font-size: 0.825rem;
   padding: 4px 6px;
   :hover {

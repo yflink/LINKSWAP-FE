@@ -47,7 +47,7 @@ const GreenCircle = styled.div`
   &:first-child {
     height: 8px;
     width: 8px;
-    margin-right: 8px;
+    margin-inline-end: 8px;
     background-color: ${({ theme }) => theme.green1};
     border-radius: 50%;
   }

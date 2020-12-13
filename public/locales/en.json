@@ -202,5 +202,6 @@
   "viewOnEtherscan": "View on Etherscan",
   "recentTransactions": "Recent Transactions",
   "yourTransactionsWillApearHere": "Your transactions will appear here...",
-  "clearAll": "clear all"
+  "clearAll": "clear all",
+  "interfaceLanguage": "Select a Language"
 }

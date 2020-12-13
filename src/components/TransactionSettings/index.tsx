@@ -39,7 +39,7 @@ const FancyButton = styled.button`
 `
 
 const Option = styled(FancyButton)<{ active: boolean }>`
-  margin-right: 8px;
+  margin-inline-end: 8px;
   :hover {
     cursor: pointer;
   }
@@ -57,7 +57,7 @@ const Input = styled.input`
     -webkit-appearance: none;
   }
   color: ${({ theme, color }) => (color === 'red' ? theme.red1 : theme.text1)};
-  text-align: right;
+  text-align: end;
 `
 
 const OptionCustom = styled(FancyButton)<{ active?: boolean; warning?: boolean }>`

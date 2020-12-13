@@ -11,6 +11,7 @@ import logo from '../../assets/svg/logo.png'
 
 import { YellowCard } from '../Card'
 import Settings from '../Settings'
+import Language from '../Language'
 // import Menu from '../Menu'
 
 import { RowBetween } from '../Row'
@@ -49,13 +50,13 @@ const HeaderElementWrap = styled.div`
   display: flex;
   align-items: center;
   ${({ theme }) => theme.mediaWidth.upToSmall`
-    margin-top: 0.5rem;
+    margin: 0.5rem 0;
 `};
 `
 
 const Logo = styled.img`
   height: 30px;
-  margin-right: 8px;
+  margin-inline-end: 8px;
 `
 
 const Title = styled.a`
@@ -107,13 +108,13 @@ const AccountElement = styled.div<{ active: boolean }>`
 const TestnetWrapper = styled.div`
   white-space: nowrap;
   width: fit-content;
-  margin-left: 10px;
+  margin-inline-start: 10px;
   pointer-events: auto;
 `
 
 const NetworkCard = styled(YellowCard)`
   width: fit-content;
-  margin-right: 10px;
+  margin-inline-end: 10px;
   border-radius: 6px;
   padding: 8px 12px;
 `
@@ -176,6 +177,7 @@ export default function Header() {
         </HeaderElement>
         <HeaderControls>
           <HeaderElementWrap>
+            <Language />
             <Settings />
             {/* <Menu /> */}
           </HeaderElementWrap>

@@ -33,7 +33,7 @@ const VersionToggle = styled(({ enabled, ...rest }: VersionToggleProps) => <Link
   color: ${({ theme }) => theme.primary1};
   display: flex;
   width: fit-content;
-  margin-left: 0.5rem;
+  margin-inline-start: 0.5rem;
   text-decoration: none;
   :hover {
     text-decoration: none;

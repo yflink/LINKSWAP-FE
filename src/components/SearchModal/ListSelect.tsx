@@ -30,7 +30,7 @@ const UnpaddedLinkStyledButton = styled(LinkStyledButton)`
   padding: 0;
   font-size: 1rem;
   opacity: ${({ disabled }) => (disabled ? '0.4' : '1')};
-  text-align: left;
+  text-align: start;
 `
 
 const PopoverContainer = styled.div<{ show: boolean }>`
@@ -49,7 +49,7 @@ const PopoverContainer = styled.div<{ show: boolean }>`
   grid-template-rows: 1fr;
   grid-gap: 8px;
   font-size: 1rem;
-  text-align: left;
+  text-align: start;
 `
 
 const StyledMenu = styled.div`
@@ -63,7 +63,7 @@ const StyledMenu = styled.div`
 const StyledListUrlText = styled.div`
   max-width: 160px;
   opacity: 0.6;
-  margin-right: 0.5rem;
+  margin-inline-end: 0.5rem;
   font-size: 14px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -241,7 +241,7 @@ const ListRow = memo(function ListRow({ listUrl, onBack }: { listUrl: string; on
 
 const AddListButton = styled(ButtonSecondary)`
   flex: 0;
-  margin-left: 1rem;
+  margin-inline-start: 1rem;
   border-radius: 6px;
   padding: 10px 18px;
 `

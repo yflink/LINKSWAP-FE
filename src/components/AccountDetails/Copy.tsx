@@ -19,7 +19,7 @@ const CopyIcon = styled(LinkStyledButton)`
   }
 `
 const TransactionStatusText = styled.span`
-  margin-left: 0.25rem;
+  margin-inline-start: 0.25rem;
   font-size: 0.825rem;
   ${({ theme }) => theme.flexRowNoWrap};
   align-items: center;
