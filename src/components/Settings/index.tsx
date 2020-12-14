@@ -95,6 +95,11 @@ const MenuFlyout = styled.span`
   right: 0rem;
   z-index: 100;
 
+  [dir='rtl'] & {
+    right: unset;
+    left: 0;
+  }
+
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     min-width: 18.125rem;
   `};

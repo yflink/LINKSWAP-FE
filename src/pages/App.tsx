@@ -12,11 +12,7 @@ import Swap from './Swap'
 import { RedirectPathToSwapOnly, RedirectToSwap } from './Swap/redirects'
 
 import AddLiquidity from './AddLiquidity'
-import {
-  RedirectDuplicateTokenIds,
-  RedirectOldAddLiquidityPathStructure
-  // RedirectToAddLiquidity
-} from './AddLiquidity/redirects'
+import { RedirectDuplicateTokenIds, RedirectOldAddLiquidityPathStructure } from './AddLiquidity/redirects'
 
 import Pool from './Pool'
 import PoolFinder from './PoolFinder'
@@ -25,28 +21,11 @@ import RemoveLiquidity from './RemoveLiquidity'
 import { RedirectOldRemoveLiquidityPathStructure } from './RemoveLiquidity/redirects'
 
 import CreatePair from './CreatePair'
-import {
-  CreatePairRedirectOldPathStructure,
-  CreatePairRedirectDuplicateTokenIds
-  // RedirectToAddLiquidity
-} from './CreatePair/redirects'
+import { CreatePairRedirectOldPathStructure, CreatePairRedirectDuplicateTokenIds } from './CreatePair/redirects'
 
 import PreviewListing from './PreviewListing'
 
 import Analyze from './Analyze'
-
-import i18next from 'i18next'
-
-// import MigrateV1 from './MigrateV1'
-// import MigrateV1Exchange from './MigrateV1/MigrateV1Exchange'
-// import RemoveV1Exchange from './MigrateV1/RemoveV1Exchange'
-
-import TestAddLiquidity from './TestAddLiquidity'
-import {
-  TestRedirectDuplicateTokenIds,
-  TestRedirectOldAddLiquidityPathStructure
-  // RedirectToAddLiquidity
-} from './TestAddLiquidity/redirects'
 
 const AppWrapper = styled.div`
   display: flex;
@@ -73,7 +52,7 @@ const BodyWrapper = styled.div`
   overflow-x: hidden;
   z-index: 10;
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-      padding: 16px;
+    padding: 16px;
   `};
 
   z-index: 1;
@@ -94,6 +73,14 @@ const FooterWrapper = styled.div`
   background-color: #2b3a4a;
   z-index: 1;
   padding: 5px 0;
+
+  a {
+    color: ${({ theme }) => theme.text1};
+    :hover,
+    :focus {
+      text-decoration: none;
+    }
+  }
 `
 
 export default function App() {
@@ -118,7 +105,6 @@ export default function App() {
                 <Route exact path="/add" component={AddLiquidity} />
                 <Route exact path="/add/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
                 <Route exact path="/add/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
-                {/* <Route exact strict path="/remove/v1/:address" component={RemoveV1Exchange} /> */}
                 <Route exact strict path="/remove/:tokens" component={RedirectOldRemoveLiquidityPathStructure} />
                 <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
                 <Route exact strict path="/create" component={CreatePair} />
@@ -126,18 +112,13 @@ export default function App() {
                 <Route exact path="/create/:currencyIdA/:currencyIdB" component={CreatePairRedirectDuplicateTokenIds} />
                 <Route exact strict path="/previewlisting" component={PreviewListing} />{' '}
                 <Route exact strict path="/analyze" component={Analyze} />
-                {/* <Route exact strict path="/migrate/v1" component={MigrateV1} />
-                <Route exact strict path="/migrate/v1/:address" component={MigrateV1Exchange} /> */}
-                {/* <Route exact path="/testAdd" component={TestAddLiquidity} />
-                <Route exact path="/testAdd/:currencyIdA" component={TestRedirectOldAddLiquidityPathStructure} />
-                <Route exact path="/testAdd/:currencyIdA/:currencyIdB" component={TestRedirectDuplicateTokenIds} /> */}
                 <Route component={RedirectPathToSwapOnly} />
               </Switch>
             </Web3ReactManager>
             <Marginer />
           </BodyWrapper>
           <FooterWrapper>
-            <a style={{ color: 'white' }} target="_blank" href="https://certificate.quantstamp.com/full/linkswap">
+            <a target="_blank" rel="noreferrer" href="https://certificate.quantstamp.com/full/linkswap">
               Quantstamp Audit Report - LINKSWAP
             </a>
           </FooterWrapper>
