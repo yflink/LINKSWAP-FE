@@ -203,9 +203,9 @@
   "recentTransactions": "Recente transacties",
   "yourTransactionsWillApearHere": "Uw transacties verschijnen hier ...",
   "clearAll": "Alles wissen",
-  "interfaceLanguage": "Select a Language",
-  "commonBases":"Common bases",
-  "commonBasesDescription": "These tokens are commonly paired with other tokens.",
-  "addedByUser": "Added by user",
-  "removeFromList": "Remove"
+  "interfaceLanguage": "Kies uw taal",
+  "commonBases":"Basis tokens",
+  "commonBasesDescription": "Deze tokens worden normaal gezien gekoppeld met andere tokens.",
+  "addedByUser": "Toegevoegd door gebruiker",
+  "removeFromList": "Verwijder"
 }
