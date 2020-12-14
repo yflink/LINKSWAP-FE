@@ -11,6 +11,7 @@ import logo from '../../assets/svg/logo.png'
 
 import { YellowCard } from '../Card'
 import Settings from '../Settings'
+import Language from '../Language'
 // import Menu from '../Menu'
 
 import { RowBetween } from '../Row'
@@ -49,13 +50,13 @@ const HeaderElementWrap = styled.div`
   display: flex;
   align-items: center;
   ${({ theme }) => theme.mediaWidth.upToSmall`
-    margin-top: 0.5rem;
+    margin: 0.5rem 0;
 `};
 `
 
 const Logo = styled.img`
   height: 30px;
-  margin-right: 8px;
+  margin-inline-end: 8px;
 `
 
 const Title = styled.a`
@@ -107,13 +108,13 @@ const AccountElement = styled.div<{ active: boolean }>`
 const TestnetWrapper = styled.div`
   white-space: nowrap;
   width: fit-content;
-  margin-left: 10px;
+  margin-inline-start: 10px;
   pointer-events: auto;
 `
 
 const NetworkCard = styled(YellowCard)`
   width: fit-content;
-  margin-right: 10px;
+  margin-inline-end: 10px;
   border-radius: 6px;
   padding: 8px 12px;
 `
@@ -159,14 +160,14 @@ export default function Header() {
           </Title>{' '}
           {!isMobile && (
             <HeaderElementMobile>
-              <Title style={{ marginTop: 4, marginLeft: 24 }} target="_blank" href="https://rewards.linkswap.app/">
+              <Title style={{ marginTop: 4,marginInlineStart: 24 }} target="_blank" href="https://rewards.linkswap.app/">
                 <MenuText>LP Rewards</MenuText>
               </Title>
-              <Title style={{ marginTop: 4, marginLeft: 36 }} target="_blank" href="https://yflink.io/#/vote">
+              <Title style={{ marginTop: 4,marginInlineStart: 36 }} target="_blank" href="https://yflink.io/#/vote">
                 <MenuText>VOTE</MenuText>
               </Title>
               <Title
-                style={{ marginTop: 4, marginLeft: 24 }}
+                style={{ marginTop: 4,marginInlineStart: 24 }}
                 href="https://linkswap.app/#/swap?outputCurrency=0x28cb7e841ee97947a86b06fa4090c8451f64c0be"
               >
                 <MenuText>Buy YFL</MenuText>
@@ -176,6 +177,7 @@ export default function Header() {
         </HeaderElement>
         <HeaderControls>
           <HeaderElementWrap>
+            <Language />
             <Settings />
             {/* <Menu /> */}
           </HeaderElementWrap>

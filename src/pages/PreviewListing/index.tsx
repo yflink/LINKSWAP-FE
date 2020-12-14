@@ -7,6 +7,7 @@ import { AutoColumn } from '../../components/Column'
 import { Text } from 'rebass'
 import { PreviewListingTabs } from '../../components/NavigationTabs'
 import { ButtonPrimary } from '../../components/Button'
+import { useTranslation } from 'react-i18next'
 
 export default function PreviewListing() {
   const theme = useContext(ThemeContext)
@@ -25,6 +26,8 @@ export default function PreviewListing() {
     )
   }
 
+  const { t } = useTranslation()
+
   return (
     <>
       <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.bg1, marginBottom: '32px' }}>
@@ -36,7 +39,7 @@ export default function PreviewListing() {
         </AutoColumn>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '24px', marginTop: '24px' }}>
           <Text style={{ color: 'white' }}>Rate</Text>
-          <div style={{ textAlign: 'right' }}>
+          <div style={{ textAlign: 'end' }}>
             <Text style={{ color: '#AFBCC9', marginBottom: '6px' }}>1 LINK = 500 SPID</Text>
             <Text style={{ color: '#AFBCC9' }}>1 SPID = 0.002 SPID</Text>
           </div>
@@ -45,7 +48,7 @@ export default function PreviewListing() {
         <DisplayFlex title="Depositing SPID" content="5,000 SPID" />
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '32px' }}>
           <Text style={{ color: 'white' }}>Listing Fee</Text>
-          <div style={{ textAlign: 'right' }}>
+          <div style={{ textAlign: 'end' }}>
             <Text style={{ color: '#AFBCC9', marginBottom: '6px' }}>10.0239 YFL</Text>
             <Text fontSize={12} style={{ color: '#AFBCC9' }}>
               $1000 (USD)
@@ -57,7 +60,6 @@ export default function PreviewListing() {
       <div
         style={{
           backgroundColor: '#19222A',
-          minWidth: '420px',
           padding: '24px',
           marginTop: '-6px',
           zIndex: 2,
@@ -66,14 +68,14 @@ export default function PreviewListing() {
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '32px' }}>
           <Text style={{ color: 'white' }}>Total</Text>
-          <div style={{ textAlign: 'right' }}>
+          <div style={{ textAlign: 'end' }}>
             <Text style={{ color: '#AFBCC9', marginBottom: '6px' }}>8.01912 YFL</Text>
             <Text fontSize={12} style={{ color: '#AFBCC9' }}>
               $800 (USD)
             </Text>
           </div>
         </div>
-        <ButtonPrimary>Create Pool and Supply</ButtonPrimary>
+        <ButtonPrimary>{ t('createPool') }</ButtonPrimary>
       </div>
     </>
   )

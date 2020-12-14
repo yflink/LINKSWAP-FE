@@ -91,7 +91,7 @@ export default function ListUpdatePopup({
               </ul>
             </div>
             <AutoRow>
-              <div style={{ flexGrow: 1, marginRight: 12 }}>
+              <div style={{ flexGrow: 1,marginInlineEnd: 12 }}>
                 <ButtonSecondary onClick={handleAcceptUpdate}>Accept update</ButtonSecondary>
               </div>
               <div style={{ flexGrow: 1 }}>

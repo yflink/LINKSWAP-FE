@@ -111,8 +111,8 @@ const Text = styled.p`
 `
 
 const NetworkIcon = styled(Activity)`
-  margin-left: 0.25rem;
-  margin-right: 0.5rem;
+  margin-inline-start: 0.25rem;
+  margin-inline-end: 0.5rem;
   width: 16px;
   height: 16px;
 `
@@ -197,7 +197,7 @@ function Web3StatusInner() {
   } else {
     return (
       <Web3StatusConnect id="connect-wallet" onClick={toggleWalletModal} faded={!account}>
-        <Text>{t('Connect to a wallet')}</Text>
+        <Text>{t('connectWallet')}</Text>
       </Web3StatusConnect>
     )
   }

@@ -39,7 +39,7 @@ export default function SwapModalHeader({
     <AutoColumn gap={'md'} style={{ marginTop: '20px' }}>
       <RowBetween align="flex-end">
         <RowFixed gap={'0px'}>
-          <CurrencyLogo currency={trade.inputAmount.currency} size={'24px'} style={{ marginRight: '12px' }} />
+          <CurrencyLogo currency={trade.inputAmount.currency} size={'24px'} style={{marginInlineEnd: '12px' }} />
           <TruncatedText
             fontSize={24}
             fontWeight={500}
@@ -49,17 +49,17 @@ export default function SwapModalHeader({
           </TruncatedText>
         </RowFixed>
         <RowFixed gap={'0px'}>
-          <Text fontSize={24} fontWeight={500} style={{ marginLeft: '10px' }}>
+          <Text fontSize={24} fontWeight={500} style={{marginInlineStart: '10px' }}>
             {trade.inputAmount.currency.symbol}
           </Text>
         </RowFixed>
       </RowBetween>
       <RowFixed>
-        <ArrowDown size="16" color={theme.text2} style={{ marginLeft: '4px', minWidth: '16px' }} />
+        <ArrowDown size="16" color={theme.text2} style={{marginInlineStart: '4px', minWidth: '16px' }} />
       </RowFixed>
       <RowBetween align="flex-end">
         <RowFixed gap={'0px'}>
-          <CurrencyLogo currency={trade.outputAmount.currency} size={'24px'} style={{ marginRight: '12px' }} />
+          <CurrencyLogo currency={trade.outputAmount.currency} size={'24px'} style={{marginInlineEnd: '12px' }} />
           <TruncatedText
             fontSize={24}
             fontWeight={500}
@@ -75,7 +75,7 @@ export default function SwapModalHeader({
           </TruncatedText>
         </RowFixed>
         <RowFixed gap={'0px'}>
-          <Text fontSize={24} fontWeight={500} style={{ marginLeft: '10px' }}>
+          <Text fontSize={24} fontWeight={500} style={{marginInlineStart: '10px' }}>
             {trade.outputAmount.currency.symbol}
           </Text>
         </RowFixed>
@@ -84,7 +84,7 @@ export default function SwapModalHeader({
         <SwapShowAcceptChanges justify="flex-start" gap={'0px'}>
           <RowBetween>
             <RowFixed>
-              <AlertTriangle size={20} style={{ marginRight: '8px', minWidth: 24 }} />
+              <AlertTriangle size={20} style={{marginInlineEnd: '8px', minWidth: 24 }} />
               <TYPE.main color={theme.primary1}> Price Updated</TYPE.main>
             </RowFixed>
             <ButtonPrimary

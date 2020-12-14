@@ -5,6 +5,7 @@ import {
   removePopup,
   toggleWalletModal,
   toggleSettingsMenu,
+  toggleLanguageMenu,
   updateBlockNumber
 } from './actions'
 
@@ -15,13 +16,15 @@ export interface ApplicationState {
   popupList: PopupList
   walletModalOpen: boolean
   settingsMenuOpen: boolean
+  languageMenuOpen: boolean
 }
 
 const initialState: ApplicationState = {
   blockNumber: {},
   popupList: [],
   walletModalOpen: false,
-  settingsMenuOpen: false
+  settingsMenuOpen: false,
+  languageMenuOpen: false
 }
 
 export default createReducer(initialState, builder =>
@@ -39,6 +42,9 @@ export default createReducer(initialState, builder =>
     })
     .addCase(toggleSettingsMenu, state => {
       state.settingsMenuOpen = !state.settingsMenuOpen
+    })
+    .addCase(toggleLanguageMenu, state => {
+      state.languageMenuOpen = !state.languageMenuOpen
     })
     .addCase(addPopup, (state, { payload: { content, key, removeAfterMs = 15000 } }) => {
       state.popupList = (key ? state.popupList.filter(popup => popup.key !== key) : state.popupList).concat([

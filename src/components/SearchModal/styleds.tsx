@@ -34,6 +34,9 @@ export const MenuItem = styled(RowBetween)`
     background-color: ${({ theme, disabled }) => !disabled && theme.bg2};
   }
   opacity: ${({ disabled, selected }) => (disabled || selected ? 0.5 : 1)};
+  [dir='rtl'] & {
+    direction: rtl;
+  }
 `
 
 export const SearchInput = styled.input`

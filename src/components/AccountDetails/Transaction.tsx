@@ -12,7 +12,7 @@ import Loader from '../Loader'
 const TransactionWrapper = styled.div``
 
 const TransactionStatusText = styled.div`
-  margin-right: 0.5rem;
+  margin-inline-end: 0.5rem;
   display: flex;
   align-items: center;
   :hover {
