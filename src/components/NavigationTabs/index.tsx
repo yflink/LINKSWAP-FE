@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { darken } from 'polished'
 import { NavLink, Link as HistoryLink } from 'react-router-dom'
 
-import { ArrowLeft, DivideCircle } from 'react-feather'
+import { ArrowLeft } from 'react-feather'
 import { RowBetween } from '../Row'
 import QuestionHelper from '../QuestionHelper'
 

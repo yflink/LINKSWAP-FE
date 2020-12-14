@@ -5,7 +5,7 @@ import { Currency, Pair, ETHER } from '@uniswap/sdk'
 import { darken } from 'polished'
 
 import CurrencySearchModal from '../SearchModal/CurrencySearchModal'
-import CurrencyLogo, { EthLogo, LinkLogo } from '../CurrencyLogo'
+import CurrencyLogo from '../CurrencyLogo'
 import DoubleCurrencyLogo from '../DoubleLogo'
 import { RowBetween } from '../Row'
 import { Input as NumericalInput } from '../NumericalInput'

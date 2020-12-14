@@ -482,6 +482,7 @@ export default function CreateNewPool({
                   <Text fontSize={12}>1 {currencies[Field.CURRENCY_A]!.symbol} =</Text>
                   <img
                     src={rateIcon}
+                    alt={t('rate')}
                     style={{
                       backgroundColor: '#1E2C49',
                       borderRadius: 6,
@@ -490,7 +491,7 @@ export default function CreateNewPool({
                       height: 28,
                       marginTop: -6
                     }}
-                  ></img>
+                  />
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                   {/* <input

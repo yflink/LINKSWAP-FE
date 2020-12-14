@@ -8,7 +8,6 @@ import Card from '../../components/Card'
 
 import Question from '../../components/QuestionHelper'
 import FullPositionCard from '../../components/PositionCard'
-import { useUserHasLiquidityInAllTokens } from '../../data/V1'
 import { useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks'
 import { StyledInternalLink, TYPE } from '../../theme'
 import { Text } from 'rebass'

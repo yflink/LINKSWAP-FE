@@ -13,15 +13,13 @@ import CurrencyInputPanel, { CurrencyDoubleInputPanel } from '../../components/C
 import { SwapPoolTabs } from '../../components/NavigationTabs'
 import { AutoRow, RowBetween } from '../../components/Row'
 import AdvancedSwapDetailsDropdown from '../../components/swap/AdvancedSwapDetailsDropdown'
-import BetterTradeLink from '../../components/swap/BetterTradeLink'
 import confirmPriceImpactWithoutFee from '../../components/swap/confirmPriceImpactWithoutFee'
 import { ArrowWrapper, BottomGrouping, SwapCallbackError, Wrapper } from '../../components/swap/styleds'
 import TradePrice from '../../components/swap/TradePrice'
 import TokenWarningModal from '../../components/TokenWarningModal'
 import ProgressSteps from '../../components/ProgressSteps'
-
-import { BETTER_TRADE_LINK_THRESHOLD, INITIAL_ALLOWED_SLIPPAGE } from '../../constants'
-import { getTradeVersion, isTradeBetter } from '../../data/V1'
+import { INITIAL_ALLOWED_SLIPPAGE } from '../../constants'
+import { getTradeVersion } from '../../data/V1'
 import { useActiveWeb3React } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
 import { ApprovalState, useApproveCallbackFromTrade } from '../../hooks/useApproveCallback'
@@ -103,13 +101,6 @@ export default function Swap() {
         [Version.v1]: v1Trade,
         [Version.v2]: v2Trade
       }[toggledVersion]
-
-  const betterTradeLinkVersion: Version | undefined =
-    toggledVersion === Version.v2 && isTradeBetter(v2Trade, v1Trade, BETTER_TRADE_LINK_THRESHOLD)
-      ? Version.v1
-      : toggledVersion === Version.v1 && isTradeBetter(v1Trade, v2Trade)
-      ? Version.v2
-      : undefined
 
   const parsedAmounts = showWrap
     ? {

@@ -7,10 +7,8 @@ import Logo from '../Logo'
 import useHttpLocations from '../../hooks/useHttpLocations'
 import { WrappedTokenInfo } from '../../state/lists/hooks'
 
-import EthereumLogo from '../../assets/images/ethereum-logo.png'
 import eth from '../../assets/svg/eth.svg'
 import link from '../../assets/svg/link.svg'
-import AnchorLink from 'antd/lib/anchor/AnchorLink'
 
 const getTokenLogoURL = (address: string) =>
   `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${address}/logo.png`

@@ -87,19 +87,21 @@ export default function ConfirmSwapModal({
     currencyB: trade?.outputAmount?.currency?.symbol
   })
 
+  const confirmText = t('confirmSwap')
+
   const confirmationContent = useCallback(
     () =>
       swapErrorMessage ? (
         <TransactionErrorContent onDismiss={onDismiss} message={swapErrorMessage} />
       ) : (
         <ConfirmationModalContent
-          title={t('confirmSwap')}
+          title={confirmText}
           onDismiss={onDismiss}
           topContent={modalHeader}
           bottomContent={modalBottom}
         />
       ),
-    [onDismiss, modalBottom, modalHeader, swapErrorMessage]
+    [onDismiss, modalBottom, modalHeader, swapErrorMessage, confirmText]
   )
 
   return (

@@ -118,7 +118,7 @@ export default function App() {
             <Marginer />
           </BodyWrapper>
           <FooterWrapper>
-            <a target="_blank" rel="noreferrer" href="https://certificate.quantstamp.com/full/linkswap">
+            <a target="_blank" rel="noopener noreferrer" href="https://certificate.quantstamp.com/full/linkswap">
               Quantstamp Audit Report - LINKSWAP
             </a>
           </FooterWrapper>
