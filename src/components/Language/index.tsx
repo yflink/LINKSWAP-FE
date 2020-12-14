@@ -116,32 +116,29 @@ export default function LanguageTab() {
           <Separator />
           <AutoColumn style={{ padding: '0.5rem 0' }}>
             <LanguageWrapper onClick={() => setIsOpen(!isOpen)}>
-              <LanguageOption shortCode="ar" languageString="عربى" />
+              <LanguageOption shortCode="ar" languageString="عربي" />
             </LanguageWrapper>
             <LanguageWrapper onClick={() => setIsOpen(!isOpen)}>
               <LanguageOption shortCode="cn" languageString="中文" />
             </LanguageWrapper>
-
             <LanguageWrapper onClick={() => setIsOpen(!isOpen)}>
               <LanguageOption shortCode="de" languageString="Deutsch" />
             </LanguageWrapper>
-
             <LanguageWrapper onClick={() => setIsOpen(!isOpen)}>
               <LanguageOption shortCode="es" languageString="Español" />
             </LanguageWrapper>
-
+            <LanguageWrapper onClick={() => setIsOpen(!isOpen)}>
+              <LanguageOption shortCode="it" languageString="Italiano" />
+            </LanguageWrapper>
             <LanguageWrapper onClick={() => setIsOpen(!isOpen)}>
               <LanguageOption shortCode="kor" languageString="한국어" />
             </LanguageWrapper>
-
             <LanguageWrapper onClick={() => setIsOpen(!isOpen)}>
               <LanguageOption shortCode="nl" languageString="Nederlands" />
             </LanguageWrapper>
-
             <LanguageWrapper onClick={() => setIsOpen(!isOpen)}>
               <LanguageOption shortCode="ro" languageString="Română" />
             </LanguageWrapper>
-
             <LanguageWrapper onClick={() => setIsOpen(!isOpen)}>
               <LanguageOption shortCode="ru" languageString="Pусский" />
             </LanguageWrapper>
