@@ -21,6 +21,7 @@ import Identicon from '../Identicon'
 import { ButtonSecondary } from '../Button'
 import { ExternalLink as LinkIcon } from 'react-feather'
 import { ExternalLink, LinkStyledButton, TYPE } from '../../theme'
+import { useTranslation } from 'react-i18next'
 
 const HeaderRow = styled.div`
   ${({ theme }) => theme.flexRowNoWrap};
@@ -134,7 +135,7 @@ const AccountControl = styled.div`
 const AddressLink = styled(ExternalLink)<{ hasENS: boolean; isENS: boolean }>`
   font-size: 0.825rem;
   color: ${({ theme }) => theme.text3};
-  margin-left: 1rem;
+  margin-inline-start: 1rem;
   font-size: 0.825rem;
   display: flex;
   :hover {
@@ -146,6 +147,10 @@ const CloseIcon = styled.div`
   position: absolute;
   right: 1rem;
   top: 14px;
+  [dir='rtl'] & {
+    right: unset;
+    left: 1rem;
+  }
   &:hover {
     cursor: pointer;
     opacity: 0.6;
@@ -169,7 +174,7 @@ const IconWrapper = styled.div<{ size?: number }>`
   ${({ theme }) => theme.flexColumnNoWrap};
   align-items: center;
   justify-content: center;
-  margin-right: 8px;
+  margin-inline-end: 8px;
   & > img,
   span {
     height: ${({ size }) => (size ? size + 'px' : '32px')};
@@ -187,7 +192,7 @@ const TransactionListWrapper = styled.div`
 const WalletAction = styled(ButtonSecondary)`
   width: fit-content;
   font-weight: 400;
-  margin-left: 8px;
+  margin-inline-start: 8px;
   font-size: 0.825rem;
   padding: 4px 6px;
   :hover {
@@ -199,6 +204,7 @@ const WalletAction = styled(ButtonSecondary)`
 const MainWalletAction = styled(WalletAction)`
   color: ${({ theme }) => theme.primary1};
 `
+
 
 function renderTransactions(transactions: string[]) {
   return (
@@ -228,17 +234,19 @@ export default function AccountDetails({
   const { chainId, account, connector } = useActiveWeb3React()
   const theme = useContext(ThemeContext)
   const dispatch = useDispatch<AppDispatch>()
+  const { t } = useTranslation()
 
   function formatConnectorName() {
     const { ethereum } = window
     const isMetaMask = !!(ethereum && ethereum.isMetaMask)
     const name = Object.keys(SUPPORTED_WALLETS)
+
       .filter(
         k =>
           SUPPORTED_WALLETS[k].connector === connector && (connector !== injected || isMetaMask === (k === 'METAMASK'))
       )
       .map(k => SUPPORTED_WALLETS[k].name)[0]
-    return <WalletName>Connected with {name}</WalletName>
+    return <WalletName>{t('connectedWithWallet', { walletName: name })}</WalletName>
   }
 
   function getStatusIcon() {
@@ -276,7 +284,7 @@ export default function AccountDetails({
                 portis.portis.showPortis()
               }}
             >
-              Show Portis
+              {t('showPortis')}
             </MainWalletAction>
           </IconWrapper>
         </>
@@ -295,7 +303,7 @@ export default function AccountDetails({
         <CloseIcon onClick={toggleWalletModal}>
           <CloseColor />
         </CloseIcon>
-        <HeaderRow>Account</HeaderRow>
+        <HeaderRow>{t('account')}</HeaderRow>
         <AccountSection>
           <YourAccount>
             <InfoCard>
@@ -304,12 +312,12 @@ export default function AccountDetails({
                 <div>
                   {connector !== injected && connector !== walletlink && (
                     <WalletAction
-                      style={{ fontSize: '.825rem', fontWeight: 400, marginRight: '8px' }}
+                      style={{ fontSize: '.825rem', fontWeight: 400,marginInlineEnd: '8px' }}
                       onClick={() => {
                         ;(connector as any).close()
                       }}
                     >
-                      Disconnect
+                      {t('disconnect')}
                     </WalletAction>
                   )}
                   <WalletAction
@@ -318,7 +326,7 @@ export default function AccountDetails({
                       openOptions()
                     }}
                   >
-                    Change
+                    {t('change')}
                   </WalletAction>
                 </div>
               </AccountGroupingRow>
@@ -348,7 +356,7 @@ export default function AccountDetails({
                       <div>
                         {account && (
                           <Copy toCopy={account}>
-                            <span style={{ marginLeft: '4px' }}>Copy Address</span>
+                            <span style={{marginInlineStart: '4px' }}></span>
                           </Copy>
                         )}
                         {chainId && account && (
@@ -358,7 +366,7 @@ export default function AccountDetails({
                             href={chainId && getEtherscanLink(chainId, ENSName, 'address')}
                           >
                             <LinkIcon size={16} />
-                            <span style={{ marginLeft: '4px' }}>View on Etherscan</span>
+                            <span style={{marginInlineStart: '4px' }}>{t('viewOnEtherscan')}</span>
                           </AddressLink>
                         )}
                       </div>
@@ -370,7 +378,7 @@ export default function AccountDetails({
                       <div>
                         {account && (
                           <Copy toCopy={account}>
-                            <span style={{ marginLeft: '4px' }}>Copy Address</span>
+                            <span style={{marginInlineStart: '4px' }}>{t('copyAddress')}</span>
                           </Copy>
                         )}
                         {chainId && account && (
@@ -380,7 +388,7 @@ export default function AccountDetails({
                             href={getEtherscanLink(chainId, account, 'address')}
                           >
                             <LinkIcon size={16} />
-                            <span style={{ marginLeft: '4px' }}>View on Etherscan</span>
+                            <span style={{marginInlineStart: '4px' }}>{t('viewOnEtherscan')}</span>
                           </AddressLink>
                         )}
                       </div>
@@ -395,15 +403,15 @@ export default function AccountDetails({
       {!!pendingTransactions.length || !!confirmedTransactions.length ? (
         <LowerSection>
           <AutoRow mb={'1rem'} style={{ justifyContent: 'space-between' }}>
-            <TYPE.body>Recent Transactions</TYPE.body>
-            <LinkStyledButton onClick={clearAllTransactionsCallback}>(clear all)</LinkStyledButton>
+            <TYPE.body>{t('recentTransactions')}</TYPE.body>
+            <LinkStyledButton onClick={clearAllTransactionsCallback}>({t('clearAll')})</LinkStyledButton>
           </AutoRow>
           {renderTransactions(pendingTransactions)}
           {renderTransactions(confirmedTransactions)}
         </LowerSection>
       ) : (
         <LowerSection>
-          <TYPE.body color={theme.text1}>Your transactions will appear here...</TYPE.body>
+          <TYPE.body color={theme.text1}>{t('yourTransactionsWillApearHere')}</TYPE.body>
         </LowerSection>
       )}
     </>

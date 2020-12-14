@@ -1,6 +1,13 @@
 import { ChainId } from '@uniswap/sdk'
 import { createStore, Store } from 'redux'
-import { addPopup, removePopup, toggleSettingsMenu, toggleWalletModal, updateBlockNumber } from './actions'
+import {
+  addPopup,
+  removePopup,
+  toggleSettingsMenu,
+  toggleLanguageMenu,
+  toggleWalletModal,
+  updateBlockNumber
+} from './actions'
 import reducer, { ApplicationState } from './reducer'
 
 describe('application reducer', () => {
@@ -11,6 +18,7 @@ describe('application reducer', () => {
       popupList: [],
       walletModalOpen: false,
       settingsMenuOpen: false,
+      languageMenuOpen: false,
       blockNumber: {
         [ChainId.MAINNET]: 3
       }
@@ -59,6 +67,17 @@ describe('application reducer', () => {
       expect(store.getState().settingsMenuOpen).toEqual(false)
       store.dispatch(toggleSettingsMenu())
       expect(store.getState().settingsMenuOpen).toEqual(true)
+    })
+  })
+
+  describe('languageMenuOpen', () => {
+    it('toggles language menu', () => {
+      store.dispatch(toggleLanguageMenu())
+      expect(store.getState().languageMenuOpen).toEqual(true)
+      store.dispatch(toggleLanguageMenu())
+      expect(store.getState().languageMenuOpen).toEqual(false)
+      store.dispatch(toggleLanguageMenu())
+      expect(store.getState().languageMenuOpen).toEqual(true)
     })
   })
 

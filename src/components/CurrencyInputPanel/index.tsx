@@ -5,7 +5,7 @@ import { Currency, Pair, ETHER } from '@uniswap/sdk'
 import { darken } from 'polished'
 
 import CurrencySearchModal from '../SearchModal/CurrencySearchModal'
-import CurrencyLogo, { EthLogo, LinkLogo } from '../CurrencyLogo'
+import CurrencyLogo from '../CurrencyLogo'
 import DoubleCurrencyLogo from '../DoubleLogo'
 import { RowBetween } from '../Row'
 import { Input as NumericalInput } from '../NumericalInput'
@@ -48,6 +48,9 @@ const CurrencySelect = styled.button<{ selected: boolean; primary?: boolean; lef
   user-select: none;
   border: none;
   padding: 0 0.5rem;
+  [dir='rtl'] & {
+    border-radius: ${({ left, right }) => (left ? '0px 6px 6px 0px' : right ? '6px 0px 0px 6px' : '6px')};
+  }
   :focus,
   :hover {
     background-color: ${({ selected, primary, theme }) => {
@@ -120,7 +123,7 @@ const StyledBalanceMax = styled.button`
 
   font-weight: 500;
   cursor: pointer;
-  margin-right: 0.5rem;
+  margin-inline-end: 0.5rem;
   color: ${({ theme }) => theme.primaryText1};
   :hover {
     border: 1px solid ${({ theme }) => theme.primary1};
@@ -131,7 +134,7 @@ const StyledBalanceMax = styled.button`
   }
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    margin-right: 0.5rem;
+    margin-inline-end: 0.5rem;
   `};
 `
 
@@ -234,7 +237,7 @@ export default function CurrencyInputPanel({
                       style={{ display: 'inline', cursor: 'pointer' }}
                     >
                       {!hideBalance && !!currency && selectedCurrencyBalance
-                        ? 'Balance: ' + selectedCurrencyBalance?.toSignificant(6)
+                        ? t('balance', { balanceInput: selectedCurrencyBalance?.toSignificant(6) })
                         : ' -'}
                     </TYPE.body>
                   )}
@@ -457,7 +460,7 @@ export function CurrencyDoubleInputPanel({
                       style={{ display: 'inline', cursor: 'pointer' }}
                     >
                       {!hideBalance && !!currency && selectedCurrencyBalance
-                        ? 'Balance: ' + selectedCurrencyBalance?.toSignificant(6)
+                        ? t('balance', { balanceInput: selectedCurrencyBalance?.toSignificant(6) })
                         : ' -'}
                     </TYPE.body>
                   )}

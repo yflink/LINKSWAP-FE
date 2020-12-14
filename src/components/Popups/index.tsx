@@ -40,6 +40,11 @@ const FixedPopupColumn = styled(AutoColumn)`
   ${({ theme }) => theme.mediaWidth.upToSmall`
     display: none;
   `};
+
+  [dir='rtl'] & {
+    right: unset;
+    left: 1rem;
+  }
 `
 
 export default function Popups() {

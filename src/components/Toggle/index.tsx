@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useTranslation } from 'react-i18next'
 
 const ToggleElement = styled.span<{ isActive?: boolean; isOnSwitch?: boolean }>`
   display: flex;
@@ -31,13 +32,15 @@ export interface ToggleProps {
 }
 
 export default function Toggle({ id, isActive, toggle }: ToggleProps) {
+  const { t } = useTranslation()
+
   return (
     <StyledToggle id={id} isActive={isActive} onClick={toggle}>
       <ToggleElement isActive={isActive} isOnSwitch={true}>
-        On
+        {t('on')}
       </ToggleElement>
       <ToggleElement isActive={!isActive} isOnSwitch={false}>
-        Off
+        {t('off')}
       </ToggleElement>
     </StyledToggle>
   )

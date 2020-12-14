@@ -24,11 +24,13 @@ import ListLogo from '../ListLogo'
 import QuestionHelper from '../QuestionHelper'
 import Row, { RowBetween } from '../Row'
 import { PaddedColumn, SearchInput, Separator, SeparatorDark } from './styleds'
+import { useTranslation } from 'react-i18next'
 
 const UnpaddedLinkStyledButton = styled(LinkStyledButton)`
   padding: 0;
   font-size: 1rem;
   opacity: ${({ disabled }) => (disabled ? '0.4' : '1')};
+  text-align: start;
 `
 
 const PopoverContainer = styled.div<{ show: boolean }>`
@@ -47,7 +49,7 @@ const PopoverContainer = styled.div<{ show: boolean }>`
   grid-template-rows: 1fr;
   grid-gap: 8px;
   font-size: 1rem;
-  text-align: left;
+  text-align: start;
 `
 
 const StyledMenu = styled.div`
@@ -61,7 +63,7 @@ const StyledMenu = styled.div`
 const StyledListUrlText = styled.div`
   max-width: 160px;
   opacity: 0.6;
-  margin-right: 0.5rem;
+  margin-inline-end: 0.5rem;
   font-size: 14px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -108,6 +110,8 @@ const ListRow = memo(function ListRow({ listUrl, onBack }: { listUrl: string; on
     modifiers: [{ name: 'offset', options: { offset: [8, 8] } }]
   })
 
+  const { t } = useTranslation()
+
   useOnClickOutside(node, open ? toggle : undefined)
 
   const selectThisList = useCallback(() => {
@@ -153,9 +157,9 @@ const ListRow = memo(function ListRow({ listUrl, onBack }: { listUrl: string; on
   return (
     <Row key={listUrl} align="center" padding="16px" id={listUrlRowHTMLId(listUrl)}>
       {list.logoURI ? (
-        <ListLogo style={{ marginRight: '1rem' }} logoURI={list.logoURI} alt={`${list.name} list logo`} />
+        <ListLogo style={{marginInlineEnd: '1rem' }} logoURI={list.logoURI} alt={`${list.name} list logo`} />
       ) : (
-        <div style={{ width: '24px', height: '24px', marginRight: '1rem' }} />
+        <div style={{ width: '24px', height: '24px',marginInlineEnd: '1rem' }} />
       )}
       <Column style={{ flex: '1' }}>
         <Row>
@@ -184,7 +188,7 @@ const ListRow = memo(function ListRow({ listUrl, onBack }: { listUrl: string; on
             padding: '.8rem .35rem',
             borderRadius: '12px',
             fontSize: '14px',
-            marginRight: '0.5rem'
+           marginInlineEnd: '0.5rem'
           }}
           onClick={toggle}
           ref={setReferenceElement}
@@ -196,12 +200,12 @@ const ListRow = memo(function ListRow({ listUrl, onBack }: { listUrl: string; on
           <PopoverContainer show={true} ref={setPopperElement as any} style={styles.popper} {...attributes.popper}>
             <div>{list && listVersionLabel(list.version)}</div>
             <SeparatorDark />
-            <ExternalLink href={`https://tokenlists.org/token-list?url=${listUrl}`}>View list</ExternalLink>
+            <ExternalLink href={`https://tokenlists.org/token-list?url=${listUrl}`}>{t('viewList')}</ExternalLink>
             <UnpaddedLinkStyledButton onClick={handleRemoveList} disabled={Object.keys(listsByUrl).length === 1}>
-              Remove list
+              {t('removeList')}
             </UnpaddedLinkStyledButton>
             {pending && (
-              <UnpaddedLinkStyledButton onClick={handleAcceptListUpdate}>Update list</UnpaddedLinkStyledButton>
+              <UnpaddedLinkStyledButton onClick={handleAcceptListUpdate}>{t('updateList')}</UnpaddedLinkStyledButton>
             )}
           </PopoverContainer>
         )}
@@ -212,7 +216,7 @@ const ListRow = memo(function ListRow({ listUrl, onBack }: { listUrl: string; on
           className="select-button"
           style={{ width: '5rem', minWidth: '5rem', padding: '0.5rem .35rem', borderRadius: '12px', fontSize: '14px' }}
         >
-          Selected
+          {t('selected')}
         </ButtonPrimary>
       ) : (
         <>
@@ -227,7 +231,7 @@ const ListRow = memo(function ListRow({ listUrl, onBack }: { listUrl: string; on
             }}
             onClick={selectThisList}
           >
-            Select
+            {t('select')}
           </ButtonPrimary>
         </>
       )}
@@ -236,9 +240,8 @@ const ListRow = memo(function ListRow({ listUrl, onBack }: { listUrl: string; on
 })
 
 const AddListButton = styled(ButtonSecondary)`
-  /* height: 1.8rem; */
-  max-width: 4rem;
-  margin-left: 1rem;
+  flex: 0;
+  margin-inline-start: 1rem;
   border-radius: 6px;
   padding: 10px 18px;
 `
@@ -320,6 +323,8 @@ export function ListSelect({ onDismiss, onBack }: { onDismiss: () => void; onBac
       })
   }, [lists])
 
+  const { t } = useTranslation()
+
   return (
     <Column style={{ width: '100%', flex: '1 1' }}>
       <PaddedColumn>
@@ -328,7 +333,7 @@ export function ListSelect({ onDismiss, onBack }: { onDismiss: () => void; onBac
             <ArrowLeft style={{ cursor: 'pointer' }} onClick={onBack} />
           </div>
           <Text fontWeight={500} fontSize={20}>
-            Manage Lists
+            {t('manageLists')}
           </Text>
           <CloseIcon onClick={onDismiss} />
         </RowBetween>
@@ -338,21 +343,25 @@ export function ListSelect({ onDismiss, onBack }: { onDismiss: () => void; onBac
 
       <PaddedColumn gap="14px">
         <Text fontWeight={600}>
-          Add a list{' '}
-          <QuestionHelper text="Token lists are an open specification for lists of ERC20 tokens. You can use any token list by entering its URL below. Beware that third party token lists can contain fake or malicious ERC20 tokens." />
+          {t('addList')}
+          <QuestionHelper text={t('tokenLists')} />
         </Text>
         <Row>
           <SearchInput
             type="text"
             id="list-add-input"
-            placeholder="https:// or ipfs:// or ENS name"
+            placeholder={t('listType')}
             value={listUrlInput}
             onChange={handleInput}
             onKeyDown={handleEnterKey}
-            style={{ height: '2.75rem', borderRadius: 12, padding: '12px' }}
+            style={{ height: '2.75rem', borderRadius: 12, padding: '12px', flex: 1, minWidth: 0 }}
           />
-          <AddListButton onClick={handleAddList} disabled={!validUrl}>
-            Add
+          <AddListButton
+            onClick={handleAddList}
+            disabled={!validUrl}
+            style={{ width: 'auto', flex: '0 0 auto' }}
+          >
+            {t('add')}
           </AddListButton>
         </Row>
         {addError ? (
@@ -372,7 +381,7 @@ export function ListSelect({ onDismiss, onBack }: { onDismiss: () => void; onBac
       <Separator />
 
       <div style={{ padding: '16px', textAlign: 'center' }}>
-        <ExternalLink href="https://tokenlists.org">Browse lists</ExternalLink>
+        <ExternalLink href="https://tokenlists.org">{t('browseLists')}</ExternalLink>
       </div>
     </Column>
   )

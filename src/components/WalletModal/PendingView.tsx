@@ -18,7 +18,7 @@ const PendingSection = styled.div`
 `
 
 const StyledLoader = styled(Loader)`
-  margin-right: 1rem;
+  margin-inline-end: 1rem;
 `
 
 const LoadingMessage = styled.div<{ error?: boolean }>`
@@ -46,7 +46,7 @@ const ErrorButton = styled.div`
   font-size: 12px;
   color: ${({ theme }) => theme.text1};
   background-color: ${({ theme }) => theme.bg4};
-  margin-left: 1rem;
+  margin-inline-start: 1rem;
   padding: 0.5rem;
   font-weight: 600;
   user-select: none;

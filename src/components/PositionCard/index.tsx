@@ -22,6 +22,7 @@ import DoubleCurrencyLogo from '../DoubleLogo'
 import { RowBetween, RowFixed } from '../Row'
 
 import { Dots } from '../swap/styleds'
+import { useTranslation } from 'react-i18next'
 
 export const FixedHeightRow = styled(RowBetween)`
   height: 24px;
@@ -64,6 +65,8 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
         ]
       : [undefined, undefined]
 
+  const { t } = useTranslation()
+
   return (
     <>
       {userPoolBalance && (
@@ -72,7 +75,7 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
             <FixedHeightRow>
               <RowFixed>
                 <Text fontWeight={500} fontSize={16}>
-                  My positions
+                  {t('myPositions')}
                 </Text>
               </RowFixed>
             </FixedHeightRow>
@@ -81,7 +84,7 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
                 <DoubleCurrencyLogo currency0={currency0} currency1={currency1} margin={true} size={20} />
                 {!currency0 || !currency1 ? (
                   <Text fontWeight={500} fontSize={20}>
-                    <Dots>Loading</Dots>
+                    <Dots>{t('loading')}</Dots>
                   </Text>
                 ) : (
                   <div style={{ display: 'flex' }}>
@@ -98,8 +101,8 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
               </RowFixed>
             </FixedHeightRow>
             <AutoColumn gap="4px">
-              <RowFixed style={{ width: 380, display: 'flex' }}>
-                <Card style={{ backgroundColor: '#53606C', marginRight: 16 }}>
+              <RowFixed style={{ display: 'flex', width: '100%' }}>
+                <Card style={{ backgroundColor: '#53606C',marginInlineEnd: 16 }}>
                   <Text style={{ marginBottom: 4 }}>
                     {token0Deposited ? (
                       <RowFixed>
@@ -185,6 +188,8 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
         ]
       : [undefined, undefined]
 
+  const { t } = useTranslation()
+
   return (
     <HoverCard border={border}>
       <AutoColumn gap="12px">
@@ -193,7 +198,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
             <DoubleCurrencyLogo currency0={currency0} currency1={currency1} margin={true} size={20} />
             {!currency0 || !currency1 ? (
               <Text fontWeight={500} fontSize={20}>
-                <Dots>Loading</Dots>
+                <Dots>t{'loading'}</Dots>
               </Text>
             ) : (
               <div style={{ display: 'flex' }}>
@@ -205,9 +210,9 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
           </RowFixed>
           <RowFixed>
             {showMore ? (
-              <ChevronUp size="20" style={{ marginLeft: '10px' }} />
+              <ChevronUp size="20" style={{marginInlineStart: '10px' }} />
             ) : (
-              <ChevronDown size="20" style={{ marginLeft: '10px' }} />
+              <ChevronDown size="20" style={{marginInlineStart: '10px' }} />
             )}
           </RowFixed>
         </FixedHeightRow>
@@ -216,7 +221,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
             <FixedHeightRow>
               <RowFixed>
                 <Text fontSize={16} fontWeight={500}>
-                  Pooled {currency0.symbol}
+                  {t('pooledCurrency', { currency: currency0.symbol })}
                 </Text>
               </RowFixed>
               {token0Deposited ? (
@@ -224,7 +229,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
                   <Text fontSize={16} fontWeight={500} marginLeft={'6px'}>
                     {token0Deposited?.toSignificant(6)}
                   </Text>
-                  <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={currency0} />
+                  <CurrencyLogo size="20px" style={{ marginInlineStart: '8px' }} currency={currency0} />
                 </RowFixed>
               ) : (
                 '-'
@@ -234,7 +239,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
             <FixedHeightRow>
               <RowFixed>
                 <Text fontSize={16} fontWeight={500}>
-                  Pooled {currency1.symbol}
+                  {t('pooledCurrency', { currency: currency1.symbol })}
                 </Text>
               </RowFixed>
               {token1Deposited ? (
@@ -242,7 +247,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
                   <Text fontSize={16} fontWeight={500} marginLeft={'6px'}>
                     {token1Deposited?.toSignificant(6)}
                   </Text>
-                  <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={currency1} />
+                  <CurrencyLogo size="20px" style={{marginInlineStart: '8px' }} currency={currency1} />
                 </RowFixed>
               ) : (
                 '-'
@@ -250,7 +255,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
             </FixedHeightRow>
             <FixedHeightRow>
               <Text fontSize={16} fontWeight={500}>
-                Your pool tokens
+                {t('yourPoolTokens')}
               </Text>
               <Text fontSize={16} fontWeight={500}>
                 {userPoolBalance ? userPoolBalance.toSignificant(4) : '-'}
@@ -258,7 +263,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
             </FixedHeightRow>
             <FixedHeightRow>
               <Text fontSize={16} fontWeight={500}>
-                Your pool share
+                {t('yourPoolShare')}
               </Text>
               <Text fontSize={16} fontWeight={500}>
                 {poolTokenPercentage ? poolTokenPercentage.toFixed(2) + '%' : '-'}
@@ -272,10 +277,10 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
             </AutoRow> */}
             <RowBetween marginTop="10px">
               <ButtonSecondary as={Link} to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`} width="48%">
-                Add
+                {t('add')}
               </ButtonSecondary>
               <ButtonSecondary as={Link} width="48%" to={`/remove/${currencyId(currency0)}/${currencyId(currency1)}`}>
-                Remove
+                {t('remove')}
               </ButtonSecondary>
             </RowBetween>
           </AutoColumn>

@@ -27,7 +27,7 @@ export default function TransactionPopup({
 
   return (
     <RowNoFlex>
-      <div style={{ paddingRight: 16 }}>
+      <div style={{ paddingInlineEnd: 16 }}>
         {success ? <CheckCircle color={theme.green1} size={24} /> : <AlertCircle color={theme.red1} size={24} />}
       </div>
       <AutoColumn gap="8px">

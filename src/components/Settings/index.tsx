@@ -19,6 +19,7 @@ import { ButtonError } from '../Button'
 import { useSettingsMenuOpen, useToggleSettingsMenu } from '../../state/application/hooks'
 import { Text } from 'rebass'
 import Modal from '../Modal'
+import { useTranslation } from 'react-i18next'
 
 const StyledMenuIcon = styled(Settings)`
   height: 20px;
@@ -68,13 +69,13 @@ const StyledMenuButton = styled.button`
 `
 
 const StyledMenu = styled.div`
-  margin-left: 0.5rem;
+  margin-inline-start: 0.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
   border: none;
-  text-align: left;
+  text-align: start;
 `
 
 const MenuFlyout = styled.span`
@@ -94,9 +95,13 @@ const MenuFlyout = styled.span`
   right: 0rem;
   z-index: 100;
 
+  [dir='rtl'] & {
+    right: unset;
+    left: 0;
+  }
+
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     min-width: 18.125rem;
-    right: -46px;
   `};
 `
 
@@ -132,6 +137,8 @@ export default function SettingsTab() {
   // show confirmation view before turning on
   const [showConfirmation, setShowConfirmation] = useState(false)
 
+  const { t } = useTranslation()
+
   useOnClickOutside(node, open ? toggle : undefined)
 
   return (
@@ -143,18 +150,17 @@ export default function SettingsTab() {
             <RowBetween style={{ padding: '0 2rem' }}>
               <div />
               <Text fontWeight={500} fontSize={20}>
-                Are you sure?
+                {t('areYouSure')}
               </Text>
               <StyledCloseIcon onClick={() => setShowConfirmation(false)} />
             </RowBetween>
             <Break />
             <AutoColumn gap="lg" style={{ padding: '0 2rem' }}>
               <Text fontWeight={500} fontSize={20}>
-                Expert mode turns off the confirm transaction prompt and allows high slippage trades that often result
-                in bad rates and lost funds.
+                {t('expertModeDisclaimer')}
               </Text>
               <Text fontWeight={600} fontSize={20}>
-                ONLY USE THIS MODE IF YOU KNOW WHAT YOU ARE DOING.
+                {t('useOnOwnBehalf')}
               </Text>
               <ButtonError
                 error={true}
@@ -167,7 +173,7 @@ export default function SettingsTab() {
                 }}
               >
                 <Text fontSize={20} fontWeight={500} id="confirm-expert-mode">
-                  Turn On Expert Mode
+                  {t('expertModeOn')}
                 </Text>
               </ButtonError>
             </AutoColumn>
@@ -181,7 +187,7 @@ export default function SettingsTab() {
         <MenuFlyout>
           <AutoColumn gap="md" style={{ padding: '1rem' }}>
             <Text fontWeight={600} fontSize={14}>
-              Transaction Settings
+              {t('transactionSettings')}
             </Text>
             <TransactionSettings
               rawSlippage={userSlippageTolerance}
@@ -190,14 +196,14 @@ export default function SettingsTab() {
               setDeadline={setDeadline}
             />
             <Text fontWeight={600} fontSize={14}>
-              Interface Settings
+              {t('interfaceSettings')}
             </Text>
             <RowBetween>
               <RowFixed>
                 <TYPE.black fontWeight={400} fontSize={14} color={theme.text2}>
-                  Toggle Expert Mode
+                  {t('expertModeToggle')}
                 </TYPE.black>
-                <QuestionHelper text="Bypasses confirmation modals and allows high slippage trades. Use at your own risk." />
+                <QuestionHelper text={t('expertModeAbout')} />
               </RowFixed>
               <Toggle
                 id="toggle-expert-mode-button"

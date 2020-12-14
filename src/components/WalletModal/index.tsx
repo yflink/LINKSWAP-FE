@@ -18,11 +18,16 @@ import { injected, fortmatic, portis } from '../../connectors'
 import { OVERLAY_READY } from '../../connectors/Fortmatic'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import { AbstractConnector } from '@web3-react/abstract-connector'
+import { useTranslation } from 'react-i18next'
 
 const CloseIcon = styled.div`
   position: absolute;
   right: 1rem;
   top: 14px;
+  [dir='rtl'] & {
+    right: unset;
+    left: 1rem;
+  }
   &:hover {
     cursor: pointer;
     opacity: 0.6;
@@ -85,6 +90,8 @@ const Blurb = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
   align-items: center;
   justify-content: center;
+  text-align: center;
+  width: 100%;
   flex-wrap: wrap;
   margin-top: 2rem;
   ${({ theme }) => theme.mediaWidth.upToMedium`
@@ -137,6 +144,8 @@ export default function WalletModal({
   const toggleWalletModal = useWalletModalToggle()
 
   const previousAccount = usePrevious(account)
+
+  const { t } = useTranslation()
 
   // close on connection, when logged out before
   useEffect(() => {
@@ -243,7 +252,7 @@ export default function WalletModal({
                 id={`connect-${key}`}
                 key={key}
                 color={'#E8831D'}
-                header={'Install Metamask'}
+                header={t('installMetamask')}
                 subheader={null}
                 link={'https://metamask.io/'}
                 icon={MetamaskIcon}
@@ -294,12 +303,12 @@ export default function WalletModal({
           <CloseIcon onClick={toggleWalletModal}>
             <CloseColor />
           </CloseIcon>
-          <HeaderRow>{error instanceof UnsupportedChainIdError ? 'Wrong Network' : 'Error connecting'}</HeaderRow>
+          <HeaderRow>{error instanceof UnsupportedChainIdError ? t('wrongNetwork') : t('errorConnecting')}</HeaderRow>
           <ContentWrapper>
             {error instanceof UnsupportedChainIdError ? (
-              <h5>Please connect to the appropriate Ethereum network.</h5>
+              <h5>{t('switchNetwork', { correctNetwork: 'Main Net' })}</h5>
             ) : (
-              'Error connecting. Try refreshing the page.'
+              <p>{t('unknownError')}</p>
             )}
           </ContentWrapper>
         </UpperSection>
@@ -329,12 +338,12 @@ export default function WalletModal({
                 setWalletView(WALLET_VIEWS.ACCOUNT)
               }}
             >
-              Back
+              {t('back')}
             </HoverText>
           </HeaderRow>
         ) : (
           <HeaderRow>
-            <HoverText>Connect to a wallet</HoverText>
+            <HoverText>{t('connectWallet')}</HoverText>
           </HeaderRow>
         )}
         <ContentWrapper>
@@ -350,8 +359,10 @@ export default function WalletModal({
           )}
           {walletView !== WALLET_VIEWS.PENDING && (
             <Blurb>
-              <span>New to Ethereum? &nbsp;</span>{' '}
-              <ExternalLink href="https://ethereum.org/wallets/">Learn more about wallets</ExternalLink>
+              <span>{t('newToEthereum')}</span>
+              <ExternalLink style={{ marginInlineStart: '0.5rem' }} href="https://ethereum.org/wallets/">
+                {t('learnMoreAboutWallets')}
+              </ExternalLink>
             </Blurb>
           )}
         </ContentWrapper>
