@@ -201,5 +201,9 @@
   "recentTransactions": "Letzte Transaktionen",
   "yourTransactionsWillApearHere": "Deine Transaktionen werden hier aufgelistet...",
   "clearAll": "alle löschen",
-  "interfaceLanguage": "Sprachauswahl"
+  "interfaceLanguage": "Sprachauswahl",
+  "commonBases":" Basis-Token",
+  "commonBasesDescription": "Diese Token sind meist die Basis eines Token-Paares.",
+  "addedByUser": "Manuell hinzugefügt",
+  "removeFromList": "Entfernen"
 }

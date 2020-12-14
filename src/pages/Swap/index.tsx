@@ -508,7 +508,6 @@ export default function Swap() {
               <Text textAlign="center" fontSize={14} style={{ padding: '.5rem 0 .5rem 0' }}>
                 {t('notSeeingAPair')}
                 <StyledInternalLink id="import-pool-link" to={'create'}>
-                  &nbsp;
                   {t('createNewPool')}
                 </StyledInternalLink>
               </Text>

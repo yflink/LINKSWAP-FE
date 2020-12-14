@@ -55,7 +55,7 @@ export default function SwapModalFooter({
               justifyContent: 'center',
               alignItems: 'center',
               display: 'flex',
-              textAlign: 'right',
+              textAlign: 'end',
               paddingInlineStart: '10px'
             }}
           >

@@ -343,7 +343,7 @@ export function ListSelect({ onDismiss, onBack }: { onDismiss: () => void; onBac
 
       <PaddedColumn gap="14px">
         <Text fontWeight={600}>
-          {t('addList')}&nbsp;
+          {t('addList')}
           <QuestionHelper text={t('tokenLists')} />
         </Text>
         <Row>

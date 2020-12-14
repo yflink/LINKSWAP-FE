@@ -203,5 +203,9 @@
   "recentTransactions": "اخر عمليات",
   "yourTransactionsWillApearHere": "ستظهر عملياتك هنا ...",
   "clearAll": "مسح الكل",
-  "interfaceLanguage": "اختر اللغة"
+  "interfaceLanguage": "اختر اللغة",
+  "commonBases":"Common bases",
+  "commonBasesDescription": "These tokens are commonly paired with other tokens.",
+  "addedByUser": "Added by user",
+  "removeFromList": "Remove"
 }

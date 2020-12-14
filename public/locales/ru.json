@@ -192,5 +192,9 @@
   "recentTransactions": "Recent Transactions",
   "yourTransactionsWillApearHere": "Your transactions will appear here...",
   "clearAll": "clear all",
-  "interfaceLanguage": "Select a Language"
+  "interfaceLanguage": "Select a Language",
+  "commonBases":"Common bases",
+  "commonBasesDescription": "These tokens are commonly paired with other tokens.",
+  "addedByUser": "Added by user",
+  "removeFromList": "Remove"
 }

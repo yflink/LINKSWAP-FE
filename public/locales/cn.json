@@ -203,5 +203,9 @@
   "recentTransactions": "最近的交易",
   "yourTransactionsWillApearHere": "您的交易记录将在这显示…",
   "clearAll": "清除所有",
-  "interfaceLanguage": "Select a Language"
+  "interfaceLanguage": "Select a Language",
+  "commonBases":"Common bases",
+  "commonBasesDescription": "These tokens are commonly paired with other tokens.",
+  "addedByUser": "Added by user",
+  "removeFromList": "Remove"
 }

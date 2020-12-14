@@ -39,7 +39,7 @@ export default function PreviewListing() {
         </AutoColumn>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '24px', marginTop: '24px' }}>
           <Text style={{ color: 'white' }}>Rate</Text>
-          <div style={{ textAlign: 'right' }}>
+          <div style={{ textAlign: 'end' }}>
             <Text style={{ color: '#AFBCC9', marginBottom: '6px' }}>1 LINK = 500 SPID</Text>
             <Text style={{ color: '#AFBCC9' }}>1 SPID = 0.002 SPID</Text>
           </div>
@@ -48,7 +48,7 @@ export default function PreviewListing() {
         <DisplayFlex title="Depositing SPID" content="5,000 SPID" />
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '32px' }}>
           <Text style={{ color: 'white' }}>Listing Fee</Text>
-          <div style={{ textAlign: 'right' }}>
+          <div style={{ textAlign: 'end' }}>
             <Text style={{ color: '#AFBCC9', marginBottom: '6px' }}>10.0239 YFL</Text>
             <Text fontSize={12} style={{ color: '#AFBCC9' }}>
               $1000 (USD)
@@ -68,7 +68,7 @@ export default function PreviewListing() {
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '32px' }}>
           <Text style={{ color: 'white' }}>Total</Text>
-          <div style={{ textAlign: 'right' }}>
+          <div style={{ textAlign: 'end' }}>
             <Text style={{ color: '#AFBCC9', marginBottom: '6px' }}>8.01912 YFL</Text>
             <Text fontSize={12} style={{ color: '#AFBCC9' }}>
               $800 (USD)

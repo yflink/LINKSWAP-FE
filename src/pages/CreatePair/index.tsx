@@ -602,7 +602,7 @@ export default function CreateNewPool({
                       <CurrencyLogo currency={ETHER} size={'24px'} style={{marginInlineEnd: '6px' }} />
                       {ETHER.symbol}
                     </div>
-                    <div style={{ textAlign: 'right' }}>
+                    <div style={{ textAlign: 'end' }}>
                       <Text fontSize={16} fontWeight={600} style={{ color: 'white' }}>
                         $3000 USD
                       </Text>
@@ -622,7 +622,7 @@ export default function CreateNewPool({
                       <CurrencyLogo currency={LINK} size={'24px'} style={{marginInlineEnd: '6px' }} />
                       {LINK.symbol}
                     </div>
-                    <div style={{ textAlign: 'right' }}>
+                    <div style={{ textAlign: 'end' }}>
                       <Text fontSize={16} fontWeight={600} style={{ color: 'white' }}>
                         $2500 USD
                       </Text>
@@ -642,7 +642,7 @@ export default function CreateNewPool({
                       <CurrencyLogo currency={YFL} size={'24px'} style={{marginInlineEnd: '6px' }} />
                       {YFL.symbol}
                     </div>
-                    <div style={{ textAlign: 'right' }}>
+                    <div style={{ textAlign: 'end' }}>
                       <Text fontSize={16} fontWeight={600} style={{ color: 'white' }}>
                         $2000 USD
                       </Text>

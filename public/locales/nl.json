@@ -202,5 +202,10 @@
   "viewOnEtherscan": "Bekijken op Etherscan",
   "recentTransactions": "Recente transacties",
   "yourTransactionsWillApearHere": "Uw transacties verschijnen hier ...",
-  "clearAll": "Alles wissen"
+  "clearAll": "Alles wissen",
+  "interfaceLanguage": "Select a Language",
+  "commonBases":"Common bases",
+  "commonBasesDescription": "These tokens are commonly paired with other tokens.",
+  "addedByUser": "Added by user",
+  "removeFromList": "Remove"
 }

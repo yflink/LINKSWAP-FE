@@ -90,6 +90,8 @@ const Blurb = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
   align-items: center;
   justify-content: center;
+  text-align: center;
+  width: 100%;
   flex-wrap: wrap;
   margin-top: 2rem;
   ${({ theme }) => theme.mediaWidth.upToMedium`
@@ -357,8 +359,10 @@ export default function WalletModal({
           )}
           {walletView !== WALLET_VIEWS.PENDING && (
             <Blurb>
-              <span>{t('newToEthereum')} &nbsp;</span>{' '}
-              <ExternalLink href="https://ethereum.org/wallets/">{t('learnMoreAboutWallets')}</ExternalLink>
+              <span>{t('newToEthereum')}</span>
+              <ExternalLink style={{ marginInlineStart: '0.5rem' }} href="https://ethereum.org/wallets/">
+                {t('learnMoreAboutWallets')}
+              </ExternalLink>
             </Blurb>
           )}
         </ContentWrapper>

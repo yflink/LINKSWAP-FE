@@ -199,5 +199,9 @@
   "recentTransactions": "Tranzactii recente",
   "yourTransactionsWillApearHere": "Tranzacțiile dvs. vor apărea aici...",
   "clearAll": "curață tot",
-  "interfaceLanguage": "Selectați o limbă"
+  "interfaceLanguage": "Selectați o limbă",
+  "commonBases":"Common bases",
+  "commonBasesDescription": "These tokens are commonly paired with other tokens.",
+  "addedByUser": "Added by user",
+  "removeFromList": "Remove"
 }
