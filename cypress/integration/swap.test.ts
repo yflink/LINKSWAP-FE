@@ -55,6 +55,7 @@ describe('Swap', () => {
         cy.stub(win, 'prompt').returns('confirm')
       })
       cy.get('#open-settings-dialog-button').click()
+      cy.get('#open-language-dialog-button').click()
       cy.get('#toggle-expert-mode-button').click()
       cy.get('#confirm-expert-mode').click()
     })
