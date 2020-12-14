@@ -35,7 +35,7 @@ export default function LanguageOptionHelper(props: { languageString: string; sh
       style={lang === props.shortCode ? { fontWeight: 'bold' } : {}}
       onClick={() => setLang(props.shortCode)}
     >
-      <LanguageShortCode>{props.shortCode}</LanguageShortCode> - {props.languageString}
+      <LanguageShortCode>{props.shortCode}</LanguageShortCode>&nbsp;-&nbsp;{props.languageString}
     </LanguageOptionBody>
   )
 }
