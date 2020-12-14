@@ -116,7 +116,7 @@
   "myPositions": "Mie Posizioni",
   "pooledCurrency": "{{currency}} nel Pool",
   "yourPoolTokens": "I tuoi token del pool",
-  "add": "Aggiunere",
+  "add": "Aggiungere",
   "remove": "Rimuovere",
   "createPair": "Creare Abbinamento",
   "creatingAPair": "Quando aggiungi liquidità, ti vengono dati i token del pool di LINKSWAP (LSLP) che rappresentano la tua posizione. Questi token guadagnano automaticamente commissioni proporzionali alla tua quota del pool e possono essere riscattati in qualsiasi momento.",
