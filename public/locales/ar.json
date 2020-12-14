@@ -175,7 +175,7 @@
   "enterValidSlippage": "قم بإدخال نسبة انزلاق سعرية صحيحة",
   "yourTransactionMayFail": "قد تفشل عمليتك",
   "yourTransactionMayFrontrun": "قد يتم إعطاء عمليتك اولوية وتكون في المقدمة",
-  "transactionDeadline": "الفترة الزمنية للمعلية",
+  "transactionDeadline": "الفترة الزمنية للعملية",
   "transactionDeadlineDisclaimer": "ستعود عمليتك إذا كانت معلقة لأكثر من هذه المدة.",
   "minutes": "دقائق",
   "poolFound": "تم العثور على مَجمع السيولة (Pool)!",
@@ -204,8 +204,8 @@
   "yourTransactionsWillApearHere": "ستظهر عملياتك هنا ...",
   "clearAll": "مسح الكل",
   "interfaceLanguage": "اختر اللغة",
-  "commonBases":"Common bases",
-  "commonBasesDescription": "These tokens are commonly paired with other tokens.",
-  "addedByUser": "Added by user",
-  "removeFromList": "Remove"
+    "commonBases":"القواعد المشتركة",
+  "commonBasesDescription": "عادةً ما يتم إقران هذه ال Tokens ب Tokens أخرى.",
+  "addedByUser": "أضافه المستخدم",
+  "removeFromList": "إزالة"
 }

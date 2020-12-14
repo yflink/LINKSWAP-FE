@@ -142,7 +142,7 @@
   "createPool": "Creează un poll",
   "confirmSupply": "Confirmă furnizarea",
   "pairedPoolTokens": "{{currencyA}}/{{currencyB}} Token-rui din Pool",
-  "estimatedOutput": "Producția este estimată. Dacă prețul se modifică cu mai mult de {{slippage}}% tranzacția dvs. va reveni.",
+  "estimatedOutput": "Estimat in final. Dacă prețul se modifică cu mai mult de {{slippage}}% tranzacția dvs. va reveni.",
   "supplyingCurrencies": "Furnizarea {{currencyAAmount}} {{currencyA}} și {{currencyBAmount}} {{currencyB}}",
   "happyToSupply": "Odată ce sunteți mulțumit de tarif, faceți clic pe oferta pentru a revizui.",
   "initialPricesAndShare": "Prețurile inițiale și cota de pool",
@@ -184,7 +184,7 @@
   "invalidPair": "Pereche nevalidă",
   "currencyPerCurrency": "{{currencyA}} pe {{currencyB}}",
   "addASend": "+ adaugă trimitere (opțional)",
-  "removeSend": "- elimină trimitire",
+  "removeSend": "- elimină trimitere",
   "walletAddressOrENS": "Adresa portofelului sau numele ENS",
   "recipient": "Destinatar",
   "errorConnecting": "Eroare de conexiune",
@@ -200,8 +200,8 @@
   "yourTransactionsWillApearHere": "Tranzacțiile dvs. vor apărea aici...",
   "clearAll": "curață tot",
   "interfaceLanguage": "Selectați o limbă",
-  "commonBases":"Common bases",
-  "commonBasesDescription": "These tokens are commonly paired with other tokens.",
-  "addedByUser": "Added by user",
-  "removeFromList": "Remove"
+  "commonBases": "Lista de baza",
+  "commonBasesDescription": "Aceste token-uri sunt în mod obișnuit asociate cu alte token-uri.",
+  "addedByUser": "Adăugat de utilizator",
+  "removeFromList": "Elimină"
 }
