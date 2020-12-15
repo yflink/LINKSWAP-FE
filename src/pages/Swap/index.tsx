@@ -327,7 +327,7 @@ export default function Swap() {
                       onSwitchTokens()
                       setInversed(!inversed)
                     }}
-                    color={currencies[Field.INPUT] && currencies[Field.OUTPUT] ? theme.primary1 : theme.text2}
+                    color={currencies[Field.INPUT] && currencies[Field.OUTPUT] ? theme.primary1 : theme.text1}
                   />
                 </ArrowWrapper>
                 {recipient === null && !showWrap && isExpertMode ? (
