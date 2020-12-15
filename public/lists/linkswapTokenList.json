@@ -2,7 +2,7 @@
   "name": "LINKSWAP Launch List",
   "logoURI": "https://yflink.io/static/media/YFLink-header-logo.cffb7453.svg",
   "keywords": ["linkswap", "link", "swap"],
-  "timestamp": "2020-09-01T00:00:00+00:00",
+  "timestamp": "2020-15-12T00:00:00+00:00",
   "tokens": [
     {
       "address": "0x28cb7e841ee97947a86b06fa4090c8451f64c0be",
@@ -207,7 +207,7 @@
   ],
   "version": {
     "major": 2,
-    "minor": 11,
+    "minor": 14,
     "patch": 0
   }
 }
