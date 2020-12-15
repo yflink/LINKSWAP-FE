@@ -204,12 +204,12 @@
   "commonBasesDescription": "Эти токены обычно сочетаются с другими токенами.",
   "addedByUser": "Добавлено пользователем",
   "removeFromList": "Убрать",
-  "tokenImported": "Token imported",
-  "anyoneCanCreateAToken": "Anyone can create an ERC20 token on Ethereum with any name, including creating fake versions of existing tokens and tokens that claim to represent projects that do not have a token.",
-  "loadingArbitraryToken": "This interface can load arbitrary tokens by token addresses. Please take extra caution and do your research when interacting with arbitrary ERC20 tokens.",
-  "tokenWarning": "If you purchase an arbitrary token, you may be unable to sell it back.",
-  "iUnderstand": "I understand",
-  "continue": "Continue",
-  "rugLockTokens": "Lock tokens to increase score",
-  "comingSoon": "Coming Soon!"
+  "tokenImported": "Токен импортирован",
+  "anyoneCanCreateAToken": "Любой может создать токен ERC20 в Ethereum с любым именем, включая создание поддельных версий существующих токенов и токенов, которые утверждают что представляют проекты у которых нет токена.",
+  "loadingArbitraryToken": "Этот интерфейс может загружать произвольные токены по их адресам. Пожалуйста, проявляйте особую осторожность и проводите исследования при взаимодействии с произвольными токенами ERC20.",
+  "tokenWarning": "Если вы купите произвольный токен, вы не сможете продать его обратно.",
+  "iUnderstand": "Я понимаю",
+  "continue": "Продолжить",
+  "rugLockTokens": "Заблокируйте токены чтобы увеличить счет",
+  "comingSoon": "Скоро!"
 }
