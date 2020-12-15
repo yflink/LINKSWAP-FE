@@ -202,7 +202,7 @@ export default function CurrencyInputPanel({
         {pair ? (
           <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} margin={true} />
         ) : currency ? (
-          <CurrencyLogo currency={currency} />
+          <CurrencyLogo currency={currency} position="button"/>
         ) : null}
         {pair ? (
           <StyledTokenName className="pair-name-container">
@@ -330,12 +330,13 @@ export function CurrencyDoubleInputPanel({
   const currency1 = ETHER
   const currency2 = new WrappedTokenInfo(
     {
-      address: '0x514910771AF9Ca656af840dff83E8264EcF986CA',
+      address: '0x514910771af9ca656af840dff83e8264ecf986ca',
       chainId: 1,
       name: 'ChainLink',
       symbol: 'LINK',
       decimals: 18,
-      logoURI: 'https://1inch.exchange/assets/tokens/0x514910771af9ca656af840dff83e8264ecf986ca.png'
+      logoURI:
+        'https://logos.linkswap.app/0x514910771af9ca656af840dff83e8264ecf986ca.png'
     },
     []
   )
@@ -388,7 +389,7 @@ export function CurrencyDoubleInputPanel({
           {pair ? (
             <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={24} margin={true} />
           ) : currency1 ? (
-            <CurrencyLogo currency={currency1} size={'24px'} />
+            <CurrencyLogo currency={currency1} size={'24px'} position="button" />
           ) : null}
           {pair ? (
             <StyledTokenName className="pair-name-container">
@@ -424,7 +425,7 @@ export function CurrencyDoubleInputPanel({
           {pair ? (
             <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={24} margin={true} />
           ) : currency2 ? (
-            <CurrencyLogo currency={currency2} size={'24px'} />
+            <CurrencyLogo currency={currency2} size={'24px'} position="button" />
           ) : null}
           {pair ? (
             <StyledTokenName className="pair-name-container">

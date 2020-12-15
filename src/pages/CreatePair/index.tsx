@@ -53,24 +53,24 @@ const { Step } = Steps
 
 const LINK = new WrappedTokenInfo(
   {
-    address: '0x514910771AF9Ca656af840dff83E8264EcF986CA',
+    address: '0x514910771af9ca656af840dff83e8264ecf986ca',
     chainId: 1,
     name: 'ChainLink',
     symbol: 'LINK',
     decimals: 18,
-    logoURI: 'https://1inch.exchange/assets/tokens/0x514910771af9ca656af840dff83e8264ecf986ca.png'
+    logoURI: 'https://logos.linkswap.app/0x514910771af9ca656af840dff83e8264ecf986ca.png'
   },
   []
 )
 
 const YFL = new WrappedTokenInfo(
   {
-    address: '0x28cb7e841ee97947a86B06fA4090C8451f64c0be',
+    address: '0x28cb7e841ee97947a86b06fa4090c8451f64c0be',
     chainId: 1,
     name: 'YFLink',
     symbol: 'YFL',
     decimals: 18,
-    logoURI: 'https://tokens.1inch.exchange/0x28cb7e841ee97947a86b06fa4090c8451f64c0be.png'
+    logoURI: 'https://logos.linkswap.app/0x28cb7e841ee97947a86b06fa4090c8451f64c0be.png'
   },
   []
 )

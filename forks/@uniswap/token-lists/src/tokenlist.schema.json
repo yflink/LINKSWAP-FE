@@ -111,7 +111,7 @@
           "description": "The checksummed address of the token on the specified chain ID",
           "pattern": "^0x[a-fA-F0-9]{40}$",
           "examples": [
-            "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+            "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
           ]
         },
         "decimals": {
