@@ -74,7 +74,7 @@ const FooterWrapper = styled.div`
   text-align: center;
   z-index: 1;
   padding: 5px 0;
-  background-color: #2b3a4a;
+  background-color: ${({ theme }) => theme.bg8};
   a {
     text-decoration:none;
     color: ${({ theme }) => theme.text1};
