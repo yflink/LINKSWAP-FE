@@ -31,7 +31,7 @@ const CurrencySelect = styled.button<{ selected: boolean; primary?: boolean; lef
   font-weight: 500;
   background-color: ${({ selected, primary, theme }) => {
     if (selected) {
-      return theme.bg4
+      return theme.bg7
     } else {
       if (primary) {
         return theme.bg6
@@ -55,7 +55,7 @@ const CurrencySelect = styled.button<{ selected: boolean; primary?: boolean; lef
   :hover {
     background-color: ${({ selected, primary, theme }) => {
       if (selected) {
-        return theme.bg4
+        return theme.bg7
       } else {
         if (primary) {
           return theme.bg6
