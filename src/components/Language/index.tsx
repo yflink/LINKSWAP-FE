@@ -60,9 +60,14 @@ const StyledMenu = styled.div`
   border: none;
   text-align: start;
 `
+const LanguageContainer = styled.div`
+  padding: 0.5rem 0;
+  width: 100%;
+  column-count: 2;
+`
 
 const MenuFlyout = styled.span`
-  min-width: 12rem;
+  max-width: 100vw;
   background-color: ${({ theme }) => theme.bg1};
   box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.01), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04),
     0px 24px 32px rgba(0, 0, 0, 0.01);
@@ -114,7 +119,7 @@ export default function LanguageTab() {
             </LanguageWrapper>
           </AutoColumn>
           <Separator />
-          <AutoColumn style={{ padding: '0.5rem 0' }}>
+          <LanguageContainer>
             <LanguageWrapper onClick={() => setIsOpen(!isOpen)}>
               <LanguageOption shortCode="ar" languageString="عربي" />
             </LanguageWrapper>
@@ -128,10 +133,13 @@ export default function LanguageTab() {
               <LanguageOption shortCode="es" languageString="Español" />
             </LanguageWrapper>
             <LanguageWrapper onClick={() => setIsOpen(!isOpen)}>
+              <LanguageOption shortCode="fr" languageString="Français" />
+            </LanguageWrapper>
+            <LanguageWrapper onClick={() => setIsOpen(!isOpen)}>
               <LanguageOption shortCode="it" languageString="Italiano" />
             </LanguageWrapper>
             <LanguageWrapper onClick={() => setIsOpen(!isOpen)}>
-              <LanguageOption shortCode="kor" languageString="한국어" />
+              <LanguageOption shortCode="ko" languageString="한국어" />
             </LanguageWrapper>
             <LanguageWrapper onClick={() => setIsOpen(!isOpen)}>
               <LanguageOption shortCode="nl" languageString="Nederlands" />
@@ -142,7 +150,13 @@ export default function LanguageTab() {
             <LanguageWrapper onClick={() => setIsOpen(!isOpen)}>
               <LanguageOption shortCode="ru" languageString="Pусский" />
             </LanguageWrapper>
-          </AutoColumn>
+            <LanguageWrapper onClick={() => setIsOpen(!isOpen)}>
+              <LanguageOption shortCode="tr" languageString="Türk" />
+            </LanguageWrapper>
+            <LanguageWrapper onClick={() => setIsOpen(!isOpen)}>
+              <LanguageOption shortCode="vn" languageString="Tiếng Việt" />
+            </LanguageWrapper>
+          </LanguageContainer>
         </MenuFlyout>
       )}
     </StyledMenu>

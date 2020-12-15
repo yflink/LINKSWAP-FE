@@ -8,6 +8,10 @@ export const LanguageOptionBody = styled.div`
   text-align: start;
   display: flex;
 
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    font-size: 14px;
+  `};
+
   :hover,
   :focus {
     cursor: pointer;
