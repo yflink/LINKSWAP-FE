@@ -40,7 +40,7 @@ const StyledNavLink = styled(NavLink).attrs({
   font-size: 20px;
   padding: 30px;
   &.${activeClassName} {
-    background-color: #135ce3;
+    background-color:${({ theme }) => theme.bg7};
     color: ${({ theme }) => theme.text1};
   }
   :hover,
