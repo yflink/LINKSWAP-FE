@@ -83,6 +83,7 @@ const MenuText = styled.h3`
   margin: 0;
   padding: 0;
   font-family: 'Work Sans Thin', sans-serif;
+  text-transform: uppercase;
   font-size: 18px;
   font-weight: 400;
   letter-spacing: 0.06em;
