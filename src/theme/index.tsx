@@ -60,7 +60,7 @@ export function colors(darkMode: boolean): Colors {
     bg5: darkMode ? '#6C7284' : '#888D9B',
     bg6: darkMode ? '#373F49' : '#FFFFFF',
     bg7: '#135ce3',
-    bg8: '#2b3a4a',
+    bodyBackground: '#2b3a4a',
     //specialty colors
     modalBG: darkMode ? 'rgba(0,0,0,.425)' : 'rgba(0,0,0,0.3)',
     advancedBG: darkMode ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.6)',
@@ -220,5 +220,5 @@ body {
   background-image: url("https://yflink.io/YFL-BG-pattern-left.svg");
   background-position: 0 10vh;
   background-repeat: no-repeat;
-  background-color: #2B3A4A;
+  background-color:  ${({ theme }) => theme.bodyBackground};
 `
