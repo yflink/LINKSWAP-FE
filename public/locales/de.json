@@ -205,5 +205,13 @@
   "commonBases":" Basis-Token",
   "commonBasesDescription": "Diese Token sind meist die Basis eines Token-Paares.",
   "addedByUser": "Manuell hinzugefügt",
-  "removeFromList": "Entfernen"
+  "removeFromList": "Entfernen",
+  "tokenImported": "Importierter Token",
+  "anyoneCanCreateAToken": "Jeder kann einen ERC20 Token erstellen. Namen werden nicht exklusiv vergeben. Das bedeutet, dass auch fake Versionen von existierenden Token erstellt werden können.",
+  "loadingArbitraryToken": "Das Linkswap Interface kann jede Art von ERC20 Token laden. Dafür muss lediglich die Token Adresse eingegeben und der Token damit importiert werden. Bitte sei extra vorsichtig, wenn Du einen ERC20 Token über seine Token Adresse importierst.",
+  "tokenWarning": "Wenn du einen solchen (gefälschten) Token erwirbst, kann es sein, dass Du nicht mehr in der Lage bist ihn wieder zu verkaufen.",
+  "iUnderstand": "Ich verstehe",
+  "continue": "Fortfahren",
+  "rugLockTokens": "Token 'locken', um den Token-Paar score zu erhöhen",
+  "comingSoon": "Bald verfügbar!"
 }

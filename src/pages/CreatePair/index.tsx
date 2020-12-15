@@ -311,16 +311,6 @@ export default function CreateNewPool({
 
   const modalBottom = () => {
     return <div onClick={onAdd} />
-    // return (
-    //   <ConfirmAddModalBottom
-    //     price={price}
-    //     currencies={currencies}
-    //     parsedAmounts={parsedAmounts}
-    //     noLiquidity={noLiquidity}
-    //     onAdd={onAdd}
-    //     poolTokenPercentage={poolTokenPercentage}
-    //   />
-    // )
   }
 
   const pendingText = `Supplying ${parsedAmounts[Field.CURRENCY_A]?.toSignificant(6)} ${
@@ -494,18 +484,6 @@ export default function CreateNewPool({
                   />
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  {/* <input
-                    placeholder="1.0"
-                    style={{
-                      border: 'none',
-                      outline: 'none',
-                      backgroundColor: '#383F49',
-                      color: 'white',
-                      fontSize: '22px',
-                      fontWeight: 550
-                    }}
-                    onChange={event => console.log(event.target.value)}
-                  /> */}
                   <NumericalInput
                     style={{ backgroundColor: theme.bg6 }}
                     className="token-amount-input"
@@ -514,7 +492,7 @@ export default function CreateNewPool({
                       setRate(val)
                     }}
                   />
-                  <Text fontWeight={600} fontSize={18} style={{marginInlineEnd: '4px' }}>
+                  <Text fontWeight={600} fontSize={18} style={{ marginInlineEnd: '4px' }}>
                     {currencies[Field.CURRENCY_B]!.symbol}
                   </Text>
                 </div>
@@ -577,7 +555,7 @@ export default function CreateNewPool({
                       RugLock
                     </Text>
                     <TYPE.black fontWeight={400} fontSize={14} color={theme.text2}>
-                      Lock tokens to increase score
+                      {t('rugLockTokens')}
                     </TYPE.black>
                   </div>
                   <ToggleSwitch id="toggle-expert-mode-button" isActive={isActive} toggle={setIsActive} />
@@ -593,23 +571,20 @@ export default function CreateNewPool({
         ) : (
           <Wrapper>
             <AutoColumn>
-              <Text style={{ marginBottom: '18px' }}>Payment</Text>
+              <Text style={{ marginBottom: '18px' }}>{t('payment')}</Text>
               <div style={{ marginBottom: 16 }}>
                 <ButtonGray>
                   <div
                     style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <CurrencyLogo currency={ETHER} size={'24px'} style={{marginInlineEnd: '6px' }} />
+                      <CurrencyLogo currency={ETHER} size={'24px'} style={{ marginInlineEnd: '6px' }} />
                       {ETHER.symbol}
                     </div>
                     <div style={{ textAlign: 'end' }}>
                       <Text fontSize={16} fontWeight={600} style={{ color: 'white' }}>
                         $3000 USD
                       </Text>
-                      {/* <Text fontSize={12} fontWeight={600} style={{ color: '#8B96A1' }}>
-                        $3000 USD
-                      </Text> */}
                     </div>
                   </div>
                 </ButtonGray>
@@ -620,16 +595,13 @@ export default function CreateNewPool({
                     style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <CurrencyLogo currency={LINK} size={'24px'} style={{marginInlineEnd: '6px' }} />
+                      <CurrencyLogo currency={LINK} size={'24px'} style={{ marginInlineEnd: '6px' }} />
                       {LINK.symbol}
                     </div>
                     <div style={{ textAlign: 'end' }}>
                       <Text fontSize={16} fontWeight={600} style={{ color: 'white' }}>
                         $2500 USD
                       </Text>
-                      {/* <Text fontSize={12} fontWeight={600} style={{ color: '#8B96A1' }}>
-                        $3000 USD
-                      </Text> */}
                     </div>
                   </div>
                 </ButtonGray>
@@ -640,16 +612,13 @@ export default function CreateNewPool({
                     style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <CurrencyLogo currency={YFL} size={'24px'} style={{marginInlineEnd: '6px' }} />
+                      <CurrencyLogo currency={YFL} size={'24px'} style={{ marginInlineEnd: '6px' }} />
                       {YFL.symbol}
                     </div>
                     <div style={{ textAlign: 'end' }}>
                       <Text fontSize={16} fontWeight={600} style={{ color: 'white' }}>
                         $2000 USD
                       </Text>
-                      {/* <Text fontSize={12} fontWeight={600} style={{ color: '#8B96A1' }}>
-                        $3000 USD
-                      </Text> */}
                     </div>
                   </div>
                 </ButtonGray>
@@ -660,19 +629,19 @@ export default function CreateNewPool({
       </AppBody>
       <AppBodyDark>
         {step === 3 ? (
-          <ButtonPrimary>Coming Soon!</ButtonPrimary>
+          <ButtonPrimary>{t('comingSoon')}</ButtonPrimary>
         ) : (
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <ButtonGray style={{marginInlineEnd: 8 }} onClick={() => setStep(Math.max(0, step - 1))}>
+            <ButtonGray style={{ marginInlineEnd: 8 }} onClick={() => setStep(Math.max(0, step - 1))}>
               {t('back')}
             </ButtonGray>
             {!noLiquidity ||
             (step === 0 && !currencyB) ||
             (step === 1 && !rate) ||
             (step === 2 && !formattedAmounts[Field.CURRENCY_A]) ? (
-              <ButtonGray style={{marginInlineStart: 8 }}>{t('next')}</ButtonGray>
+              <ButtonGray style={{ marginInlineStart: 8 }}>{t('next')}</ButtonGray>
             ) : (
-              <ButtonPrimary style={{marginInlineStart: 8 }} onClick={() => setStep(Math.min(3, step + 1))}>
+              <ButtonPrimary style={{ marginInlineStart: 8 }} onClick={() => setStep(Math.min(3, step + 1))}>
                 {t('next')}
               </ButtonPrimary>
             )}

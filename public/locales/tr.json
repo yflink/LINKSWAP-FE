@@ -207,5 +207,13 @@
   "commonBases":"Ortak tabanlar",
   "commonBasesDescription": "Bu tokenler genellikle tokenlerle eşleştirilir.",
   "addedByUser": "Kullanıcı tarafından eklendi",
-  "removeFromList": "Kaldır"
+  "removeFromList": "Kaldır",
+  "tokenImported": "Token imported",
+  "anyoneCanCreateAToken": "Anyone can create an ERC20 token on Ethereum with any name, including creating fake versions of existing tokens and tokens that claim to represent projects that do not have a token.",
+  "loadingArbitraryToken": "This interface can load arbitrary tokens by token addresses. Please take extra caution and do your research when interacting with arbitrary ERC20 tokens.",
+  "tokenWarning": "If you purchase an arbitrary token, you may be unable to sell it back.",
+  "iUnderstand": "I understand",
+  "continue": "Continue",
+  "rugLockTokens": "Lock tokens to increase score",
+  "comingSoon": "Coming Soon!"
 }
