@@ -13,6 +13,15 @@ type ChainTokenList = {
   readonly [chainId in ChainId]: Token[]
 }
 
+export const LINK = new Token(ChainId.MAINNET, '0x514910771af9ca656af840dff83e8264ecf986ca', 18, 'LINK', 'ChainLink')
+export const YFL = new Token(ChainId.MAINNET, '0x28cb7e841ee97947a86b06fa4090c8451f64c0be', 18, 'YFL', 'YFLink')
+export const WETHER = new Token(
+  ChainId.MAINNET,
+  '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+  18,
+  'WETH',
+  'WrappedEther'
+)
 export const DAI = new Token(ChainId.MAINNET, '0x6b175474e89094c44da98b954eedeac495271d0f', 18, 'DAI', 'Dai Stablecoin')
 export const USDC = new Token(ChainId.MAINNET, '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48', 6, 'USDC', 'USD//C')
 export const USDT = new Token(ChainId.MAINNET, '0xdac17f958d2ee523a2206206994597c13d831ec7', 6, 'USDT', 'Tether USD')
@@ -47,7 +56,7 @@ export const CUSTOM_BASES: { [chainId in ChainId]?: { [tokenAddress: string]: To
 // used for display in the default list when adding liquidity
 export const SUGGESTED_BASES: ChainTokenList = {
   ...WETH_ONLY,
-  [ChainId.MAINNET]: [...WETH_ONLY[ChainId.MAINNET], DAI, USDC, USDT]
+  [ChainId.MAINNET]: [...WETH_ONLY[ChainId.MAINNET], LINK]
 }
 
 // used to construct the list of all pairs we consider by default in the frontend
@@ -58,12 +67,8 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
 
 export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } = {
   [ChainId.MAINNET]: [
-    [
-      new Token(ChainId.MAINNET, '0x5d3a536E4D6DbD6114cc1Ead35777bAB948E3643', 8, 'cDAI', 'Compound Dai'),
-      new Token(ChainId.MAINNET, '0x39AA39c021dfbaE8faC545936693aC917d5E7563', 8, 'cUSDC', 'Compound USD Coin')
-    ],
-    [USDC, USDT],
-    [DAI, USDT]
+    [YFL, WETHER],
+    [YFL, LINK]
   ]
 }
 
