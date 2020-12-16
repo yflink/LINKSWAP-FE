@@ -7,7 +7,7 @@ import { AutoColumn } from '../Column'
 import { RowBetween, RowFixed } from '../Row'
 
 import { darken } from 'polished'
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next'
 
 enum SlippageError {
   InvalidInput = 'InvalidInput',

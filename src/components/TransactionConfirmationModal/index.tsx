@@ -12,7 +12,7 @@ import { AutoColumn, ColumnCenter } from '../Column'
 import Circle from '../../assets/images/blue-loader.svg'
 import { getEtherscanLink } from '../../utils'
 import { useActiveWeb3React } from '../../hooks'
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next'
 
 const Wrapper = styled.div`
   width: 100%;

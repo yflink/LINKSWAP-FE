@@ -3,7 +3,7 @@ import { ButtonPrimary } from '../Button'
 import Column, { AutoColumn } from '../Column'
 import { PaddedColumn } from './styleds'
 import { useDarkModeManager } from '../../state/user/hooks'
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next'
 
 import listLight from '../../assets/images/token-list/lists-light.png'
 import listDark from '../../assets/images/token-list/lists-dark.png'

@@ -105,8 +105,6 @@ export default function TestAddLiquidity({
     if (!chainId || !library || !account) return
     const router = getRouterContract(chainId, library, account)
 
-    console.log('a')
-
     const { [Field.CURRENCY_A]: parsedAmountA, [Field.CURRENCY_B]: parsedAmountB } = parsedAmounts
     console.log(parsedAmounts)
 
@@ -121,8 +119,6 @@ export default function TestAddLiquidity({
     // }
 
     const deadlineFromNow = Math.ceil(Date.now() / 1000) + 600
-
-    console.log('b')
 
     let estimate,
       method: (...args: any) => Promise<TransactionResponse>,

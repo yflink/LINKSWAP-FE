@@ -235,6 +235,6 @@
   "close": "أغلق",
   "error": "خطأ",
   "dismiss": "أغلق",
-  "route": "Route",
-  "routeDescription": "Routing through these tokens resulted in the best price for your trade."
+  "route": "توجيه",
+  "routeDescription": "أدى التوجيه من خلال هذه ال tokens إلى الحصول على أفضل سعر لتبادلك."
 }

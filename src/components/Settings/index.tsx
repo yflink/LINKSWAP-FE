@@ -29,6 +29,28 @@ const StyledMenuIcon = styled(Settings)`
     stroke: ${({ theme }) => theme.text1};
   }
 `
+const ExpertModeIndicatorTop = styled(Settings)`
+  height: 18px;
+  width: 18px;
+  position: absolute;
+  left: 3px;
+  top: 3px;
+
+  > * {
+    stroke: ${({ theme }) => theme.text1};
+  }
+`
+const ExpertModeIndicatorBottom = styled(Settings)`
+  height: 15px;
+  width: 15px;
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+
+  > * {
+    stroke: ${({ theme }) => theme.text1};
+  }
+`
 
 const StyledCloseIcon = styled(X)`
   height: 20px;
@@ -44,8 +66,8 @@ const StyledCloseIcon = styled(X)`
 
 const StyledMenuButton = styled.button`
   position: relative;
-  width: 100%;
-  height: 100%;
+  width: 36px;
+  height: 36px;
   border: none;
   background-color: transparent;
   margin: 0;
@@ -180,9 +202,17 @@ export default function SettingsTab() {
           </AutoColumn>
         </ModalContentWrapper>
       </Modal>
-      <StyledMenuButton onClick={toggle} id="open-settings-dialog-button">
-        <StyledMenuIcon />
-      </StyledMenuButton>
+
+      {expertMode ? (
+        <StyledMenuButton onClick={toggle} id="open-settings-dialog-button">
+          <ExpertModeIndicatorTop />
+          <ExpertModeIndicatorBottom />
+        </StyledMenuButton>
+      ) : (
+        <StyledMenuButton onClick={toggle} id="open-settings-dialog-button">
+          <StyledMenuIcon />
+        </StyledMenuButton>
+      )}
       {open && (
         <MenuFlyout>
           <AutoColumn gap="md" style={{ padding: '1rem' }}>
