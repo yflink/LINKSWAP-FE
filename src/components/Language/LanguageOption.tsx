@@ -9,11 +9,7 @@ export const LanguageOptionBody = styled.div`
   page-break-inside: avoid;
   break-inside: avoid-column;
   display: inline-grid;
-
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    width: 8.5rem;
-    font-size: 14px;
-  `};
+  font-size: 14px;
 
   :hover,
   :focus {
@@ -47,7 +43,7 @@ export default function LanguageOptionHelper(props: {
   const currentLanguage = i18next.language || 'en'
   const lang = currentLanguage.substring(0, 2)
   const fontWeight = lang === props.shortCode ? 'bold' : 'normal'
-  const width = props.fullWidth ? '100%' : '9.5rem'
+  const width = props.fullWidth ? '100%' : '8.5rem'
 
   return (
     <LanguageOptionBody style={{ fontWeight: fontWeight, width: width }} onClick={() => setLang(props.shortCode)}>
