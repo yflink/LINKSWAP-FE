@@ -9,11 +9,11 @@ const QuestionWrapper = styled.div`
   justify-content: center;
   padding: 0.2rem;
   border: none;
-  background: none;
+  background: transparent;
   outline: none;
   cursor: default;
   border-radius: 6px;
-  background-color: ${({ theme }) => theme.bg2};
+  background-color: transparent;
   color: ${({ theme }) => theme.text2};
 
   :hover,

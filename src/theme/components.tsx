@@ -43,7 +43,7 @@ export const CloseIcon = styled(X)<{ onClick: () => void }>`
 export const LinkStyledButton = styled.button<{ disabled?: boolean }>`
   border: none;
   text-decoration: none;
-  background: none;
+  background: transparent;
 
   cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
   color: ${({ theme, disabled }) => (disabled ? theme.text2 : theme.primary1)};

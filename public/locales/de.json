@@ -232,5 +232,7 @@
   "transactionSubmitted": "Transaktion gesendet",
   "close": "Schließen",
   "error": "Error",
-  "dismiss": "Schließen"
+  "dismiss": "Schließen",
+  "route": "Route",
+  "routeDescription": "Das Routing durch diese Token sorgt für den besten Preis des gewünschten Tausches."
 }

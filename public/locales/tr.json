@@ -234,6 +234,8 @@
   "transactionSubmitted": "Transaction Submitted",
   "close": "Close",
   "error": "Error",
-  "dismiss": "Dismiss"
+  "dismiss": "Dismiss",
+  "route": "Route",
+  "routeDescription": "Routing through these tokens resulted in the best price for your trade."
 }
 
