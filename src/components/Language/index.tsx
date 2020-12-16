@@ -117,7 +117,7 @@ export default function LanguageTab() {
               {t('interfaceLanguage')}
             </Text>
             <LanguageWrapper onClick={() => setIsOpen(!isOpen)}>
-              <LanguageOption shortCode="en" languageString="English" />
+              <LanguageOption fullWidth={true} shortCode="en" languageString="English" />
             </LanguageWrapper>
           </AutoColumn>
           <Separator />
