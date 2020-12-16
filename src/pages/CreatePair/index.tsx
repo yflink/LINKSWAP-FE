@@ -365,9 +365,6 @@ export default function CreateNewPool({
 
   const [rate, setRate] = useState('1')
 
-  console.log('baba')
-  console.log(formattedAmounts[Field.CURRENCY_A])
-
   return (
     <>
       <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.bg1, marginBottom: '16px' }}>
