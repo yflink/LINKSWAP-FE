@@ -140,7 +140,7 @@ function CurrencyRow({
                   event.stopPropagation()
                   if (currency instanceof Token) addToken(currency)
                 }}
-                style={{padding: 0}}
+                style={{ padding: 0 }}
               >
                 ({t('add')})
               </LinkStyledButton>
