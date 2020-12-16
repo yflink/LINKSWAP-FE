@@ -73,7 +73,7 @@ export default function Swap() {
       [loadedInputCurrency, loadedOutputCurrency]?.filter(
         (c): c is Token => c instanceof Token && !containsKey(currentList, c.address)
       ) ?? [],
-    [loadedInputCurrency, loadedOutputCurrency]
+    [loadedInputCurrency, loadedOutputCurrency, currentList]
   )
   const handleConfirmTokenWarning = useCallback(() => {
     setDismissTokenWarning(true)
