@@ -110,7 +110,7 @@
   "loading": "Yükleniyor",
   "noLiquidityFound": "Likidite bulunamadı.",
   "uniswapV1LiquidityFound": "Uniswap V1 likiditesi bulundu!",
-  "dontSeeJoinedPool": "Katıldığınız bir havuz görünmüyor?",
+  "dontSeeJoinedPool": "Katıldığınız bir havuz görünmüyor mu?",
   "migrateNow": "Şimdi taşıyın.",
   "importIt": "Bulmamıza yardımcı olun.",
   "myPositions": "Pozisyonlarım",
@@ -238,3 +238,4 @@
   "route": "Rota",
   "routeDescription": "Bu tokenler üzerinden yönlendirme, ticaretiniz için en iyi fiyatı vermektedir."
 }
+
