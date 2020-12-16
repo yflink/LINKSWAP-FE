@@ -4,7 +4,6 @@ import i18next from 'i18next'
 
 export const LanguageOptionBody = styled.div`
   padding: 0.5rem 1rem;
-  width: 9.5rem;
   text-align: start;
   -webkit-column-break-inside: avoid;
   page-break-inside: avoid;
@@ -40,15 +39,18 @@ function setLang(lang?: string) {
   document.body.dir = i18next.dir(lang!)
 }
 
-export default function LanguageOptionHelper(props: { languageString: string; shortCode: string }) {
+export default function LanguageOptionHelper(props: {
+  languageString: string
+  shortCode: string
+  fullWidth?: boolean
+}) {
   const currentLanguage = i18next.language || 'en'
   const lang = currentLanguage.substring(0, 2)
+  const fontWeight = lang === props.shortCode ? 'bold' : 'normal'
+  const width = props.fullWidth ? '100%' : '9.5rem'
 
   return (
-    <LanguageOptionBody
-      style={lang === props.shortCode ? { fontWeight: 'bold' } : {}}
-      onClick={() => setLang(props.shortCode)}
-    >
+    <LanguageOptionBody style={{ fontWeight: fontWeight, width: width }} onClick={() => setLang(props.shortCode)}>
       <LanguageOption>
         <LanguageShortCode>{props.shortCode}</LanguageShortCode>&nbsp;-&nbsp;{props.languageString}
       </LanguageOption>
