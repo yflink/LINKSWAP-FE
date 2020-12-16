@@ -202,7 +202,7 @@ export default function CurrencyInputPanel({
         {pair ? (
           <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} margin={true} />
         ) : currency ? (
-          <CurrencyLogo currency={currency} position="button"/>
+          <CurrencyLogo currency={currency} position="button" />
         ) : null}
         {pair ? (
           <StyledTokenName className="pair-name-container">
@@ -335,8 +335,7 @@ export function CurrencyDoubleInputPanel({
       name: 'ChainLink',
       symbol: 'LINK',
       decimals: 18,
-      logoURI:
-        'https://logos.linkswap.app/0x514910771af9ca656af840dff83e8264ecf986ca.png'
+      logoURI: 'https://logos.linkswap.app/0x514910771af9ca656af840dff83e8264ecf986ca.png'
     },
     []
   )

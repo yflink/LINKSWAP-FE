@@ -43,6 +43,17 @@ import AppBody from '../AppBody'
 import { ClickableText } from '../Pool/styleds'
 import Loader from '../../components/Loader'
 import { useTranslation } from 'react-i18next'
+import { useTokenList } from '../../state/lists/hooks'
+
+function containsKey(json: any, value: string) {
+  let contains = false
+  Object.keys(json).some(key => {
+    console.log(key, value)
+    contains = typeof json[key] === 'object' ? containsKey(json[key], value) : json[key] === value
+    return contains
+  })
+  return contains
+}
 
 export default function Swap() {
   const loadedUrlParams = useDefaultsFromURLSearch()
@@ -54,9 +65,15 @@ export default function Swap() {
     useCurrency(loadedUrlParams?.inputCurrencyId),
     useCurrency(loadedUrlParams?.outputCurrencyId)
   ]
+
+  const currentList = useTokenList('https://linkswap.app/lists/linkswapTokenList.json')
+
   const [dismissTokenWarning, setDismissTokenWarning] = useState<boolean>(false)
   const urlLoadedTokens: Token[] = useMemo(
-    () => [loadedInputCurrency, loadedOutputCurrency]?.filter((c): c is Token => c instanceof Token) ?? [],
+    () =>
+      [loadedInputCurrency, loadedOutputCurrency]?.filter(
+        (c): c is Token => c instanceof Token && !containsKey(currentList, c.address)
+      ) ?? [],
     [loadedInputCurrency, loadedOutputCurrency]
   )
   const handleConfirmTokenWarning = useCallback(() => {

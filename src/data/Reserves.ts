@@ -31,17 +31,10 @@ export function usePairs(currencies: [Currency | undefined, Currency | undefined
   const pairAddresses = useMemo(
     () =>
       tokens.map(([tokenA, tokenB]) => {
-        console.log('zaza')
-        if (tokenA && tokenB) {
-          console.log(Pair.getAddress(tokenA, tokenB))
-        }
         return tokenA && tokenB && !tokenA.equals(tokenB) ? Pair.getAddress(tokenA, tokenB) : undefined
       }),
     [tokens]
   )
-
-  console.log('zaza')
-  console.log(pairAddresses)
 
   const results = useMultipleContractSingleData(pairAddresses, PAIR_INTERFACE, 'getReserves')
 

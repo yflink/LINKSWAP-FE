@@ -143,7 +143,7 @@ export function CurrencySearch({
         <RowBetween>
           <Text fontWeight={500} fontSize={16}>
             {t('selectToken')}
-            <QuestionHelper text="Find a token by searching for its name or symbol or by pasting its address below." />
+            <QuestionHelper text={t('tokenSearchPlaceholder')} />
           </Text>
           <CloseIcon onClick={onDismiss} />
         </RowBetween>
@@ -192,7 +192,7 @@ export function CurrencySearch({
             <Row>
               {selectedListInfo.current.logoURI ? (
                 <ListLogo
-                  style={{marginInlineEnd: 12 }}
+                  style={{ marginInlineEnd: 12 }}
                   logoURI={selectedListInfo.current.logoURI}
                   alt={`${selectedListInfo.current.name} list logo`}
                 />
