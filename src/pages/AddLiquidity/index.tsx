@@ -262,7 +262,7 @@ export default function AddLiquidity({
           </Text>
         </Row>
         <TYPE.italic fontSize={12} textAlign="left" padding={'8px 0 0 0 '}>
-          {t('estimatedOutput', {slippage: allowedSlippage / 100})}
+          {t('estimatedOutput', { slippage: allowedSlippage / 100 })}
         </TYPE.italic>
       </AutoColumn>
     )
@@ -442,9 +442,9 @@ export default function AddLiquidity({
                       width={approvalB !== ApprovalState.APPROVED ? '48%' : '100%'}
                     >
                       {approvalA === ApprovalState.PENDING ? (
-                        <Dots>{t('approvingCurrency', {inputCurrency: currencies[Field.CURRENCY_A]?.symbol})}</Dots>
+                        <Dots>{t('approvingCurrency', { inputCurrency: currencies[Field.CURRENCY_A]?.symbol })}</Dots>
                       ) : (
-                        t('approveCurrency', {inputCurrency: currencies[Field.CURRENCY_A]?.symbol})
+                        t('approveCurrency', { inputCurrency: currencies[Field.CURRENCY_A]?.symbol })
                       )}
                     </ButtonPrimary>
                   )}
@@ -455,9 +455,9 @@ export default function AddLiquidity({
                       width={approvalA !== ApprovalState.APPROVED ? '48%' : '100%'}
                     >
                       {approvalB === ApprovalState.PENDING ? (
-                        <Dots>{t('approvingCurrency', {inputCurrency: currencies[Field.CURRENCY_B]?.symbol})}</Dots>
+                        <Dots>{t('approvingCurrency', { inputCurrency: currencies[Field.CURRENCY_B]?.symbol })}</Dots>
                       ) : (
-                        t('approveCurrency', {inputCurrency: currencies[Field.CURRENCY_B]?.symbol})
+                        t('approveCurrency', { inputCurrency: currencies[Field.CURRENCY_B]?.symbol })
                       )}
                     </ButtonPrimary>
                   )}

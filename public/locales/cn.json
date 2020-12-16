@@ -100,7 +100,7 @@
   "approved": "已准许",
   "approveCurrency": "准许{{inputCurrency}}",
   "approvingCurrency": "正在准许{{inputCurrency}}",
-  "priceImpact": "高价格影响",
+  "priceImpactHigh": "高价格影响",
   "priceImpactTooHigh": "价格影响过高",
   "createNewPool": "创建新的流动池",
   "notSeeingAPair": "未发现通证交易对？",

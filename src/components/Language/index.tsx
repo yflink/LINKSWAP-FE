@@ -64,6 +64,8 @@ const LanguageContainer = styled.div`
   padding: 0.5rem 0;
   width: 100%;
   column-count: 2;
+  break-inside: avoid-column;
+  page-break-inside: avoid;
 `
 
 const MenuFlyout = styled.span`
@@ -146,6 +148,9 @@ export default function LanguageTab() {
             </LanguageWrapper>
             <LanguageWrapper onClick={() => setIsOpen(!isOpen)}>
               <LanguageOption shortCode="ro" languageString="Română" />
+            </LanguageWrapper>
+            <LanguageWrapper onClick={() => setIsOpen(!isOpen)}>
+              <LanguageOption shortCode="pt" languageString="Português" />
             </LanguageWrapper>
             <LanguageWrapper onClick={() => setIsOpen(!isOpen)}>
               <LanguageOption shortCode="ru" languageString="Pусский" />

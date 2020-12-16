@@ -456,7 +456,7 @@ export default function Swap() {
                 >
                   <Text fontSize={16} fontWeight={500}>
                     {priceImpactSeverity > 3 && !isExpertMode
-                      ? t('priceImpact')
+                      ? t('priceImpactHigh')
                       : priceImpactSeverity > 2
                       ? t('swapAnyway')
                       : t('swap')}

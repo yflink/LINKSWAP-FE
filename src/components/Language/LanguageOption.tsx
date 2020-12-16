@@ -4,11 +4,15 @@ import i18next from 'i18next'
 
 export const LanguageOptionBody = styled.div`
   padding: 0.5rem 1rem;
-  width: 100%;
+  width: 9.5rem;
   text-align: start;
-  display: flex;
+  -webkit-column-break-inside: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid-column;
+  display: inline-grid;
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    width: 8.5rem;
     font-size: 14px;
   `};
 
@@ -17,6 +21,12 @@ export const LanguageOptionBody = styled.div`
     cursor: pointer;
     background-color: ${({ theme }) => theme.bg2};
   }
+`
+
+const LanguageOption = styled.div`
+  flex: 0 0 100%;
+  flex-wrap: wrap;
+  display: flex;
 `
 
 const LanguageShortCode = styled.span`
@@ -39,7 +49,9 @@ export default function LanguageOptionHelper(props: { languageString: string; sh
       style={lang === props.shortCode ? { fontWeight: 'bold' } : {}}
       onClick={() => setLang(props.shortCode)}
     >
-      <LanguageShortCode>{props.shortCode}</LanguageShortCode>&nbsp;-&nbsp;{props.languageString}
+      <LanguageOption>
+        <LanguageShortCode>{props.shortCode}</LanguageShortCode>&nbsp;-&nbsp;{props.languageString}
+      </LanguageOption>
     </LanguageOptionBody>
   )
 }
