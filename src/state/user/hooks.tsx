@@ -47,6 +47,17 @@ export function useIsExpertMode(): boolean {
   return useSelector<AppState, AppState['user']['userExpertMode']>(state => state.user.userExpertMode)
 }
 
+export function useThemeManager(): (newTheme: string) => void {
+  const dispatch = useDispatch<AppDispatch>()
+
+  return useCallback(
+    (newTheme: string) => {
+      dispatch(updateUserTheme({ userTheme: newTheme }))
+    },
+    [dispatch]
+  )
+}
+
 export function useExpertModeManager(): [boolean, () => void] {
   const dispatch = useDispatch<AppDispatch>()
   const expertMode = useIsExpertMode()
