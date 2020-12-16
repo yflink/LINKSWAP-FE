@@ -47,6 +47,8 @@ import { useTranslation } from 'react-i18next'
 export default function Swap() {
   const loadedUrlParams = useDefaultsFromURLSearch()
 
+  const yflAddress = "0x28cb7e841ee97947a86B06fA4090C8451f64c0be";
+
   const [inversed, setInversed] = useState(false)
 
   // token warning stuff
@@ -56,7 +58,7 @@ export default function Swap() {
   ]
   const [dismissTokenWarning, setDismissTokenWarning] = useState<boolean>(false)
   const urlLoadedTokens: Token[] = useMemo(
-    () => [loadedInputCurrency, loadedOutputCurrency]?.filter((c): c is Token => c instanceof Token) ?? [],
+    () => [loadedInputCurrency, loadedOutputCurrency]?.filter((c): c is Token => c instanceof Token && c.address !== yflAddress) ?? [],
     [loadedInputCurrency, loadedOutputCurrency]
   )
   const handleConfirmTokenWarning = useCallback(() => {
