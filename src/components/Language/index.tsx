@@ -27,7 +27,6 @@ const StyledMenuButton = styled.button`
   width: 100%;
   height: 100%;
   border: none;
-  background-color: transparent;
   margin: 0;
   padding: 0;
   height: 35px;

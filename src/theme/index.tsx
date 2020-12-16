@@ -9,8 +9,11 @@ import styled, {
 import { useGetTheme } from '../state/user/hooks'
 import { Text, TextProps } from 'rebass'
 import { Colors } from './styled'
+
+// Themes
 import defaultTheme from './settings/default.json'
 import dokiTheme from './settings/doki.json'
+import cfiTheme from './settings/cyberfi.json'
 
 export * from './components'
 
@@ -37,6 +40,9 @@ export function colors(theme: string): Colors {
   switch (theme) {
     case 'doki':
       return dokiTheme
+
+    case 'cyberfi':
+      return cfiTheme
 
     default:
       return defaultTheme

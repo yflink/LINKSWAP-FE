@@ -1,4 +1,4 @@
-import React, {Suspense, useState} from 'react'
+import React, { Suspense } from 'react'
 import { HashRouter, Route, Switch } from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -26,8 +26,6 @@ import { CreatePairRedirectOldPathStructure, CreatePairRedirectDuplicateTokenIds
 import PreviewListing from './PreviewListing'
 
 import Analyze from './Analyze'
-
-import { useThemeManager} from '../state/user/hooks'
 
 import { ExternalLink } from 'react-feather'
 
@@ -95,19 +93,7 @@ const NewWindowIcon = styled.div`
   margin-left: 5px;
 `
 
-const ThemeToggle = styled.div`
-  position: fixed;
-  top: 100px;
-  right: 10px;
-  
-  :hover {
-    cursor: pointer;
-  }
-`
-
 export default function App() {
-  const newTheme = useThemeManager()
-
   return (
     <Suspense fallback={null}>
       <HashRouter>
@@ -142,7 +128,6 @@ export default function App() {
             <Marginer />
           </BodyWrapper>
           <FooterWrapper>
-            <ThemeToggle onClick={() => newTheme('doki')}>TOGGLE</ThemeToggle>
             <a target="_blank" rel="noopener noreferrer" href="https://certificate.quantstamp.com/full/linkswap">
               Quantstamp Audit Report - LINKSWAP{' '}
               <NewWindowIcon>

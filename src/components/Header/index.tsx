@@ -15,6 +15,7 @@ import Language from '../Language'
 
 import { RowBetween } from '../Row'
 import Web3Status from '../Web3Status'
+import { useThemeManager } from '../../state/user/hooks'
 
 const HeaderFrame = styled.div`
   display: flex;
@@ -136,6 +137,30 @@ const BalanceText = styled(Text)`
   `};
 `
 
+const ThemeToggles = styled.div`
+  position: absolute;
+  top: 60px;
+  left: 1rem;
+  display: flex;
+  flex-wrap: nowrap;
+  flex: 0 0 auto;
+`
+
+const ThemeToggle = styled.div`
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin: 0 1rem 0 0;
+  padding: 0;
+  background-color: ${({ theme }) => theme.bg3};
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+
+  :hover {
+    cursor: pointer;
+  }
+`
+
 const NETWORK_LABELS: { [chainId in ChainId]: string | null } = {
   [ChainId.MAINNET]: null,
   [ChainId.RINKEBY]: 'Rinkeby',
@@ -146,8 +171,8 @@ const NETWORK_LABELS: { [chainId in ChainId]: string | null } = {
 
 export default function Header() {
   const { account, chainId } = useActiveWeb3React()
-
   const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']
+  const newTheme = useThemeManager()
 
   return (
     <HeaderFrame>
@@ -159,20 +184,42 @@ export default function Header() {
           </Title>{' '}
           {!isMobile && (
             <HeaderElementMobile>
-              <Title style={{ marginTop: 4,marginInlineStart: 24 }} target="_blank" href="https://rewards.linkswap.app/">
+              <Title
+                style={{ marginTop: 4, marginInlineStart: 24 }}
+                target="_blank"
+                href="https://rewards.linkswap.app/"
+              >
                 <MenuText>LP Rewards</MenuText>
               </Title>
-              <Title style={{ marginTop: 4,marginInlineStart: 36 }} target="_blank" href="https://yflink.io/#/vote">
+              <Title style={{ marginTop: 4, marginInlineStart: 36 }} target="_blank" href="https://yflink.io/#/vote">
                 <MenuText>VOTE</MenuText>
               </Title>
               <Title
-                style={{ marginTop: 4,marginInlineStart: 24 }}
+                style={{ marginTop: 4, marginInlineStart: 24 }}
                 href="https://linkswap.app/#/swap?outputCurrency=0x28cb7e841ee97947a86b06fa4090c8451f64c0be"
               >
                 <MenuText>Buy YFL</MenuText>
               </Title>
             </HeaderElementMobile>
           )}
+          <ThemeToggles>
+            <ThemeToggle onClick={() => newTheme('default')}>
+              <img
+                src="https://logos.linkswap.app/0x28cb7e841ee97947a86b06fa4090c8451f64c0be.png"
+                height="20px"
+                width="20px"
+                alt="YFLink"
+              />&nbsp;YFL
+            </ThemeToggle>
+            <ThemeToggle onClick={() => newTheme('cyberfi')}>
+              <img
+                src="https://logos.linkswap.app/0x63b4f3e3fa4e438698ce330e365e831f7ccd1ef4.png"
+                height="20px"
+                width="20px"
+                alt="CFi"
+              />&nbsp;CFi
+            </ThemeToggle>
+          </ThemeToggles>
         </HeaderElement>
         <HeaderControls>
           <HeaderElementWrap>

@@ -60,7 +60,7 @@ const CurrencySelect = styled.button<{ selected: boolean; primary?: boolean; lef
         if (primary) {
           return theme.bg6
         } else {
-          return darken(0.05, theme.primary1)
+          return theme.primary2
         }
       }
     }};
