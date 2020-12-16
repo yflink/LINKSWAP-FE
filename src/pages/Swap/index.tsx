@@ -48,7 +48,6 @@ import { useTokenList } from '../../state/lists/hooks'
 function containsKey(json: any, value: string) {
   let contains = false
   Object.keys(json).some(key => {
-    console.log(key, value)
     contains = typeof json[key] === 'object' ? containsKey(json[key], value) : json[key] === value
     return contains
   })
