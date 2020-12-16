@@ -6,7 +6,7 @@ import GoogleAnalyticsReporter from '../components/analytics/GoogleAnalyticsRepo
 import Header from '../components/Header'
 // import Popups from '../components/Popups'
 import Web3ReactManager from '../components/Web3ReactManager'
-import DarkModeQueryParamReader from '../theme/DarkModeQueryParamReader'
+import ThemeQueryParamReader from '../theme/ThemeQueryParamReader'
 
 import Swap from './Swap'
 import { RedirectPathToSwapOnly, RedirectToSwap } from './Swap/redirects'
@@ -74,9 +74,10 @@ const FooterWrapper = styled.div`
   text-align: center;
   z-index: 1;
   padding: 5px 0;
-  background-color: ${({ theme }) => theme.bodyBackground};
+  background-color: ${({ theme }) => theme.bodyBgColor};
+
   a {
-    text-decoration:none;
+    text-decoration: none;
     color: ${({ theme }) => theme.text1};
     :hover,
     :focus {
@@ -97,7 +98,7 @@ export default function App() {
     <Suspense fallback={null}>
       <HashRouter>
         <Route component={GoogleAnalyticsReporter} />
-        <Route component={DarkModeQueryParamReader} />
+        <Route component={ThemeQueryParamReader} />
         <AppWrapper>
           <HeaderWrapper>
             <Header />
@@ -128,7 +129,10 @@ export default function App() {
           </BodyWrapper>
           <FooterWrapper>
             <a target="_blank" rel="noopener noreferrer" href="https://certificate.quantstamp.com/full/linkswap">
-              Quantstamp Audit Report - LINKSWAP <NewWindowIcon><ExternalLink size='15' color='white' /></NewWindowIcon>
+              Quantstamp Audit Report - LINKSWAP{' '}
+              <NewWindowIcon>
+                <ExternalLink size="15" color="white" />
+              </NewWindowIcon>
             </a>
           </FooterWrapper>
         </AppWrapper>

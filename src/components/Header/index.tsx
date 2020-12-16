@@ -5,7 +5,6 @@ import { Text } from 'rebass'
 import styled from 'styled-components'
 
 import { useActiveWeb3React } from '../../hooks'
-// import { useDarkModeManager } from '../../state/user/hooks'
 import { useETHBalances } from '../../state/wallet/hooks'
 import logo from '../../assets/svg/logo.png'
 
@@ -149,7 +148,6 @@ export default function Header() {
   const { account, chainId } = useActiveWeb3React()
 
   const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']
-  // const [isDark] = useDarkModeManager()
 
   return (
     <HeaderFrame>
