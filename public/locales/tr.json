@@ -236,6 +236,8 @@
   "error": "Hata",
   "dismiss": "Reddet",
   "route": "Rota",
-  "routeDescription": "Bu tokenler üzerinden yönlendirme, ticaretiniz için en iyi fiyatı vermektedir."
+  "routeDescription": "Bu tokenler üzerinden yönlendirme, ticaretiniz için en iyi fiyatı vermektedir.",
+  "connectToFindPools": "Connect to a wallet to find pools.",
+  "selectATokenToFindLiquidity": "Select a token to find your liquidity."
 }
 
