@@ -236,5 +236,6 @@
   "route": "Route",
   "routeDescription": "Das Routing durch diese Token sorgt für den besten Preis des gewünschten Tausches.",
   "connectToFindPools": "Verbinde dein Wallet um deine Pools zu finden.",
-  "selectATokenToFindLiquidity": "Wähle einen Token-Paar um deine Liquidity zu finden."
+  "selectATokenToFindLiquidity": "Wähle einen Token-Paar um deine Liquidity zu finden.",
+  "interfaceTheme": "Designauswahl"
 }
