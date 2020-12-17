@@ -236,5 +236,7 @@
   "error": "Erro",
   "dismiss": "Dispensar",
   "route": "Rota",
-  "routeDescription": "O roteamento por meio desses tokens resultou no melhor preço para sua negociação."
+  "routeDescription": "O roteamento por meio desses tokens resultou no melhor preço para sua negociação.",
+  "connectToFindPools": "Connect to a wallet to find pools.",
+  "selectATokenToFindLiquidity": "Select a token to find your liquidity."
 }
