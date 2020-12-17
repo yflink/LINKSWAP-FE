@@ -20,18 +20,16 @@ const ThemeOption = styled.div`
   display: flex;
 `
 
-export default function ThemeOptionHelper(props: {
-  themeString: string
-  themeName: string
-  fullWidth?: boolean
-}) {
+export default function ThemeOptionHelper(props: { themeString: string; themeName: string; fullWidth?: boolean }) {
   const newTheme = useThemeManager()
-  const width = props.fullWidth ? '100%' : '8.5rem'
+  const width = props.fullWidth ? '100%' : '10rem'
+  const logoUrl = './images/themes/' + props.themeString + '/logo.png'
 
   return (
     <ThemeOptionBody style={{ width: width }}>
       <ThemeOption onClick={() => newTheme(props.themeString)}>
-        {props.themeName}
+        <img src={logoUrl} alt={props.themeName} width="20px" height="20px" style={{ margin: '0 0.5rem 0 0' }} />
+        &nbsp;{props.themeName}
       </ThemeOption>
     </ThemeOptionBody>
   )

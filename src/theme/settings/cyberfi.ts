@@ -83,8 +83,8 @@ export function cyberFiTheme() {
     lineColor: '#5F656D',
 
     //Header
-    headerBG: appBG,
-    headerTextColor: mainColor,
+    headerBG: transparent,
+    headerTextColor: '#000',
     headerButtonBG: buttonBG,
     headerButtonBGHover: buttonBGHover,
     headerButtonIconColor: mainColor,

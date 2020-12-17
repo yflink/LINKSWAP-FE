@@ -12,11 +12,9 @@ import { YellowCard } from '../Card'
 import Theme from '../Theme'
 import Settings from '../Settings'
 import Language from '../Language'
-// import Menu from '../Menu'
 
 import { RowBetween } from '../Row'
 import Web3Status from '../Web3Status'
-import { useThemeManager } from '../../state/user/hooks'
 
 const HeaderFrame = styled.div`
   display: flex;
@@ -25,16 +23,10 @@ const HeaderFrame = styled.div`
   flex-direction: column;
   width: 100%;
   top: 0;
-  position: absolute;
+  position: relative;
   z-index: 2;
   background-color: ${({ theme }) => theme.headerBG};
   color: ${({ theme }) => theme.headerTextColor};
-
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    padding: 12px 0 0 0;
-    width: calc(100%);
-    position: relative;
-  `};
 `
 
 const HeaderElement = styled.div`
@@ -53,8 +45,8 @@ const HeaderElementMobile = styled.div`
 const HeaderElementWrap = styled.div`
   display: flex;
   align-items: center;
-  ${({ theme }) => theme.mediaWidth.upToSmall`
-    margin: 0.5rem 0;
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    margin: 0 0 0.5rem 0;
 `};
 `
 
@@ -133,40 +125,18 @@ const HeaderControls = styled.div`
   flex-direction: row;
   align-items: center;
 
-  ${({ theme }) => theme.mediaWidth.upToSmall`
+  ${({ theme }) => theme.mediaWidth.upToMedium`
     flex-direction: column;
     align-items: flex-end;
   `};
 `
 
 const BalanceText = styled(Text)`
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+  color: ${({ theme }) => theme.headerButtonIconColor}
+
+  ${({ theme }) => theme.mediaWidth.upToMedium`
     display: none;
   `};
-`
-
-const ThemeToggles = styled.div`
-  position: absolute;
-  top: 60px;
-  left: 1rem;
-  display: flex;
-  flex-wrap: nowrap;
-  flex: 0 0 auto;
-`
-
-const ThemeToggle = styled.div`
-  display: flex;
-  align-items: center;
-  position: relative;
-  margin: 0 1rem 0 0;
-  padding: 0;
-  background-color: ${({ theme }) => theme.headerButtonBG};
-  padding: 0.5rem;
-  border-radius: 0.5rem;
-
-  :hover {
-    cursor: pointer;
-  }
 `
 
 const NETWORK_LABELS: { [chainId in ChainId]: string | null } = {
@@ -183,7 +153,7 @@ export default function Header() {
 
   return (
     <HeaderFrame>
-      <RowBetween style={{ alignItems: 'flex-start' }} padding="1rem">
+      <RowBetween style={{ alignItems: 'center' }} padding="1rem">
         <HeaderElement>
           <Title href="https://yflink.io">
             <Logo src={logo}></Logo>
@@ -212,8 +182,8 @@ export default function Header() {
         </HeaderElement>
         <HeaderControls>
           <HeaderElementWrap>
-            <Theme />
             <Language />
+            <Theme />
             <Settings />
           </HeaderElementWrap>
           <HeaderElement>
