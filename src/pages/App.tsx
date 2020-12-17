@@ -74,11 +74,11 @@ const FooterWrapper = styled.div`
   text-align: center;
   z-index: 1;
   padding: 5px 0;
-  background-color: ${({ theme }) => theme.bodyBgColor};
+  background-color: ${({ theme }) => theme.footerBG};
 
   a {
     text-decoration: none;
-    color: ${({ theme }) => theme.textPrimary};
+    color: ${({ theme }) => theme.footerTextColor};
     :hover,
     :focus {
       text-decoration: underline;

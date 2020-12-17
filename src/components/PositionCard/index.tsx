@@ -32,7 +32,7 @@ export const HoverCard = styled(Card)`
   background-color: ${({ theme }) => theme.appBoxBG};
   border: 1px solid ${({ theme }) => theme.appBoxBG};
   :hover {
-    border: 1px solid ${({ theme }) => darken(0.06, theme.bg5)};
+    border: 1px solid ${({ theme }) => darken(0.06, theme.textTertiary)};
   }
 `
 

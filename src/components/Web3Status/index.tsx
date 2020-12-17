@@ -49,7 +49,7 @@ const Web3StatusGeneric = styled(ButtonSecondary)`
 const Web3StatusError = styled(Web3StatusGeneric)`
   background-color: ${({ theme }) => theme.red1};
   border: 1px solid ${({ theme }) => theme.red1};
-  color: ${({ theme }) => theme.white};
+  color: ${({ theme }) => theme.textPrimary};
   font-weight: 500;
   :hover,
   :focus {
@@ -58,15 +58,15 @@ const Web3StatusError = styled(Web3StatusGeneric)`
 `
 
 const Web3StatusConnect = styled(Web3StatusGeneric)<{ faded?: boolean }>`
-  background-color: ${({ theme }) => theme.primary4};
+  background-color: ${({ theme }) => theme.appInfoBoxBG};
   border: none;
-  color: ${({ theme }) => theme.primaryText1};
+  color: ${({ theme }) => theme.appInfoBoxTextColor};
   font-weight: 500;
 
   :hover,
   :focus {
-    border: 1px solid ${({ theme }) => darken(0.05, theme.primary4)};
-    color: ${({ theme }) => theme.primaryText1};
+    border: 1px solid ${({ theme }) => darken(0.05, theme.appInfoBoxBG)};
+    color: ${({ theme }) => theme.appInfoBoxTextColor};
   }
 
   ${({ faded }) =>
@@ -74,27 +74,29 @@ const Web3StatusConnect = styled(Web3StatusGeneric)<{ faded?: boolean }>`
     css`
       background-color: ${({ theme }) => theme.buttonSecondaryBG};
       border: 1px solid ${({ theme }) => theme.buttonSecondaryBG};
-      color: ${({ theme }) => theme.primaryText1};
+      color: ${({ theme }) => theme.appInfoBoxTextColor};
 
       :hover,
       :focus {
-        border: 1px solid ${({ theme }) => darken(0.05, theme.primary4)};
-        color: ${({ theme }) => darken(0.05, theme.primaryText1)};
+        border: 1px solid ${({ theme }) => darken(0.05, theme.appInfoBoxBG)};
+        color: ${({ theme }) => darken(0.05, theme.appInfoBoxTextColor)};
       }
     `}
 `
 
 const Web3StatusConnected = styled(Web3StatusGeneric)<{ pending?: boolean }>`
   background-color: ${({ pending, theme }) => (pending ? theme.textHighlight : theme.modalSecondaryBG)};
-  border: 1px solid ${({ pending, theme }) => (pending ? theme.textHighlight : theme.buttonBG)};
-  color: ${({ pending, theme }) => (pending ? theme.white : theme.textPrimary)};
+  border: 1px solid ${({ pending, theme }) => (pending ? theme.textHighlight : theme.headerButtonBG)};
+  color: ${({ pending, theme }) => (pending ? theme.textPrimary : theme.textPrimary)};
   font-weight: 500;
   :hover,
   :focus {
-    background-color: ${({ pending, theme }) => (pending ? darken(0.05, theme.textHighlight) : lighten(0.05, theme.modalSecondaryBG))};
-
+    background-color: ${({ pending, theme }) =>
+      pending ? darken(0.05, theme.textHighlight) : lighten(0.05, theme.modalSecondaryBG)};
+    color: ${({ theme }) => theme.headerButtonIconColor};
     :focus {
-      border: 1px solid ${({ pending, theme }) => (pending ? darken(0.1, theme.textHighlight) : darken(0.1, theme.buttonBG))};
+      border: 1px solid
+        ${({ pending, theme }) => (pending ? darken(0.1, theme.textHighlight) : darken(0.1, theme.buttonBG))};
     }
   }
 `

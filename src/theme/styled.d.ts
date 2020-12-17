@@ -66,6 +66,7 @@ export interface Colors {
   bodyBG: Color
   linkColor: Color
   linkColorHover: Color
+  lineColor: Color
 
   //Header
   headerBG: Color

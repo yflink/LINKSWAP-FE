@@ -16,9 +16,9 @@ const Circle = styled.div<{ confirmed?: boolean; disabled?: boolean }>`
   min-width: 20px;
   min-height: 20px;
   background-color: ${({ theme, confirmed, disabled }) =>
-    disabled ? theme.bg4 : confirmed ? theme.green1 : theme.textHighlight};
+    disabled ? theme.lineColor : confirmed ? theme.green1 : theme.appCurrencyInputBGActive};
   border-radius: 50%;
-  color: ${({ theme }) => theme.white};
+  color: ${({ theme }) => theme.appCurrencyInputTextColor};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -38,8 +38,9 @@ const Connector = styled.div<{ prevConfirmed?: boolean }>`
   background-color: ;
   background: linear-gradient(
     90deg,
-    ${({ theme, prevConfirmed }) => transparentize(0.5, prevConfirmed ? theme.green1 : theme.textHighlight)} 0%,
-    ${({ theme, prevConfirmed }) => (prevConfirmed ? theme.textHighlight : theme.bg4)} 80%
+    ${({ theme, prevConfirmed }) => transparentize(0.5, prevConfirmed ? theme.green1 : theme.appCurrencyInputBGActive)}
+      0%,
+    ${({ theme, prevConfirmed }) => (prevConfirmed ? theme.appCurrencyInputBGActive : theme.lineColor)} 80%
   );
   opacity: 0.6;
 `

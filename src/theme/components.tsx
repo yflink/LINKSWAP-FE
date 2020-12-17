@@ -6,7 +6,7 @@ import { darken } from 'polished'
 import { ArrowLeft, X } from 'react-feather'
 
 export const Button = styled.button.attrs<{ warning: boolean }, { backgroundColor: string }>(({ warning, theme }) => ({
-  backgroundColor: warning ? theme.red1 : theme.textHighlight
+  backgroundColor: warning ? theme.red1 : theme.buttonBG
 }))`
   padding: 1rem 2rem 1rem 2rem;
   border-radius: 3rem;
@@ -16,16 +16,16 @@ export const Button = styled.button.attrs<{ warning: boolean }, { backgroundColo
   border: none;
   outline: none;
   background-color: ${({ backgroundColor }) => backgroundColor};
-  color: ${({ theme }) => theme.white};
+  color: ${({ theme }) => theme.buttonTextColor};
   width: 100%;
 
   :hover,
   :focus {
-    background-color: ${({ backgroundColor }) => darken(0.05, backgroundColor)};
+    background-color: ${({ theme }) => theme.buttonBGHover};
   }
 
   :active {
-    background-color: ${({ backgroundColor }) => darken(0.1, backgroundColor)};
+    background-color: ${({ theme }) => theme.buttonBGHover};
   }
 
   :disabled {

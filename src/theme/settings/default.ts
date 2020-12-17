@@ -58,10 +58,10 @@ export function defaultTheme() {
     buttonSecondaryBorder: transparent,
     buttonSecondaryTextColor: '#87a9ff',
     buttonSecondaryBGActive: '#202f46',
-    buttonSecondaryBorderActive: mainColor,
+    buttonSecondaryBorderActive: transparent,
     buttonSecondaryTextColorActive: '#87a9ff',
-    buttonSecondaryBGHover: '#1b283c',
-    buttonSecondaryBorderHover: mainColor,
+    buttonSecondaryBGHover: 'rgba(55, 107, 173, 0.44)',
+    buttonSecondaryBorderHover: transparent,
     buttonSecondaryTextColorHover: '#87a9ff',
     buttonOutlinedBorder: '#2c2f36',
     buttonOutlinedTextColor: white,
@@ -76,6 +76,7 @@ export function defaultTheme() {
     bodyBG: mainBG,
     linkColor: mainColor,
     linkColorHover: mainColor,
+    lineColor: '#5F656D',
 
     //Header
     headerBG: transparent,
@@ -114,7 +115,7 @@ export function defaultTheme() {
     textPrimary: white,
     textSecondary: '#c3c5cb',
     textTertiary: '#6C7284',
-    textDisabled: '565A69',
+    textDisabled: '#565A69',
 
     //States
     red1: '#FF6871',

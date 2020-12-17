@@ -8,8 +8,10 @@ const ToggleElement = styled.span<{ isActive?: boolean; isOnSwitch?: boolean }>`
   height: 100%;
   padding: 0.25rem 0.5rem;
   border-radius: 6px;
-  background: ${({ theme, isActive, isOnSwitch }) => (isActive ? (isOnSwitch ? theme.textHighlight : theme.textDisabled) : 'none')};
-  color: ${({ theme, isActive, isOnSwitch }) => (isActive ? (isOnSwitch ? theme.white : theme.textSecondary) : theme.textTertiary)};
+  background: ${({ theme, isActive, isOnSwitch }) =>
+    isActive ? (isOnSwitch ? theme.textHighlight : theme.textDisabled) : 'none'};
+  color: ${({ theme, isActive, isOnSwitch }) =>
+    isActive ? (isOnSwitch ? theme.textPrimary : theme.textSecondary) : theme.textTertiary};
   font-size: 0.825rem;
   font-weight: 400;
 `

@@ -27,11 +27,11 @@ const FancyButton = styled.button`
   font-size: 12px;
   width: auto;
   min-width: 3rem;
-  border: 1px solid ${({ theme }) => theme.buttonBG};
+  border: 1px solid ${({ theme }) => theme.headerButtonBG};
   outline: none;
   background: ${({ theme }) => theme.modalBG};
   :hover {
-    border: 1px solid ${({ theme }) => theme.bg4};
+    border: 1px solid ${({ theme }) => theme.lineColor};
   }
   :focus {
     border: 1px solid ${({ theme }) => theme.textHighlight};
@@ -44,7 +44,7 @@ const Option = styled(FancyButton)<{ active: boolean }>`
     cursor: pointer;
   }
   background-color: ${({ active, theme }) => active && theme.textHighlight};
-  color: ${({ active, theme }) => (active ? theme.white : theme.textPrimary)};
+  color: ${({ active, theme }) => (active ? theme.textPrimary : theme.textPrimary)};
 `
 
 const Input = styled.input`
@@ -219,7 +219,7 @@ export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, se
           >
             {slippageError === SlippageError.InvalidInput
               ? t('enterValidSlippage')
-              : (slippageError === SlippageError.RiskyLow)
+              : slippageError === SlippageError.RiskyLow
               ? t('yourTransactionMayFail')
               : t('yourTransactionMayFrontrun')}
           </RowBetween>

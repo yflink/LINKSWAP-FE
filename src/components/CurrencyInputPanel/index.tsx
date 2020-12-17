@@ -83,7 +83,7 @@ const LabelRow = styled.div`
 //   margin: 0 0.25rem 0 0.5rem;
 //   height: 35%;
 //   path {
-//     stroke: ${({ selected, theme }) => (selected ? theme.textPrimary : theme.white)};
+//     stroke: ${({ selected, theme }) => (selected ? theme.textPrimary : theme.textPrimary)};
 //     stroke-width: 1.5px;
 //   }
 // `
