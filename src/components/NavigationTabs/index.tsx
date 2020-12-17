@@ -7,10 +7,10 @@ import { ArrowLeft } from 'react-feather'
 import { RowBetween } from '../Row'
 import QuestionHelper from '../QuestionHelper'
 
-import swap from '../../assets/svg/swap.png'
-import pool from '../../assets/svg/pool.png'
-import create from '../../assets/svg/create.png'
-import analyze from '../../assets/svg/soon.png'
+import swap from '../../assets/svg/swap.svg'
+import pool from '../../assets/svg/pool.svg'
+import create from '../../assets/svg/create.svg'
+import analyze from '../../assets/svg/analyze.svg'
 import { useTranslation } from 'react-i18next'
 
 const Tabs = styled.div`
@@ -49,7 +49,7 @@ const StyledNavLink = styled(NavLink).attrs({
   }
 `
 
-const StyledNavLinkDisabled = styled.div`
+const StyledLink = styled.a`
   ${({ theme }) => theme.flexRowNoWrap}
   width: 25%;
   align-items: center;
@@ -57,9 +57,19 @@ const StyledNavLinkDisabled = styled.div`
   height: 3rem;
   border-radius: 6px;
   outline: none;
+  cursor: pointer;
   text-decoration: none;
+  color: ${({ theme }) => theme.text3};
   font-size: 20px;
-  padding: 32px;
+  padding: 30px;
+  &.${activeClassName} {
+    background-color:${({ theme }) => theme.bg7};
+    color: ${({ theme }) => theme.text1};
+  }
+  :hover,
+  :focus {
+    color: ${({ theme }) => darken(0.1, theme.text1)};
+  }
 `
 
 const Icon = styled.img`
@@ -93,9 +103,9 @@ export function SwapPoolTabs({ active }: { active: 'swap' | 'pool' | 'create' | 
       <StyledNavLink id={`pool-nav-link`} to={'/create'} isActive={() => active === 'create'}>
         <Icon src={create} />
       </StyledNavLink>
-      <StyledNavLinkDisabled id={`pool-nav-link`}>
+      <StyledLink id={`pool-nav-link`} href={'https://info.linkswap.app/home'} target="_blank">
         <IconDisabled src={analyze} />
-      </StyledNavLinkDisabled>
+      </StyledLink>
     </Tabs>
   )
 }
