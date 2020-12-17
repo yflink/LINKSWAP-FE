@@ -11,9 +11,8 @@ import { Text, TextProps } from 'rebass'
 import { Colors } from './styled'
 
 // Themes
-import defaultTheme from './settings/default.json'
-import dokiTheme from './settings/doki.json'
-import cfiTheme from './settings/cyberfi.json'
+import { defaultTheme } from './settings/default'
+import { cyberFiTheme } from './settings/cyberfi'
 
 export * from './components'
 
@@ -38,14 +37,11 @@ const mediaWidthTemplates: { [width in keyof typeof MEDIA_WIDTHS]: typeof css } 
 
 export function colors(theme: string): Colors {
   switch (theme) {
-    case 'doki':
-      return dokiTheme
-
     case 'cyberfi':
-      return cfiTheme
+      return cyberFiTheme()
 
     default:
-      return defaultTheme
+      return defaultTheme()
   }
 }
 
