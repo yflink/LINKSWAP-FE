@@ -238,5 +238,6 @@
   "route": "路径",
   "routeDescription": "您的交易将经过这些路径",
   "connectToFindPools": "Connect to a wallet to find pools.",
-  "selectATokenToFindLiquidity": "Select a token to find your liquidity."
+  "selectATokenToFindLiquidity": "Select a token to find your liquidity.",
+  "interfaceTheme": "Select a Theme"
 }

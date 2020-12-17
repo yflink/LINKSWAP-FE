@@ -238,5 +238,6 @@
   "route": "Route",
   "routeDescription": "Routeren via deze tokens resulteerde in de best mogelijke prijs voor uw transactie.",
   "connectToFindPools": "Connect to a wallet to find pools.",
-  "selectATokenToFindLiquidity": "Select a token to find your liquidity."
+  "selectATokenToFindLiquidity": "Select a token to find your liquidity.",
+  "interfaceTheme": "Select a Theme"
 }

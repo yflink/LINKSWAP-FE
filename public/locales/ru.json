@@ -232,5 +232,6 @@
   "error": "Ошибка",
   "dismiss": "Отклонить",
   "connectToFindPools": "Connect to a wallet to find pools.",
-  "selectATokenToFindLiquidity": "Select a token to find your liquidity."
+  "selectATokenToFindLiquidity": "Select a token to find your liquidity.",
+  "interfaceTheme": "Select a Theme"
 }
