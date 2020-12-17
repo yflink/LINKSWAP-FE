@@ -182,8 +182,8 @@ export default function Header() {
         </HeaderElement>
         <HeaderControls>
           <HeaderElementWrap>
-            <Language />
             <Theme />
+            <Language />
             <Settings />
           </HeaderElementWrap>
           <HeaderElement>

@@ -9,13 +9,9 @@ import i18next from 'i18next'
 import { useTranslation } from 'react-i18next'
 import LanguageOption from './LanguageOption'
 
-interface LayerState {
-  isOpen: boolean
-}
-
 const StyledMenuIcon = styled(Globe)`
-  height: 20px;
-  width: 20px;
+  height: 22px;
+  width: 22px;
 
   > * {
     stroke: ${({ theme }) => theme.headerButtonIconColor};
@@ -31,9 +27,10 @@ const StyledMenuButton = styled.button`
   padding: 0;
   height: 35px;
   background-color: ${({ theme }) => theme.headerButtonBG};
-
   padding: 0.15rem 0.5rem;
   border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
 
   :hover,
   :focus {

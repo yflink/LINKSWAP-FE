@@ -73,9 +73,10 @@ const StyledMenuButton = styled.button`
   padding: 0;
   height: 35px;
   background-color: ${({ theme }) => theme.headerButtonBG};
-
   padding: 0.15rem 0.5rem;
   border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
 
   :hover,
   :focus {

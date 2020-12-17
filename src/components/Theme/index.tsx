@@ -1,5 +1,4 @@
 import React, { useRef, useState } from 'react'
-import { Layout } from 'react-feather'
 import styled from 'styled-components'
 import { useOnClickOutside } from '../../hooks/useOnClickOutside'
 import { AutoColumn } from '../Column'
@@ -7,15 +6,7 @@ import { Text } from 'rebass'
 import { Separator } from '../SearchModal/styleds'
 import { useTranslation } from 'react-i18next'
 import ThemeOption from './ThemeOption'
-
-const StyledMenuIcon = styled(Layout)`
-  height: 20px;
-  width: 20px;
-
-  > * {
-    stroke: ${({ theme }) => theme.headerButtonIconColor};
-  }
-`
+import { useGetTheme } from '../../state/user/hooks'
 
 const StyledMenuButton = styled.button`
   position: relative;
@@ -26,7 +17,9 @@ const StyledMenuButton = styled.button`
   padding: 0;
   height: 35px;
   background-color: ${({ theme }) => theme.headerButtonBG};
-
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 0.15rem 0.5rem;
   border-radius: 0.5rem;
 
@@ -60,6 +53,7 @@ const ThemeContainer = styled.div`
 
 const MenuFlyout = styled.span`
   max-width: 100vw;
+  min-width: 10rem;
   background-color: ${({ theme }) => theme.modalBG};
   box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.01), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04),
     0px 24px 32px rgba(0, 0, 0, 0.01);
@@ -68,7 +62,6 @@ const MenuFlyout = styled.span`
   border-radius: 0.5rem;
   display: flex;
   flex-direction: column;
-  font-size: 1rem;
   position: absolute;
   top: 3rem;
   right: 0;
@@ -78,22 +71,20 @@ const MenuFlyout = styled.span`
     right: unset;
     left: 0;
   }
-
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    min-width: 10rem;
-  `};
 `
 
 export default function ThemeTab() {
   const node = useRef<HTMLDivElement>()
   const { t } = useTranslation()
   const [isOpen, setIsOpen] = useState<any | null>(false)
+  const currentTheme = useGetTheme()
+  const layoutLogo = './images/themes/' + currentTheme + '/logo.png'
   useOnClickOutside(node, isOpen ? () => setIsOpen(!isOpen) : undefined)
 
   return (
     <StyledMenu ref={node as any}>
       <StyledMenuButton onClick={() => setIsOpen(!isOpen)} id="open-themeStringg-button">
-        <StyledMenuIcon />
+        <img src={layoutLogo} width="22px" height="22px" alt={t('inferfaceTheme')} />
       </StyledMenuButton>
       {isOpen && (
         <MenuFlyout>
