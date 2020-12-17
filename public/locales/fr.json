@@ -236,5 +236,7 @@
   "error": "Erreur",
   "dismiss": "Annuler",
   "route": "Route",
-  "routeDescription": "Le routing, via ces tokens, vous garantit le meilleur prix pour votre transaction."
+  "routeDescription": "Le routing, via ces tokens, vous garantit le meilleur prix pour votre transaction.",
+  "connectToFindPools": "Connect to a wallet to find pools.",
+  "selectATokenToFindLiquidity": "Select a token to find your liquidity."
 }

@@ -236,5 +236,7 @@
   "error": "Errore",
   "dismiss": "Respingere",
   "route": "Via",
-  "routeDescription": "L'instradamento attraverso questi token ha prodotto il miglior prezzo per lo scambio."
+  "routeDescription": "L'instradamento attraverso questi token ha prodotto il miglior prezzo per lo scambio.",
+  "connectToFindPools": "Connect to a wallet to find pools.",
+  "selectATokenToFindLiquidity": "Select a token to find your liquidity."
 }
