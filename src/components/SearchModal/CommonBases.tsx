@@ -11,7 +11,7 @@ import CurrencyLogo from '../CurrencyLogo'
 import { useTranslation } from 'react-i18next'
 
 const BaseWrapper = styled.div<{ disable?: boolean }>`
-  border: 1px solid ${({ theme, disable }) => (disable ? 'transparent' : theme.buttonBG)};
+  border: 1px solid ${({ theme, disable }) => (disable ? 'transparent' : theme.modalLines)};
   border-radius: 6px;
   display: flex;
   padding: 6px;
@@ -22,7 +22,7 @@ const BaseWrapper = styled.div<{ disable?: boolean }>`
     background-color: ${({ theme, disable }) => !disable && theme.modalSecondaryBG};
   }
 
-  background-color: ${({ theme, disable }) => disable && theme.buttonBG};
+  background-color: ${({ theme, disable }) => disable && theme.modalLines};
   opacity: ${({ disable }) => disable && '0.4'};
 `
 

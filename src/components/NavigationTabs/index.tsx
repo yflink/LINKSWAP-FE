@@ -65,16 +65,23 @@ const StyledLink = styled.a`
   outline: none;
   cursor: pointer;
   text-decoration: none;
-  color: ${({ theme }) => theme.text3};
+  color: ${({ theme }) => theme.navigationTabIconColor};
+  background-color: ${({ theme }) => theme.navigationTabBG};
   font-size: 20px;
   padding: 30px;
   &.${activeClassName} {
-    background-color:${({ theme }) => theme.bg7};
-    color: ${({ theme }) => theme.text1};
+    background-color: ${({ theme }) => theme.navigationTabBGActive};
+    color: ${({ theme }) => theme.navigationTabIconColorActive};
+    :hover,
+    :focus {
+      background-color: ${({ theme }) => theme.navigationTabBGActive};
+      color: ${({ theme }) => theme.navigationTabIconColorActive};
+    }
   }
   :hover,
   :focus {
-    color: ${({ theme }) => darken(0.1, theme.text1)};
+    color: ${({ theme }) => theme.navigationTabIconColorHover};
+    background-color: ${({ theme }) => theme.navigationTabBGHover};
   }
 `
 
