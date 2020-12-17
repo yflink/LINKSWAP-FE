@@ -5,13 +5,8 @@ import { useOnClickOutside } from '../../hooks/useOnClickOutside'
 import { AutoColumn } from '../Column'
 import { Text } from 'rebass'
 import { Separator } from '../SearchModal/styleds'
-import i18next from 'i18next'
 import { useTranslation } from 'react-i18next'
 import ThemeOption from './ThemeOption'
-
-interface LayerState {
-  isOpen: boolean
-}
 
 const StyledMenuIcon = styled(Feather)`
   height: 20px;
@@ -47,9 +42,6 @@ const StyledMenuButton = styled.button`
   }
 `
 
-const ThemeWrapper = styled.div`
-  display: block;
-`
 const StyledMenu = styled.div`
   margin-inline-start: 0.5rem;
   display: flex;
@@ -109,11 +101,11 @@ export default function ThemeTab() {
             <Text fontWeight={600} fontSize={14} style={{ padding: '0 1rem 0.5rem' }}>
               {t('interfaceTheme')}
             </Text>
-              <ThemeOption fullWidth={true} themeName="LINKSWAP" themeString="default" />
+            <ThemeOption fullWidth={true} themeName="LINKSWAP" themeString="default" />
           </AutoColumn>
           <Separator />
           <ThemeContainer>
-              <ThemeOption themeName="Cyber Finance" themeString="cyberfi" />
+            <ThemeOption themeName="Cyber Finance" themeString="cyberfi" />
           </ThemeContainer>
         </MenuFlyout>
       )}

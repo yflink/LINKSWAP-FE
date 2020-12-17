@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import i18next from 'i18next'
-import {useThemeManager} from "../../state/user/hooks";
+import { useThemeManager } from '../../state/user/hooks'
 
 export const ThemeOptionBody = styled.div`
   padding: 0.5rem 1rem;
@@ -19,10 +18,6 @@ const ThemeOption = styled.div`
   flex: 0 0 100%;
   flex-wrap: wrap;
   display: flex;
-`
-
-const ThemeShortCode = styled.span`
-  text-transform: uppercase;
 `
 
 export default function ThemeOptionHelper(props: {
