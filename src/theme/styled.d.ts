@@ -2,6 +2,7 @@ import { FlattenSimpleInterpolation, ThemedCssFunction } from 'styled-components
 
 export type Color = string
 export interface Colors {
+  //App
   appBGColor: Color
   appInfoBoxBG: Color
   appInfoBoxTextColor: Color

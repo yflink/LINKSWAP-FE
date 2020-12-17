@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import { Feather } from 'react-feather'
+import { Layout } from 'react-feather'
 import styled from 'styled-components'
 import { useOnClickOutside } from '../../hooks/useOnClickOutside'
 import { AutoColumn } from '../Column'
@@ -8,7 +8,7 @@ import { Separator } from '../SearchModal/styleds'
 import { useTranslation } from 'react-i18next'
 import ThemeOption from './ThemeOption'
 
-const StyledMenuIcon = styled(Feather)`
+const StyledMenuIcon = styled(Layout)`
   height: 20px;
   width: 20px;
 
@@ -105,7 +105,7 @@ export default function ThemeTab() {
           </AutoColumn>
           <Separator />
           <ThemeContainer>
-            <ThemeOption themeName="Cyber Finance" themeString="cyberfi" />
+            <ThemeOption themeName="CyberFi" themeString="cyberfi" />
           </ThemeContainer>
         </MenuFlyout>
       )}
