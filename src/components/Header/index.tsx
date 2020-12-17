@@ -9,6 +9,7 @@ import { useETHBalances } from '../../state/wallet/hooks'
 import logo from '../../assets/svg/logo.png'
 
 import { YellowCard } from '../Card'
+import Theme from '../Theme'
 import Settings from '../Settings'
 import Language from '../Language'
 // import Menu from '../Menu'
@@ -179,7 +180,6 @@ const NETWORK_LABELS: { [chainId in ChainId]: string | null } = {
 export default function Header() {
   const { account, chainId } = useActiveWeb3React()
   const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']
-  const newTheme = useThemeManager()
 
   return (
     <HeaderFrame>
@@ -209,32 +209,12 @@ export default function Header() {
               </Title>
             </HeaderElementMobile>
           )}
-          <ThemeToggles>
-            <ThemeToggle onClick={() => newTheme('default')}>
-              <img
-                src="https://logos.linkswap.app/0x28cb7e841ee97947a86b06fa4090c8451f64c0be.png"
-                height="20px"
-                width="20px"
-                alt="YFLink"
-              />
-              &nbsp;YFL
-            </ThemeToggle>
-            <ThemeToggle onClick={() => newTheme('cyberfi')}>
-              <img
-                src="https://logos.linkswap.app/0x63b4f3e3fa4e438698ce330e365e831f7ccd1ef4.png"
-                height="20px"
-                width="20px"
-                alt="CFi"
-              />
-              &nbsp;CFi
-            </ThemeToggle>
-          </ThemeToggles>
         </HeaderElement>
         <HeaderControls>
           <HeaderElementWrap>
+            <Theme />
             <Language />
             <Settings />
-            {/* <Menu /> */}
           </HeaderElementWrap>
           <HeaderElement>
             <TestnetWrapper>
