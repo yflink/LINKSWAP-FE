@@ -289,7 +289,7 @@ export default function Swap() {
         tokens={urlLoadedTokens}
         onConfirm={handleConfirmTokenWarning}
       />
-      <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.modalBG, marginBottom: '16px' }}>
+      <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.navigationBG, marginBottom: '16px' }}>
         <SwapPoolTabs active={'swap'} />
       </Card>
       <AppBody>

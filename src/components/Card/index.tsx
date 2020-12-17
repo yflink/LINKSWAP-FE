@@ -3,13 +3,14 @@ import styled from 'styled-components'
 import { CardProps, Text } from 'rebass'
 import { Box } from 'rebass/styled-components'
 
-const Card = styled(Box)<{ padding?: string; border?: string; borderRadius?: string }>`
+const Card = styled(Box)<{ padding?: string; border?: string; borderRadius?: string; secondary?: boolean }>`
   width: 100%;
   border-radius: 6px;
   padding: 1.25rem;
   padding: ${({ padding }) => padding};
   border: ${({ border }) => border};
   border-radius: ${({ borderRadius }) => borderRadius};
+  background-color: ${({ secondary, theme }) => (secondary ? theme.appBoxSecondaryInnerBG : 'transparent')};
 `
 export default Card
 
@@ -39,8 +40,8 @@ export const PinkCard = styled(Card)`
 `
 
 const BlueCardStyled = styled(Card)`
-  background-color: ${({ theme }) => theme.buttonSecondaryBG};
-  color: ${({ theme }) => theme.textHighlight};
+  background-color: ${({ theme }) => theme.appInfoBoxBG};
+  color: ${({ theme }) => theme.appInfoBoxTextColor};
   border-radius: 6px;
   width: 100%;
 `
@@ -48,7 +49,7 @@ const BlueCardStyled = styled(Card)`
 export const BlueCard = ({ children, ...rest }: CardProps) => {
   return (
     <BlueCardStyled {...rest}>
-      <Text fontWeight={500} color="#2172E5">
+      <Text fontWeight={500}>
         {children}
       </Text>
     </BlueCardStyled>

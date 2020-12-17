@@ -2,7 +2,7 @@ import { FlattenSimpleInterpolation, ThemedCssFunction } from 'styled-components
 
 export type Color = string
 export interface Colors {
-  appBG: string
+  appBGColor: Color
   appInfoBoxBG: Color
   appInfoBoxTextColor: Color
   appBoxBG: Color
@@ -20,6 +20,8 @@ export interface Colors {
   appCurrencyInputTextColorHover: Color
   appCurrencyInputBGActive: Color
   appCurrencyInputTextColorActive: Color
+  appCurrencyInputBGActiveHover: Color
+  appCurrencyInputTextColorActiveHover: Color
 
   //Buttons
   buttonBG: Color
@@ -63,7 +65,8 @@ export interface Colors {
   footerTextColor: Color
 
   //Global
-  bodyBG: Color
+  bodyBG: string
+  bodyBGColor: Color
   linkColor: Color
   linkColorHover: Color
   lineColor: Color
@@ -74,6 +77,8 @@ export interface Colors {
   headerButtonBG: Color
   headerButtonBGHover: Color
   headerButtonIconColor: Color
+  headerModalTextColor: Color
+  headerModalTextHighlight: Color
 
   //Modal
   modalBG: Color

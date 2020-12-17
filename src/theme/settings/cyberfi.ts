@@ -1,8 +1,9 @@
 export function cyberFiTheme() {
   const mainColor = '#f5e933'
   const mainColorHover = '#00f0ff'
-  const mainBG = '#2b3a4a'
-  const appBG = '#f5e933'
+  const secondaryColor = '#ff284c'
+  const appBG = '#000'
+  const bodyBGColor = '#f5e933'
   const white = '#FFF'
   const transparent = 'transparent'
   const buttonBG = '#40444f'
@@ -12,7 +13,7 @@ export function cyberFiTheme() {
 
   return {
     //App
-    appBG: '#f5e933 url("../images/themes/cyberfi/bg.png") top left / cover no-repeat',
+    appBGColor: appBG,
     appInfoBoxBG: '#202f46',
     appInfoBoxTextColor: '#87a9ff',
     appBoxBG: '#373f49',
@@ -28,17 +29,19 @@ export function cyberFiTheme() {
     appCurrencyInputTextColor: white,
     appCurrencyInputBGHover: '#383f49',
     appCurrencyInputTextColorHover: white,
-    appCurrencyInputBGActive: mainColor,
+    appCurrencyInputBGActive: secondaryColor,
     appCurrencyInputTextColorActive: white,
+    appCurrencyInputBGActiveHover: mainColorHover,
+    appCurrencyInputTextColorActiveHover: white,
 
     //Buttons
-    buttonBG: mainColor,
+    buttonBG: secondaryColor,
     buttonTextColor: white,
     buttonBGHover: mainColorHover,
     buttonTextColorHover: white,
-    buttonBGActive: mainColor,
+    buttonBGActive: secondaryColor,
     buttonTextColorActive: white,
-    buttonBGActiveHover: mainColor,
+    buttonBGActiveHover: secondaryColor,
     buttonTextColorActiveHover: white,
     buttonBGDisabled: buttonBG,
     buttonTextColorDisabled: white,
@@ -50,18 +53,18 @@ export function cyberFiTheme() {
     buttonSelectTextColor: white,
     buttonSelectBGHover: buttonBGHover,
     buttonSelectTextColorHover: white,
-    buttonSelectBGActive: mainColor,
+    buttonSelectBGActive: secondaryColor,
     buttonSelectTextColorActive: white,
-    buttonSelectBGActiveHover: mainColor,
+    buttonSelectBGActiveHover: secondaryColor,
     buttonSelectTextColorActiveHover: white,
     buttonSecondaryBG: '#202f46',
     buttonSecondaryBorder: transparent,
     buttonSecondaryTextColor: '#87a9ff',
     buttonSecondaryBGActive: '#202f46',
-    buttonSecondaryBorderActive: mainColor,
+    buttonSecondaryBorderActive: secondaryColor,
     buttonSecondaryTextColorActive: '#87a9ff',
     buttonSecondaryBGHover: '#1b283c',
-    buttonSecondaryBorderHover: mainColor,
+    buttonSecondaryBorderHover: secondaryColor,
     buttonSecondaryTextColorHover: '#87a9ff',
     buttonOutlinedBorder: '#2c2f36',
     buttonOutlinedTextColor: white,
@@ -69,21 +72,24 @@ export function cyberFiTheme() {
     buttonOutlinedTextColorHover: white,
 
     //Footer
-    footerBG: mainBG,
+    footerBG: appBG,
     footerTextColor: white,
 
     //Global
-    bodyBG: mainBG,
+    bodyBG: '#f5e933 url("../images/themes/cyberfi/bg.png") top left / cover no-repeat',
+    bodyBGColor: bodyBGColor,
     linkColor: mainColor,
     linkColorHover: mainColor,
     lineColor: '#5F656D',
 
     //Header
-    headerBG: transparent,
-    headerTextColor: white,
+    headerBG: appBG,
+    headerTextColor: mainColor,
     headerButtonBG: buttonBG,
     headerButtonBGHover: buttonBGHover,
-    headerButtonIconColor: white,
+    headerButtonIconColor: mainColor,
+    headerModalTextColor: white,
+    headerModalTextHighlight: secondaryColor,
 
     //Modal
     modalBG: modalBG,
@@ -104,7 +110,7 @@ export function cyberFiTheme() {
     navigationTabIconColor: white,
     navigationTabBGHover: transparent,
     navigationTabIconColorHover: white,
-    navigationTabBGActive: mainColor,
+    navigationTabBGActive: secondaryColor,
     navigationTabIconColorActive: white,
     navigationTabModalBG: modalBG,
     navigationTabModalText: white,
@@ -115,7 +121,7 @@ export function cyberFiTheme() {
     textPrimary: white,
     textSecondary: '#c3c5cb',
     textTertiary: '#6C7284',
-    textDisabled: '565A69',
+    textDisabled: '#565A69',
 
     //States
     red1: '#FF6871',

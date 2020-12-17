@@ -53,7 +53,7 @@ export const ButtonPrimary = styled(Base)`
     background-color: ${({ theme }) => theme.buttonBGHover};
   }
   &:disabled {
-    background-color: ${({ theme, altDisabledStyle }) => (altDisabledStyle ? theme.buttonBG : theme.buttonBG)};
+    background-color: ${({ theme, altDisabledStyle }) => (altDisabledStyle ? theme.buttonBG : theme.buttonBGDisabled)};
     color: ${({ theme, altDisabledStyle }) => (altDisabledStyle ? theme.buttonTextColor : theme.textTertiary)};
     cursor: auto;
     box-shadow: none;
@@ -92,20 +92,20 @@ export const ButtonLight = styled(Base)`
 `
 
 export const ButtonGray = styled(Base)`
-  background-color: ${({ theme }) => theme.buttonBG};
-  color: ${({ theme }) => theme.textSecondary};
+  background-color: ${({ theme }) => theme.buttonNavigationBG};
+  color: ${({ theme }) => theme.buttonNavigationTextColor};
   font-size: 16px;
   font-weight: 500;
   &:focus {
-    box-shadow: 0 0 0 1pt ${({ theme, disabled }) => !disabled && darken(0.05, theme.modalSecondaryBG)};
-    background-color: ${({ theme, disabled }) => !disabled && darken(0.05, theme.modalSecondaryBG)};
+    box-shadow: 0 0 0 1pt ${({ theme, disabled }) => !disabled && darken(0.05, theme.buttonNavigationBGHover)};
+    background-color: ${({ theme, disabled }) => !disabled && darken(0.05, theme.buttonNavigationBGHover)};
   }
   &:hover {
-    background-color: ${({ theme, disabled }) => !disabled && darken(0.05, theme.modalSecondaryBG)};
+    background-color: ${({ theme, disabled }) => !disabled && darken(0.05, theme.buttonNavigationBGHover)};
   }
   &:active {
-    box-shadow: 0 0 0 1pt ${({ theme, disabled }) => !disabled && darken(0.1, theme.modalSecondaryBG)};
-    background-color: ${({ theme, disabled }) => !disabled && darken(0.1, theme.modalSecondaryBG)};
+    box-shadow: 0 0 0 1pt ${({ theme, disabled }) => !disabled && darken(0.1, theme.buttonNavigationBG)};
+    background-color: ${({ theme, disabled }) => !disabled && darken(0.1, theme.buttonNavigationBG)};
   }
 `
 

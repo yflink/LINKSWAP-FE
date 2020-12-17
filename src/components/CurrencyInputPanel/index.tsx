@@ -2,8 +2,6 @@ import React, { useState, useContext, useCallback } from 'react'
 import styled, { ThemeContext } from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { Currency, Pair, ETHER } from '@uniswap/sdk'
-import { darken } from 'polished'
-
 import CurrencySearchModal from '../SearchModal/CurrencySearchModal'
 import CurrencyLogo from '../CurrencyLogo'
 import DoubleCurrencyLogo from '../DoubleLogo'
@@ -58,9 +56,9 @@ const CurrencySelect = styled.button<{ selected: boolean; primary?: boolean; lef
         return theme.appCurrencyInputBGActive
       } else {
         if (primary) {
-          return theme.appCurrencyInputBG
+          return theme.appCurrencyInputBGHover
         } else {
-          return theme.appCurrencyInputBGActive
+          return theme.appCurrencyInputBGActiveHover
         }
       }
     }};
@@ -116,19 +114,19 @@ const StyledTokenName = styled.div<{ active?: boolean }>`
 const StyledBalanceMax = styled.button`
   height: 28px;
   background-color: ${({ theme }) => theme.buttonSecondaryBG};
-  border: 1px solid ${({ theme }) => theme.buttonSecondaryBG};
+  border: 1px solid ${({ theme }) => theme.buttonSecondaryBorder};
   border-radius: 0.5rem;
   font-size: 0.875rem;
 
   font-weight: 500;
   cursor: pointer;
   margin-inline-end: 0.5rem;
-  color: ${({ theme }) => theme.appCurrencyInputTextColor};
+  color: ${({ theme }) => theme.buttonSecondaryTextColor};
   :hover {
-    border: 1px solid ${({ theme }) => theme.textHighlight};
+    border: 1px solid ${({ theme }) => theme.buttonSecondaryBorderHover};
   }
   :focus {
-    border: 1px solid ${({ theme }) => theme.textHighlight};
+    border: 1px solid ${({ theme }) => theme.buttonSecondaryTextColor};
     outline: none;
   }
 

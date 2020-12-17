@@ -25,7 +25,7 @@ const StyledMenuIcon = styled(Settings)`
   width: 20px;
 
   > * {
-    stroke: ${({ theme }) => theme.textPrimary};
+    stroke: ${({ theme }) => theme.headerButtonIconColor};
   }
 `
 const ExpertModeIndicatorTop = styled(Settings)`
@@ -36,7 +36,7 @@ const ExpertModeIndicatorTop = styled(Settings)`
   top: 3px;
 
   > * {
-    stroke: ${({ theme }) => theme.textPrimary};
+    stroke: ${({ theme }) => theme.headerButtonIconColor};
   }
 `
 const ExpertModeIndicatorBottom = styled(Settings)`
@@ -47,7 +47,7 @@ const ExpertModeIndicatorBottom = styled(Settings)`
   bottom: 4px;
 
   > * {
-    stroke: ${({ theme }) => theme.textPrimary};
+    stroke: ${({ theme }) => theme.headerButtonIconColor};
   }
 `
 
@@ -106,7 +106,7 @@ const MenuFlyout = styled.span`
     0px 24px 32px rgba(0, 0, 0, 0.01);
 
   border: 1px solid ${({ theme }) => theme.headerButtonBG};
-
+  color: ${({ theme }) => theme.headerModalTextColor};
   border-radius: 0.5rem;
   display: flex;
   flex-direction: column;

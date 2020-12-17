@@ -1,8 +1,8 @@
 export function defaultTheme() {
   const mainColor = '#295BDB'
   const mainColorHover = '#2251c9'
-  const mainBG = '#2b3a4a'
   const appBG = '#232a35'
+  const bodyBGColor = '#2b3a4a'
   const white = '#FFF'
   const transparent = 'transparent'
   const buttonBG = '#40444f'
@@ -12,7 +12,7 @@ export function defaultTheme() {
 
   return {
     //App
-    appBG: '#2b3a4a no-repeat 0 10vh url("../images/themes/default/bg.svg")',
+    appBGColor: appBG,
     appInfoBoxBG: '#202f46',
     appInfoBoxTextColor: '#87a9ff',
     appBoxBG: '#373f49',
@@ -30,6 +30,9 @@ export function defaultTheme() {
     appCurrencyInputTextColorHover: white,
     appCurrencyInputBGActive: mainColor,
     appCurrencyInputTextColorActive: white,
+    appCurrencyInputBGActiveHover: mainColorHover,
+    appCurrencyInputTextColorActiveHover: white,
+
 
     //Buttons
     buttonBG: mainColor,
@@ -58,10 +61,10 @@ export function defaultTheme() {
     buttonSecondaryBorder: transparent,
     buttonSecondaryTextColor: '#87a9ff',
     buttonSecondaryBGActive: '#202f46',
-    buttonSecondaryBorderActive: transparent,
+    buttonSecondaryBorderActive: mainColor,
     buttonSecondaryTextColorActive: '#87a9ff',
     buttonSecondaryBGHover: 'rgba(55, 107, 173, 0.44)',
-    buttonSecondaryBorderHover: transparent,
+    buttonSecondaryBorderHover: mainColor,
     buttonSecondaryTextColorHover: '#87a9ff',
     buttonOutlinedBorder: '#2c2f36',
     buttonOutlinedTextColor: white,
@@ -69,11 +72,12 @@ export function defaultTheme() {
     buttonOutlinedTextColorHover: white,
 
     //Footer
-    footerBG: mainBG,
+    footerBG: bodyBGColor,
     footerTextColor: white,
 
     //Global
-    bodyBG: mainBG,
+    bodyBG: '#2b3a4a no-repeat 0 10vh url("../images/themes/default/bg.svg")',
+    bodyBGColor: bodyBGColor,
     linkColor: mainColor,
     linkColorHover: mainColor,
     lineColor: '#5F656D',
@@ -84,6 +88,8 @@ export function defaultTheme() {
     headerButtonBG: buttonBG,
     headerButtonBGHover: buttonBGHover,
     headerButtonIconColor: white,
+    headerModalTextColor: white,
+    headerModalTextHighlight: mainColor,
 
     //Modal
     modalBG: modalBG,
@@ -92,11 +98,11 @@ export function defaultTheme() {
     modalLines: buttonBG,
     modalButtonBG: '#2c2f36',
     modalButtonText: white,
-    modalShadow: 'ba(0,0,0,.425)',
+    modalShadow: 'rgba(0,0,0,.425)',
     modalInputBG: transparent,
     modalInputBorder: buttonBG,
     modalInputBorderFocus: mainColor,
-    modalFooterBG: 'ba(0,0,0,0.1)',
+    modalFooterBG: 'rgba(0, 0, 0, 0.1)',
 
     //Navigation
     navigationBG: appBG,

@@ -9,16 +9,13 @@ import { useTotalSupply } from '../../data/TotalSupply'
 
 import { useActiveWeb3React } from '../../hooks'
 import { useTokenBalance } from '../../state/wallet/hooks'
-// import { ExternalLink } from '../../theme'
 import { currencyId } from '../../utils/currencyId'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
 import { ButtonSecondary } from '../Button'
-
 import Card, { GreyCard } from '../Card'
 import { AutoColumn } from '../Column'
 import CurrencyLogo from '../CurrencyLogo'
 import DoubleCurrencyLogo from '../DoubleLogo'
-// import { AutoRow, RowBetween, RowFixed } from '../Row'
 import { RowBetween, RowFixed } from '../Row'
 
 import { Dots } from '../swap/styleds'
@@ -102,7 +99,7 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
             </FixedHeightRow>
             <AutoColumn gap="4px">
               <RowFixed style={{ display: 'flex', width: '100%' }}>
-                <Card style={{ backgroundColor: '#53606C',marginInlineEnd: 16 }}>
+                <Card style={{marginInlineEnd: 16 }} secondary={true}>
                   <Text style={{ marginBottom: 4 }}>
                     {token0Deposited ? (
                       <RowFixed>
@@ -119,7 +116,7 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
                     {currency0.symbol}
                   </Text>
                 </Card>
-                <Card style={{ backgroundColor: '#53606C' }}>
+                <Card secondary={true}>
                   <Text style={{ marginBottom: 4 }}>
                     {token1Deposited ? (
                       <RowFixed>

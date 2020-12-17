@@ -2,7 +2,6 @@ import React, { HTMLProps, useCallback } from 'react'
 import ReactGA from 'react-ga'
 import { Link } from 'react-router-dom'
 import styled, { keyframes } from 'styled-components'
-import { darken } from 'polished'
 import { ArrowLeft, X } from 'react-feather'
 
 export const Button = styled.button.attrs<{ warning: boolean }, { backgroundColor: string }>(({ warning, theme }) => ({

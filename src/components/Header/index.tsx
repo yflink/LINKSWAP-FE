@@ -26,6 +26,9 @@ const HeaderFrame = styled.div`
   top: 0;
   position: absolute;
   z-index: 2;
+  background-color: ${({ theme }) => theme.headerBG};
+  color: ${({ theme }) => theme.headerTextColor};
+
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     padding: 12px 0 0 0;
     width: calc(100%);
@@ -35,7 +38,7 @@ const HeaderFrame = styled.div`
 
 const HeaderElement = styled.div`
   display: flex;
-  align-items: flex-start;
+  align-items: center;
 `
 
 const HeaderElementMobile = styled.div`
@@ -77,6 +80,7 @@ const TitleText = styled.h1`
   font-size: 24px;
   font-weight: 100;
   letter-spacing: 0.3em;
+  color: ${({ theme }) => theme.headerTextColor};
 `
 
 const MenuText = styled.h3`
@@ -87,9 +91,12 @@ const MenuText = styled.h3`
   font-size: 18px;
   font-weight: 400;
   letter-spacing: 0.06em;
-  padding-bottom: 8px;
+  padding: 4px 0;
+  border-bottom: 2px solid transparent;
+  color: ${({ theme }) => theme.headerTextColor};
+
   :hover {
-    border-bottom: 4px solid white;
+    border-bottom: 2px solid ${({ theme }) => theme.headerTextColor};
   }
 `
 
@@ -176,7 +183,7 @@ export default function Header() {
 
   return (
     <HeaderFrame>
-      <RowBetween style={{ alignItems: 'flex-start' }} padding="1rem 1rem 0 1rem">
+      <RowBetween style={{ alignItems: 'flex-start' }} padding="1rem">
         <HeaderElement>
           <Title href="https://yflink.io">
             <Logo src={logo}></Logo>
@@ -209,7 +216,8 @@ export default function Header() {
                 height="20px"
                 width="20px"
                 alt="YFLink"
-              />&nbsp;YFL
+              />
+              &nbsp;YFL
             </ThemeToggle>
             <ThemeToggle onClick={() => newTheme('cyberfi')}>
               <img
@@ -217,7 +225,8 @@ export default function Header() {
                 height="20px"
                 width="20px"
                 alt="CFi"
-              />&nbsp;CFi
+              />
+              &nbsp;CFi
             </ThemeToggle>
           </ThemeToggles>
         </HeaderElement>

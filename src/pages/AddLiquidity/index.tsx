@@ -326,7 +326,7 @@ export default function AddLiquidity({
 
   return (
     <>
-      <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.modalBG, marginBottom: '16px' }}>
+      <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.appBGColor, marginBottom: '16px' }}>
         <SwapPoolTabs active={'pool'} />
       </Card>
       <AppBody>

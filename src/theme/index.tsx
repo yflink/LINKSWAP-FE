@@ -1,4 +1,3 @@
-// import { transparentize } from 'polished'
 import React, { useMemo } from 'react'
 import styled, {
   ThemeProvider as StyledComponentsThemeProvider,
@@ -164,10 +163,10 @@ html {
 export const ThemedGlobalStyle = createGlobalStyle`
 html {
   color: ${({ theme }) => theme.textPrimary};
-  background-color: ${({ theme }) => theme.appBG};
+  background-color: ${({ theme }) => theme.bodyBGColor};
 }
 
 body {
   min-height: 100vh;
-  background: ${({ theme }) => theme.appBG};
+  background: ${({ theme }) => theme.bodyBG};
 `

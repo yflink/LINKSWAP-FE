@@ -357,7 +357,7 @@ export default function CreateNewPool({
 
   return (
     <>
-      <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.modalBG, marginBottom: '16px' }}>
+      <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.appBGColor, marginBottom: '16px' }}>
         <SwapPoolTabs active={'create'} />
       </Card>
       <AppBody>
@@ -464,14 +464,14 @@ export default function CreateNewPool({
         ) : step === 1 ? (
           <Wrapper>
             <AutoColumn>
-              <div style={{ backgroundColor: '#383F49', padding: '12px', borderRadius: '6px' }}>
+              <div style={{ backgroundColor: theme.appBoxBG, padding: '12px', borderRadius: '6px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
                   <Text fontSize={12}>1 {currencies[Field.CURRENCY_A]!.symbol} =</Text>
                   <img
                     src={rateIcon}
                     alt={t('rate')}
                     style={{
-                      backgroundColor: '#1E2C49',
+                      backgroundColor: theme.appBoxBG,
                       borderRadius: 6,
                       padding: 6,
                       width: 36,

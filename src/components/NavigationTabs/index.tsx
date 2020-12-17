@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from 'styled-components'
-import { darken } from 'polished'
 import { NavLink, Link as HistoryLink } from 'react-router-dom'
 
 import { ArrowLeft } from 'react-feather'
@@ -43,6 +42,11 @@ const StyledNavLink = styled(NavLink).attrs({
   &.${activeClassName} {
     background-color: ${({ theme }) => theme.navigationTabBGActive};
     color: ${({ theme }) => theme.navigationTabIconColorActive};
+    :hover,
+    :focus {
+      background-color: ${({ theme }) => theme.navigationTabBGActive};
+      color: ${({ theme }) => theme.navigationTabIconColorActive};
+    }
   }
   :hover,
   :focus {
