@@ -18,7 +18,7 @@ const StyledMenuIcon = styled(Globe)`
   width: 20px;
 
   > * {
-    stroke: ${({ theme }) => theme.text1};
+    stroke: ${({ theme }) => theme.textPrimary};
   }
 `
 
@@ -30,7 +30,7 @@ const StyledMenuButton = styled.button`
   margin: 0;
   padding: 0;
   height: 35px;
-  background-color: ${({ theme }) => theme.bg3};
+  background-color: ${({ theme }) => theme.buttonBG};
 
   padding: 0.15rem 0.5rem;
   border-radius: 0.5rem;
@@ -69,11 +69,11 @@ const LanguageContainer = styled.div`
 
 const MenuFlyout = styled.span`
   max-width: 100vw;
-  background-color: ${({ theme }) => theme.bg1};
+  background-color: ${({ theme }) => theme.modalBG};
   box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.01), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04),
     0px 24px 32px rgba(0, 0, 0, 0.01);
 
-  border: 1px solid ${({ theme }) => theme.bg3};
+  border: 1px solid ${({ theme }) => theme.buttonBG};
 
   border-radius: 0.5rem;
   display: flex;

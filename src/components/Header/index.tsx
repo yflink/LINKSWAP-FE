@@ -97,7 +97,7 @@ const AccountElement = styled.div<{ active: boolean }>`
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: ${({ theme, active }) => (!active ? theme.bg1 : theme.bg3)};
+  background-color: ${({ theme, active }) => (!active ? theme.modalBG : theme.buttonBG)};
   border-radius: 6px;
   white-space: nowrap;
   width: 100%;
@@ -152,7 +152,7 @@ const ThemeToggle = styled.div`
   position: relative;
   margin: 0 1rem 0 0;
   padding: 0;
-  background-color: ${({ theme }) => theme.bg3};
+  background-color: ${({ theme }) => theme.buttonBG};
   padding: 0.5rem;
   border-radius: 0.5rem;
 

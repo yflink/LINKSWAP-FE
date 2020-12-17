@@ -25,7 +25,7 @@ const StyledMenuIcon = styled(Settings)`
   width: 20px;
 
   > * {
-    stroke: ${({ theme }) => theme.text1};
+    stroke: ${({ theme }) => theme.textPrimary};
   }
 `
 const ExpertModeIndicatorTop = styled(Settings)`
@@ -36,7 +36,7 @@ const ExpertModeIndicatorTop = styled(Settings)`
   top: 3px;
 
   > * {
-    stroke: ${({ theme }) => theme.text1};
+    stroke: ${({ theme }) => theme.textPrimary};
   }
 `
 const ExpertModeIndicatorBottom = styled(Settings)`
@@ -47,7 +47,7 @@ const ExpertModeIndicatorBottom = styled(Settings)`
   bottom: 4px;
 
   > * {
-    stroke: ${({ theme }) => theme.text1};
+    stroke: ${({ theme }) => theme.textPrimary};
   }
 `
 
@@ -59,7 +59,7 @@ const StyledCloseIcon = styled(X)`
   }
 
   > * {
-    stroke: ${({ theme }) => theme.text1};
+    stroke: ${({ theme }) => theme.textPrimary};
   }
 `
 
@@ -72,7 +72,7 @@ const StyledMenuButton = styled.button`
   margin: 0;
   padding: 0;
   height: 35px;
-  background-color: ${({ theme }) => theme.bg3};
+  background-color: ${({ theme }) => theme.buttonBG};
 
   padding: 0.15rem 0.5rem;
   border-radius: 0.5rem;
@@ -101,11 +101,11 @@ const StyledMenu = styled.div`
 
 const MenuFlyout = styled.span`
   min-width: 20.125rem;
-  background-color: ${({ theme }) => theme.bg1};
+  background-color: ${({ theme }) => theme.modalBG};
   box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.01), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04),
     0px 24px 32px rgba(0, 0, 0, 0.01);
 
-  border: 1px solid ${({ theme }) => theme.bg3};
+  border: 1px solid ${({ theme }) => theme.buttonBG};
 
   border-radius: 0.5rem;
   display: flex;
@@ -129,7 +129,7 @@ const MenuFlyout = styled.span`
 const Break = styled.div`
   width: 100%;
   height: 1px;
-  background-color: ${({ theme }) => theme.bg3};
+  background-color: ${({ theme }) => theme.buttonBG};
 `
 
 const ModalContentWrapper = styled.div`
@@ -137,7 +137,7 @@ const ModalContentWrapper = styled.div`
   align-items: center;
   justify-content: center;
   padding: 2rem 0;
-  background-color: ${({ theme }) => theme.bg2};
+  background-color: ${({ theme }) => theme.modalSecondaryBG};
   border-radius: 6px;
 `
 
@@ -227,7 +227,7 @@ export default function SettingsTab() {
             </Text>
             <RowBetween>
               <RowFixed>
-                <TYPE.black fontWeight={400} fontSize={14} color={theme.text2}>
+                <TYPE.black fontWeight={400} fontSize={14} color={theme.textSecondary}>
                   {t('expertModeToggle')}
                 </TYPE.black>
                 <QuestionHelper text={t('expertModeAbout')} />

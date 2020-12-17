@@ -78,7 +78,7 @@ const FooterWrapper = styled.div`
 
   a {
     text-decoration: none;
-    color: ${({ theme }) => theme.text1};
+    color: ${({ theme }) => theme.textPrimary};
     :hover,
     :focus {
       text-decoration: underline;

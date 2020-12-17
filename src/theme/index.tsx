@@ -163,12 +163,11 @@ html {
 // Change background color
 export const ThemedGlobalStyle = createGlobalStyle`
 html {
-  color: ${({ theme }) => theme.text1};
-  background-color: ${({ theme }) => theme.bg2};
+  color: ${({ theme }) => theme.textPrimary};
+  background-color: ${({ theme }) => theme.appBG};
 }
 
 body {
   min-height: 100vh;
-  background-color: ${({ theme }) => theme.bodyBgColor};
-  background: ${({ theme }) => theme.bodyBg};
+  background: ${({ theme }) => theme.appBG};
 `

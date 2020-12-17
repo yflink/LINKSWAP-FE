@@ -326,7 +326,7 @@ export default function AddLiquidity({
 
   return (
     <>
-      <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.bg1, marginBottom: '16px' }}>
+      <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.modalBG, marginBottom: '16px' }}>
         <SwapPoolTabs active={'pool'} />
       </Card>
       <AppBody>
@@ -390,7 +390,7 @@ export default function AddLiquidity({
               showCommonBases
             />
             <ColumnCenter>
-              <Plus size="16" color={theme.text2} />
+              <Plus size="16" color={theme.textSecondary} />
             </ColumnCenter>
             <CurrencyInputPanel
               value={formattedAmounts[Field.CURRENCY_B]}

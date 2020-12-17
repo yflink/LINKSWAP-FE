@@ -13,7 +13,7 @@ export const ModalInfo = styled.div`
 `
 
 export const FadedSpan = styled(RowFixed)`
-  color: ${({ theme }) => theme.primary1};
+  color: ${({ theme }) => theme.textHighlight};
   font-size: 14px;
 `
 
@@ -31,7 +31,7 @@ export const MenuItem = styled(RowBetween)`
   cursor: ${({ disabled }) => !disabled && 'pointer'};
   pointer-events: ${({ disabled }) => disabled && 'none'};
   :hover {
-    background-color: ${({ theme, disabled }) => !disabled && theme.bg2};
+    background-color: ${({ theme, disabled }) => !disabled && theme.modalSecondaryBG};
   }
   opacity: ${({ disabled, selected }) => (disabled || selected ? 0.5 : 1)};
   [dir='rtl'] & {
@@ -50,30 +50,30 @@ export const SearchInput = styled.input`
   border: none;
   outline: none;
   border-radius: 6px;
-  color: ${({ theme }) => theme.text1};
+  color: ${({ theme }) => theme.textPrimary};
   border-style: solid;
-  border: 1px solid ${({ theme }) => theme.bg3};
+  border: 1px solid ${({ theme }) => theme.buttonBG};
   -webkit-appearance: none;
 
   font-size: 18px;
 
   ::placeholder {
-    color: ${({ theme }) => theme.text3};
+    color: ${({ theme }) => theme.textTertiary};
   }
   transition: border 100ms;
   :focus {
-    border: 1px solid ${({ theme }) => theme.primary1};
+    border: 1px solid ${({ theme }) => theme.textHighlight};
     outline: none;
   }
 `
 export const Separator = styled.div`
   width: 100%;
   height: 1px;
-  background-color: ${({ theme }) => theme.bg2};
+  background-color: ${({ theme }) => theme.modalSecondaryBG};
 `
 
 export const SeparatorDark = styled.div`
   width: 100%;
   height: 1px;
-  background-color: ${({ theme }) => theme.bg3};
+  background-color: ${({ theme }) => theme.buttonBG};
 `

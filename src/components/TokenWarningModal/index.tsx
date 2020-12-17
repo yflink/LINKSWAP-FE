@@ -15,7 +15,7 @@ import { ButtonError } from '../Button'
 import { useTranslation } from 'react-i18next'
 
 const Wrapper = styled.div<{ error: boolean }>`
-  background: ${({ theme }) => transparentize(0.6, theme.bg3)};
+  background: ${({ theme }) => transparentize(0.6, theme.buttonBG)};
   padding: 0.75rem;
   border-radius: 6px;
 `

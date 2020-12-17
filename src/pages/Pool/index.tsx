@@ -62,7 +62,7 @@ export default function Pool() {
 
   return (
     <>
-      <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.bg1, marginBottom: '16px' }}>
+      <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.modalBG, marginBottom: '16px' }}>
         <SwapPoolTabs active={'pool'} />
       </Card>
       <AppBody>
@@ -75,7 +75,7 @@ export default function Pool() {
 
           <AutoColumn gap="12px" style={{ width: '100%' }}>
             <RowBetween padding={'0 8px'}>
-              <Text color={theme.text1} fontWeight={500}>
+              <Text color={theme.textPrimary} fontWeight={500}>
                 {t('myPositions')}
               </Text>
               <Question text={t('addingLiquidity')} />
@@ -83,13 +83,13 @@ export default function Pool() {
 
             {!account ? (
               <LightCard padding="40px">
-                <TYPE.body color={theme.text1} textAlign="center">
+                <TYPE.body color={theme.textPrimary} textAlign="center">
                   {t('connectToSeeLiquidity')}
                 </TYPE.body>
               </LightCard>
             ) : v2IsLoading ? (
               <LightCard padding="40px">
-                <TYPE.body color={theme.text1} textAlign="center">
+                <TYPE.body color={theme.textPrimary} textAlign="center">
                   <Dots>{t('loading')}</Dots>
                 </TYPE.body>
               </LightCard>
@@ -101,7 +101,7 @@ export default function Pool() {
               </>
             ) : (
               <LightCard padding="40px">
-                <TYPE.body color={theme.text1} textAlign="center">
+                <TYPE.body color={theme.textPrimary} textAlign="center">
                   {t('noLiquidityFound')}
                 </TYPE.body>
               </LightCard>

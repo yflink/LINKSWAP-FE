@@ -233,7 +233,7 @@ export default function Analyze() {
         tokens={urlLoadedTokens}
         onConfirm={handleConfirmTokenWarning}
       />
-      <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.bg1, marginBottom: '16px' }}>
+      <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.modalBG, marginBottom: '16px' }}>
         <SwapPoolTabs active={'swap'} />
       </Card>
       <AppBody>
@@ -273,7 +273,7 @@ export default function Analyze() {
                       setApprovalSubmitted(false) // reset 2 step UI for approvals
                       onSwitchTokens()
                     }}
-                    color={currencies[Field.INPUT] && currencies[Field.OUTPUT] ? theme.primary1 : theme.text2}
+                    color={currencies[Field.INPUT] && currencies[Field.OUTPUT] ? theme.textHighlight : theme.textSecondary}
                   />
                 </ArrowWrapper>
                 {recipient === null && !showWrap && isExpertMode ? (
@@ -298,7 +298,7 @@ export default function Analyze() {
               <>
                 <AutoRow justify="space-between" style={{ padding: '0 1rem' }}>
                   <ArrowWrapper clickable={false}>
-                    <ArrowDown size="16" color={theme.text2} />
+                    <ArrowDown size="16" color={theme.textSecondary} />
                   </ArrowWrapper>
                   <LinkStyledButton id="remove-recipient-button" onClick={() => onChangeRecipient(null)}>
                     - Remove send
@@ -313,7 +313,7 @@ export default function Analyze() {
                 <AutoColumn gap="4px">
                   {Boolean(trade) && (
                     <RowBetween align="center">
-                      <Text fontWeight={500} fontSize={14} color={theme.text2}>
+                      <Text fontWeight={500} fontSize={14} color={theme.textSecondary}>
                         Price
                       </Text>
                       <TradePrice
@@ -325,10 +325,10 @@ export default function Analyze() {
                   )}
                   {allowedSlippage !== INITIAL_ALLOWED_SLIPPAGE && (
                     <RowBetween align="center">
-                      <ClickableText fontWeight={500} fontSize={14} color={theme.text2} onClick={toggleSettings}>
+                      <ClickableText fontWeight={500} fontSize={14} color={theme.textSecondary} onClick={toggleSettings}>
                         Slippage Tolerance
                       </ClickableText>
-                      <ClickableText fontWeight={500} fontSize={14} color={theme.text2} onClick={toggleSettings}>
+                      <ClickableText fontWeight={500} fontSize={14} color={theme.textSecondary} onClick={toggleSettings}>
                         {allowedSlippage / 100}%
                       </ClickableText>
                     </RowBetween>

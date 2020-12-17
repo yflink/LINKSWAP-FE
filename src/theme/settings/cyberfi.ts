@@ -1,39 +1,112 @@
 export function cyberFiTheme() {
+  const mainBlue = '#f5e933'
+  const mainBlueHover = '#00f0ff'
+  const mainBG = '#f5e933'
+  const appBG = '#f5e933'
+  const white = '#FFF'
+  const transparent = 'transparent'
+  const buttonBG = '#40444f'
+  const buttonBGHover = '#60656d'
+  const buttonSecondaryBG = '#212328'
+  const modalBG = '#222a35'
+
   return {
-    white: '#FFFFFF',
-    black: '#000000',
+    //App
+    appBG: '#f5e933 url("../images/themes/cyberfi/bg.png") top left / cover no-repeat',
+    appInfoBoxBG: '#202f46',
+    appInfoBoxTextColor: '#87a9ff',
+    appBoxBG: '#373f49',
+    appBoxBorder: '#373f49',
+    appBoxHoverBG: '#373f49',
+    appBoxHoverBorder: '#5e6373',
+    appBoxTextColor: white,
+    appBoxSecondaryBG: '#3f4e5c',
+    appBoxSecondaryTextColor: white,
+    appBoxSecondaryInnerBG: '#53606c',
+    appBoxSecondaryInnerTextColor: '#c3c5cb',
 
-    text1: '#FFFFFF',
-    text2: '#f5e933',
-    text3: '#6C7284',
-    text4: '#565A69',
+    //Buttons
+    buttonBG: transparent,
+    buttonTextColor: white,
+    buttonBGHover: mainBlueHover,
+    buttonTextColorHover: white,
+    buttonBGActive: mainBlue,
+    buttonTextColorActive: white,
+    buttonBGActiveHover: mainBlue,
+    buttonTextColorActiveHover: white,
+    buttonBGDisabled: buttonBG,
+    buttonTextColorDisabled: white,
+    buttonNavigationBG: buttonBG,
+    buttonNavigationTextColor: '#c3c5cb',
+    buttonNavigationBGHover: '#212328',
+    buttonNavigationTextColorHover: '#c3c5cb',
+    buttonSelectBG: buttonSecondaryBG,
+    buttonSelectTextColor: white,
+    buttonSelectBGHover: buttonBGHover,
+    buttonSelectTextColorHover: white,
+    buttonSelectBGActive: mainBlue,
+    buttonSelectTextColorActive: white,
+    buttonSelectBGActiveHover: mainBlue,
+    buttonSelectTextColorActiveHover: white,
+    buttonSecondaryBG: '#202f46',
+    buttonSecondaryBorder: transparent,
+    buttonSecondaryTextColor: '#87a9ff',
+    buttonSecondaryBGActive: '#202f46',
+    buttonSecondaryBorderActive: mainBlue,
+    buttonSecondaryTextColorActive: '#87a9ff',
+    buttonSecondaryBGHover: '#1b283c',
+    buttonSecondaryBorderHover: mainBlue,
+    buttonSecondaryTextColorHover: '#87a9ff',
 
-    bg1: '#000',
-    bg2: '#2C2F36',
-    bg3: '#40444F',
-    bg4: '#5F656D',
-    bg5: '#6C7284',
-    bg6: '#410f2c',
-    bg7: '#ff284c',
+    //Footer
+    footerBG: mainBG,
+    footerTextColor: white,
 
-    bodyBg: '#f5e933 url("../images/themes/cyberfi/bg.png") top left / cover no-repeat',
-    bodyBgColor: '#d5c82a',
+    //Global
+    bodyBG: mainBG,
+    linkColor: mainBlue,
+    linkColorHover: mainBlue,
 
-    modalBG: 'ba(0,0,0,.425)',
-    advancedBG: 'ba(0,0,0,0.1)',
+    //Header
+    headerBG: transparent,
+    headerTextColor: white,
+    headerButtonBG: buttonBG,
+    headerButtonBGHover: buttonBGHover,
+    headerButtonIconColor: white,
 
-    primary1: '#ff284c',
-    primary2: '#00f0ff',
-    primary3: '#4D8FEA',
-    primary4: '#376bad70',
-    primary5: '#170c16',
+    //Modal
+    modalBG: modalBG,
+    modalBorder: modalBG,
+    modalSecondaryBG: '#2c2f36',
+    modalLines: buttonBG,
+    modalButtonBG: '#2c2f36',
+    modalButtonText: white,
+    modalShadow: 'ba(0,0,0,.425)',
+    modalInputBG: transparent,
+    modalInputBorder: buttonBG,
+    modalInputBorderFocus: mainBlue,
+    modalFooterBG: 'ba(0,0,0,0.1)',
 
-    primaryText1: '#ff284c',
+    //Navigation
+    navigationBG: appBG,
+    navigationTabBG: transparent,
+    navigationTabIconColor: white,
+    navigationTabBGHover: transparent,
+    navigationTabIconColorHover: white,
+    navigationTabBGActive: mainBlue,
+    navigationTabIconColorActive: white,
+    navigationTabModalBG: modalBG,
+    navigationTabModalText: white,
+    navigationTabModalHover: '#2c2f36',
 
-    secondary1: '#295BDB',
-    secondary2: '#17000b26',
-    secondary3: '#17000b26',
+    //Text
+    textHighlight: mainBlue,
+    textPrimary: white,
+    textSecondary: '#c3c5cb',
+    textTertiary: '#6C7284',
+    textDisabled: '565A69',
 
+    //States
     red1: '#FF6871',
     red2: '#F82D3A',
     green1: '#27AE60',

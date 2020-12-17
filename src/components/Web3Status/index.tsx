@@ -72,8 +72,8 @@ const Web3StatusConnect = styled(Web3StatusGeneric)<{ faded?: boolean }>`
   ${({ faded }) =>
     faded &&
     css`
-      background-color: ${({ theme }) => theme.primary5};
-      border: 1px solid ${({ theme }) => theme.primary5};
+      background-color: ${({ theme }) => theme.buttonSecondaryBG};
+      border: 1px solid ${({ theme }) => theme.buttonSecondaryBG};
       color: ${({ theme }) => theme.primaryText1};
 
       :hover,
@@ -85,16 +85,16 @@ const Web3StatusConnect = styled(Web3StatusGeneric)<{ faded?: boolean }>`
 `
 
 const Web3StatusConnected = styled(Web3StatusGeneric)<{ pending?: boolean }>`
-  background-color: ${({ pending, theme }) => (pending ? theme.primary1 : theme.bg2)};
-  border: 1px solid ${({ pending, theme }) => (pending ? theme.primary1 : theme.bg3)};
-  color: ${({ pending, theme }) => (pending ? theme.white : theme.text1)};
+  background-color: ${({ pending, theme }) => (pending ? theme.textHighlight : theme.modalSecondaryBG)};
+  border: 1px solid ${({ pending, theme }) => (pending ? theme.textHighlight : theme.buttonBG)};
+  color: ${({ pending, theme }) => (pending ? theme.white : theme.textPrimary)};
   font-weight: 500;
   :hover,
   :focus {
-    background-color: ${({ pending, theme }) => (pending ? darken(0.05, theme.primary1) : lighten(0.05, theme.bg2))};
+    background-color: ${({ pending, theme }) => (pending ? darken(0.05, theme.textHighlight) : lighten(0.05, theme.modalSecondaryBG))};
 
     :focus {
-      border: 1px solid ${({ pending, theme }) => (pending ? darken(0.1, theme.primary1) : darken(0.1, theme.bg3))};
+      border: 1px solid ${({ pending, theme }) => (pending ? darken(0.1, theme.textHighlight) : darken(0.1, theme.buttonBG))};
     }
   }
 `

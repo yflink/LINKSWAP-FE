@@ -9,14 +9,14 @@ import { MouseoverTooltip } from '../Tooltip'
 const VersionLabel = styled.span<{ enabled: boolean }>`
   padding: 0.35rem 0.6rem;
   border-radius: 6px;
-  background: ${({ theme, enabled }) => (enabled ? theme.primary1 : 'none')};
-  color: ${({ theme, enabled }) => (enabled ? theme.white : theme.text1)};
+  background: ${({ theme, enabled }) => (enabled ? theme.textHighlight : 'none')};
+  color: ${({ theme, enabled }) => (enabled ? theme.white : theme.textPrimary)};
   font-size: 1rem;
   font-weight: ${({ enabled }) => (enabled ? '500' : '400')};
   :hover {
     user-select: ${({ enabled }) => (enabled ? 'none' : 'initial')};
-    background: ${({ theme, enabled }) => (enabled ? theme.primary1 : 'none')};
-    color: ${({ theme, enabled }) => (enabled ? theme.white : theme.text1)};
+    background: ${({ theme, enabled }) => (enabled ? theme.textHighlight : 'none')};
+    color: ${({ theme, enabled }) => (enabled ? theme.white : theme.textPrimary)};
   }
 `
 
@@ -29,8 +29,8 @@ const VersionToggle = styled(({ enabled, ...rest }: VersionToggleProps) => <Link
   border-radius: 6px;
   opacity: ${({ enabled }) => (enabled ? 1 : 0.5)};
   cursor: ${({ enabled }) => (enabled ? 'pointer' : 'default')};
-  background: ${({ theme }) => theme.bg3};
-  color: ${({ theme }) => theme.primary1};
+  background: ${({ theme }) => theme.buttonBG};
+  color: ${({ theme }) => theme.textHighlight};
   display: flex;
   width: fit-content;
   margin-inline-start: 0.5rem;

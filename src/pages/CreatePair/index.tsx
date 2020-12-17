@@ -357,7 +357,7 @@ export default function CreateNewPool({
 
   return (
     <>
-      <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.bg1, marginBottom: '16px' }}>
+      <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.modalBG, marginBottom: '16px' }}>
         <SwapPoolTabs active={'create'} />
       </Card>
       <AppBody>
@@ -444,7 +444,7 @@ export default function CreateNewPool({
                 showCommonBases
               />
               <ColumnCenter>
-                <Plus size="16" color={theme.text2} />
+                <Plus size="16" color={theme.textSecondary} />
               </ColumnCenter>
               <CurrencyInputPanel
                 hideSelect
@@ -482,7 +482,7 @@ export default function CreateNewPool({
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <NumericalInput
-                    style={{ backgroundColor: theme.bg6 }}
+                    style={{ backgroundColor: theme.appBoxBG }}
                     className="token-amount-input"
                     value={rate}
                     onUserInput={val => {
@@ -528,7 +528,7 @@ export default function CreateNewPool({
                 disableCurrencySelect
               />
               <ColumnCenter>
-                <Plus size="16" color={theme.text2} />
+                <Plus size="16" color={theme.textSecondary} />
               </ColumnCenter>
               <CurrencyInputPanel
                 value={(Number(formattedAmounts[Field.CURRENCY_A]) * Number(rate)).toString()}
@@ -551,7 +551,7 @@ export default function CreateNewPool({
                     <Text fontWeight={700} fontSize={14} style={{ marginBottom: '6px' }}>
                       RugLock
                     </Text>
-                    <TYPE.black fontWeight={400} fontSize={14} color={theme.text2}>
+                    <TYPE.black fontWeight={400} fontSize={14} color={theme.textSecondary}>
                       {t('rugLockTokens')}
                     </TYPE.black>
                   </div>

@@ -20,21 +20,21 @@ enum DeadlineError {
 }
 
 const FancyButton = styled.button`
-  color: ${({ theme }) => theme.text1};
+  color: ${({ theme }) => theme.textPrimary};
   align-items: center;
   height: 2rem;
   border-radius: 6px;
   font-size: 12px;
   width: auto;
   min-width: 3rem;
-  border: 1px solid ${({ theme }) => theme.bg3};
+  border: 1px solid ${({ theme }) => theme.buttonBG};
   outline: none;
-  background: ${({ theme }) => theme.bg1};
+  background: ${({ theme }) => theme.modalBG};
   :hover {
     border: 1px solid ${({ theme }) => theme.bg4};
   }
   :focus {
-    border: 1px solid ${({ theme }) => theme.primary1};
+    border: 1px solid ${({ theme }) => theme.textHighlight};
   }
 `
 
@@ -43,12 +43,12 @@ const Option = styled(FancyButton)<{ active: boolean }>`
   :hover {
     cursor: pointer;
   }
-  background-color: ${({ active, theme }) => active && theme.primary1};
-  color: ${({ active, theme }) => (active ? theme.white : theme.text1)};
+  background-color: ${({ active, theme }) => active && theme.textHighlight};
+  color: ${({ active, theme }) => (active ? theme.white : theme.textPrimary)};
 `
 
 const Input = styled.input`
-  background: ${({ theme }) => theme.bg1};
+  background: ${({ theme }) => theme.modalBG};
   font-size: 16px;
   width: auto;
   outline: none;
@@ -56,7 +56,7 @@ const Input = styled.input`
   &::-webkit-inner-spin-button {
     -webkit-appearance: none;
   }
-  color: ${({ theme, color }) => (color === 'red' ? theme.red1 : theme.text1)};
+  color: ${({ theme, color }) => (color === 'red' ? theme.red1 : theme.textPrimary)};
   text-align: end;
 `
 
@@ -65,10 +65,10 @@ const OptionCustom = styled(FancyButton)<{ active?: boolean; warning?: boolean }
   position: relative;
   padding: 0 0.75rem;
   flex: 1;
-  border: ${({ theme, active, warning }) => active && `1px solid ${warning ? theme.red1 : theme.primary1}`};
+  border: ${({ theme, active, warning }) => active && `1px solid ${warning ? theme.red1 : theme.textHighlight}`};
   :hover {
     border: ${({ theme, active, warning }) =>
-      active && `1px solid ${warning ? darken(0.1, theme.red1) : darken(0.1, theme.primary1)}`};
+      active && `1px solid ${warning ? darken(0.1, theme.red1) : darken(0.1, theme.textHighlight)}`};
   }
 
   input {
@@ -151,7 +151,7 @@ export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, se
     <AutoColumn gap="md">
       <AutoColumn gap="sm">
         <RowFixed>
-          <TYPE.black fontWeight={400} fontSize={14} color={theme.text2}>
+          <TYPE.black fontWeight={400} fontSize={14} color={theme.textSecondary}>
             {t('slippageTolerance')}
           </TYPE.black>
           <QuestionHelper text={t('slippageToleranceDisclaimer')} />
@@ -228,7 +228,7 @@ export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, se
 
       <AutoColumn gap="sm">
         <RowFixed>
-          <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
+          <TYPE.black fontSize={14} fontWeight={400} color={theme.textSecondary}>
             {t('transactionDeadline')}
           </TYPE.black>
           <QuestionHelper text={t('transactionDeadlineDisclaimer')} />

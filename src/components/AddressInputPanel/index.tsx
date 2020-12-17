@@ -12,7 +12,7 @@ const InputPanel = styled.div`
   ${({ theme }) => theme.flexColumnNoWrap}
   position: relative;
   border-radius: 6px;
-  background-color: ${({ theme }) => theme.bg1};
+  background-color: ${({ theme }) => theme.modalBG};
   z-index: 1;
   width: 100%;
 `
@@ -22,10 +22,10 @@ const ContainerRow = styled.div<{ error: boolean }>`
   justify-content: center;
   align-items: center;
   border-radius: 1.25rem;
-  border: 1px solid ${({ error, theme }) => (error ? theme.red1 : theme.bg2)};
+  border: 1px solid ${({ error, theme }) => (error ? theme.red1 : theme.modalSecondaryBG)};
   transition: border-color 300ms ${({ error }) => (error ? 'step-end' : 'step-start')},
     color 500ms ${({ error }) => (error ? 'step-end' : 'step-start')};
-  background-color: ${({ theme }) => theme.bg1};
+  background-color: ${({ theme }) => theme.modalBG};
 `
 
 const InputContainer = styled.div`
@@ -39,15 +39,15 @@ const Input = styled.input<{ error?: boolean }>`
   border: none;
   flex: 1 1 auto;
   width: 0;
-  background-color: ${({ theme }) => theme.bg1};
+  background-color: ${({ theme }) => theme.modalBG};
   transition: color 300ms ${({ error }) => (error ? 'step-end' : 'step-start')};
-  color: ${({ error, theme }) => (error ? theme.red1 : theme.primary1)};
+  color: ${({ error, theme }) => (error ? theme.red1 : theme.textHighlight)};
   overflow: hidden;
   text-overflow: ellipsis;
   font-weight: 500;
   width: 100%;
   ::placeholder {
-    color: ${({ theme }) => theme.text4};
+    color: ${({ theme }) => theme.textDisabled};
   }
   padding: 0px;
   -webkit-appearance: textfield;
@@ -62,7 +62,7 @@ const Input = styled.input<{ error?: boolean }>`
   }
 
   ::placeholder {
-    color: ${({ theme }) => theme.text4};
+    color: ${({ theme }) => theme.textDisabled};
   }
 `
 
@@ -101,7 +101,7 @@ export default function AddressInputPanel({
         <InputContainer>
           <AutoColumn gap="md">
             <RowBetween>
-              <TYPE.black color={theme.text2} fontWeight={500} fontSize={14}>
+              <TYPE.black color={theme.textSecondary} fontWeight={500} fontSize={14}>
                 {t('recipient')}
               </TYPE.black>
               {address && chainId && (

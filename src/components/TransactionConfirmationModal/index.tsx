@@ -22,7 +22,7 @@ const Section = styled(AutoColumn)`
 `
 
 const BottomSection = styled(Section)`
-  background-color: ${({ theme }) => theme.bg2};
+  background-color: ${({ theme }) => theme.modalSecondaryBG};
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
 `
@@ -87,7 +87,7 @@ function TransactionSubmittedContent({
           <CloseIcon onClick={onDismiss} />
         </RowBetween>
         <ConfirmedIcon>
-          <ArrowUpCircle strokeWidth={0.5} size={90} color={theme.primary1} />
+          <ArrowUpCircle strokeWidth={0.5} size={90} color={theme.textHighlight} />
         </ConfirmedIcon>
         <AutoColumn gap="12px" justify={'center'}>
           <Text fontWeight={500} fontSize={20}>
@@ -96,7 +96,7 @@ function TransactionSubmittedContent({
 
           {chainId && hash && (
             <ExternalLink href={getEtherscanLink(chainId, hash, 'transaction')}>
-              <Text fontWeight={500} fontSize={14} color={theme.primary1}>
+              <Text fontWeight={500} fontSize={14} color={theme.textHighlight}>
                 {t('viewOnEtherscan')}
               </Text>
             </ExternalLink>

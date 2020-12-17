@@ -6,7 +6,7 @@ import { darken } from 'polished'
 import { ArrowLeft, X } from 'react-feather'
 
 export const Button = styled.button.attrs<{ warning: boolean }, { backgroundColor: string }>(({ warning, theme }) => ({
-  backgroundColor: warning ? theme.red1 : theme.primary1
+  backgroundColor: warning ? theme.red1 : theme.textHighlight
 }))`
   padding: 1rem 2rem 1rem 2rem;
   border-radius: 3rem;
@@ -29,8 +29,8 @@ export const Button = styled.button.attrs<{ warning: boolean }, { backgroundColo
   }
 
   :disabled {
-    background-color: ${({ theme }) => theme.bg1};
-    color: ${({ theme }) => theme.text4};
+    background-color: ${({ theme }) => theme.modalBG};
+    color: ${({ theme }) => theme.textDisabled};
     cursor: auto;
   }
 `
@@ -46,7 +46,7 @@ export const LinkStyledButton = styled.button<{ disabled?: boolean }>`
   background: transparent;
 
   cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
-  color: ${({ theme, disabled }) => (disabled ? theme.text2 : theme.primary1)};
+  color: ${({ theme, disabled }) => (disabled ? theme.textSecondary : theme.textHighlight)};
   font-weight: 500;
 
   :hover {
@@ -67,7 +67,7 @@ export const LinkStyledButton = styled.button<{ disabled?: boolean }>`
 export const StyledInternalLink = styled(Link)`
   text-decoration: none;
   cursor: pointer;
-  color: ${({ theme }) => theme.primary1};
+  color: ${({ theme }) => theme.textHighlight};
   font-weight: 500;
   margin-inline-start: 0.5rem;
 
@@ -88,7 +88,7 @@ export const StyledInternalLink = styled(Link)`
 const StyledLink = styled.a`
   text-decoration: none;
   cursor: pointer;
-  color: ${({ theme }) => theme.primary1};
+  color: ${({ theme }) => theme.textHighlight};
   font-weight: 500;
 
   :hover {
@@ -150,7 +150,7 @@ export const Spinner = styled.img`
 `
 
 const BackArrowLink = styled(StyledInternalLink)`
-  color: ${({ theme }) => theme.text1};
+  color: ${({ theme }) => theme.textPrimary};
 `
 export function BackArrow({ to }: { to: string }) {
   return (

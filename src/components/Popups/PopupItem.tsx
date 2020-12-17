@@ -21,7 +21,7 @@ export const Popup = styled.div`
   display: inline-block;
   width: 100%;
   padding: 1em;
-  background-color: ${({ theme }) => theme.bg1};
+  background-color: ${({ theme }) => theme.modalBG};
   position: relative;
   border-radius: 6px;
   padding: 20px;
@@ -38,7 +38,7 @@ const Fader = styled.div`
   left: 0;
   width: 100%;
   height: 2px;
-  background-color: ${({ theme }) => theme.bg3};
+  background-color: ${({ theme }) => theme.buttonBG};
   [dir='rtl'] & {
     left: unset;
     right: 0;
@@ -93,7 +93,7 @@ export default function PopupItem({
 
   return (
     <Popup>
-      <StyledClose color={theme.text2} onClick={removeThisPopup} />
+      <StyledClose color={theme.textSecondary} onClick={removeThisPopup} />
       {popupContent}
       {removeAfterMs !== null ? <AnimatedFader style={faderStyle} /> : null}
     </Popup>
