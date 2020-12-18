@@ -11,6 +11,7 @@ import { Colors } from './styled'
 
 // Themes
 import { defaultTheme } from './settings/default'
+import { defaultLightTheme } from './settings/default-light'
 import { cyberFiTheme } from './settings/cyberfi'
 
 export * from './components'
@@ -38,6 +39,9 @@ export function colors(theme: string): Colors {
   switch (theme) {
     case 'cyberfi':
       return cyberFiTheme()
+
+    case 'default-light':
+      return defaultLightTheme()
 
     default:
       return defaultTheme()
@@ -175,4 +179,19 @@ body {
   ${({ theme }) => theme.mediaWidth.upToSmall`
     background: ${({ theme }) => theme.bodyBGMobile};
   `};
+}
+
+input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: ${({ theme }) => theme.textTertiary};
+  opacity: 1;
+}
+
+input:-ms-input-placeholder {
+  color: ${({ theme }) => theme.textTertiary};
+}
+
+input::-ms-input-placeholder {
+  color: ${({ theme }) => theme.textTertiary};
+}  
+  
 `

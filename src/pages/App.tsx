@@ -34,7 +34,7 @@ const AppWrapper = styled.div`
   flex-flow: column;
   align-items: flex-start;
   overflow-x: hidden;
-  min-height: 100vh;
+  min-height: 920px;
   background: ${({ theme }) => theme.layerBG};
   ${({ theme }) => theme.mediaWidth.upToMedium`
     background: ${({ theme }) => theme.layerBGTablet};

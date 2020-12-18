@@ -33,7 +33,7 @@ const StyledInput = styled.input<{ error?: boolean; fontSize?: string; align?: s
   }
 
   ::placeholder {
-    color: ${({ theme }) => theme.textDisabled};
+    color: ${({ theme }) => theme.textTertiary};
   }
 `
 

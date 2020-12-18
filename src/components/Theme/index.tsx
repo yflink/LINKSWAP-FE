@@ -53,7 +53,7 @@ const ThemeContainer = styled.div`
 
 const MenuFlyout = styled.span`
   max-width: 100vw;
-  min-width: 10rem;
+  min-width: 11rem;
   background-color: ${({ theme }) => theme.modalBG};
   box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.01), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04),
     0px 24px 32px rgba(0, 0, 0, 0.01);
@@ -92,11 +92,12 @@ export default function ThemeTab() {
             <Text fontWeight={600} fontSize={14} style={{ padding: '0 1rem 0.5rem' }}>
               {t('interfaceTheme')}
             </Text>
-            <ThemeOption fullWidth={true} themeName="LINKSWAP" themeString="default" />
+            <ThemeOption themeName="LINKSWAP" themeString="default" />
           </AutoColumn>
           <Separator />
           <ThemeContainer>
             <ThemeOption themeName="CyberFi" themeString="cyberfi" />
+            <ThemeOption themeName="LINKSWAP light" themeString="default-light" />
           </ThemeContainer>
         </MenuFlyout>
       )}
