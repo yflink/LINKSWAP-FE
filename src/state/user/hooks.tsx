@@ -44,8 +44,8 @@ export function useGetTheme(): string {
 
   switch (currentTheme) {
     case 'cyberfi':
-    case 'default':
     case 'light':
+    case 'masq':
       return currentTheme
 
     default:

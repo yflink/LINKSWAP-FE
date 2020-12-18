@@ -10,9 +10,11 @@ import { Text, TextProps } from 'rebass'
 import { Colors } from './styled'
 
 // Themes
+import { cyberFiTheme } from './settings/cyberfi'
 import { defaultTheme } from './settings/default'
 import { lightTheme } from './settings/light'
-import { cyberFiTheme } from './settings/cyberfi'
+import { masqTheme } from './settings/masq'
+
 
 export * from './components'
 
@@ -42,6 +44,9 @@ export function colors(theme: string): Colors {
 
     case 'light':
       return lightTheme()
+
+    case 'masq':
+      return masqTheme()
 
     default:
       return defaultTheme()
