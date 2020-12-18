@@ -106,11 +106,11 @@ export function cyberFiTheme() {
     modalLines: buttonBG,
     modalButtonBG: buttonBGHover,
     modalButtonText: mainTextColor,
-    modalShadow: 'ba(0,0,0,.425)',
+    modalShadow: 'rgba(0,0,0,.425)',
     modalInputBG: transparent,
     modalInputBorder: buttonBGHover,
     modalInputBorderFocus: mainColor,
-    modalFooterBG: 'ba(0,0,0,0.1)',
+    modalFooterBG: 'rgba(0, 0, 0, 0.8)',
 
     //Navigation
     navigationBG: appBG,

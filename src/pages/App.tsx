@@ -33,9 +33,9 @@ const AppWrapper = styled.div`
   display: flex;
   flex-flow: column;
   align-items: flex-start;
-  overflow: hidden;
-  height: 100vh;
-  min-height: 920px;
+  height: 100%;
+  min-height: 100vh;
+  padding-bottom: 40px;
   background: ${({ theme }) => theme.layerBG};
   ${({ theme }) => theme.mediaWidth.upToMedium`
     background: ${({ theme }) => theme.layerBGTablet};
@@ -52,7 +52,7 @@ const HeaderWrapper = styled.div`
 `
 
 const BodyWrapper = styled.div`
-  min-height: 100%;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   width: 100%;
