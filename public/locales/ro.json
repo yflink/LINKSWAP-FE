@@ -230,5 +230,9 @@
   "transactionSubmitted": "Tranzacție trimisă",
   "close": "Închide",
   "error": "Eroare",
-  "dismiss": "Renunță"
+  "dismiss": "Renunță",
+  "connectToFindPools": "Connect to a wallet to find pools.",
+  "selectATokenToFindLiquidity": "Select a token to find your liquidity.",
+  "interfaceTheme": "Select a Theme",
+  "viewPairAnalytics": "view pair analytics"
 }

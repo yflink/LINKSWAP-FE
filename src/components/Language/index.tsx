@@ -135,6 +135,9 @@ export default function LanguageTab() {
               <LanguageOption shortCode="es" languageString="Español" />
             </LanguageWrapper>
             <LanguageWrapper onClick={() => setIsOpen(!isOpen)}>
+              <LanguageOption shortCode="fa" languageString="فارسی" />
+            </LanguageWrapper>
+            <LanguageWrapper onClick={() => setIsOpen(!isOpen)}>
               <LanguageOption shortCode="fr" languageString="Français" />
             </LanguageWrapper>
             <LanguageWrapper onClick={() => setIsOpen(!isOpen)}>

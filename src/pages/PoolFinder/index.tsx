@@ -34,6 +34,8 @@ export default function PoolFinder() {
   const [currency0, setCurrency0] = useState<Currency | null>(ETHER)
   const [currency1, setCurrency1] = useState<Currency | null>(null)
 
+  const { t } = useTranslation()
+
   const [pairState, pair] = usePair(currency0 ?? undefined, currency1 ?? undefined)
   const addPair = usePairAdder()
   useEffect(() => {
@@ -72,12 +74,10 @@ export default function PoolFinder() {
   const prerequisiteMessage = (
     <LightCard padding="45px 10px">
       <Text textAlign="center">
-        {!account ? 'Connect to a wallet to find pools' : 'Select a token to find your liquidity.'}
+        {!account ? t('connectToFindPools') : t('selectATokenToFindLiquidity')}
       </Text>
     </LightCard>
   )
-
-  const { t } = useTranslation()
 
   return (
     <AppBody>

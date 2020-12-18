@@ -236,5 +236,9 @@
   "error": "Error",
   "dismiss": "Dismiss",
   "route": "Route",
-  "routeDescription": "Routing through these tokens resulted in the best price for your trade."
+  "routeDescription": "Routing through these tokens resulted in the best price for your trade.",
+  "connectToFindPools": "Connect to a wallet to find pools.",
+  "selectATokenToFindLiquidity": "Select a token to find your liquidity.",
+  "interfaceTheme": "Select a Theme",
+  "viewPairAnalytics": "view pair analytics"
 }
