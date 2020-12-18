@@ -237,8 +237,8 @@
   "dismiss": "Afwijzen",
   "route": "Route",
   "routeDescription": "Routeren via deze tokens resulteerde in de best mogelijke prijs voor uw transactie.",
-  "connectToFindPools": "Connect to a wallet to find pools.",
-  "selectATokenToFindLiquidity": "Select a token to find your liquidity.",
-  "interfaceTheme": "Select a Theme",
-  "viewPairAnalytics": "view pair analytics"
+  "connectToFindPools": "Maak verbinding met een wallet om pools te vinden.",
+  "selectATokenToFindLiquidity": "Selecteer een token om uw liquiditeit te vinden.",
+  "interfaceTheme": "Selecteer een thema",
+  "viewPairAnalytics": "Bekijk paaranalyses"
 }
