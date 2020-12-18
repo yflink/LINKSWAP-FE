@@ -2,7 +2,7 @@ export function defaultLightTheme() {
   const mainColor = '#295BDB'
   const mainColorHover = '#354776'
   const appBG = '#333'
-  const bodyBGColor = '#FFF'
+  const bodyBGColor = '#f7f7f7'
   const mainTextColor = '#FFF'
   const transparent = 'transparent'
   const buttonBG = '#666'
@@ -78,9 +78,9 @@ export function defaultLightTheme() {
     footerTextColor: mainTextColor,
 
     //Global
-    bodyBG: '#FFF no-repeat 0 10vh url("../images/themes/default-light/bg.svg")',
-    bodyBGTablet: '#FFF no-repeat 0 10vh url("../images/themes/default-light/bg.svg")',
-    bodyBGMobile: '#FFF no-repeat 0 10vh url("../images/themes/default-light/bg.svg")',
+    bodyBG: '#f7f7f7 no-repeat 0 10vh url("../images/themes/default-light/bg.svg")',
+    bodyBGTablet: '#f7f7f7 no-repeat 0 10vh url("../images/themes/default-light/bg.svg")',
+    bodyBGMobile: '#f7f7f7 no-repeat 0 10vh url("../images/themes/default-light/bg.svg")',
     layerBG: transparent,
     layerBGTablet: transparent,
     layerBGMobile: transparent,

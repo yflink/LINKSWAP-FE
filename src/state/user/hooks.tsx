@@ -40,7 +40,17 @@ function deserializeToken(serializedToken: SerializedToken): Token {
 }
 
 export function useGetTheme(): string {
-  return useSelector<AppState, AppState['user']['userTheme']>(state => state.user.userTheme)
+  const currentTheme = useSelector<AppState, AppState['user']['userTheme']>(state => state.user.userTheme)
+
+  switch (currentTheme) {
+    case 'cyberfi':
+    case 'default':
+    case 'default-light':
+      return currentTheme
+
+    default:
+      return 'default'
+  }
 }
 
 export function useIsExpertMode(): boolean {

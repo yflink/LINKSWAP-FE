@@ -108,7 +108,7 @@ export function cyberFiTheme() {
     modalButtonText: mainTextColor,
     modalShadow: 'ba(0,0,0,.425)',
     modalInputBG: transparent,
-    modalInputBorder: buttonBG,
+    modalInputBorder: buttonBGHover,
     modalInputBorderFocus: mainColor,
     modalFooterBG: 'ba(0,0,0,0.1)',
 
