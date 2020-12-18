@@ -18,7 +18,7 @@ import Web3Status from '../Web3Status'
 
 const HeaderFrame = styled.div`
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   flex-direction: column;
   width: 100%;
@@ -31,7 +31,7 @@ const HeaderFrame = styled.div`
 
 const HeaderElement = styled.div`
   display: flex;
-  align-items: center;
+  align-items: flex-start;
 `
 
 const HeaderElementMobile = styled.div`
@@ -44,7 +44,7 @@ const HeaderElementMobile = styled.div`
 
 const HeaderElementWrap = styled.div`
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   ${({ theme }) => theme.mediaWidth.upToMedium`
     margin: 0 0 0.5rem 0;
 `};
@@ -133,7 +133,7 @@ const NetworkCard = styled(YellowCard)`
 const HeaderControls = styled.div`
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
 
   ${({ theme }) => theme.mediaWidth.upToMedium`
     flex-direction: column;
@@ -164,7 +164,7 @@ export default function Header() {
   const hasSublogo = theme.logo.length > 2
   return (
     <HeaderFrame>
-      <RowBetween style={{ alignItems: 'center' }} padding="1rem">
+      <RowBetween style={{ alignItems: 'flex-start' }} padding="1rem">
         <HeaderElement>
           <LogoWrapper>
           <Title href="https://yflink.io">
@@ -179,17 +179,17 @@ export default function Header() {
           {!isMobile && (
             <HeaderElementMobile>
               <Title
-                style={{ marginTop: 4, marginInlineStart: 24 }}
+                style={{ marginInlineStart: 24 }}
                 target="_blank"
                 href="https://rewards.linkswap.app/"
               >
                 <MenuText>LP Rewards</MenuText>
               </Title>
-              <Title style={{ marginTop: 4, marginInlineStart: 36 }} target="_blank" href="https://yflink.io/#/vote">
+              <Title style={{ marginInlineStart: 36 }} target="_blank" href="https://yflink.io/#/vote">
                 <MenuText>VOTE</MenuText>
               </Title>
               <Title
-                style={{ marginTop: 4, marginInlineStart: 24 }}
+                style={{  marginInlineStart: 24 }}
                 href="https://linkswap.app/#/swap?outputCurrency=0x28cb7e841ee97947a86b06fa4090c8451f64c0be"
               >
                 <MenuText>Buy YFL</MenuText>
