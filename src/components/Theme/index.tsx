@@ -97,7 +97,7 @@ export default function ThemeTab() {
           <Separator />
           <ThemeContainer>
             <ThemeOption themeName="CyberFi" themeString="cyberfi" />
-            <ThemeOption themeName="LINKSWAP light" themeString="default-light" />
+            <ThemeOption themeName="LINKSWAP light" themeString="light" />
           </ThemeContainer>
         </MenuFlyout>
       )}

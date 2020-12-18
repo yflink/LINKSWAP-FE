@@ -11,7 +11,7 @@ import { Colors } from './styled'
 
 // Themes
 import { defaultTheme } from './settings/default'
-import { defaultLightTheme } from './settings/default-light'
+import { lightTheme } from './settings/light'
 import { cyberFiTheme } from './settings/cyberfi'
 
 export * from './components'
@@ -40,8 +40,8 @@ export function colors(theme: string): Colors {
     case 'cyberfi':
       return cyberFiTheme()
 
-    case 'default-light':
-      return defaultLightTheme()
+    case 'light':
+      return lightTheme()
 
     default:
       return defaultTheme()

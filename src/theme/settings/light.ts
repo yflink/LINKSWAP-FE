@@ -1,4 +1,4 @@
-export function defaultLightTheme() {
+export function lightTheme() {
   const mainColor = '#295BDB'
   const mainColorHover = '#354776'
   const appBG = '#333'
@@ -78,9 +78,9 @@ export function defaultLightTheme() {
     footerTextColor: appBG,
 
     //Global
-    bodyBG: '#f7f7f7 no-repeat 0 10vh url("../images/themes/default-light/background_large.png")',
-    bodyBGTablet: '#f7f7f7 no-repeat 0 10vh url("../images/themes/default-light/background_tablet.png")',
-    bodyBGMobile: '#f7f7f7 no-repeat -50vw 10vh url("../images/themes/default-light/background_mobile.png")',
+    bodyBG: '#f7f7f7 no-repeat 0 10vh url("../images/themes/light/background_large.png")',
+    bodyBGTablet: '#f7f7f7 no-repeat 0 10vh url("../images/themes/light/background_tablet.png")',
+    bodyBGMobile: '#f7f7f7 no-repeat -50vw 10vh url("../images/themes/light/background_mobile.png")',
     layerBG: transparent,
     layerBGTablet: transparent,
     layerBGMobile: transparent,
