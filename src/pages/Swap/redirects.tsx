@@ -30,30 +30,6 @@ export function RedirectToSwap(props: RouteComponentProps<{ outputCurrency: stri
 }
 
 // Redirects from the /swap/:outputCurrency path to the /swap?outputCurrency=:outputCurrency format
-export function RedirectThemeToSwap(props: RouteComponentProps<{ theme: string }>) {
-  const {
-    location: { search },
-    match: {
-      params: { theme }
-    }
-  } = props
-
-  return (
-    <Redirect
-      to={{
-        ...props.location,
-        pathname: '/swap',
-        search:
-          search && search.length > 1
-            ? `${search}&theme=${theme}`
-            : `?theme=${theme}`
-      }}
-    />
-  )
-}
-
-
-// Redirects from the /swap/:outputCurrency path to the /swap?outputCurrency=:outputCurrency format
 export function RedirectThemeOutputToSwap(props: RouteComponentProps<{ outputCurrency: string, theme: string }>) {
   const {
     location: { search },
