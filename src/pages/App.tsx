@@ -38,7 +38,7 @@ const AppWrapper = styled.div`
   display: flex;
   flex-flow: column;
   align-items: flex-start;
-  overflow-x: hidden;
+  overflow: hidden;
   height: 100vh;
   min-height: 920px;
   background: ${({ theme }) => theme.layerBG};
@@ -57,15 +57,14 @@ const HeaderWrapper = styled.div`
 `
 
 const BodyWrapper = styled.div`
-  min-height: 100wh;
+  min-height: 100%;
   display: flex;
   flex-direction: column;
   width: 100%;
   padding-top: 90px;
+  box-sizing: content-box;
   align-items: center;
   flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
   z-index: 1;
   ${({ theme }) => theme.mediaWidth.upToSmall`
     padding: 16px;
