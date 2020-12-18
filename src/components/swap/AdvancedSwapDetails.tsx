@@ -1,6 +1,6 @@
 import { Trade, TradeType } from '@uniswap/sdk'
 import React, { useContext } from 'react'
-import { ThemeContext } from 'styled-components'
+import styled, { ThemeContext } from 'styled-components'
 import { Field } from '../../state/swap/actions'
 import { useUserSlippageTolerance } from '../../state/user/hooks'
 import { TYPE } from '../../theme'
@@ -12,6 +12,43 @@ import FormattedPriceImpact from './FormattedPriceImpact'
 import { SectionBreak } from './styleds'
 import SwapRoute from './SwapRoute'
 import { useTranslation } from 'react-i18next'
+import { ExternalLink } from 'react-feather'
+
+const ExternalLinkIcon = styled(ExternalLink)`
+  display: inline-block;
+  margin-inline-start: 3px;
+  width: 14px;
+  height: 14px;
+  margin-bottom: -2px;
+
+  > * {
+    stroke: ${({ theme }) => theme.text1};
+  }
+`
+
+const AnalyticsWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 1rem 0 0;
+  padding: 0.5rem;
+  border-radius: 6px;
+  font-size: 14px;
+  line-height: 14px;
+  border: 1px solid ${({ theme }) => theme.bg5};
+
+  a {
+    color: ${({ theme }) => theme.text1};
+    text-decoration: none;
+    font-weight: bold;
+    :hover,
+    :focus {
+      text-decoration: underline;
+    }
+  }
+`
 
 function TradeSummary({ trade, allowedSlippage }: { trade: Trade; allowedSlippage: number }) {
   const theme = useContext(ThemeContext)
@@ -19,6 +56,10 @@ function TradeSummary({ trade, allowedSlippage }: { trade: Trade; allowedSlippag
   const isExactIn = trade.tradeType === TradeType.EXACT_INPUT
   const slippageAdjustedAmounts = computeSlippageAdjustedAmounts(trade, allowedSlippage)
   const { t } = useTranslation()
+  const tokenPairAddress =
+    typeof trade.route.pairs[0].liquidityToken.address !== 'undefined'
+      ? 'https://info.linkswap.app/pair/' + trade.route.pairs[0].liquidityToken.address
+      : false
 
   return (
     <>
@@ -61,6 +102,15 @@ function TradeSummary({ trade, allowedSlippage }: { trade: Trade; allowedSlippag
             {realizedLPFee ? `${realizedLPFee.toSignificant(4)} ${trade.inputAmount.currency.symbol}` : '-'}
           </TYPE.black>
         </RowBetween>
+        {tokenPairAddress && (
+          <RowBetween>
+            <AnalyticsWrapper>
+              <a target="_blank" rel="noopener noreferrer" href={tokenPairAddress}>
+                {t('viewPairAnalytics')} <ExternalLinkIcon />
+              </a>
+            </AnalyticsWrapper>
+          </RowBetween>
+        )}
       </AutoColumn>
     </>
   )
