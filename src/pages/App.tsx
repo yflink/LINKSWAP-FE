@@ -62,8 +62,8 @@ const BodyWrapper = styled.div`
   flex: 1;
   z-index: 1;
   ${({ theme }) => theme.mediaWidth.upToSmall`
-    padding: 16px;
-  `};
+    padding: 0 0 16px;
+  `};-
 `
 
 const Marginer = styled.div`
