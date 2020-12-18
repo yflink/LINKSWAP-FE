@@ -75,12 +75,12 @@ export function defaultLightTheme() {
 
     //Footer
     footerBG: bodyBGColor,
-    footerTextColor: mainTextColor,
+    footerTextColor: appBG,
 
     //Global
-    bodyBG: '#f7f7f7 no-repeat 0 10vh url("../images/themes/default-light/bg.svg")',
-    bodyBGTablet: '#f7f7f7 no-repeat 0 10vh url("../images/themes/default-light/bg.svg")',
-    bodyBGMobile: '#f7f7f7 no-repeat 0 10vh url("../images/themes/default-light/bg.svg")',
+    bodyBG: '#f7f7f7 no-repeat 0 10vh url("../images/themes/default-light/background_large.png")',
+    bodyBGTablet: '#f7f7f7 no-repeat 0 10vh url("../images/themes/default-light/background_tablet.png")',
+    bodyBGMobile: '#f7f7f7 no-repeat -50vw 10vh url("../images/themes/default-light/background_mobile.png")',
     layerBG: transparent,
     layerBGTablet: transparent,
     layerBGMobile: transparent,
