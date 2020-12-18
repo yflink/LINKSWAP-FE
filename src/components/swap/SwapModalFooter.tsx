@@ -46,13 +46,13 @@ export default function SwapModalFooter({
     <>
       <AutoColumn gap="0px">
         <RowBetween align="center">
-          <Text fontWeight={400} fontSize={14} color={theme.text2}>
+          <Text fontWeight={400} fontSize={14} color={theme.textSecondary}>
             {t('price')}
           </Text>
           <Text
             fontWeight={500}
             fontSize={14}
-            color={theme.text1}
+            color={theme.textPrimary}
             style={{
               justifyContent: 'center',
               alignItems: 'center',
@@ -70,7 +70,7 @@ export default function SwapModalFooter({
 
         <RowBetween>
           <RowFixed>
-            <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
+            <TYPE.black fontSize={14} fontWeight={400} color={theme.textSecondary}>
               {trade.tradeType === TradeType.EXACT_INPUT ? t('minimumReceived') : t('maximumSold')}
             </TYPE.black>
             <QuestionHelper text={t('transactionWillRevertDescription')} />
@@ -90,7 +90,7 @@ export default function SwapModalFooter({
         </RowBetween>
         <RowBetween>
           <RowFixed>
-            <TYPE.black color={theme.text2} fontSize={14} fontWeight={400}>
+            <TYPE.black color={theme.textSecondary} fontSize={14} fontWeight={400}>
               {t('priceImpact')}
             </TYPE.black>
             <QuestionHelper text={t('priceImpactDescription')} />
@@ -99,7 +99,7 @@ export default function SwapModalFooter({
         </RowBetween>
         <RowBetween>
           <RowFixed>
-            <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
+            <TYPE.black fontSize={14} fontWeight={400} color={theme.textSecondary}>
               {t('liquidityProviderFee')}
             </TYPE.black>
             <QuestionHelper text={t('liquidityProviderFeeDiscription')} />

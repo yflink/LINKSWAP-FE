@@ -8,7 +8,7 @@ import { Plus } from 'react-feather'
 import ReactGA from 'react-ga'
 import { RouteComponentProps } from 'react-router-dom'
 import { Text } from 'rebass'
-import { ThemeContext } from 'styled-components'
+import styled, { ThemeContext } from 'styled-components'
 import { ButtonGray, ButtonPrimary } from '../../components/Button'
 import Card, { BlueCard, LightCard, OutlineCard } from '../../components/Card'
 import { AutoColumn, ColumnCenter } from '../../components/Column'
@@ -91,6 +91,24 @@ const activeStyle = {
   border: '1px solid transparent',
   background: 'linear-gradient(284.91deg, rgba(66, 77, 103, 0.4) 16.83%, rgba(117, 133, 171, 0.4) 83.64%)'
 }
+
+const StepsContainer = styled.div`
+  .ant-steps-item-active .ant-steps-item-icon {
+    background-color: ${({ theme }) => theme.appCurrencyInputBGActive};
+    
+    color: ${({ theme }) => theme.appCurrencyInputTextColorActive};
+  }
+
+  .ant-steps-item-wait .ant-steps-item-icon {
+    background-color: ${({ theme }) => theme.appCurrencyInputBG};
+    color: ${({ theme }) => theme.appCurrencyInputTextColor};
+  }
+
+  .ant-steps-item-finish .ant-steps-item-icon {
+    background-color: ${({ theme }) => theme.appInfoBoxBG};
+    color: ${({ theme }) => theme.appInfoBoxTextColor};
+  }
+`
 
 export default function CreateNewPool({
   match: {
@@ -357,20 +375,20 @@ export default function CreateNewPool({
 
   return (
     <>
-      <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.bg1, marginBottom: '16px' }}>
+      <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.appBGColor, marginBottom: '16px' }}>
         <SwapPoolTabs active={'create'} />
       </Card>
       <AppBody>
         <CreateTabs />
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <div style={{ width: 320, display: 'flex', alignItems: 'flex-center', marginBottom: 16 }}>
+          <StepsContainer style={{ width: 320, display: 'flex', alignItems: 'flex-center', marginBottom: 16 }}>
             <Steps size="small" labelPlacement="vertical" current={step}>
               <Step className="white" title={t('pairing')} />
               <Step className="white" title={t('rate')} />
               <Step className="white" title={t('liquidity')} />
               <Step className="white" title={t('payment')} />
             </Steps>
-          </div>
+          </StepsContainer>
         </div>
         {step === 0 ? (
           <Wrapper>
@@ -444,7 +462,7 @@ export default function CreateNewPool({
                 showCommonBases
               />
               <ColumnCenter>
-                <Plus size="16" color={theme.text2} />
+                <Plus size="16" color={theme.textSecondary} />
               </ColumnCenter>
               <CurrencyInputPanel
                 hideSelect
@@ -464,14 +482,14 @@ export default function CreateNewPool({
         ) : step === 1 ? (
           <Wrapper>
             <AutoColumn>
-              <div style={{ backgroundColor: '#383F49', padding: '12px', borderRadius: '6px' }}>
+              <div style={{ backgroundColor: theme.appBoxBG, padding: '12px', borderRadius: '6px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
                   <Text fontSize={12}>1 {currencies[Field.CURRENCY_A]!.symbol} =</Text>
                   <img
                     src={rateIcon}
                     alt={t('rate')}
                     style={{
-                      backgroundColor: '#1E2C49',
+                      backgroundColor: theme.appBoxBG,
                       borderRadius: 6,
                       padding: 6,
                       width: 36,
@@ -482,7 +500,7 @@ export default function CreateNewPool({
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <NumericalInput
-                    style={{ backgroundColor: theme.bg6 }}
+                    style={{ backgroundColor: theme.appBoxBG }}
                     className="token-amount-input"
                     value={rate}
                     onUserInput={val => {
@@ -528,7 +546,7 @@ export default function CreateNewPool({
                 disableCurrencySelect
               />
               <ColumnCenter>
-                <Plus size="16" color={theme.text2} />
+                <Plus size="16" color={theme.textSecondary} />
               </ColumnCenter>
               <CurrencyInputPanel
                 value={(Number(formattedAmounts[Field.CURRENCY_A]) * Number(rate)).toString()}
@@ -551,7 +569,7 @@ export default function CreateNewPool({
                     <Text fontWeight={700} fontSize={14} style={{ marginBottom: '6px' }}>
                       RugLock
                     </Text>
-                    <TYPE.black fontWeight={400} fontSize={14} color={theme.text2}>
+                    <TYPE.black fontWeight={400} fontSize={14} color={theme.textSecondary}>
                       {t('rugLockTokens')}
                     </TYPE.black>
                   </div>

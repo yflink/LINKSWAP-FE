@@ -6,10 +6,10 @@ import GoogleAnalyticsReporter from '../components/analytics/GoogleAnalyticsRepo
 import Header from '../components/Header'
 // import Popups from '../components/Popups'
 import Web3ReactManager from '../components/Web3ReactManager'
-import DarkModeQueryParamReader from '../theme/DarkModeQueryParamReader'
+import ThemeQueryParamReader from '../theme/ThemeQueryParamReader'
 
 import Swap from './Swap'
-import { RedirectPathToSwapOnly, RedirectToSwap } from './Swap/redirects'
+import { RedirectPathToSwapOnly, RedirectToSwap, RedirectThemeOutputToSwap } from './Swap/redirects'
 
 import AddLiquidity from './AddLiquidity'
 import { RedirectDuplicateTokenIds, RedirectOldAddLiquidityPathStructure } from './AddLiquidity/redirects'
@@ -27,13 +27,22 @@ import PreviewListing from './PreviewListing'
 
 import Analyze from './Analyze'
 
-import { ExternalLink, Settings } from 'react-feather'
+import { ExternalLink } from 'react-feather'
 
 const AppWrapper = styled.div`
   display: flex;
   flex-flow: column;
   align-items: flex-start;
-  overflow-x: hidden;
+  overflow: hidden;
+  height: 100vh;
+  min-height: 920px;
+  background: ${({ theme }) => theme.layerBG};
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    background: ${({ theme }) => theme.layerBGTablet};
+  `};
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    background: ${({ theme }) => theme.layerBGMobile};
+  `};
 `
 
 const HeaderWrapper = styled.div`
@@ -43,21 +52,18 @@ const HeaderWrapper = styled.div`
 `
 
 const BodyWrapper = styled.div`
-  min-height: 100wh;
+  min-height: 100%;
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding-top: 160px;
+  padding-top: 90px;
+  box-sizing: content-box;
   align-items: center;
   flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
-  z-index: 10;
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+  z-index: 1;
+  ${({ theme }) => theme.mediaWidth.upToSmall`
     padding: 16px;
   `};
-
-  z-index: 1;
 `
 
 const Marginer = styled.div`
@@ -74,10 +80,11 @@ const FooterWrapper = styled.div`
   text-align: center;
   z-index: 1;
   padding: 5px 0;
-  background-color: ${({ theme }) => theme.bodyBackground};
+  background-color: ${({ theme }) => theme.footerBG};
+
   a {
     text-decoration: none;
-    color: ${({ theme }) => theme.text1};
+    color: ${({ theme }) => theme.footerTextColor};
     :hover,
     :focus {
       text-decoration: underline;
@@ -93,7 +100,7 @@ const NewWindowIcon = styled(ExternalLink)`
   height: 15px;
 
   > * {
-    stroke: ${({ theme }) => theme.text1};
+    stroke: ${({ theme }) => theme.footerTextColor};
   }
 `
 
@@ -102,7 +109,7 @@ export default function App() {
     <Suspense fallback={null}>
       <HashRouter>
         <Route component={GoogleAnalyticsReporter} />
-        <Route component={DarkModeQueryParamReader} />
+        <Route component={ThemeQueryParamReader} />
         <AppWrapper>
           <HeaderWrapper>
             <Header />
@@ -113,6 +120,7 @@ export default function App() {
               <Switch>
                 <Route exact strict path="/swap" component={Swap} />
                 <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap} />
+                <Route exact strict path="/swap/:theme/:outputCurrency" component={RedirectThemeOutputToSwap} />
                 <Route exact strict path="/send" component={RedirectPathToSwapOnly} />
                 <Route exact strict path="/find" component={PoolFinder} />
                 <Route exact strict path="/pool" component={Pool} />

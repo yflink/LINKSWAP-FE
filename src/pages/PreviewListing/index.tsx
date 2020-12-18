@@ -30,7 +30,7 @@ export default function PreviewListing() {
 
   return (
     <>
-      <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.bg1, marginBottom: '32px' }}>
+      <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.appBGColor, marginBottom: '32px' }}>
         <SwapPoolTabs active={'swap'} />
       </Card>
       <AppBody>

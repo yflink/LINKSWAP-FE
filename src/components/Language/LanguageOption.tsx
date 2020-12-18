@@ -14,7 +14,7 @@ export const LanguageOptionBody = styled.div`
   :hover,
   :focus {
     cursor: pointer;
-    background-color: ${({ theme }) => theme.bg2};
+    background-color: ${({ theme }) => theme.modalSecondaryBG};
   }
 `
 

@@ -22,7 +22,7 @@ const ExternalLinkIcon = styled(ExternalLink)`
   margin-bottom: -2px;
 
   > * {
-    stroke: ${({ theme }) => theme.text1};
+    stroke: ${({ theme }) => theme.textPrimary};
   }
 `
 
@@ -37,10 +37,10 @@ const AnalyticsWrapper = styled.div`
   border-radius: 6px;
   font-size: 14px;
   line-height: 14px;
-  border: 1px solid ${({ theme }) => theme.bg5};
+  border: 1px solid ${({ theme }) => theme.textSecondary};
 
   a {
-    color: ${({ theme }) => theme.text1};
+    color: ${({ theme }) => theme.textPrimary};
     text-decoration: none;
     font-weight: bold;
     :hover,
@@ -66,13 +66,13 @@ function TradeSummary({ trade, allowedSlippage }: { trade: Trade; allowedSlippag
       <AutoColumn style={{ padding: '0 20px' }}>
         <RowBetween>
           <RowFixed>
-            <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
+            <TYPE.black fontSize={14} fontWeight={400} color={theme.textSecondary}>
               {isExactIn ? t('minimumReceived') : t('maximumSold')}
             </TYPE.black>
             <QuestionHelper text={t('transactionWillRevertDescription')} />
           </RowFixed>
           <RowFixed>
-            <TYPE.black color={theme.text1} fontSize={14}>
+            <TYPE.black color={theme.textPrimary} fontSize={14}>
               {isExactIn
                 ? `${slippageAdjustedAmounts[Field.OUTPUT]?.toSignificant(4)} ${trade.outputAmount.currency.symbol}` ??
                   '-'
@@ -83,7 +83,7 @@ function TradeSummary({ trade, allowedSlippage }: { trade: Trade; allowedSlippag
         </RowBetween>
         <RowBetween>
           <RowFixed>
-            <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
+            <TYPE.black fontSize={14} fontWeight={400} color={theme.textSecondary}>
               {t('priceImpact')}
             </TYPE.black>
             <QuestionHelper text={t('priceImpactDescription')} />
@@ -93,12 +93,12 @@ function TradeSummary({ trade, allowedSlippage }: { trade: Trade; allowedSlippag
 
         <RowBetween>
           <RowFixed>
-            <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
+            <TYPE.black fontSize={14} fontWeight={400} color={theme.textSecondary}>
               {t('liquidityProviderFee')}
             </TYPE.black>
             <QuestionHelper text={t('liquidityProviderFeeDiscription')} />
           </RowFixed>
-          <TYPE.black fontSize={14} color={theme.text1}>
+          <TYPE.black fontSize={14} color={theme.textPrimary}>
             {realizedLPFee ? `${realizedLPFee.toSignificant(4)} ${trade.inputAmount.currency.symbol}` : '-'}
           </TYPE.black>
         </RowBetween>
@@ -136,7 +136,7 @@ export function AdvancedSwapDetails({ trade }: AdvancedSwapDetailsProps) {
               <SectionBreak />
               <AutoColumn style={{ padding: '0 24px' }}>
                 <RowFixed>
-                  <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
+                  <TYPE.black fontSize={14} fontWeight={400} color={theme.textSecondary}>
                     {t('route')}
                   </TYPE.black>
                   <QuestionHelper text={t('routeDescription')} />

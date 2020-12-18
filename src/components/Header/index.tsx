@@ -1,18 +1,17 @@
 import { ChainId } from '@uniswap/sdk'
-import React from 'react'
+import React, {useContext} from 'react'
 import { isMobile } from 'react-device-detect'
 import { Text } from 'rebass'
-import styled from 'styled-components'
+import styled, {ThemeContext} from 'styled-components'
 
 import { useActiveWeb3React } from '../../hooks'
-// import { useDarkModeManager } from '../../state/user/hooks'
 import { useETHBalances } from '../../state/wallet/hooks'
 import logo from '../../assets/svg/logo.png'
 
 import { YellowCard } from '../Card'
+import Theme from '../Theme'
 import Settings from '../Settings'
 import Language from '../Language'
-// import Menu from '../Menu'
 
 import { RowBetween } from '../Row'
 import Web3Status from '../Web3Status'
@@ -24,18 +23,15 @@ const HeaderFrame = styled.div`
   flex-direction: column;
   width: 100%;
   top: 0;
-  position: absolute;
+  position: relative;
   z-index: 2;
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    padding: 12px 0 0 0;
-    width: calc(100%);
-    position: relative;
-  `};
+  background-color: ${({ theme }) => theme.headerBG};
+  color: ${({ theme }) => theme.headerTextColor};
 `
 
 const HeaderElement = styled.div`
   display: flex;
-  align-items: flex-start;
+  align-items: center;
 `
 
 const HeaderElementMobile = styled.div`
@@ -49,14 +45,24 @@ const HeaderElementMobile = styled.div`
 const HeaderElementWrap = styled.div`
   display: flex;
   align-items: center;
-  ${({ theme }) => theme.mediaWidth.upToSmall`
-    margin: 0.5rem 0;
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    margin: 0 0 0.5rem 0;
 `};
 `
 
 const Logo = styled.img`
   height: 30px;
   margin-inline-end: 8px;
+`
+
+const SubLogo = styled.img`
+  height: 30px;
+  margin-top: 10px;
+  margin-inline-end: 8px;
+`
+
+const LogoWrapper = styled.div `
+  display: inline-block;
 `
 
 const Title = styled.a`
@@ -77,6 +83,7 @@ const TitleText = styled.h1`
   font-size: 24px;
   font-weight: 100;
   letter-spacing: 0.3em;
+  color: ${({ theme }) => theme.headerTextColor};
 `
 
 const MenuText = styled.h3`
@@ -87,9 +94,12 @@ const MenuText = styled.h3`
   font-size: 18px;
   font-weight: 400;
   letter-spacing: 0.06em;
-  padding-bottom: 8px;
+  padding: 4px 0;
+  border-bottom: 2px solid transparent;
+  color: ${({ theme }) => theme.headerTextColor};
+
   :hover {
-    border-bottom: 4px solid white;
+    border-bottom: 2px solid ${({ theme }) => theme.headerTextColor};
   }
 `
 
@@ -97,7 +107,7 @@ const AccountElement = styled.div<{ active: boolean }>`
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: ${({ theme, active }) => (!active ? theme.bg1 : theme.bg3)};
+  background-color: ${({ theme, active }) => (!active ? theme.modalBG : theme.headerButtonBG)};
   border-radius: 6px;
   white-space: nowrap;
   width: 100%;
@@ -125,14 +135,16 @@ const HeaderControls = styled.div`
   flex-direction: row;
   align-items: center;
 
-  ${({ theme }) => theme.mediaWidth.upToSmall`
+  ${({ theme }) => theme.mediaWidth.upToMedium`
     flex-direction: column;
     align-items: flex-end;
   `};
 `
 
 const BalanceText = styled(Text)`
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+  color: ${({ theme }) => theme.headerButtonIconColor}
+
+  ${({ theme }) => theme.mediaWidth.upToMedium`
     display: none;
   `};
 `
@@ -147,28 +159,37 @@ const NETWORK_LABELS: { [chainId in ChainId]: string | null } = {
 
 export default function Header() {
   const { account, chainId } = useActiveWeb3React()
-
   const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']
-  // const [isDark] = useDarkModeManager()
-
+  const theme = useContext(ThemeContext)
+  const hasSublogo = theme.logo.length > 2
   return (
     <HeaderFrame>
-      <RowBetween style={{ alignItems: 'flex-start' }} padding="1rem 1rem 0 1rem">
+      <RowBetween style={{ alignItems: 'center' }} padding="1rem">
         <HeaderElement>
+          <LogoWrapper>
           <Title href="https://yflink.io">
             <Logo src={logo}></Logo>
             <TitleText>YFLINK</TitleText>
           </Title>{' '}
+          {hasSublogo && (
+            <SubLogo src={theme.logo}></SubLogo>
+          )}
+          </LogoWrapper>
+
           {!isMobile && (
             <HeaderElementMobile>
-              <Title style={{ marginTop: 4,marginInlineStart: 24 }} target="_blank" href="https://rewards.linkswap.app/">
+              <Title
+                style={{ marginTop: 4, marginInlineStart: 24 }}
+                target="_blank"
+                href="https://rewards.linkswap.app/"
+              >
                 <MenuText>LP Rewards</MenuText>
               </Title>
-              <Title style={{ marginTop: 4,marginInlineStart: 36 }} target="_blank" href="https://yflink.io/#/vote">
+              <Title style={{ marginTop: 4, marginInlineStart: 36 }} target="_blank" href="https://yflink.io/#/vote">
                 <MenuText>VOTE</MenuText>
               </Title>
               <Title
-                style={{ marginTop: 4,marginInlineStart: 24 }}
+                style={{ marginTop: 4, marginInlineStart: 24 }}
                 href="https://linkswap.app/#/swap?outputCurrency=0x28cb7e841ee97947a86b06fa4090c8451f64c0be"
               >
                 <MenuText>Buy YFL</MenuText>
@@ -178,9 +199,9 @@ export default function Header() {
         </HeaderElement>
         <HeaderControls>
           <HeaderElementWrap>
+            <Theme />
             <Language />
             <Settings />
-            {/* <Menu /> */}
           </HeaderElementWrap>
           <HeaderElement>
             <TestnetWrapper>

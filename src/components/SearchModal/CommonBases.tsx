@@ -11,7 +11,7 @@ import CurrencyLogo from '../CurrencyLogo'
 import { useTranslation } from 'react-i18next'
 
 const BaseWrapper = styled.div<{ disable?: boolean }>`
-  border: 1px solid ${({ theme, disable }) => (disable ? 'transparent' : theme.bg3)};
+  border: 1px solid ${({ theme, disable }) => (disable ? 'transparent' : theme.modalLines)};
   border-radius: 6px;
   display: flex;
   padding: 6px;
@@ -19,10 +19,10 @@ const BaseWrapper = styled.div<{ disable?: boolean }>`
   align-items: center;
   :hover {
     cursor: ${({ disable }) => !disable && 'pointer'};
-    background-color: ${({ theme, disable }) => !disable && theme.bg2};
+    background-color: ${({ theme, disable }) => !disable && theme.modalSecondaryBG};
   }
 
-  background-color: ${({ theme, disable }) => disable && theme.bg3};
+  background-color: ${({ theme, disable }) => disable && theme.modalLines};
   opacity: ${({ disable }) => disable && '0.4'};
 `
 

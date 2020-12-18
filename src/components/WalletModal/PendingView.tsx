@@ -28,7 +28,7 @@ const LoadingMessage = styled.div<{ error?: boolean }>`
   border-radius: 6px;
   margin-bottom: 20px;
   color: ${({ theme, error }) => (error ? theme.red1 : 'inherit')};
-  border: 1px solid ${({ theme, error }) => (error ? theme.red1 : theme.text4)};
+  border: 1px solid ${({ theme, error }) => (error ? theme.red1 : theme.textDisabled)};
 
   & > * {
     padding: 1rem;
@@ -44,8 +44,8 @@ const ErrorGroup = styled.div`
 const ErrorButton = styled.div`
   border-radius: 8px;
   font-size: 12px;
-  color: ${({ theme }) => theme.text1};
-  background-color: ${({ theme }) => theme.bg4};
+  color: ${({ theme }) => theme.textPrimary};
+  background-color: ${({ theme }) => theme.lineColor};
   margin-inline-start: 1rem;
   padding: 0.5rem;
   font-weight: 600;
@@ -53,7 +53,7 @@ const ErrorButton = styled.div`
 
   &:hover {
     cursor: pointer;
-    background-color: ${({ theme }) => darken(0.1, theme.text4)};
+    background-color: ${({ theme }) => darken(0.1, theme.textDisabled)};
   }
 `
 

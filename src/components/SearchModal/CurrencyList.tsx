@@ -30,8 +30,8 @@ const StyledBalanceText = styled(Text)`
 `
 
 const Tag = styled.div`
-  background-color: ${({ theme }) => theme.bg3};
-  color: ${({ theme }) => theme.text2};
+  background-color: ${({ theme }) => theme.buttonBG};
+  color: ${({ theme }) => theme.textSecondary};
   font-size: 14px;
   border-radius: 6px;
   padding: 0.25rem 0.3rem 0.25rem 0.3rem;

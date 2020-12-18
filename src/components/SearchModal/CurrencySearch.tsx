@@ -201,7 +201,7 @@ export function CurrencySearch({
             </Row>
           ) : null}
           <LinkStyledButton
-            style={{ fontWeight: 500, color: theme.text2, fontSize: 16 }}
+            style={{ fontWeight: 500, color: theme.textSecondary, fontSize: 16 }}
             onClick={onChangeList}
             id="currency-search-change-list-button"
           >

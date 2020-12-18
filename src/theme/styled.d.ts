@@ -2,45 +2,124 @@ import { FlattenSimpleInterpolation, ThemedCssFunction } from 'styled-components
 
 export type Color = string
 export interface Colors {
-  // base
-  white: Color
-  black: Color
+  //App
+  appBGColor: Color
+  appInfoBoxBG: Color
+  appInfoBoxTextColor: Color
+  appBoxBG: Color
+  appBoxBorder: Color
+  appBoxHoverBG: Color
+  appBoxHoverBorder: Color
+  appBoxTextColor: Color
+  appBoxSecondaryBG: Color
+  appBoxSecondaryTextColor: Color
+  appBoxSecondaryInnerBG: Color
+  appBoxSecondaryInnerTextColor: Color
+  appCurrencyInputBG: Color
+  appCurrencyInputTextColor: Color
+  appCurrencyInputBGHover: Color
+  appCurrencyInputTextColorHover: Color
+  appCurrencyInputBGActive: Color
+  appCurrencyInputTextColorActive: Color
+  appCurrencyInputBGActiveHover: Color
+  appCurrencyInputTextColorActiveHover: Color
 
-  // text
-  text1: Color
-  text2: Color
-  text3: Color
-  text4: Color
-  text5: Color
+  //Buttons
+  buttonBG: Color
+  buttonTextColor: Color
+  buttonBGHover: Color
+  buttonTextColorHover: Color
+  buttonBGActive: Color
+  buttonTextColorActive: Color
+  buttonBGActiveHover: Color
+  buttonTextColorActiveHover: Color
+  buttonBGDisabled: Color
+  buttonTextColorDisabled: Color
+  buttonNavigationBG: Color
+  buttonNavigationTextColor: Color
+  buttonNavigationBGHover: Color
+  buttonNavigationTextColorHover: Color
+  buttonSelectBG: Color
+  buttonSelectTextColor: Color
+  buttonSelectBGHover: Color
+  buttonSelectTextColorHover: Color
+  buttonSelectBGActive: Color
+  buttonSelectTextColorActive: Color
+  buttonSelectBGActiveHover: Color
+  buttonSelectTextColorActiveHover: Color
+  buttonSecondaryBG: Color
+  buttonSecondaryBorder: Color
+  buttonSecondaryTextColor: Color
+  buttonSecondaryBGActive: Color
+  buttonSecondaryBorderActive: Color
+  buttonSecondaryTextColorActive: Color
+  buttonSecondaryBGHover: Color
+  buttonSecondaryBorderHover: Color
+  buttonSecondaryTextColorHover: Color
+  buttonOutlinedBorder: Color
+  buttonOutlinedTextColor: Color
+  buttonOutlinedBorderHover: Color
+  buttonOutlinedTextColorHover: Color
 
-  // backgrounds / greys
-  bg1: Color
-  bg2: Color
-  bg3: Color
-  bg4: Color
-  bg5: Color
-  bg6: Color
-  bg7: Color
-  bodyBackground: Color
+  //Footer
+  footerBG: Color
+  footerTextColor: Color
 
+  //Global
+  bodyBG: string
+  bodyBGTablet: string
+  bodyBGMobile: string
+  bodyBGColor: Color
+  layerBG: string
+  layerBGTablet: string
+  layerBGMobile: string
+  linkColor: Color
+  linkColorHover: Color
+  lineColor: Color
+  logo: string
+
+  //Header
+  headerBG: Color
+  headerTextColor: Color
+  headerButtonBG: Color
+  headerButtonBGHover: Color
+  headerButtonIconColor: Color
+  headerModalTextColor: Color
+  headerModalTextHighlight: Color
+
+  //Modal
   modalBG: Color
-  advancedBG: Color
+  modalBorder: Color
+  modalSecondaryBG: Color
+  modalLines: Color
+  modalButtonBG: Color
+  modalButtonText: Color
+  modalShadow: Color
+  modalInputBG: Color
+  modalInputBorder: Color
+  modalInputBorderFocus: Color
+  modalFooterBG: Color
 
-  //blues
-  primary1: Color
-  primary2: Color
-  primary3: Color
-  primary4: Color
-  primary5: Color
+  //Navigation
+  navigationBG: Color
+  navigationTabBG: Color
+  navigationTabIconColor: Color
+  navigationTabBGHover: Color
+  navigationTabIconColorHover: Color
+  navigationTabBGActive: Color
+  navigationTabIconColorActive: Color
+  navigationTabModalBG: Color
+  navigationTabModalText: Color
+  navigationTabModalHover: Color
 
-  primaryText1: Color
+  //Text
+  textHighlight: Color
+  textPrimary: Color
+  textSecondary: Color
+  textTertiary: Color
+  textDisabled: Color
 
-  // pinks
-  secondary1: Color
-  secondary2: Color
-  secondary3: Color
-
-  // other
+  //States
   red1: Color
   red2: Color
   green1: Color

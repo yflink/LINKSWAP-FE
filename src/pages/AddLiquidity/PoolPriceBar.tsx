@@ -31,7 +31,7 @@ export function PoolPriceBar({
     <AutoColumn gap="md">
       <AutoRow justify="space-around" gap="4px">
         <AutoColumn justify="center">
-          <Text fontWeight={500} fontSize={14} color={theme.text2} pt={1} style={{ marginBottom: '6px' }}>
+          <Text fontWeight={500} fontSize={14} color={theme.textSecondary} pt={1} style={{ marginBottom: '6px' }}>
             {t('currencyPerCurrency', {
               currencyA: currencies[Field.CURRENCY_B]?.symbol,
               currencyB: currencies[Field.CURRENCY_A]?.symbol
@@ -40,7 +40,7 @@ export function PoolPriceBar({
           <TYPE.black>{price?.toSignificant(6) ?? '-'}</TYPE.black>
         </AutoColumn>
         <AutoColumn justify="center">
-          <Text fontWeight={500} fontSize={14} color={theme.text2} pt={1} style={{ marginBottom: '6px' }}>
+          <Text fontWeight={500} fontSize={14} color={theme.textSecondary} pt={1} style={{ marginBottom: '6px' }}>
             {t('currencyPerCurrency', {
               currencyA: currencies[Field.CURRENCY_A]?.symbol,
               currencyB: currencies[Field.CURRENCY_B]?.symbol
@@ -49,7 +49,7 @@ export function PoolPriceBar({
           <TYPE.black>{price?.invert()?.toSignificant(6) ?? '-'}</TYPE.black>
         </AutoColumn>
         <AutoColumn justify="center">
-          <Text fontWeight={500} fontSize={14} color={theme.text2} pt={1} style={{ marginBottom: '6px' }}>
+          <Text fontWeight={500} fontSize={14} color={theme.textSecondary} pt={1} style={{ marginBottom: '6px' }}>
             {t('shareOfPool')}
           </Text>
           <TYPE.black>

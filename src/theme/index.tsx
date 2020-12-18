@@ -1,4 +1,3 @@
-// import { transparentize } from 'polished'
 import React, { useMemo } from 'react'
 import styled, {
   ThemeProvider as StyledComponentsThemeProvider,
@@ -6,9 +5,14 @@ import styled, {
   css,
   DefaultTheme
 } from 'styled-components'
-import { useIsDarkMode } from '../state/user/hooks'
+import { useGetTheme } from '../state/user/hooks'
 import { Text, TextProps } from 'rebass'
 import { Colors } from './styled'
+
+// Themes
+import { defaultTheme } from './settings/default'
+import { lightTheme } from './settings/light'
+import { cyberFiTheme } from './settings/cyberfi'
 
 export * from './components'
 
@@ -31,71 +35,22 @@ const mediaWidthTemplates: { [width in keyof typeof MEDIA_WIDTHS]: typeof css } 
   {}
 ) as any
 
-const white = '#FFFFFF'
-const black = '#000000'
+export function colors(theme: string): Colors {
+  switch (theme) {
+    case 'cyberfi':
+      return cyberFiTheme()
 
-export function colors(darkMode: boolean): Colors {
-  return {
-    // base
-    white,
-    black,
+    case 'light':
+      return lightTheme()
 
-    // text
-    text1: darkMode ? '#FFFFFF' : '#000000',
-    text2: darkMode ? '#C3C5CB' : '#565A69',
-    text3: darkMode ? '#6C7284' : '#888D9B',
-    text4: darkMode ? '#565A69' : '#C3C5CB',
-    text5: darkMode ? '#2C2F36' : '#EDEEF2',
-
-    // backgrounds / greys
-    // bg1: darkMode ? '#212429' : '#FFFFFF',
-    // bg2: darkMode ? '#2C2F36' : '#F7F8FA',
-    // bg3: darkMode ? '#40444F' : '#EDEEF2',
-    // bg4: darkMode ? '#565A69' : '#CED0D9',
-    // bg5: darkMode ? '#6C7284' : '#888D9B',
-    bg1: darkMode ? '#222A35' : '#FFFFFF',
-    bg2: darkMode ? '#2C2F36' : '#F7F8FA',
-    bg3: darkMode ? '#40444F' : '#EDEEF2',
-    bg4: darkMode ? '#5F656D' : '#CED0D9',
-    bg5: darkMode ? '#6C7284' : '#888D9B',
-    bg6: darkMode ? '#373F49' : '#FFFFFF',
-    bg7: '#295BDB',
-    bodyBackground: '#2b3a4a',
-    //specialty colors
-    modalBG: darkMode ? 'rgba(0,0,0,.425)' : 'rgba(0,0,0,0.3)',
-    advancedBG: darkMode ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.6)',
-
-    //primary colors
-    primary1: darkMode ? '#295BDB' : '#ff007a',
-    primary2: darkMode ? '#3680E7' : '#FF8CC3',
-    primary3: darkMode ? '#4D8FEA' : '#FF99C9',
-    primary4: darkMode ? '#376bad70' : '#F6DDE8',
-    primary5: darkMode ? '#202F46' : '#FDEAF1',
-
-    // color text
-    primaryText1: darkMode ? '#87A9FF' : '#ff007a',
-
-    // secondary colors
-    secondary1: darkMode ? '#295BDB' : '#ff007a',
-    secondary2: darkMode ? '#17000b26' : '#F6DDE8',
-    secondary3: darkMode ? '#17000b26' : '#FDEAF1',
-
-    // other
-    red1: '#FF6871',
-    red2: '#F82D3A',
-    green1: '#27AE60',
-    yellow1: '#FFE270',
-    yellow2: '#F3841E'
-
-    // dont wanna forget these blue yet
-    // blue4: darkMode ? '#153d6f70' : '#C4D9F8',
-    // blue5: darkMode ? '#153d6f70' : '#EBF4FF',
+    default:
+      return defaultTheme()
   }
 }
 
-export function theme(darkMode: boolean): DefaultTheme {
+export function theme(theme: string): DefaultTheme {
   return {
-    ...colors(darkMode),
+    ...colors(theme),
 
     grids: {
       sm: 8,
@@ -104,7 +59,7 @@ export function theme(darkMode: boolean): DefaultTheme {
     },
 
     //shadows
-    shadow1: darkMode ? '#000' : '#2F80ED',
+    shadow1: '#000',
 
     // media queries
     mediaWidth: mediaWidthTemplates,
@@ -122,9 +77,9 @@ export function theme(darkMode: boolean): DefaultTheme {
 }
 
 export default function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const darkMode = useIsDarkMode()
+  const currentTheme = useGetTheme()
 
-  const themeObject = useMemo(() => theme(darkMode), [darkMode])
+  const themeObject = useMemo(() => theme(currentTheme), [currentTheme])
 
   return <StyledComponentsThemeProvider theme={themeObject}>{children}</StyledComponentsThemeProvider>
 }
@@ -211,14 +166,32 @@ html {
 // Change background color
 export const ThemedGlobalStyle = createGlobalStyle`
 html {
-  color: ${({ theme }) => theme.text1};
-  background-color: ${({ theme }) => theme.bg2};
+  color: ${({ theme }) => theme.textPrimary};
+  background-color: ${({ theme }) => theme.bodyBGColor};
 }
 
 body {
   min-height: 100vh;
-  background-image: url("https://yflink.io/YFL-BG-pattern-left.svg");
-  background-position: 0 10vh;
-  background-repeat: no-repeat;
-  background-color:  ${({ theme }) => theme.bodyBackground};
+  background: ${({ theme }) => theme.bodyBG};
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    background: ${({ theme }) => theme.bodyBGTablet};
+  `};
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    background: ${({ theme }) => theme.bodyBGMobile};
+  `};
+}
+
+input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: ${({ theme }) => theme.textTertiary};
+  opacity: 1;
+}
+
+input:-ms-input-placeholder {
+  color: ${({ theme }) => theme.textTertiary};
+}
+
+input::-ms-input-placeholder {
+  color: ${({ theme }) => theme.textTertiary};
+}  
+  
 `

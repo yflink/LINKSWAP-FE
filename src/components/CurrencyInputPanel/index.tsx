@@ -2,8 +2,6 @@ import React, { useState, useContext, useCallback } from 'react'
 import styled, { ThemeContext } from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { Currency, Pair, ETHER } from '@uniswap/sdk'
-import { darken } from 'polished'
-
 import CurrencySearchModal from '../SearchModal/CurrencySearchModal'
 import CurrencyLogo from '../CurrencyLogo'
 import DoubleCurrencyLogo from '../DoubleLogo'
@@ -31,16 +29,16 @@ const CurrencySelect = styled.button<{ selected: boolean; primary?: boolean; lef
   font-weight: 500;
   background-color: ${({ selected, primary, theme }) => {
     if (selected) {
-      return theme.bg7
+      return theme.appCurrencyInputBGActive
     } else {
       if (primary) {
-        return theme.bg6
+        return theme.appCurrencyInputBG
       } else {
-        return theme.primary1
+        return theme.appCurrencyInputBGActive
       }
     }
   }};
-  color: ${({ selected, theme }) => (selected ? theme.text1 : theme.white)};
+  color: ${({ selected, theme }) => (selected ? theme.appCurrencyInputTextColorActive : theme.appCurrencyInputTextColor)};
   border-radius: ${({ left, right }) => (left ? '6px 0px 0px 6px' : right ? '0px 6px 6px 0px' : '6px')};
   box-shadow: ${({ selected }) => (selected ? 'none' : '0px 6px 10px rgba(0, 0, 0, 0.075)')};
   outline: none;
@@ -55,12 +53,12 @@ const CurrencySelect = styled.button<{ selected: boolean; primary?: boolean; lef
   :hover {
     background-color: ${({ selected, primary, theme }) => {
       if (selected) {
-        return theme.bg7
+        return theme.appCurrencyInputBGActive
       } else {
         if (primary) {
-          return theme.bg6
+          return theme.appCurrencyInputBGHover
         } else {
-          return darken(0.05, theme.primary1)
+          return theme.appCurrencyInputBGActiveHover
         }
       }
     }};
@@ -70,13 +68,12 @@ const CurrencySelect = styled.button<{ selected: boolean; primary?: boolean; lef
 const LabelRow = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
   align-items: center;
-  color: ${({ theme }) => theme.text1};
+  color: ${({ theme }) => theme.appCurrencyInputTextColor};
   font-size: 0.75rem;
   line-height: 1rem;
   padding: 0.75rem 1rem 0 1rem;
   span:hover {
     cursor: pointer;
-    color: ${({ theme }) => darken(0.2, theme.text2)};
   }
 `
 
@@ -84,7 +81,7 @@ const LabelRow = styled.div`
 //   margin: 0 0.25rem 0 0.5rem;
 //   height: 35%;
 //   path {
-//     stroke: ${({ selected, theme }) => (selected ? theme.text1 : theme.white)};
+//     stroke: ${({ selected, theme }) => (selected ? theme.textPrimary : theme.textPrimary)};
 //     stroke-width: 1.5px;
 //   }
 // `
@@ -99,14 +96,14 @@ const InputPanel = styled.div<{ hideInput?: boolean }>`
   ${({ theme }) => theme.flexColumnNoWrap}
   position: relative;
   border-radius: ${({ hideInput }) => (hideInput ? '8px' : '20px')};
-  background-color: ${({ theme }) => theme.bg6};
+  background-color: ${({ theme }) => theme.appCurrencyInputBG};
   z-index: 1;
 `
 
 const Container = styled.div<{ hideInput: boolean }>`
   border-radius: ${({ hideInput }) => (hideInput ? '6px' : '6px')};
-  border: 1px solid ${({ theme }) => theme.bg6};
-  background-color: ${({ theme }) => theme.bg6};
+  border: 1px solid ${({ theme }) => theme.appCurrencyInputBG};
+  background-color: ${({ theme }) => theme.appCurrencyInputBG};
 `
 
 const StyledTokenName = styled.div<{ active?: boolean }>`
@@ -116,20 +113,20 @@ const StyledTokenName = styled.div<{ active?: boolean }>`
 
 const StyledBalanceMax = styled.button`
   height: 28px;
-  background-color: ${({ theme }) => theme.primary5};
-  border: 1px solid ${({ theme }) => theme.primary5};
+  background-color: ${({ theme }) => theme.buttonSecondaryBG};
+  border: 1px solid ${({ theme }) => theme.buttonSecondaryBorder};
   border-radius: 0.5rem;
   font-size: 0.875rem;
 
   font-weight: 500;
   cursor: pointer;
   margin-inline-end: 0.5rem;
-  color: ${({ theme }) => theme.primaryText1};
+  color: ${({ theme }) => theme.buttonSecondaryTextColor};
   :hover {
-    border: 1px solid ${({ theme }) => theme.primary1};
+    border: 1px solid ${({ theme }) => theme.buttonSecondaryBorderHover};
   }
   :focus {
-    border: 1px solid ${({ theme }) => theme.primary1};
+    border: 1px solid ${({ theme }) => theme.buttonSecondaryTextColor};
     outline: none;
   }
 
@@ -225,13 +222,13 @@ export default function CurrencyInputPanel({
             {!hideInput && (
               <LabelRow>
                 <RowBetween>
-                  <TYPE.body color={theme.text2} fontWeight={500} fontSize={14}>
+                  <TYPE.body color={theme.textSecondary} fontWeight={500} fontSize={14}>
                     {label}
                   </TYPE.body>
                   {account && (
                     <TYPE.body
                       onClick={onMax}
-                      color={theme.text1}
+                      color={theme.textPrimary}
                       fontWeight={500}
                       fontSize={14}
                       style={{ display: 'inline', cursor: 'pointer' }}
@@ -248,7 +245,7 @@ export default function CurrencyInputPanel({
               {!hideInput && (
                 <>
                   <NumericalInput
-                    style={{ backgroundColor: theme.bg6 }}
+                    style={{ backgroundColor: theme.appBoxBG }}
                     className="token-amount-input"
                     value={value}
                     onUserInput={val => {
@@ -448,13 +445,13 @@ export function CurrencyDoubleInputPanel({
             {!hideInput && (
               <LabelRow>
                 <RowBetween>
-                  <TYPE.body color={theme.text2} fontWeight={500} fontSize={14}>
+                  <TYPE.body color={theme.textSecondary} fontWeight={500} fontSize={14}>
                     {label}
                   </TYPE.body>
                   {account && (
                     <TYPE.body
                       onClick={onMax}
-                      color={theme.text1}
+                      color={theme.textPrimary}
                       fontWeight={500}
                       fontSize={14}
                       style={{ display: 'inline', cursor: 'pointer' }}
@@ -471,7 +468,7 @@ export function CurrencyDoubleInputPanel({
               {!hideInput && (
                 <>
                   <NumericalInput
-                    style={{ backgroundColor: theme.bg6 }}
+                    style={{ backgroundColor: theme.appBoxBG }}
                     className="token-amount-input"
                     value={value}
                     onUserInput={val => {
