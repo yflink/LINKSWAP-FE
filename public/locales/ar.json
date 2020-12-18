@@ -237,8 +237,8 @@
   "dismiss": "أغلق",
   "route": "توجيه",
   "routeDescription": "أدى التوجيه من خلال هذه ال tokens إلى الحصول على أفضل سعر لتبادلك.",
-  "connectToFindPools": "Connect to a wallet to find pools.",
-  "selectATokenToFindLiquidity": "Select a token to find your liquidity.",
-  "interfaceTheme": "Select a Theme",
-  "viewPairAnalytics": "view pair analytics"
+  "connectToFindPools": "قم بربط المحفظة للعثور على مَجمع سيولة.",
+  "selectATokenToFindLiquidity": "اختر Token للعثور على السيولة الخاصة بك.",
+  "interfaceTheme": "اختر Theme",
+  "viewPairAnalytics": "عرض تحليلات زوجًا Token"
 }

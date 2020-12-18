@@ -237,8 +237,8 @@
   "dismiss": "解除",
   "route": "路径",
   "routeDescription": "您的交易将经过这些路径",
-  "connectToFindPools": "Connect to a wallet to find pools.",
-  "selectATokenToFindLiquidity": "Select a token to find your liquidity.",
-  "interfaceTheme": "Select a Theme",
-  "viewPairAnalytics": "view pair analytics"
+  "connectToFindPools": "寻找兑换池前请先连接钱包。",
+  "selectATokenToFindLiquidity": "选择一个通证来寻找流动性。",
+  "interfaceTheme": "选择一个主题",
+  "viewPairAnalytics": "查看交易对分析"
 }
