@@ -239,5 +239,6 @@
   "routeDescription": "L'instradamento attraverso questi token ha prodotto il miglior prezzo per lo scambio.",
   "connectToFindPools": "Connect to a wallet to find pools.",
   "selectATokenToFindLiquidity": "Select a token to find your liquidity.",
-  "interfaceTheme": "Select a Theme"
+  "interfaceTheme": "Select a Theme",
+  "viewPairAnalytics": "view pair analytics"
 }

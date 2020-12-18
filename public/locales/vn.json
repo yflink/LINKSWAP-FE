@@ -239,5 +239,6 @@
   "routeDescription": "Giao dịch theo thứ tự này sẽ mang lại giá tốt nhất cho bạn.",
   "connectToFindPools": "Connect to a wallet to find pools.",
   "selectATokenToFindLiquidity": "Select a token to find your liquidity.",
-  "interfaceTheme": "Select a Theme"
+  "interfaceTheme": "Select a Theme",
+  "viewPairAnalytics": "view pair analytics"
 }
