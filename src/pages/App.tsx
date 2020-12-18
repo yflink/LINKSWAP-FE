@@ -27,7 +27,7 @@ import PreviewListing from './PreviewListing'
 
 import Analyze from './Analyze'
 
-import { ExternalLink, Settings } from 'react-feather'
+import { ExternalLink } from 'react-feather'
 
 const AppWrapper = styled.div`
   display: flex;
