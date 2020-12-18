@@ -20,7 +20,7 @@ export function masqTheme() {
     appBGColor: appBG,
     appInfoBoxBG: infoBG,
     appInfoBoxTextColor: infoText,
-    appBoxBG: '#373f49',
+    appBoxBG: bodyBGColor,
     appBoxBorder: '#373f49',
     appBoxHoverBG: '#373f49',
     appBoxHoverBorder: '#5e6373',
@@ -29,9 +29,9 @@ export function masqTheme() {
     appBoxSecondaryTextColor: mainTextColor,
     appBoxSecondaryInnerBG: '#53606c',
     appBoxSecondaryInnerTextColor: '#c3c5cb',
-    appCurrencyInputBG: '#383f49',
+    appCurrencyInputBG: bodyBGColor,
     appCurrencyInputTextColor: mainTextColor,
-    appCurrencyInputBGHover: '#383f49',
+    appCurrencyInputBGHover: bodyBGColor,
     appCurrencyInputTextColorHover: mainTextColor,
     appCurrencyInputBGActive: mainColor,
     appCurrencyInputTextColorActive: mainTextColor,
@@ -113,7 +113,7 @@ export function masqTheme() {
     modalInputBG: transparent,
     modalInputBorder: buttonBG,
     modalInputBorderFocus: highLights,
-    modalFooterBG: 'rgba(0, 0, 0, 0.1)',
+    modalFooterBG: appBG,
 
     //Navigation
     navigationBG: appBG,
@@ -128,7 +128,7 @@ export function masqTheme() {
     navigationTabModalHover: infoBG,
 
     //Text
-    textHighlight: mainColor,
+    textHighlight: highLights,
     textPrimary: mainTextColor,
     textSecondary: '#c3c5cb',
     textTertiary: '#6C7284',
