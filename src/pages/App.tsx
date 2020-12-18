@@ -27,7 +27,7 @@ import PreviewListing from './PreviewListing'
 
 import Analyze from './Analyze'
 
-import { ExternalLink } from 'react-feather'
+import { ExternalLink, Settings } from 'react-feather'
 
 const AppWrapper = styled.div`
   display: flex;
@@ -92,11 +92,16 @@ const FooterWrapper = styled.div`
   }
 `
 
-const NewWindowIcon = styled.div`
-  position: absolute;
-  top: 6px;
+const NewWindowIcon = styled(ExternalLink)`
   display: inline-block;
-  margin-left: 5px;
+  margin-inline-start: 5px;
+  margin-bottom: -1px;
+  width: 15px;
+  height: 15px;
+
+  > * {
+    stroke: ${({ theme }) => theme.footerTextColor};
+  }
 `
 
 export default function App() {
@@ -135,10 +140,7 @@ export default function App() {
           </BodyWrapper>
           <FooterWrapper>
             <a target="_blank" rel="noopener noreferrer" href="https://certificate.quantstamp.com/full/linkswap">
-              Quantstamp Audit Report - LINKSWAP{' '}
-              <NewWindowIcon>
-                <ExternalLink size="15" color="white" />
-              </NewWindowIcon>
+              Quantstamp Audit Report - LINKSWAP <NewWindowIcon />
             </a>
           </FooterWrapper>
         </AppWrapper>
