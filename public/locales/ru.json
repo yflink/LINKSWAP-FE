@@ -231,8 +231,8 @@
   "close": "Закрыть",
   "error": "Ошибка",
   "dismiss": "Отклонить",
-  "connectToFindPools": "Connect to a wallet to find pools.",
-  "selectATokenToFindLiquidity": "Select a token to find your liquidity.",
-  "interfaceTheme": "Select a Theme",
-  "viewPairAnalytics": "view pair analytics"
+  "connectToFindPools": "Подключитесь к кошельку, чтобы найти пулы.",
+  "selectATokenToFindLiquidity": "Выберите токен, чтобы узнать свою ликвидность.",
+  "interfaceTheme": "Выберите тему",
+  "viewPairAnalytics": "посмотреть аналитику пары"
 }

@@ -231,8 +231,8 @@
   "close": "Închide",
   "error": "Eroare",
   "dismiss": "Renunță",
-  "connectToFindPools": "Connect to a wallet to find pools.",
-  "selectATokenToFindLiquidity": "Select a token to find your liquidity.",
-  "interfaceTheme": "Select a Theme",
-  "viewPairAnalytics": "view pair analytics"
+  "connectToFindPools": "Conectează-te la un portofel pentru a găsi Pooluri",
+  "selectATokenToFindLiquidity": "Selectează un token pentru a vă găsi lichiditatea.",
+  "interfaceTheme": "Selectează o temă",
+  "viewPairAnalytics": "vezi analitica perechei"
 }
