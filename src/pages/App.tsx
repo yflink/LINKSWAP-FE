@@ -34,6 +34,14 @@ const AppWrapper = styled.div`
   flex-flow: column;
   align-items: flex-start;
   overflow-x: hidden;
+  min-height: 100vh;
+  background: ${({ theme }) => theme.layerBG};
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    background: ${({ theme }) => theme.layerBGTablet};
+  `};
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    background: ${({ theme }) => theme.layerBGMobile};
+  `};
 `
 
 const HeaderWrapper = styled.div`

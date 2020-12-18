@@ -169,4 +169,10 @@ html {
 body {
   min-height: 100vh;
   background: ${({ theme }) => theme.bodyBG};
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    background: ${({ theme }) => theme.bodyBGTablet};
+  `};
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    background: ${({ theme }) => theme.bodyBGMobile};
+  `};
 `

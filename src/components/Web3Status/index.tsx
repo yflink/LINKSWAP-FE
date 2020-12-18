@@ -67,6 +67,7 @@ const Web3StatusConnect = styled(Web3StatusGeneric)<{ faded?: boolean }>`
   :focus {
     border: 1px solid ${({ theme }) => darken(0.05, theme.appInfoBoxBG)};
     color: ${({ theme }) => theme.appInfoBoxTextColor};
+    background-color: ${({ theme }) => darken(0.05, theme.buttonSecondaryBG)};
   }
 
   ${({ faded }) =>

@@ -3,92 +3,100 @@ export function defaultTheme() {
   const mainColorHover = '#2251c9'
   const appBG = '#232a35'
   const bodyBGColor = '#2b3a4a'
-  const white = '#FFF'
+  const mainTextColor = '#FFF'
   const transparent = 'transparent'
   const buttonBG = '#40444f'
   const buttonBGHover = '#60656d'
   const buttonSecondaryBG = '#212328'
   const modalBG = '#222a35'
+  const infoText = '#87a9ff'
+  const infoBG = '#202f46'
 
   return {
     //App
     appBGColor: appBG,
-    appInfoBoxBG: '#202f46',
-    appInfoBoxTextColor: '#87a9ff',
+    appInfoBoxBG: infoBG,
+    appInfoBoxTextColor: infoText,
     appBoxBG: '#373f49',
     appBoxBorder: '#373f49',
     appBoxHoverBG: '#373f49',
     appBoxHoverBorder: '#5e6373',
-    appBoxTextColor: white,
+    appBoxTextColor: mainTextColor,
     appBoxSecondaryBG: '#3f4e5c',
-    appBoxSecondaryTextColor: white,
+    appBoxSecondaryTextColor: mainTextColor,
     appBoxSecondaryInnerBG: '#53606c',
     appBoxSecondaryInnerTextColor: '#c3c5cb',
     appCurrencyInputBG: '#383f49',
-    appCurrencyInputTextColor: white,
+    appCurrencyInputTextColor: mainTextColor,
     appCurrencyInputBGHover: '#383f49',
-    appCurrencyInputTextColorHover: white,
+    appCurrencyInputTextColorHover: mainTextColor,
     appCurrencyInputBGActive: mainColor,
-    appCurrencyInputTextColorActive: white,
+    appCurrencyInputTextColorActive: mainTextColor,
     appCurrencyInputBGActiveHover: mainColorHover,
-    appCurrencyInputTextColorActiveHover: white,
+    appCurrencyInputTextColorActiveHover: mainTextColor,
 
 
     //Buttons
     buttonBG: mainColor,
-    buttonTextColor: white,
+    buttonTextColor: mainTextColor,
     buttonBGHover: mainColorHover,
-    buttonTextColorHover: white,
+    buttonTextColorHover: mainTextColor,
     buttonBGActive: mainColor,
-    buttonTextColorActive: white,
+    buttonTextColorActive: mainTextColor,
     buttonBGActiveHover: mainColor,
-    buttonTextColorActiveHover: white,
+    buttonTextColorActiveHover: mainTextColor,
     buttonBGDisabled: buttonBG,
-    buttonTextColorDisabled: white,
+    buttonTextColorDisabled: mainTextColor,
     buttonNavigationBG: buttonBG,
     buttonNavigationTextColor: '#c3c5cb',
     buttonNavigationBGHover: modalBG,
     buttonNavigationTextColorHover: '#c3c5cb',
     buttonSelectBG: buttonSecondaryBG,
-    buttonSelectTextColor: white,
+    buttonSelectTextColor: mainTextColor,
     buttonSelectBGHover: buttonBGHover,
-    buttonSelectTextColorHover: white,
+    buttonSelectTextColorHover: mainTextColor,
     buttonSelectBGActive: mainColor,
-    buttonSelectTextColorActive: white,
+    buttonSelectTextColorActive: mainTextColor,
     buttonSelectBGActiveHover: mainColor,
-    buttonSelectTextColorActiveHover: white,
-    buttonSecondaryBG: '#202f46',
+    buttonSelectTextColorActiveHover: mainTextColor,
+    buttonSecondaryBG: infoBG,
     buttonSecondaryBorder: transparent,
-    buttonSecondaryTextColor: '#87a9ff',
-    buttonSecondaryBGActive: '#202f46',
+    buttonSecondaryTextColor: infoText,
+    buttonSecondaryBGActive: infoBG,
     buttonSecondaryBorderActive: mainColor,
-    buttonSecondaryTextColorActive: '#87a9ff',
+    buttonSecondaryTextColorActive: infoText,
     buttonSecondaryBGHover: 'rgba(55, 107, 173, 0.44)',
     buttonSecondaryBorderHover: mainColor,
-    buttonSecondaryTextColorHover: '#87a9ff',
+    buttonSecondaryTextColorHover: infoText,
     buttonOutlinedBorder: '#2c2f36',
-    buttonOutlinedTextColor: white,
+    buttonOutlinedTextColor: mainTextColor,
     buttonOutlinedBorderHover: '#5g656d',
-    buttonOutlinedTextColorHover: white,
+    buttonOutlinedTextColorHover: mainTextColor,
 
     //Footer
     footerBG: bodyBGColor,
-    footerTextColor: white,
+    footerTextColor: mainTextColor,
 
     //Global
     bodyBG: '#2b3a4a no-repeat 0 10vh url("../images/themes/default/bg.svg")',
+    bodyBGTablet: '#2b3a4a no-repeat 0 10vh url("../images/themes/default/bg.svg")',
+    bodyBGMobile: '#2b3a4a no-repeat 0 10vh url("../images/themes/default/bg.svg")',
+    layerBG: transparent,
+    layerBGTablet: transparent,
+    layerBGMobile: transparent,
     bodyBGColor: bodyBGColor,
     linkColor: mainColor,
     linkColorHover: mainColor,
     lineColor: '#5F656D',
+    logo: '',
 
     //Header
     headerBG: transparent,
-    headerTextColor: white,
+    headerTextColor: mainTextColor,
     headerButtonBG: buttonBG,
     headerButtonBGHover: buttonBGHover,
-    headerButtonIconColor: white,
-    headerModalTextColor: white,
+    headerButtonIconColor: mainTextColor,
+    headerModalTextColor: mainTextColor,
     headerModalTextHighlight: mainColor,
 
     //Modal
@@ -97,7 +105,7 @@ export function defaultTheme() {
     modalSecondaryBG: '#2c2f36',
     modalLines: buttonBG,
     modalButtonBG: '#2c2f36',
-    modalButtonText: white,
+    modalButtonText: mainTextColor,
     modalShadow: 'rgba(0,0,0,.425)',
     modalInputBG: transparent,
     modalInputBorder: buttonBG,
@@ -107,18 +115,18 @@ export function defaultTheme() {
     //Navigation
     navigationBG: appBG,
     navigationTabBG: transparent,
-    navigationTabIconColor: white,
+    navigationTabIconColor: mainTextColor,
     navigationTabBGHover: transparent,
-    navigationTabIconColorHover: white,
+    navigationTabIconColorHover: mainTextColor,
     navigationTabBGActive: mainColor,
-    navigationTabIconColorActive: white,
+    navigationTabIconColorActive: mainTextColor,
     navigationTabModalBG: modalBG,
-    navigationTabModalText: white,
+    navigationTabModalText: mainTextColor,
     navigationTabModalHover: '#2c2f36',
 
     //Text
     textHighlight: mainColor,
-    textPrimary: white,
+    textPrimary: mainTextColor,
     textSecondary: '#c3c5cb',
     textTertiary: '#6C7284',
     textDisabled: '#565A69',

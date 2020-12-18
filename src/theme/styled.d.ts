@@ -67,10 +67,16 @@ export interface Colors {
 
   //Global
   bodyBG: string
+  bodyBGTablet: string
+  bodyBGMobile: string
   bodyBGColor: Color
+  layerBG: string
+  layerBGTablet: string
+  layerBGMobile: string
   linkColor: Color
   linkColorHover: Color
   lineColor: Color
+  logo: string
 
   //Header
   headerBG: Color

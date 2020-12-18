@@ -8,7 +8,7 @@ import { Plus } from 'react-feather'
 import ReactGA from 'react-ga'
 import { RouteComponentProps } from 'react-router-dom'
 import { Text } from 'rebass'
-import { ThemeContext } from 'styled-components'
+import styled, { ThemeContext } from 'styled-components'
 import { ButtonGray, ButtonPrimary } from '../../components/Button'
 import Card, { BlueCard, LightCard, OutlineCard } from '../../components/Card'
 import { AutoColumn, ColumnCenter } from '../../components/Column'
@@ -91,6 +91,24 @@ const activeStyle = {
   border: '1px solid transparent',
   background: 'linear-gradient(284.91deg, rgba(66, 77, 103, 0.4) 16.83%, rgba(117, 133, 171, 0.4) 83.64%)'
 }
+
+const StepsContainer = styled.div`
+  .ant-steps-item-active .ant-steps-item-icon {
+    background-color: ${({ theme }) => theme.appCurrencyInputBGActive};
+    
+    color: ${({ theme }) => theme.appCurrencyInputTextColorActive};
+  }
+
+  .ant-steps-item-wait .ant-steps-item-icon {
+    background-color: ${({ theme }) => theme.appCurrencyInputBG};
+    color: ${({ theme }) => theme.appCurrencyInputTextColor};
+  }
+
+  .ant-steps-item-finish .ant-steps-item-icon {
+    background-color: ${({ theme }) => theme.appInfoBoxBG};
+    color: ${({ theme }) => theme.appInfoBoxTextColor};
+  }
+`
 
 export default function CreateNewPool({
   match: {
@@ -363,14 +381,14 @@ export default function CreateNewPool({
       <AppBody>
         <CreateTabs />
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <div style={{ width: 320, display: 'flex', alignItems: 'flex-center', marginBottom: 16 }}>
+          <StepsContainer style={{ width: 320, display: 'flex', alignItems: 'flex-center', marginBottom: 16 }}>
             <Steps size="small" labelPlacement="vertical" current={step}>
               <Step className="white" title={t('pairing')} />
               <Step className="white" title={t('rate')} />
               <Step className="white" title={t('liquidity')} />
               <Step className="white" title={t('payment')} />
             </Steps>
-          </div>
+          </StepsContainer>
         </div>
         {step === 0 ? (
           <Wrapper>

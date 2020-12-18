@@ -1,8 +1,8 @@
 import { ChainId } from '@uniswap/sdk'
-import React from 'react'
+import React, {useContext} from 'react'
 import { isMobile } from 'react-device-detect'
 import { Text } from 'rebass'
-import styled from 'styled-components'
+import styled, {ThemeContext} from 'styled-components'
 
 import { useActiveWeb3React } from '../../hooks'
 import { useETHBalances } from '../../state/wallet/hooks'
@@ -53,6 +53,16 @@ const HeaderElementWrap = styled.div`
 const Logo = styled.img`
   height: 30px;
   margin-inline-end: 8px;
+`
+
+const SubLogo = styled.img`
+  height: 30px;
+  margin-top: 10px;
+  margin-inline-end: 8px;
+`
+
+const LogoWrapper = styled.div `
+  display: inline-block;
 `
 
 const Title = styled.a`
@@ -150,15 +160,22 @@ const NETWORK_LABELS: { [chainId in ChainId]: string | null } = {
 export default function Header() {
   const { account, chainId } = useActiveWeb3React()
   const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']
-
+  const theme = useContext(ThemeContext)
+  const hasSublogo = theme.logo.length > 2
   return (
     <HeaderFrame>
       <RowBetween style={{ alignItems: 'center' }} padding="1rem">
         <HeaderElement>
+          <LogoWrapper>
           <Title href="https://yflink.io">
             <Logo src={logo}></Logo>
             <TitleText>YFLINK</TitleText>
           </Title>{' '}
+          {hasSublogo && (
+            <SubLogo src={theme.logo}></SubLogo>
+          )}
+          </LogoWrapper>
+
           {!isMobile && (
             <HeaderElementMobile>
               <Title
