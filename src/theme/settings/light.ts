@@ -78,9 +78,9 @@ export function lightTheme() {
     footerTextColor: mainTextColor,
 
     //Global
-    bodyBG: '#f7f7f7 no-repeat 0 10vh url("../images/themes/light/background_large.png")',
+    bodyBG: '#f7f7f7 no-repeat 0 5vh url("../images/themes/light/background_large.png")',
     bodyBGTablet: '#f7f7f7 no-repeat 0 10vh url("../images/themes/light/background_tablet.png")',
-    bodyBGMobile: '#f7f7f7 no-repeat -50vw 10vh url("../images/themes/light/background_mobile.png")',
+    bodyBGMobile: '#f7f7f7',
     layerBG: transparent,
     layerBGTablet: transparent,
     layerBGMobile: transparent,
