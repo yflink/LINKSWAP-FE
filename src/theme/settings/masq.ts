@@ -1,16 +1,19 @@
 export function masqTheme() {
   const mainColor = '#bc7f06'
-  const mainColorHover = '#2251c9'
-  const appBG = '#232a35'
-  const bodyBGColor = '#2b3a4a'
+  const mainColorHover = '#97661b'
+  const appBG = '#191426'
+  const bodyBGColor = '#07050a'
   const mainTextColor = '#FFF'
+  const mainTextColorHover = '#c2bebc'
   const transparent = 'transparent'
-  const buttonBG = '#40444f'
-  const buttonBGHover = '#60656d'
-  const buttonSecondaryBG = '#212328'
-  const modalBG = '#222a35'
-  const infoText = '#87a9ff'
-  const infoBG = '#202f46'
+  const buttonBG = '#66390a'
+  const buttonBGHover = '#391d01'
+  const buttonSecondaryBG = '#260e4e'
+  const modalBG = '#191426'
+  const infoText = '#7f50be'
+  const infoBG = '#260e4e'
+  const infoBGHover = '#1b0a38'
+  const highLights = '#d68e20'
 
   return {
     //App
@@ -40,7 +43,7 @@ export function masqTheme() {
     buttonBG: mainColor,
     buttonTextColor: mainTextColor,
     buttonBGHover: mainColorHover,
-    buttonTextColorHover: mainTextColor,
+    buttonTextColorHover: mainTextColorHover,
     buttonBGActive: mainColor,
     buttonTextColorActive: mainTextColor,
     buttonBGActiveHover: mainColor,
@@ -78,9 +81,9 @@ export function masqTheme() {
     footerTextColor: mainTextColor,
 
     //Global
-    bodyBG: '#2b3a4a no-repeat 0 10vh url("../images/themes/default/bg.svg")',
-    bodyBGTablet: '#2b3a4a no-repeat 0 10vh url("../images/themes/default/bg.svg")',
-    bodyBGMobile: '#2b3a4a no-repeat 0 10vh url("../images/themes/default/bg.svg")',
+    bodyBG: bodyBGColor,
+    bodyBGTablet: bodyBGColor,
+    bodyBGMobile: bodyBGColor,
     layerBG: transparent,
     layerBGTablet: transparent,
     layerBGMobile: transparent,
@@ -88,13 +91,13 @@ export function masqTheme() {
     linkColor: mainColor,
     linkColorHover: mainColor,
     lineColor: '#5F656D',
-    logo: '',
+    logo: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHIAAAAeCAYAAADw60pcAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyNpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDYuMC1jMDAzIDc5LjE2NDUyNywgMjAyMC8xMC8xNS0xNzo0ODozMiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIDIyLjEgKFdpbmRvd3MpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOkM3QzE0MEZENDE3QTExRUI5ODdERTcyMDAwMkFGOUYzIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOkM3QzE0MEZFNDE3QTExRUI5ODdERTcyMDAwMkFGOUYzIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6QzdDMTQwRkI0MTdBMTFFQjk4N0RFNzIwMDAyQUY5RjMiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6QzdDMTQwRkM0MTdBMTFFQjk4N0RFNzIwMDAyQUY5RjMiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz5WQfxDAAALZUlEQVR42uxaC3QU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',
 
     //Header
     headerBG: transparent,
     headerTextColor: mainTextColor,
-    headerButtonBG: buttonBG,
-    headerButtonBGHover: buttonBGHover,
+    headerButtonBG: infoBG,
+    headerButtonBGHover: infoBGHover,
     headerButtonIconColor: mainTextColor,
     headerModalTextColor: mainTextColor,
     headerModalTextHighlight: mainColor,
@@ -102,14 +105,14 @@ export function masqTheme() {
     //Modal
     modalBG: modalBG,
     modalBorder: modalBG,
-    modalSecondaryBG: '#2c2f36',
-    modalLines: buttonBG,
-    modalButtonBG: '#2c2f36',
+    modalSecondaryBG: infoBG,
+    modalLines: highLights,
+    modalButtonBG: infoBG,
     modalButtonText: mainTextColor,
     modalShadow: 'rgba(0,0,0,.425)',
     modalInputBG: transparent,
     modalInputBorder: buttonBG,
-    modalInputBorderFocus: mainColor,
+    modalInputBorderFocus: highLights,
     modalFooterBG: 'rgba(0, 0, 0, 0.1)',
 
     //Navigation
@@ -122,7 +125,7 @@ export function masqTheme() {
     navigationTabIconColorActive: mainTextColor,
     navigationTabModalBG: modalBG,
     navigationTabModalText: mainTextColor,
-    navigationTabModalHover: '#2c2f36',
+    navigationTabModalHover: infoBG,
 
     //Text
     textHighlight: mainColor,
