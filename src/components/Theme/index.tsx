@@ -93,11 +93,11 @@ export default function ThemeTab() {
               {t('interfaceTheme')}
             </Text>
             <ThemeOption themeName="LINKSWAP" themeString="default" />
+            <ThemeOption themeName="LINKSWAP light" themeString="light" />
           </AutoColumn>
           <Separator />
           <ThemeContainer>
             <ThemeOption themeName="CyberFi" themeString="cyberfi" />
-            <ThemeOption themeName="LINKSWAP light" themeString="light" />
           </ThemeContainer>
         </MenuFlyout>
       )}
