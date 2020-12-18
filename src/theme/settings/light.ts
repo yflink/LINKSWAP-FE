@@ -74,8 +74,8 @@ export function lightTheme() {
     buttonOutlinedTextColorHover: mainTextColor,
 
     //Footer
-    footerBG: bodyBGColor,
-    footerTextColor: appBG,
+    footerBG: modalBG,
+    footerTextColor: mainTextColor,
 
     //Global
     bodyBG: '#f7f7f7 no-repeat 0 10vh url("../images/themes/light/background_large.png")',
