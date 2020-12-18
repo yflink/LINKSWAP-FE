@@ -1,11 +1,11 @@
 export function defaultLightTheme() {
   const mainColor = '#295BDB'
-  const mainColorHover = '#2251c9'
-  const appBG = '#666'
+  const mainColorHover = '#354776'
+  const appBG = '#333'
   const bodyBGColor = '#FFF'
   const mainTextColor = '#FFF'
   const transparent = 'transparent'
-  const buttonBG = '#333'
+  const buttonBG = '#666'
   const buttonBGHover = '#60656d'
   const buttonSecondaryBG = '#AAA'
   const modalBG = '#2a3759'
@@ -97,20 +97,20 @@ export function defaultLightTheme() {
     headerButtonBGHover: mainColor,
     headerButtonIconColor: mainTextColor,
     headerModalTextColor: mainTextColor,
-    headerModalTextHighlight: mainColor,
+    headerModalTextHighlight: infoText,
 
     //Modal
     modalBG: modalBG,
-    modalBorder: modalBG,
-    modalSecondaryBG: mainColor,
+    modalBorder: mainColor,
+    modalSecondaryBG: mainColorHover,
     modalLines: buttonBG,
     modalButtonBG: modalBG,
     modalButtonText: mainTextColor,
     modalShadow: 'rgba(0,0,0,.425)',
     modalInputBG: transparent,
-    modalInputBorder: buttonBG,
+    modalInputBorder: mainColor,
     modalInputBorderFocus: mainColor,
-    modalFooterBG: 'rgba(0, 0, 0, 0.1)',
+    modalFooterBG: 'rgba(0, 0, 0, 0.8)',
 
     //Navigation
     navigationBG: appBG,

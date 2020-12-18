@@ -27,7 +27,7 @@ const FancyButton = styled.button`
   font-size: 12px;
   width: auto;
   min-width: 3rem;
-  border: 1px solid ${({ theme }) => theme.headerButtonBG};
+  border: 1px solid ${({ theme }) => theme.modalInputBorder};
   outline: none;
   background: ${({ theme }) => theme.modalBG};
   :hover {
