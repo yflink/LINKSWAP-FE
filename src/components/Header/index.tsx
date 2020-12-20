@@ -185,7 +185,7 @@ export default function Header() {
               >
                 <MenuText>LP Rewards</MenuText>
               </Title>
-              <Title style={{ marginInlineStart: 36 }} target="_blank" href="https://yflink.io/#/vote">
+              <Title style={{ marginInlineStart: 36 }} target="_blank" href="https://yflink.io/#/stake">
                 <MenuText>VOTE</MenuText>
               </Title>
               <Title
