@@ -1,13 +1,11 @@
-import { INITIAL_ALLOWED_SLIPPAGE, DEFAULT_DEADLINE_FROM_NOW } from '../../constants'
 import { createReducer } from '@reduxjs/toolkit'
-import { updateVersion } from '../global/actions'
 import { updatePriceBase } from './actions'
 
 const currentTimestamp = () => new Date().getTime()
 
 export interface PriceState {
   lastUpdateVersionTimestamp?: number
-  ethPriceBase: number | 0 // the etherum price base
+  ethPriceBase: number | 0 // the ethereum price base
   linkPriceBase: number | 0 // the chainlink price base
   timestamp: number
 }
