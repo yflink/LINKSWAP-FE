@@ -1,4 +1,4 @@
-# Linkswap
+# LINKSWAP
 
 ## Development
 
