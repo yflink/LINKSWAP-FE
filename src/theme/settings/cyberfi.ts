@@ -103,7 +103,7 @@ export function cyberFiTheme() {
     modalBG: modalBG,
     modalBorder: modalBG,
     modalSecondaryBG: buttonBGHover,
-    modalLines: buttonBG,
+    modalLines: buttonBGHover,
     modalButtonBG: buttonBGHover,
     modalButtonText: mainTextColor,
     modalShadow: 'rgba(0,0,0,.425)',

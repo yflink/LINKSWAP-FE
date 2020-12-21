@@ -10,6 +10,8 @@ export const LanguageOptionBody = styled.div`
   break-inside: avoid-column;
   display: inline-grid;
   font-size: 14px;
+  height: 33px;
+  overflow: hidden;
 
   :hover,
   :focus {
