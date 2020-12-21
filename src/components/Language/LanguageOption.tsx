@@ -30,7 +30,7 @@ const LanguageShortCode = styled.span`
 
 function setLang(lang?: string) {
   i18next.changeLanguage(lang!, () => {
-    console.log('changed language to', lang)
+    //console.log('changed language to', lang)
   })
   document.body.dir = i18next.dir(lang!)
 }

@@ -3,7 +3,7 @@ import { Price } from '@uniswap/sdk'
 import { useContext } from 'react'
 import { Text } from 'rebass'
 import { ThemeContext } from 'styled-components'
-import { useGetPriceBase } from '../../state/user/hooks'
+import { useGetPriceBase } from '../../state/price/hooks'
 
 interface TradePriceProps {
   price?: Price
@@ -12,7 +12,11 @@ interface TradePriceProps {
 
 export default function TradePrice({ price, showInverted }: TradePriceProps) {
   const theme = useContext(ThemeContext)
-  const priceBase = useGetPriceBase()
+  const priceObject = useGetPriceBase()
+  const priceBase =
+    price?.baseCurrency?.symbol === 'ETH' || price?.baseCurrency?.symbol === 'ETH'
+      ? priceObject['ethPriceBase']
+      : priceObject['linkPriceBase']
   const hasPriceBase = priceBase > 0
   const formattedPrice = showInverted ? price?.toSignificant(6) : price?.invert()?.toSignificant(6)
   const tokenPrice = Number(formattedPrice) || 1
@@ -39,7 +43,9 @@ export default function TradePrice({ price, showInverted }: TradePriceProps) {
       {show ? (
         <>
           {hasPriceBase ? (
-            <>{label} ({formatedUsdPrice})</>
+            <>
+              {label} ({formatedUsdPrice})
+            </>
           ) : (
             <>{label}</>
           )}
