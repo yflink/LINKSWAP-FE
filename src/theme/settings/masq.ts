@@ -70,12 +70,12 @@ export function masqTheme() {
     buttonSecondaryBGActive: mainColor,
     buttonSecondaryBorderActive: mainColor,
     buttonSecondaryTextColorActive: infoText,
-    buttonSecondaryBGHover: 'rgba(55, 107, 173, 0.44)',
-    buttonSecondaryBorderHover: mainColor,
+    buttonSecondaryBGHover: mainColorHover,
+    buttonSecondaryBorderHover: mainColorHover,
     buttonSecondaryTextColorHover: infoText,
-    buttonOutlinedBorder: '#2c2f36',
+    buttonOutlinedBorder: mainColor,
     buttonOutlinedTextColor: mainTextColor,
-    buttonOutlinedBorderHover: '#5g656d',
+    buttonOutlinedBorderHover: mainColorHover,
     buttonOutlinedTextColorHover: mainTextColor,
 
     //Footer
