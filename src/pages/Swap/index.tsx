@@ -45,6 +45,7 @@ import Loader from '../../components/Loader'
 import { useTranslation } from 'react-i18next'
 import { useTokenList } from '../../state/lists/hooks'
 import { useCurrencyUsdPrice } from '../../hooks/useCurrencyUsdPrice'
+import QuestionHelper from '../../components/QuestionHelper'
 
 function containsKey(json: any, value: string) {
   let contains = false
@@ -399,6 +400,7 @@ export default function Swap() {
                     <>
                       <RowBetween>
                         <TradePrice price={trade?.executionPrice} showInverted={true} />
+                        <QuestionHelper text={t('priceDescription')} />
                       </RowBetween>
                       <RowBetween>
                         <TradePrice price={trade?.executionPrice} showInverted={false} />
