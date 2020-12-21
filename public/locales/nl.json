@@ -241,5 +241,5 @@
   "selectATokenToFindLiquidity": "Selecteer een token om uw liquiditeit te vinden.",
   "interfaceTheme": "Selecteer een thema",
   "viewPairAnalytics": "Bekijk paaranalyses",
-  "priceDescription": "Current live price as of last block."
+  "priceDescription": "Huidige prijs sinds het laatste blok."
 }

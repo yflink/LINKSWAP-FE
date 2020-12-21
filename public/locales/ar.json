@@ -241,5 +241,5 @@
   "selectATokenToFindLiquidity": "اختر Token للعثور على السيولة الخاصة بك.",
   "interfaceTheme": "اختر Theme",
   "viewPairAnalytics": "عرض تحليلات زوجًا Token",
-  "priceDescription": "Current live price as of last block."
+  "priceDescription": "السعر الحالي وفقاً لآخر Block"
 }
