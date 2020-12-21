@@ -399,11 +399,11 @@ export default function Swap() {
                   {Boolean(trade) && (
                     <>
                       <RowBetween>
-                        <TradePrice price={trade?.executionPrice} showInverted={true} />
+                        <TradePrice price={trade?.executionPrice} showInverted={true} priceImpactSeverity={priceImpactSeverity} />
                         <QuestionHelper text={t('priceDescription')} />
                       </RowBetween>
                       <RowBetween>
-                        <TradePrice price={trade?.executionPrice} showInverted={false} />
+                        <TradePrice price={trade?.executionPrice} showInverted={false} priceImpactSeverity={priceImpactSeverity} />
                       </RowBetween>
                     </>
                   )}
@@ -441,7 +441,7 @@ export default function Swap() {
               </ButtonPrimary>
             ) : noRoute && userHasSpecifiedInputOutput ? (
               <GreyCard style={{ textAlign: 'center' }}>
-                <TYPE.main mb="4px">Insufficient liquidity for this trade.</TYPE.main>
+                <TYPE.main mb="4px">{t('insufficientLiquidity')}</TYPE.main>
               </GreyCard>
             ) : showApproveFlow ? (
               <RowBetween>

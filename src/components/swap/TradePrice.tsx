@@ -8,17 +8,24 @@ import { useGetPriceBase } from '../../state/price/hooks'
 interface TradePriceProps {
   price?: Price
   showInverted: boolean
+  priceImpactSeverity: number
 }
 
-export default function TradePrice({ price, showInverted }: TradePriceProps) {
+export default function TradePrice({ price, showInverted, priceImpactSeverity }: TradePriceProps) {
   const theme = useContext(ThemeContext)
   const priceObject = useGetPriceBase()
-  const priceBase =
-    price?.baseCurrency?.symbol === 'ETH' || price?.quoteCurrency?.symbol === 'ETH'
-      ? priceObject['ethPriceBase']
-      : priceObject['linkPriceBase']
-  const hasPriceBase = priceBase > 0
-  const formattedPrice = showInverted ? price?.toSignificant(6) : price?.invert()?.toSignificant(6)
+  let baseCurrency = 'ETH'
+  if (
+    (price?.baseCurrency?.symbol === 'LINK' && price?.quoteCurrency?.symbol !== 'ETH') ||
+    (price?.baseCurrency?.symbol !== 'ETH' && price?.quoteCurrency?.symbol === 'LINK') ||
+    (price?.baseCurrency?.symbol === 'LINK' && price?.quoteCurrency?.symbol === 'ETH')
+  ) {
+    baseCurrency = 'LINK'
+  }
+
+  const priceBase = baseCurrency === 'ETH' ? priceObject['ethPriceBase'] : priceObject['linkPriceBase']
+  const hasPriceBase = priceBase > 0 && priceImpactSeverity < 2
+  const formattedPrice = showInverted ? price?.toFixed(4) : price?.invert()?.toFixed(4)
   const tokenPrice = Number(formattedPrice) || 1
 
   let usdPrice = showInverted ? priceBase : tokenPrice * priceBase
@@ -28,7 +35,7 @@ export default function TradePrice({ price, showInverted }: TradePriceProps) {
 
   const formatedUsdPrice = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(usdPrice)
 
-  const show = Boolean(price?.baseCurrency && price?.quoteCurrency)
+  const show = Boolean(price?.baseCurrency && price?.quoteCurrency) && priceImpactSeverity < 2
   const label = showInverted
     ? `1 ${price?.baseCurrency?.symbol} = ${formattedPrice} ${price?.quoteCurrency?.symbol}`
     : `1 ${price?.quoteCurrency?.symbol} = ${formattedPrice} ${price?.baseCurrency?.symbol}`
@@ -40,7 +47,7 @@ export default function TradePrice({ price, showInverted }: TradePriceProps) {
       color={theme.textSecondary}
       style={{ justifyContent: 'center', alignItems: 'center', display: 'flex' }}
     >
-      {show ? (
+      {show && (
         <>
           {hasPriceBase ? (
             <>
@@ -50,8 +57,6 @@ export default function TradePrice({ price, showInverted }: TradePriceProps) {
             <>{label}</>
           )}
         </>
-      ) : (
-        '-'
       )}
     </Text>
   )
