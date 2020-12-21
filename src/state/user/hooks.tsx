@@ -14,6 +14,7 @@ import {
   SerializedPair,
   SerializedToken,
   updateUserTheme,
+  updatePriceBase,
   updateUserDeadline,
   updateUserExpertMode,
   updateUserSlippageTolerance
@@ -66,6 +67,21 @@ export function useThemeManager(): (newTheme: string) => void {
     },
     [dispatch]
   )
+}
+
+
+export function usePriceBaseManager(): (priceBase: number) => void {
+  const dispatch = useDispatch<AppDispatch>()
+  return useCallback(
+    (priceBase: number) => {
+      dispatch(updatePriceBase({ priceBase: priceBase }))
+    },
+    [dispatch]
+  )
+}
+
+export function useGetPriceBase(): number {
+  return useSelector<AppState, AppState['user']['priceBase']>(state => state.user.priceBase)
 }
 
 export function useExpertModeManager(): [boolean, () => void] {

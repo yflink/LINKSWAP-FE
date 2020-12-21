@@ -35,7 +35,7 @@ import {
   useSwapActionHandlers,
   useSwapState
 } from '../../state/swap/hooks'
-import { useExpertModeManager, useUserDeadline, useUserSlippageTolerance } from '../../state/user/hooks'
+import { useExpertModeManager, useGetTheme, useUserDeadline, useUserSlippageTolerance } from '../../state/user/hooks'
 import { LinkStyledButton, StyledInternalLink, TYPE } from '../../theme'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import { computeTradePriceBreakdown, warningSeverity } from '../../utils/prices'
@@ -44,6 +44,8 @@ import { ClickableText } from '../Pool/styleds'
 import Loader from '../../components/Loader'
 import { useTranslation } from 'react-i18next'
 import { useTokenList } from '../../state/lists/hooks'
+import { useCurrencyUsdPrice } from '../../hooks/useCurrencyUsdPrice'
+import { useGetPriceBase } from '../../state/user/hooks'
 
 function containsKey(json: any, value: string) {
   let contains = false
@@ -238,8 +240,6 @@ export default function Swap() {
   }, [tradeToConfirm, account, priceImpactWithoutFee, recipient, recipientAddress, showConfirm, swapCallback, trade])
 
   // errors
-  const [showInverted, setShowInverted] = useState<boolean>(false)
-
   // warnings on slippage
   const priceImpactSeverity = warningSeverity(priceImpactWithoutFee)
 
@@ -281,6 +281,8 @@ export default function Swap() {
   ])
 
   const { t } = useTranslation()
+
+  useCurrencyUsdPrice(currencies[Field.INPUT]?.symbol, currencies[Field.OUTPUT]?.symbol)
 
   return (
     <>
@@ -343,7 +345,9 @@ export default function Swap() {
                       onSwitchTokens()
                       setInversed(!inversed)
                     }}
-                    color={currencies[Field.INPUT] && currencies[Field.OUTPUT] ? theme.textHighlight : theme.textPrimary}
+                    color={
+                      currencies[Field.INPUT] && currencies[Field.OUTPUT] ? theme.textHighlight : theme.textPrimary
+                    }
                   />
                 </ArrowWrapper>
                 {recipient === null && !showWrap && isExpertMode ? (
@@ -393,23 +397,36 @@ export default function Swap() {
               <Card padding={'.25rem .75rem 0 .75rem'} borderRadius={'20px'}>
                 <AutoColumn gap="4px">
                   {Boolean(trade) && (
-                    <RowBetween align="center">
-                      <Text fontWeight={500} fontSize={14} color={theme.textSecondary}>
-                        Price
-                      </Text>
-                      <TradePrice
-                        price={trade?.executionPrice}
-                        showInverted={showInverted}
-                        setShowInverted={setShowInverted}
-                      />
-                    </RowBetween>
+                    <>
+                      <RowBetween align="center">
+                        <Text fontWeight={500} fontSize={14} color={theme.textSecondary}>
+                          {t('price')}
+                        </Text>
+                      </RowBetween>
+                      <RowBetween>
+                        <TradePrice price={trade?.executionPrice} showInverted={true} />
+                      </RowBetween>
+                      <RowBetween>
+                        <TradePrice price={trade?.executionPrice} showInverted={false} />
+                      </RowBetween>
+                    </>
                   )}
                   {allowedSlippage !== INITIAL_ALLOWED_SLIPPAGE && (
                     <RowBetween align="center">
-                      <ClickableText fontWeight={500} fontSize={14} color={theme.textSecondary} onClick={toggleSettings}>
+                      <ClickableText
+                        fontWeight={500}
+                        fontSize={14}
+                        color={theme.textSecondary}
+                        onClick={toggleSettings}
+                      >
                         {t('slippageTolerance')}
                       </ClickableText>
-                      <ClickableText fontWeight={500} fontSize={14} color={theme.textSecondary} onClick={toggleSettings}>
+                      <ClickableText
+                        fontWeight={500}
+                        fontSize={14}
+                        color={theme.textSecondary}
+                        onClick={toggleSettings}
+                      >
                         {allowedSlippage / 100}%
                       </ClickableText>
                     </RowBetween>
