@@ -127,16 +127,9 @@ export default function AddLiquidity({
 
   async function onAdd() {
     if (!chainId || !library || !account) return
-    console.log(chainId)
-    console.log(library)
-    console.log(account)
-
-    console.log(currencyA, currencyB)
-
     const router = getRouterContract(chainId, library, account)
 
     const { [Field.CURRENCY_A]: parsedAmountA, [Field.CURRENCY_B]: parsedAmountB } = parsedAmounts
-    console.log(parsedAmounts)
 
     if (!parsedAmountA || !parsedAmountB || !currencyA || !currencyB) {
       return
@@ -167,9 +160,6 @@ export default function AddLiquidity({
         deadlineFromNow
       ]
       value = BigNumber.from((tokenBIsETH ? parsedAmountB : parsedAmountA).raw.toString())
-
-      console.log(args)
-      console.log(value)
     } else {
       estimate = router.estimateGas.addLiquidity
       method = router.addLiquidity

@@ -281,7 +281,7 @@ export default function Swap() {
 
   const { t } = useTranslation()
 
-  useCurrencyUsdPrice(currencies[Field.INPUT]?.symbol, currencies[Field.OUTPUT]?.symbol)
+  useCurrencyUsdPrice()
 
   return (
     <>
@@ -397,11 +397,6 @@ export default function Swap() {
                 <AutoColumn gap="4px">
                   {Boolean(trade) && (
                     <>
-                      <RowBetween align="center">
-                        <Text fontWeight={500} fontSize={14} color={theme.textSecondary}>
-                          {t('price')}
-                        </Text>
-                      </RowBetween>
                       <RowBetween>
                         <TradePrice price={trade?.executionPrice} showInverted={true} />
                       </RowBetween>

@@ -11,8 +11,7 @@ import {
   updateUserTheme,
   updateUserExpertMode,
   updateUserSlippageTolerance,
-  updateUserDeadline,
-  updatePriceBase
+  updateUserDeadline
 } from './actions'
 
 const currentTimestamp = () => new Date().getTime()
@@ -83,10 +82,6 @@ export default createReducer(initialState, builder =>
     })
     .addCase(updateUserTheme, (state, action) => {
       state.userTheme = action.payload.userTheme
-      state.timestamp = currentTimestamp()
-    })
-    .addCase(updatePriceBase, (state, action) => {
-      state.priceBase = action.payload.priceBase
       state.timestamp = currentTimestamp()
     })
     .addCase(updateUserExpertMode, (state, action) => {
