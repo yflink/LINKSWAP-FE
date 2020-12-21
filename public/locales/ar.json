@@ -240,5 +240,6 @@
   "connectToFindPools": "قم بربط المحفظة للعثور على مَجمع سيولة.",
   "selectATokenToFindLiquidity": "اختر Token للعثور على السيولة الخاصة بك.",
   "interfaceTheme": "اختر Theme",
-  "viewPairAnalytics": "عرض تحليلات زوجًا Token"
+  "viewPairAnalytics": "عرض تحليلات زوجًا Token",
+  "priceDescription": "Current live price as of last block."
 }

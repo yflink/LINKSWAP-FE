@@ -240,5 +240,6 @@
   "connectToFindPools": "寻找兑换池前请先连接钱包。",
   "selectATokenToFindLiquidity": "选择一个通证来寻找流动性。",
   "interfaceTheme": "选择一个主题",
-  "viewPairAnalytics": "查看交易对分析"
+  "viewPairAnalytics": "查看交易对分析",
+  "priceDescription": "Current live price as of last block."
 }

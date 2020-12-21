@@ -239,5 +239,6 @@
   "connectToFindPools": "برای یافتن صندوق ها به کیف پول متصل شوید.",
   "selectATokenToFindLiquidity": "برای یافتن نقدینگی خود یک توکن انتخاب کنید.",
   "interfaceTheme": "انتخاب تم",
-  "viewPairAnalytics": "نمایش تحلیل جفت ارزها"
+  "viewPairAnalytics": "نمایش تحلیل جفت ارزها",
+  "priceDescription": "Current live price as of last block."
 }

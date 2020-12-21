@@ -234,5 +234,6 @@
   "connectToFindPools": "Подключитесь к кошельку, чтобы найти пулы.",
   "selectATokenToFindLiquidity": "Выберите токен, чтобы узнать свою ликвидность.",
   "interfaceTheme": "Выберите тему",
-  "viewPairAnalytics": "посмотреть аналитику пары"
+  "viewPairAnalytics": "посмотреть аналитику пары",
+  "priceDescription": "Current live price as of last block."
 }

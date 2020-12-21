@@ -240,5 +240,6 @@
   "connectToFindPools": "Conecte a sua carteira para ver os pools.",
   "selectATokenToFindLiquidity": "Selecione um token para encontrar sua liquidez.",
   "interfaceTheme": "Selecione um tema",
-  "viewPairAnalytics": "ver análises de pares"
+  "viewPairAnalytics": "ver análises de pares",
+  "priceDescription": "Current live price as of last block."
 }
