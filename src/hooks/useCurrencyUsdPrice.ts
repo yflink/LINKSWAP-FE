@@ -41,8 +41,7 @@ export function useCurrencyUsdPrice(currencyInput?: string | undefined, currency
       }
     } catch (e) {
       return 0
-    }
-    finally {
+    } finally {
       //console.log('fetched price')
     }
   }
