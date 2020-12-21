@@ -35,7 +35,7 @@ import {
   useSwapActionHandlers,
   useSwapState
 } from '../../state/swap/hooks'
-import { useExpertModeManager, useGetTheme, useUserDeadline, useUserSlippageTolerance } from '../../state/user/hooks'
+import { useExpertModeManager, useUserDeadline, useUserSlippageTolerance } from '../../state/user/hooks'
 import { LinkStyledButton, StyledInternalLink, TYPE } from '../../theme'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import { computeTradePriceBreakdown, warningSeverity } from '../../utils/prices'
@@ -45,7 +45,6 @@ import Loader from '../../components/Loader'
 import { useTranslation } from 'react-i18next'
 import { useTokenList } from '../../state/lists/hooks'
 import { useCurrencyUsdPrice } from '../../hooks/useCurrencyUsdPrice'
-import { useGetPriceBase } from '../../state/user/hooks'
 
 function containsKey(json: any, value: string) {
   let contains = false
