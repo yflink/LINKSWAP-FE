@@ -59,7 +59,7 @@ export default function PreviewListing() {
       </AppBody>
       <div
         style={{
-          backgroundColor: '#19222A',
+          backgroundColor: theme.modalFooterBG,
           padding: '24px',
           marginTop: '-6px',
           zIndex: 2,

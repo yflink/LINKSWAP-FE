@@ -130,7 +130,7 @@ const MenuFlyout = styled.span`
 const Break = styled.div`
   width: 100%;
   height: 1px;
-  background-color: ${({ theme }) => theme.modalBorder};
+  background-color: ${({ theme }) => theme.modalLines};
 `
 
 const ModalContentWrapper = styled.div`
