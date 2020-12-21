@@ -14,7 +14,7 @@ export default function TradePrice({ price, showInverted }: TradePriceProps) {
   const theme = useContext(ThemeContext)
   const priceObject = useGetPriceBase()
   const priceBase =
-    price?.baseCurrency?.symbol === 'ETH' || price?.baseCurrency?.symbol === 'ETH'
+    price?.baseCurrency?.symbol === 'ETH' || price?.quoteCurrency?.symbol === 'ETH'
       ? priceObject['ethPriceBase']
       : priceObject['linkPriceBase']
   const hasPriceBase = priceBase > 0
