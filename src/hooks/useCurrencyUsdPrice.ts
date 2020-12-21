@@ -6,11 +6,7 @@ export function useCurrencyUsdPrice(currencyInput?: string | undefined, currency
   let inputKey = 'ethereum'
 
   if (currencyInput !== 'ETH' && currencyOutput !== 'ETH') {
-    if (currencyInput === 'LINK') {
-      inputToken = '0x514910771af9ca656af840dff83e8264ecf986ca'
-      inputKey = inputToken
-    }
-    if (currencyOutput === 'LINK') {
+    if (currencyInput === 'LINK' || currencyOutput === 'LINK') {
       inputToken = '0x514910771af9ca656af840dff83e8264ecf986ca'
       inputKey = inputToken
     }
