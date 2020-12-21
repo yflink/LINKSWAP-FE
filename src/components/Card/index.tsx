@@ -20,7 +20,7 @@ export const LightCard = styled(Card)`
 `
 
 export const GreyCard = styled(Card)`
-  background-color: #3f4e5c;
+  background-color: ${({ theme }) => theme.appBoxSecondaryBG};
 `
 
 export const OutlineCard = styled(Card)`

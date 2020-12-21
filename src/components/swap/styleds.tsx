@@ -26,7 +26,7 @@ export const ArrowWrapper = styled.div<{ clickable: boolean }>`
 export const SectionBreak = styled.div`
   height: 1px;
   width: 100%;
-  background-color: ${({ theme }) => theme.buttonBG};
+  background-color: ${({ theme }) => theme.textSecondary};
 `
 
 export const BottomGrouping = styled.div`
