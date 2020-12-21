@@ -132,7 +132,7 @@ export function masqTheme() {
     //Text
     textHighlight: highLights,
     textPrimary: mainTextColor,
-    textSecondary: 'rgba(178,178,178,0.3)',
+    textSecondary: 'rgba(178,178,178,0.5)',
     textTertiary: '#bfbfbf',
     textDisabled: '#565A69',
 
