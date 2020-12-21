@@ -25,7 +25,7 @@ export default function TradePrice({ price, showInverted, priceImpactSeverity }:
 
   const priceBase = baseCurrency === 'ETH' ? priceObject['ethPriceBase'] : priceObject['linkPriceBase']
   const hasPriceBase = priceBase > 0 && priceImpactSeverity < 2
-  const formattedPrice = showInverted ? price?.toFixed(4) : price?.invert()?.toFixed(4)
+  const formattedPrice = showInverted ? price?.toSignificant(4) : price?.invert()?.toSignificant(4)
   const tokenPrice = Number(formattedPrice) || 1
 
   let usdPrice = showInverted ? priceBase : tokenPrice * priceBase
