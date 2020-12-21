@@ -1,9 +1,6 @@
 import { usePriceBaseManager } from '../state/user/hooks'
 
-export function useCurrencyUsdPrice (
-  currencyInput?: string | undefined,
-  currencyOutput?: string | undefined
-): void {
+export function useCurrencyUsdPrice(currencyInput?: string | undefined, currencyOutput?: string | undefined): void {
   const newPriceBase = usePriceBaseManager()
   let inputToken = 'ETH'
   let inputKey = 'ethereum'
@@ -27,19 +24,26 @@ export function useCurrencyUsdPrice (
         '&vs_currencies=usd'
 
   const getPrice = async () => {
-    const response = await fetch(fetchUrl, {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      },
-      method: 'GET'
-    })
+    try {
+      const response = await fetch(fetchUrl, {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        method: 'GET'
+      })
 
-    if (response.status !== 400) {
-      const content = await response.json()
-      return content[inputKey]['usd']
-    } else {
+      if (response.ok) {
+        const content = await response.json()
+        return content[inputKey]['usd']
+      } else {
+        return 0
+      }
+    } catch (e) {
       return 0
+    }
+    finally {
+      //console.log('fetched price')
     }
   }
 
