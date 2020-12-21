@@ -31,10 +31,10 @@ const FancyButton = styled.button`
   outline: none;
   background: ${({ theme }) => theme.modalBG};
   :hover {
-    border: 1px solid ${({ theme }) => theme.headerModalTextHighlight};
+    border: 1px solid ${({ theme }) => theme.modalInputBorderFocus};
   }
   :focus {
-    border: 1px solid ${({ theme }) => theme.headerModalTextHighlight};
+    border: 1px solid ${({ theme }) => theme.modalInputBorderFocus};
   }
 `
 
@@ -43,7 +43,7 @@ const Option = styled(FancyButton)<{ active: boolean }>`
   :hover {
     cursor: pointer;
   }
-  background-color: ${({ active, theme }) => active && theme.headerModalTextHighlight};
+  background-color: ${({ active, theme }) => active && theme.modalInputBorder};
   color: ${({ active, theme }) => (active ? theme.textPrimary : theme.textPrimary)};
 `
 

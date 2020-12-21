@@ -1,26 +1,28 @@
 export function masqTheme() {
-  const mainColor = '#bc7f06'
+  const mainColor = '#bc8004'
   const mainColorHover = '#97661b'
-  const appBG = '#191426'
-  const bodyBGColor = '#07050a'
-  const mainTextColor = '#FFF'
+  const mainButtonColor = '#6526c1'
+  const mainButtonColorHover = '#4f3a87'
+  const appBG = '#0c0812'
+  const bodyBGColor = '#120e1b'
+  const inputBGColor = '#181323'
+  const mainTextColor = '#b2b2b2'
   const mainTextColorHover = '#c2bebc'
   const transparent = 'transparent'
-  const buttonBG = '#66390a'
-  const buttonBGHover = '#391d01'
+  const buttonBG = '#181323'
+  const buttonBGHover = '#6526c1'
   const buttonSecondaryBG = '#260e4e'
   const modalBG = '#191426'
-  const infoText = '#7f50be'
-  const infoBG = '#260e4e'
+  const infoText = '#0b090f'
   const infoBGHover = '#1b0a38'
   const highLights = '#d68e20'
 
   return {
     //App
     appBGColor: appBG,
-    appInfoBoxBG: infoBG,
+    appInfoBoxBG: mainColor,
     appInfoBoxTextColor: infoText,
-    appBoxBG: bodyBGColor,
+    appBoxBG: inputBGColor,
     appBoxBorder: '#373f49',
     appBoxHoverBG: '#373f49',
     appBoxHoverBorder: '#5e6373',
@@ -29,13 +31,13 @@ export function masqTheme() {
     appBoxSecondaryTextColor: mainTextColor,
     appBoxSecondaryInnerBG: '#53606c',
     appBoxSecondaryInnerTextColor: '#c3c5cb',
-    appCurrencyInputBG: bodyBGColor,
+    appCurrencyInputBG: inputBGColor,
     appCurrencyInputTextColor: mainTextColor,
-    appCurrencyInputBGHover: bodyBGColor,
+    appCurrencyInputBGHover: inputBGColor,
     appCurrencyInputTextColorHover: mainTextColor,
-    appCurrencyInputBGActive: mainColor,
+    appCurrencyInputBGActive: mainButtonColor,
     appCurrencyInputTextColorActive: mainTextColor,
-    appCurrencyInputBGActiveHover: mainColorHover,
+    appCurrencyInputBGActiveHover: mainButtonColorHover,
     appCurrencyInputTextColorActiveHover: mainTextColor,
 
 
@@ -62,10 +64,10 @@ export function masqTheme() {
     buttonSelectTextColorActive: mainTextColor,
     buttonSelectBGActiveHover: mainColor,
     buttonSelectTextColorActiveHover: mainTextColor,
-    buttonSecondaryBG: infoBG,
+    buttonSecondaryBG: mainColor,
     buttonSecondaryBorder: transparent,
     buttonSecondaryTextColor: infoText,
-    buttonSecondaryBGActive: infoBG,
+    buttonSecondaryBGActive: mainColor,
     buttonSecondaryBorderActive: mainColor,
     buttonSecondaryTextColorActive: infoText,
     buttonSecondaryBGHover: 'rgba(55, 107, 173, 0.44)',
@@ -81,9 +83,9 @@ export function masqTheme() {
     footerTextColor: mainTextColor,
 
     //Global
-    bodyBG: bodyBGColor,
-    bodyBGTablet: bodyBGColor,
-    bodyBGMobile: bodyBGColor,
+    bodyBG: '#07050a url("../images/themes/masq/background_large.png") center center / cover no-repeat',
+    bodyBGTablet: '#07050a url("../images/themes/masq/background_tablet.png") center center / cover no-repeat',
+    bodyBGMobile: '#07050a url("../images/themes/masq/background_mobile.png") center center / cover no-repeat',
     layerBG: transparent,
     layerBGTablet: transparent,
     layerBGMobile: transparent,
@@ -95,24 +97,24 @@ export function masqTheme() {
 
     //Header
     headerBG: transparent,
-    headerTextColor: mainTextColor,
-    headerButtonBG: infoBG,
+    headerTextColor: mainColor,
+    headerButtonBG: infoText,
     headerButtonBGHover: infoBGHover,
-    headerButtonIconColor: mainTextColor,
+    headerButtonIconColor: mainColor,
     headerModalTextColor: mainTextColor,
     headerModalTextHighlight: mainColor,
 
     //Modal
     modalBG: modalBG,
-    modalBorder: modalBG,
-    modalSecondaryBG: infoBG,
-    modalLines: highLights,
-    modalButtonBG: infoBG,
+    modalBorder: appBG,
+    modalSecondaryBG: appBG,
+    modalLines: mainButtonColor,
+    modalButtonBG: mainButtonColor,
     modalButtonText: mainTextColor,
     modalShadow: 'rgba(0,0,0,.425)',
     modalInputBG: transparent,
-    modalInputBorder: buttonBG,
-    modalInputBorderFocus: highLights,
+    modalInputBorder: mainButtonColor,
+    modalInputBorderFocus: mainButtonColorHover,
     modalFooterBG: appBG,
 
     //Navigation
@@ -121,17 +123,17 @@ export function masqTheme() {
     navigationTabIconColor: mainTextColor,
     navigationTabBGHover: transparent,
     navigationTabIconColorHover: mainTextColor,
-    navigationTabBGActive: mainColor,
+    navigationTabBGActive: mainButtonColor,
     navigationTabIconColorActive: mainTextColor,
     navigationTabModalBG: modalBG,
     navigationTabModalText: mainTextColor,
-    navigationTabModalHover: infoBG,
+    navigationTabModalHover: mainColor,
 
     //Text
     textHighlight: highLights,
     textPrimary: mainTextColor,
-    textSecondary: '#c3c5cb',
-    textTertiary: '#6C7284',
+    textSecondary: 'rgba(178,178,178,0.3)',
+    textTertiary: '#bfbfbf',
     textDisabled: '#565A69',
 
     //States

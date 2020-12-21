@@ -62,7 +62,7 @@ export const SearchInput = styled.input`
   }
   transition: border 100ms;
   :focus {
-    border: 1px solid ${({ theme }) => theme.textHighlight};
+    border: 1px solid ${({ theme }) => theme.modalInputBorderFocus};
     outline: none;
   }
 `

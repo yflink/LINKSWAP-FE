@@ -69,14 +69,6 @@
       "logoURI": "https://logos.linkswap.app/0x2260fac5e5542a773aa44fbcfedf7c193bc2c599.png"
     },
     {
-      "address": "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984",
-      "chainId": 1,
-      "name": "Uniswap",
-      "symbol": "UNI",
-      "decimals": 18,
-      "logoURI": "https://logos.linkswap.app/0x1f9840a85d5af5bf1d1762f925bdaddc4201f984.png"
-    },
-    {
       "address": "0xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f",
       "chainId": 1,
       "name": "SynthetixNetworkToken",
