@@ -13,6 +13,7 @@ interface TradePriceProps {
 export default function TradePrice({ price, showInverted }: TradePriceProps) {
   const theme = useContext(ThemeContext)
   const priceBase = useGetPriceBase()
+  const hasPriceBase = priceBase > 0
   const formattedPrice = showInverted ? price?.toSignificant(6) : price?.invert()?.toSignificant(6)
   const tokenPrice = Number(formattedPrice) || 1
 
@@ -20,7 +21,6 @@ export default function TradePrice({ price, showInverted }: TradePriceProps) {
   if (price?.baseCurrency?.symbol !== 'ETH' && price?.baseCurrency?.symbol !== 'LINK') {
     usdPrice = showInverted ? tokenPrice * priceBase : priceBase
   }
-
 
   const formatedUsdPrice = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(usdPrice)
 
@@ -38,7 +38,11 @@ export default function TradePrice({ price, showInverted }: TradePriceProps) {
     >
       {show ? (
         <>
-          {label} ({formatedUsdPrice})
+          {hasPriceBase ? (
+            <>{label} ({formatedUsdPrice})</>
+          ) : (
+            <>{label}</>
+          )}
         </>
       ) : (
         '-'
