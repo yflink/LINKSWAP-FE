@@ -237,9 +237,9 @@
   "dismiss": "Respingere",
   "route": "Via",
   "routeDescription": "L'instradamento attraverso questi token ha prodotto il miglior prezzo per lo scambio.",
-  "connectToFindPools": "Connect to a wallet to find pools.",
-  "selectATokenToFindLiquidity": "Select a token to find your liquidity.",
-  "interfaceTheme": "Select a Theme",
-  "viewPairAnalytics": "view pair analytics",
-  "priceDescription": "Current live price as of last block."
+  "connectToFindPools": "Collegare un portafoglio per trovare i pool.",
+  "selectATokenToFindLiquidity": "Scegliere un token per trovare sua liquidità.",
+  "interfaceTheme": "Scegliere una Tema",
+  "viewPairAnalytics": "Visualizzare L'analisi dei Token",
+  "priceDescription": "Prezzo corrente dall'ultimo blocco."
 }
