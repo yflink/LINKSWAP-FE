@@ -53,6 +53,6 @@ export const portis = new PortisConnector({
 // mainnet only
 export const walletlink = new WalletLinkConnector({
   url: NETWORK_URL,
-  appName: 'Linkswap',
+  appName: 'LINKSWAP',
   appLogoUrl: 'https://yflink.io/static/media/YFLink-header-logo.cffb7453.svg'
 })
