@@ -240,5 +240,6 @@
   "connectToFindPools": "Connecter votre wallet pour trouver vos pools.",
   "selectATokenToFindLiquidity": "Sélectionner un token pour trouver votre liquidité.",
   "interfaceTheme": "Sélectionner un fond d'écran",
-  "viewPairAnalytics": "Voir les analyses des paires"
+  "viewPairAnalytics": "Voir les analyses des paires",
+  "priceDescription": "Current live price as of last block."
 }

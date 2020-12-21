@@ -240,5 +240,6 @@
   "connectToFindPools": "Maak verbinding met een wallet om pools te vinden.",
   "selectATokenToFindLiquidity": "Selecteer een token om uw liquiditeit te vinden.",
   "interfaceTheme": "Selecteer een thema",
-  "viewPairAnalytics": "Bekijk paaranalyses"
+  "viewPairAnalytics": "Bekijk paaranalyses",
+  "priceDescription": "Current live price as of last block."
 }

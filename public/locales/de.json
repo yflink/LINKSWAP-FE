@@ -238,5 +238,6 @@
   "connectToFindPools": "Verbinde dein Wallet um deine Pools zu finden.",
   "selectATokenToFindLiquidity": "Wähle einen Token-Paar um deine Liquidity zu finden.",
   "interfaceTheme": "Designauswahl",
-  "viewPairAnalytics": "Token-Paar Statistik öffnen"
+  "viewPairAnalytics": "Token-Paar Statistik öffnen",
+  "priceDescription": "Aktueller Preis basierend auf dem letzten Block der Ethereum Blockchain."
 }

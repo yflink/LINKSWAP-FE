@@ -234,5 +234,6 @@
   "connectToFindPools": "Conectează-te la un portofel pentru a găsi Pooluri",
   "selectATokenToFindLiquidity": "Selectează un token pentru a vă găsi lichiditatea.",
   "interfaceTheme": "Selectează o temă",
-  "viewPairAnalytics": "vezi analitica perechei"
+  "viewPairAnalytics": "vezi analitica perechei",
+  "priceDescription": "Current live price as of last block."
 }
