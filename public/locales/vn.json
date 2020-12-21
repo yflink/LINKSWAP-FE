@@ -240,5 +240,6 @@
   "connectToFindPools": "Liên kết ví để tìm Pool",
   "selectATokenToFindLiquidity": "Chọn token để xem thanh khoản của bạn.",
   "interfaceTheme": "Chọn giao diện",
-  "viewPairAnalytics": "Xem phân tích cặp token này"
+  "viewPairAnalytics": "Xem phân tích cặp token này",
+  "priceDescription": "Current live price as of last block."
 }

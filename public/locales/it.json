@@ -240,5 +240,6 @@
   "connectToFindPools": "Connect to a wallet to find pools.",
   "selectATokenToFindLiquidity": "Select a token to find your liquidity.",
   "interfaceTheme": "Select a Theme",
-  "viewPairAnalytics": "view pair analytics"
+  "viewPairAnalytics": "view pair analytics",
+  "priceDescription": "Current live price as of last block."
 }

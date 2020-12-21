@@ -240,5 +240,6 @@
   "connectToFindPools": "지갑에 연결하여 풀을 찾으세요.",
   "selectATokenToFindLiquidity": "유동성을 확보하려면 토큰을 선택하세요.",
   "interfaceTheme": "테마선택",
-  "viewPairAnalytics": "쌍 분석보기"
+  "viewPairAnalytics": "쌍 분석보기",
+  "priceDescription": "Current live price as of last block."
 }
