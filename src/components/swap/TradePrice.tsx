@@ -1,26 +1,33 @@
 import React from 'react'
 import { Price } from '@uniswap/sdk'
 import { useContext } from 'react'
-import { Repeat } from 'react-feather'
 import { Text } from 'rebass'
 import { ThemeContext } from 'styled-components'
-import { StyledBalanceMaxMini } from './styleds'
+import { useGetPriceBase } from '../../state/user/hooks'
 
 interface TradePriceProps {
   price?: Price
   showInverted: boolean
-  setShowInverted: (showInverted: boolean) => void
 }
 
-export default function TradePrice({ price, showInverted, setShowInverted }: TradePriceProps) {
+export default function TradePrice({ price, showInverted }: TradePriceProps) {
   const theme = useContext(ThemeContext)
-
+  const priceBase = useGetPriceBase()
   const formattedPrice = showInverted ? price?.toSignificant(6) : price?.invert()?.toSignificant(6)
+  const tokenPrice = Number(formattedPrice) || 1
+
+  let usdPrice = showInverted ? priceBase : tokenPrice * priceBase
+  if (price?.baseCurrency?.symbol !== 'ETH' && price?.baseCurrency?.symbol !== 'LINK') {
+    usdPrice = showInverted ? tokenPrice * priceBase : priceBase
+  }
+
+
+  const formatedUsdPrice = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(usdPrice)
 
   const show = Boolean(price?.baseCurrency && price?.quoteCurrency)
   const label = showInverted
-    ? `${price?.quoteCurrency?.symbol} per ${price?.baseCurrency?.symbol}`
-    : `${price?.baseCurrency?.symbol} per ${price?.quoteCurrency?.symbol}`
+    ? `1 ${price?.baseCurrency?.symbol} = ${formattedPrice} ${price?.quoteCurrency?.symbol}`
+    : `1 ${price?.quoteCurrency?.symbol} = ${formattedPrice} ${price?.baseCurrency?.symbol}`
 
   return (
     <Text
@@ -31,10 +38,7 @@ export default function TradePrice({ price, showInverted, setShowInverted }: Tra
     >
       {show ? (
         <>
-          {formattedPrice ?? '-'} {label}
-          <StyledBalanceMaxMini onClick={() => setShowInverted(!showInverted)}>
-            <Repeat size={14} />
-          </StyledBalanceMaxMini>
+          {label} ({formatedUsdPrice})
         </>
       ) : (
         '-'

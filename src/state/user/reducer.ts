@@ -11,7 +11,8 @@ import {
   updateUserTheme,
   updateUserExpertMode,
   updateUserSlippageTolerance,
-  updateUserDeadline
+  updateUserDeadline,
+  updatePriceBase
 } from './actions'
 
 const currentTimestamp = () => new Date().getTime()
@@ -21,6 +22,8 @@ export interface UserState {
   lastUpdateVersionTimestamp?: number
 
   userTheme: string | 'default' // the user's theme
+
+  priceBase: number | 0 // the price base
 
   userExpertMode: boolean
 
@@ -52,6 +55,7 @@ function pairKey(token0Address: string, token1Address: string) {
 
 export const initialState: UserState = {
   userTheme: 'default',
+  priceBase: 0,
   userExpertMode: false,
   userSlippageTolerance: INITIAL_ALLOWED_SLIPPAGE,
   userDeadline: DEFAULT_DEADLINE_FROM_NOW,
@@ -79,6 +83,10 @@ export default createReducer(initialState, builder =>
     })
     .addCase(updateUserTheme, (state, action) => {
       state.userTheme = action.payload.userTheme
+      state.timestamp = currentTimestamp()
+    })
+    .addCase(updatePriceBase, (state, action) => {
+      state.priceBase = action.payload.priceBase
       state.timestamp = currentTimestamp()
     })
     .addCase(updateUserExpertMode, (state, action) => {
