@@ -241,5 +241,5 @@
   "selectATokenToFindLiquidity": "Sélectionner un token pour trouver votre liquidité.",
   "interfaceTheme": "Sélectionner un fond d'écran",
   "viewPairAnalytics": "Voir les analyses des paires",
-  "priceDescription": "Current live price as of last block."
+  "priceDescription": "Prix actuel  lors du dernier block miné"
 }
