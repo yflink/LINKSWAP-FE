@@ -239,5 +239,5 @@
   "selectATokenToFindLiquidity": "Wähle einen Token-Paar um deine Liquidity zu finden.",
   "interfaceTheme": "Designauswahl",
   "viewPairAnalytics": "Token-Paar Statistik öffnen",
-  "priceDescription": "Aktueller Preis basierend auf dem letzten Block der Ethereum Blockchain."
+  "priceDescription": "Effektiver Preis basierend auf dem Tausch-Verhältnis der Token."
 }
