@@ -241,5 +241,6 @@
   "selectATokenToFindLiquidity": "Chọn token để xem thanh khoản của bạn.",
   "interfaceTheme": "Chọn giao diện",
   "viewPairAnalytics": "Xem phân tích cặp token này",
-  "priceDescription": "Giá hiện tại dựa trên khối khai thác gần nhất"
+  "priceDescription": "Giá hiện tại dựa trên khối khai thác gần nhất",
+  "removeLiquidityCurrencies": "Remove {{currencyAAmount}} {{currencyASymbol}} and {{currencyBAmount}} {{currencyBSymbol}}"
 }
