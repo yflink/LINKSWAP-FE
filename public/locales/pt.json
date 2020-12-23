@@ -241,5 +241,6 @@
   "selectATokenToFindLiquidity": "Selecione um token para encontrar sua liquidez.",
   "interfaceTheme": "Selecione um tema",
   "viewPairAnalytics": "ver análises de pares",
-  "priceDescription": "Preço baseado no último bloco minerado"
+  "priceDescription": "Preço baseado no último bloco minerado",
+  "removeLiquidityCurrencies": "Remove {{currencyAAmount}} {{currencyASymbol}} and {{currencyBAmount}} {{currencyBSymbol}}"
 }
