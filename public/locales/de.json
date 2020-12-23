@@ -97,8 +97,8 @@
   "toEstimated": "Zu (geschätzt)",
   "wrap": "Wrap",
   "unwrap": "Unwrap",
-  "approved": "Genehmigt",
-  "approveCurrency": "{{ inputCurrency }} genehmigen",
+  "approved": "Autorisiert",
+  "approveCurrency": "{{ inputCurrency }} autorisieren",
   "approvingCurrency": "Genehmige {{ inputCurrency }}",
   "priceImpactHigh": "Hohe Preisauswirkungen",
   "createNewPool": "Pool erstellen",
@@ -240,6 +240,9 @@
   "interfaceTheme": "Designauswahl",
   "viewPairAnalytics": "Token-Paar Statistik öffnen",
   "priceDescription": "Effektiver Preis basierend auf dem Tausch-Verhältnis der Token.",
-  "removeLiquidityCurrencies": "Entnehme {{currencyAAmount}} {{currencyASymbol}} und {{currencyBAmount}} {{currencyBSymbol}}",
-  "approve": "Approve"
+  "removeLiquidityCurrencies": "{{currencyAAmount}} {{currencyASymbol}} und {{currencyBAmount}} {{currencyBSymbol}} entnehmen",
+  "approve": "Autorisieren",
+  "approving": "Autorisiere",
+  "confirm": "Bestätigen",
+  "receiveCurrency": "als {{currency}} erhalten"
 }

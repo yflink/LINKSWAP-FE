@@ -237,5 +237,8 @@
   "viewPairAnalytics": "vezi analitica perechei",
   "priceDescription": "Prețul curent live de la ultimul bloc.",
   "removeLiquidityCurrencies": "Remove {{currencyAAmount}} {{currencyASymbol}} and {{currencyBAmount}} {{currencyBSymbol}}",
-  "approve": "Approve"
+  "approve": "Approve",
+  "approving": "Approving",
+  "confirm": "Confirm",
+  "receiveCurrency": "Receive {{currency}}"
 }

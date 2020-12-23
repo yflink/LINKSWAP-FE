@@ -237,5 +237,8 @@
   "viewPairAnalytics": "посмотреть аналитику пары",
   "priceDescription": "Текущая цена в реальном времени на последний блок.",
   "removeLiquidityCurrencies": "Remove {{currencyAAmount}} {{currencyASymbol}} and {{currencyBAmount}} {{currencyBSymbol}}",
-  "approve": "Approve"
+  "approve": "Approve",
+  "approving": "Approving",
+  "confirm": "Confirm",
+  "receiveCurrency": "Receive {{currency}}"
 }

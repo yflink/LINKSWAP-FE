@@ -243,5 +243,8 @@
   "viewPairAnalytics": "Bekijk paaranalyses",
   "priceDescription": "Huidige prijs sinds het laatste blok.",
   "removeLiquidityCurrencies": "Remove {{currencyAAmount}} {{currencyASymbol}} and {{currencyBAmount}} {{currencyBSymbol}}",
-  "approve": "Approve"
+  "approve": "Approve",
+  "approving": "Approving",
+  "confirm": "Confirm",
+  "receiveCurrency": "Receive {{currency}}"
 }

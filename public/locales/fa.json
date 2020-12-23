@@ -242,5 +242,8 @@
   "viewPairAnalytics": "نمایش تحلیل جفت ارزها",
   "priceDescription": "قیمت  در حال حاضر با توجه به بلاک آخر",
   "removeLiquidityCurrencies": "Remove {{currencyAAmount}} {{currencyASymbol}} and {{currencyBAmount}} {{currencyBSymbol}}",
-  "approve": "Approve"
+  "approve": "Approve",
+  "approving": "Approving",
+  "confirm": "Confirm",
+  "receiveCurrency": "Receive {{currency}}"
 }

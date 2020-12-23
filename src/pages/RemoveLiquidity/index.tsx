@@ -103,7 +103,7 @@ export default function RemoveLiquidity({
   const [signatureData, setSignatureData] = useState<{ v: number; r: string; s: string; deadline: number } | null>(null)
   const [approval, approveCallback] = useApproveCallback(parsedAmounts[Field.LIQUIDITY], ROUTER_ADDRESS)
 
-  const outputString = t('estimatedOutput', { slippage: allowedSlippage / 100 })
+  const estimatedOutputString = t('estimatedOutput', { slippage: allowedSlippage / 100 })
   async function onAttemptToApprove() {
     if (!pairContract || !pair || !library) throw new Error('missing dependencies')
     const liquidityAmount = parsedAmounts[Field.LIQUIDITY]
@@ -335,6 +335,23 @@ export default function RemoveLiquidity({
     }
   }
 
+  const pendingText = t('removeLiquidityCurrencies', {
+    currencyAAmount: parsedAmounts[Field.CURRENCY_A]?.toSignificant(6),
+    currencyASymbol: currencyA?.symbol,
+    currencyBAmount: parsedAmounts[Field.CURRENCY_B]?.toSignificant(6),
+    currencyBSymbol: currencyB?.symbol
+  })
+
+  const priceString = t('price')
+  const approvingString = t('approving')
+  const approvedString = t('approved')
+  const approveString = t('approve')
+  const confirmString = t('confirm')
+  const receiveETHString = t('receiveCurrency', { currency: 'ETH' })
+  const receiveWETHString = t('receiveCurrency', { currency: 'WETH' })
+  const outputString = t('output')
+  const removeString = t('remove')
+
   function modalHeader() {
     return (
       <AutoColumn gap={'md'} style={{ marginTop: '20px' }}>
@@ -365,7 +382,7 @@ export default function RemoveLiquidity({
         </RowBetween>
 
         <TYPE.italic fontSize={12} color={theme.textSecondary} textAlign="left" padding={'12px 0 0 0'}>
-          {outputString}
+          {estimatedOutputString}
         </TYPE.italic>
       </AutoColumn>
     )
@@ -376,7 +393,7 @@ export default function RemoveLiquidity({
       <>
         <RowBetween>
           <Text color={theme.textSecondary} fontWeight={500} fontSize={16}>
-            {'UNI ' + currencyA?.symbol + '/' + currencyB?.symbol} Burned
+            {'LSLP ' + currencyA?.symbol + '/' + currencyB?.symbol}
           </Text>
           <RowFixed>
             <DoubleCurrencyLogo currency0={currencyA} currency1={currencyB} margin={true} />
@@ -389,7 +406,7 @@ export default function RemoveLiquidity({
           <>
             <RowBetween>
               <Text color={theme.textSecondary} fontWeight={500} fontSize={16}>
-                Price
+                {priceString}
               </Text>
               <Text fontWeight={500} fontSize={16} color={theme.textPrimary}>
                 1 {currencyA?.symbol} = {tokenA ? pair.priceOf(tokenA).toSignificant(6) : '-'} {currencyB?.symbol}
@@ -410,22 +427,12 @@ export default function RemoveLiquidity({
           }}
         >
           <Text fontWeight={500} fontSize={20}>
-            Confirm
+            {confirmString}
           </Text>
         </ButtonPrimary>
       </>
     )
   }
-
-  const pendingText = t('removeLiquidityCurrencies', {
-    currencyAAmount: parsedAmounts[Field.CURRENCY_A]?.toSignificant(6),
-    currencyASymbol: currencyA?.symbol,
-    currencyBAmount: parsedAmounts[Field.CURRENCY_B]?.toSignificant(6),
-    currencyBSymbol: currencyB?.symbol
-  })
-
-  const approvedString = t('approved')
-  const approveString = t('approve')
 
   const liquidityPercentChangeCallback = useCallback(
     (value: number) => {
@@ -500,17 +507,6 @@ export default function RemoveLiquidity({
           <AutoColumn gap="md">
             <LightCard>
               <AutoColumn gap="20px">
-                {/* <RowBetween>
-                  <Text fontWeight={500}>Amount</Text>
-                  <ClickableText
-                    fontWeight={500}
-                    onClick={() => {
-                      setShowDetailed(!showDetailed)
-                    }}
-                  >
-                    {showDetailed ? 'Simple' : 'Detailed'}
-                  </ClickableText>
-                </RowBetween> */}
                 <Row style={{ alignItems: 'flex-end' }}>
                   <Text fontSize={72} fontWeight={500}>
                     {formattedAmounts[Field.LIQUIDITY_PERCENT]}%
@@ -574,7 +570,7 @@ export default function RemoveLiquidity({
                               currencyB === ETHER ? WETH[chainId].address : currencyIdB
                             }`}
                           >
-                            Receive WETH
+                            {receiveWETHString}
                           </StyledInternalLink>
                         ) : oneCurrencyIsWETH ? (
                           <StyledInternalLink
@@ -582,7 +578,7 @@ export default function RemoveLiquidity({
                               currencyA && currencyEquals(currencyA, WETH[chainId]) ? 'ETH' : currencyIdA
                             }/${currencyB && currencyEquals(currencyB, WETH[chainId]) ? 'ETH' : currencyIdB}`}
                           >
-                            Receive ETH
+                            {receiveETHString}
                           </StyledInternalLink>
                         ) : null}
                       </RowBetween>
@@ -615,7 +611,7 @@ export default function RemoveLiquidity({
                   onMax={() => onUserInput(Field.LIQUIDITY_PERCENT, '100')}
                   showMaxButton={!atMaxAmount}
                   currency={currencyA}
-                  label={'Output'}
+                  label={outputString}
                   onCurrencySelect={handleSelectCurrencyA}
                   id="remove-liquidity-tokena"
                 />
@@ -629,7 +625,7 @@ export default function RemoveLiquidity({
                   onMax={() => onUserInput(Field.LIQUIDITY_PERCENT, '100')}
                   showMaxButton={!atMaxAmount}
                   currency={currencyB}
-                  label={'Output'}
+                  label={outputString}
                   onCurrencySelect={handleSelectCurrencyB}
                   id="remove-liquidity-tokenb"
                 />
@@ -638,7 +634,7 @@ export default function RemoveLiquidity({
             {pair && (
               <div style={{ padding: '10px 20px' }}>
                 <RowBetween>
-                  Price:
+                  {priceString}:
                   <div>
                     1 {currencyA?.symbol} = {tokenA ? pair.priceOf(tokenA).toSignificant(6) : '-'} {currencyB?.symbol}
                   </div>
@@ -665,11 +661,11 @@ export default function RemoveLiquidity({
                     fontSize={16}
                   >
                     {approval === ApprovalState.PENDING ? (
-                      <Dots>Approving</Dots>
+                      <Dots>{approvingString}</Dots>
                     ) : approval === ApprovalState.APPROVED || signatureData !== null ? (
-                      {approvedString}
+                      approvedString
                     ) : (
-                      {approveString}
+                      approveString
                     )}
                   </ButtonConfirmed>
                   <ButtonError
@@ -680,7 +676,7 @@ export default function RemoveLiquidity({
                     error={!isValid && !!parsedAmounts[Field.CURRENCY_A] && !!parsedAmounts[Field.CURRENCY_B]}
                   >
                     <Text fontSize={16} fontWeight={500}>
-                      {error || 'Remove'}
+                      {error || removeString}
                     </Text>
                   </ButtonError>
                 </RowBetween>
