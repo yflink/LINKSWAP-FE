@@ -242,5 +242,9 @@
   "interfaceTheme": "Scegliere una Tema",
   "viewPairAnalytics": "Visualizzare L'analisi dei Token",
   "priceDescription": "Prezzo corrente dall'ultimo blocco.",
-  "removeLiquidityCurrencies": "Remove {{currencyAAmount}} {{currencyASymbol}} and {{currencyBAmount}} {{currencyBSymbol}}"
+  "removeLiquidityCurrencies": "Remove {{currencyAAmount}} {{currencyASymbol}} and {{currencyBAmount}} {{currencyBSymbol}}",
+  "approve": "Approve",
+  "approving": "Approving",
+  "confirm": "Confirm",
+  "receiveCurrency": "Receive {{currency}}"
 }

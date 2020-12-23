@@ -242,5 +242,9 @@
   "interfaceTheme": "Chọn giao diện",
   "viewPairAnalytics": "Xem phân tích cặp token này",
   "priceDescription": "Giá hiện tại dựa trên khối khai thác gần nhất",
-  "removeLiquidityCurrencies": "Remove {{currencyAAmount}} {{currencyASymbol}} and {{currencyBAmount}} {{currencyBSymbol}}"
+  "removeLiquidityCurrencies": "Remove {{currencyAAmount}} {{currencyASymbol}} and {{currencyBAmount}} {{currencyBSymbol}}",
+  "approve": "Approve",
+  "approving": "Approving",
+  "confirm": "Confirm",
+  "receiveCurrency": "Receive {{currency}}"
 }
