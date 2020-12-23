@@ -242,5 +242,6 @@
   "interfaceTheme": "Seleccione un estilo",
   "viewPairAnalytics": "ver analíticas del par",
   "priceDescription": "Precio actual desde el último bloque",
-  "removeLiquidityCurrencies": "Remove {{currencyAAmount}} {{currencyASymbol}} and {{currencyBAmount}} {{currencyBSymbol}}"
+  "removeLiquidityCurrencies": "Remove {{currencyAAmount}} {{currencyASymbol}} and {{currencyBAmount}} {{currencyBSymbol}}",
+  "approve": "Approve"
 }

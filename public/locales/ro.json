@@ -236,5 +236,6 @@
   "interfaceTheme": "Selectează o temă",
   "viewPairAnalytics": "vezi analitica perechei",
   "priceDescription": "Prețul curent live de la ultimul bloc.",
-  "removeLiquidityCurrencies": "Remove {{currencyAAmount}} {{currencyASymbol}} and {{currencyBAmount}} {{currencyBSymbol}}"
+  "removeLiquidityCurrencies": "Remove {{currencyAAmount}} {{currencyASymbol}} and {{currencyBAmount}} {{currencyBSymbol}}",
+  "approve": "Approve"
 }

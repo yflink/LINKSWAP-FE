@@ -240,5 +240,6 @@
   "interfaceTheme": "Designauswahl",
   "viewPairAnalytics": "Token-Paar Statistik öffnen",
   "priceDescription": "Effektiver Preis basierend auf dem Tausch-Verhältnis der Token.",
-  "removeLiquidityCurrencies": "Entnehme {{currencyAAmount}} {{currencyASymbol}} und {{currencyBAmount}} {{currencyBSymbol}}"
+  "removeLiquidityCurrencies": "Entnehme {{currencyAAmount}} {{currencyASymbol}} und {{currencyBAmount}} {{currencyBSymbol}}",
+  "approve": "Approve"
 }

@@ -242,5 +242,6 @@
   "interfaceTheme": "Selecteer een thema",
   "viewPairAnalytics": "Bekijk paaranalyses",
   "priceDescription": "Huidige prijs sinds het laatste blok.",
-  "removeLiquidityCurrencies": "Remove {{currencyAAmount}} {{currencyASymbol}} and {{currencyBAmount}} {{currencyBSymbol}}"
+  "removeLiquidityCurrencies": "Remove {{currencyAAmount}} {{currencyASymbol}} and {{currencyBAmount}} {{currencyBSymbol}}",
+  "approve": "Approve"
 }

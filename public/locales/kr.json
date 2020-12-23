@@ -242,5 +242,6 @@
   "interfaceTheme": "테마선택",
   "viewPairAnalytics": "쌍 분석보기",
   "priceDescription": "마지막 블록 기준 현재 실시간 가격",
-  "removeLiquidityCurrencies": "Remove {{currencyAAmount}} {{currencyASymbol}} and {{currencyBAmount}} {{currencyBSymbol}}"
+  "removeLiquidityCurrencies": "Remove {{currencyAAmount}} {{currencyASymbol}} and {{currencyBAmount}} {{currencyBSymbol}}",
+  "approve": "Approve"
 }

@@ -242,5 +242,6 @@
   "interfaceTheme": "Sélectionner un fond d'écran",
   "viewPairAnalytics": "Voir les analyses des paires",
   "priceDescription": "Prix actuel  lors du dernier block miné",
-  "removeLiquidityCurrencies": "Remove {{currencyAAmount}} {{currencyASymbol}} and {{currencyBAmount}} {{currencyBSymbol}}"
+  "removeLiquidityCurrencies": "Remove {{currencyAAmount}} {{currencyASymbol}} and {{currencyBAmount}} {{currencyBSymbol}}",
+  "approve": "Approve"
 }

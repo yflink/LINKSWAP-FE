@@ -243,3 +243,5 @@
   "viewPairAnalytics": "Visualizzare L'analisi dei Token",
   "priceDescription": "Prezzo corrente dall'ultimo blocco.",
   "removeLiquidityCurrencies": "Remove {{currencyAAmount}} {{currencyASymbol}} and {{currencyBAmount}} {{currencyBSymbol}}",
+  "approve": "Approve"
+}

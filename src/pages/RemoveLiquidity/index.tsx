@@ -40,6 +40,7 @@ import { Field } from '../../state/burn/actions'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { useUserDeadline, useUserSlippageTolerance } from '../../state/user/hooks'
 import { BigNumber } from '@ethersproject/bignumber'
+import { useTranslation } from 'react-i18next'
 
 export default function RemoveLiquidity({
   history,
@@ -57,6 +58,7 @@ export default function RemoveLiquidity({
 
   const theme = useContext(ThemeContext)
 
+  const { t } = useTranslation()
   // toggle wallet when disconnected
   const toggleWalletModal = useWalletModalToggle()
 
@@ -100,6 +102,8 @@ export default function RemoveLiquidity({
   // allowance handling
   const [signatureData, setSignatureData] = useState<{ v: number; r: string; s: string; deadline: number } | null>(null)
   const [approval, approveCallback] = useApproveCallback(parsedAmounts[Field.LIQUIDITY], ROUTER_ADDRESS)
+
+  const outputString = t('estimatedOutput', { slippage: allowedSlippage / 100 })
   async function onAttemptToApprove() {
     if (!pairContract || !pair || !library) throw new Error('missing dependencies')
     const liquidityAmount = parsedAmounts[Field.LIQUIDITY]
@@ -307,15 +311,12 @@ export default function RemoveLiquidity({
           setAttemptingTxn(false)
 
           addTransaction(response, {
-            summary:
-              'Remove ' +
-              parsedAmounts[Field.CURRENCY_A]?.toSignificant(3) +
-              ' ' +
-              currencyA?.symbol +
-              ' and ' +
-              parsedAmounts[Field.CURRENCY_B]?.toSignificant(3) +
-              ' ' +
-              currencyB?.symbol
+            summary: t('removeLiquidityCurrencies', {
+              currencyAAmount: parsedAmounts[Field.CURRENCY_A]?.toSignificant(3),
+              currencyASymbol: currencyA?.symbol,
+              currencyBAmount: parsedAmounts[Field.CURRENCY_B]?.toSignificant(3),
+              currencyBSymbol: currencyB?.symbol
+            })
           })
 
           setTxHash(response.hash)
@@ -364,8 +365,7 @@ export default function RemoveLiquidity({
         </RowBetween>
 
         <TYPE.italic fontSize={12} color={theme.textSecondary} textAlign="left" padding={'12px 0 0 0'}>
-          {`Output is estimated. If the price changes by more than ${allowedSlippage /
-            100}% your transaction will revert.`}
+          {outputString}
         </TYPE.italic>
       </AutoColumn>
     )
@@ -403,7 +403,12 @@ export default function RemoveLiquidity({
             </RowBetween>
           </>
         )}
-        <ButtonPrimary disabled={!(approval === ApprovalState.APPROVED || signatureData !== null)} onClick={onRemove}>
+        <ButtonPrimary
+          disabled={!(approval === ApprovalState.APPROVED || signatureData !== null)}
+          onClick={() => {
+            onRemove()
+          }}
+        >
           <Text fontWeight={500} fontSize={20}>
             Confirm
           </Text>
@@ -412,9 +417,15 @@ export default function RemoveLiquidity({
     )
   }
 
-  const pendingText = `Removing ${parsedAmounts[Field.CURRENCY_A]?.toSignificant(6)} ${
-    currencyA?.symbol
-  } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(6)} ${currencyB?.symbol}`
+  const pendingText = t('removeLiquidityCurrencies', {
+    currencyAAmount: parsedAmounts[Field.CURRENCY_A]?.toSignificant(6),
+    currencyASymbol: currencyA?.symbol,
+    currencyBAmount: parsedAmounts[Field.CURRENCY_B]?.toSignificant(6),
+    currencyBSymbol: currencyB?.symbol
+  })
+
+  const approvedString = t('approved')
+  const approveString = t('approve')
 
   const liquidityPercentChangeCallback = useCallback(
     (value: number) => {
@@ -656,9 +667,9 @@ export default function RemoveLiquidity({
                     {approval === ApprovalState.PENDING ? (
                       <Dots>Approving</Dots>
                     ) : approval === ApprovalState.APPROVED || signatureData !== null ? (
-                      'Approved'
+                      {approvedString}
                     ) : (
-                      'Approve'
+                      {approveString}
                     )}
                   </ButtonConfirmed>
                   <ButtonError
