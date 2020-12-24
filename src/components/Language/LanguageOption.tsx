@@ -13,6 +13,9 @@ export const LanguageOptionBody = styled.div`
   height: 33px;
   overflow: hidden;
 
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    font-size: 13px;
+  `};
   :hover,
   :focus {
     cursor: pointer;
