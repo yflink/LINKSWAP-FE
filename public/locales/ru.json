@@ -236,9 +236,9 @@
   "interfaceTheme": "Выберите тему",
   "viewPairAnalytics": "посмотреть аналитику пары",
   "priceDescription": "Текущая цена в реальном времени на последний блок.",
-  "removeLiquidityCurrencies": "Remove {{currencyAAmount}} {{currencyASymbol}} and {{currencyBAmount}} {{currencyBSymbol}}",
-  "approve": "Approve",
-  "approving": "Approving",
-  "confirm": "Confirm",
+  "removeLiquidityCurrencies": "Убрать {{currencyAAmount}} {{currencyASymbol}} и {{currencyBAmount}} {{currencyBSymbol}}",
+  "approve": "Одобрить",
+  "approving": "Утверждение",
+  "confirm": "Подтвердить",
   "receiveCurrency": "Receive {{currency}}"
 }
