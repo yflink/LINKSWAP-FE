@@ -241,5 +241,10 @@
   "selectATokenToFindLiquidity": "유동성을 확보하려면 토큰을 선택하세요.",
   "interfaceTheme": "테마선택",
   "viewPairAnalytics": "쌍 분석보기",
-  "priceDescription": "Current live price as of last block."
+  "priceDescription": "마지막 블록 기준 현재 실시간 가격",
+  "removeLiquidityCurrencies": "Remove {{currencyAAmount}} {{currencyASymbol}} and {{currencyBAmount}} {{currencyBSymbol}}",
+  "approve": "Approve",
+  "approving": "Approving",
+  "confirm": "Confirm",
+  "receiveCurrency": "Receive {{currency}}"
 }

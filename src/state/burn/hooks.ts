@@ -10,6 +10,7 @@ import { AppDispatch, AppState } from '../index'
 import { tryParseAmount } from '../swap/hooks'
 import { useTokenBalances } from '../wallet/hooks'
 import { Field, typeInput } from './actions'
+import { useTranslation } from 'react-i18next'
 
 export function useBurnState(): AppState['burn'] {
   return useSelector<AppState, AppState['burn']>(state => state.burn)
@@ -31,6 +32,8 @@ export function useDerivedBurnInfo(
   const { account, chainId } = useActiveWeb3React()
 
   const { independentField, typedValue } = useBurnState()
+
+  const { t } = useTranslation()
 
   // pair + totalsupply
   const [, pair] = usePair(currencyA, currencyB)
@@ -119,11 +122,11 @@ export function useDerivedBurnInfo(
 
   let error: string | undefined
   if (!account) {
-    error = 'Connect Wallet'
+    error = t('connectWallet')
   }
 
   if (!parsedAmounts[Field.LIQUIDITY] || !parsedAmounts[Field.CURRENCY_A] || !parsedAmounts[Field.CURRENCY_B]) {
-    error = error ?? 'Enter an amount'
+    error = error ?? t('enterAmount')
   }
 
   return { pair, parsedAmounts, error }

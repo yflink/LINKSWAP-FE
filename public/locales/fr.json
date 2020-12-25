@@ -241,5 +241,10 @@
   "selectATokenToFindLiquidity": "Sélectionner un token pour trouver votre liquidité.",
   "interfaceTheme": "Sélectionner un fond d'écran",
   "viewPairAnalytics": "Voir les analyses des paires",
-  "priceDescription": "Current live price as of last block."
+  "priceDescription": "Prix actuel  lors du dernier block miné",
+  "removeLiquidityCurrencies": "Remove {{currencyAAmount}} {{currencyASymbol}} and {{currencyBAmount}} {{currencyBSymbol}}",
+  "approve": "Approve",
+  "approving": "Approving",
+  "confirm": "Confirm",
+  "receiveCurrency": "Receive {{currency}}"
 }

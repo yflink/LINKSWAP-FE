@@ -241,5 +241,10 @@
   "selectATokenToFindLiquidity": "Selecteer een token om uw liquiditeit te vinden.",
   "interfaceTheme": "Selecteer een thema",
   "viewPairAnalytics": "Bekijk paaranalyses",
-  "priceDescription": "Huidige prijs sinds het laatste blok."
+  "priceDescription": "Huidige prijs sinds het laatste blok.",
+  "removeLiquidityCurrencies": "Remove {{currencyAAmount}} {{currencyASymbol}} and {{currencyBAmount}} {{currencyBSymbol}}",
+  "approve": "Approve",
+  "approving": "Approving",
+  "confirm": "Confirm",
+  "receiveCurrency": "Receive {{currency}}"
 }

@@ -235,5 +235,10 @@
   "selectATokenToFindLiquidity": "Selectează un token pentru a vă găsi lichiditatea.",
   "interfaceTheme": "Selectează o temă",
   "viewPairAnalytics": "vezi analitica perechei",
-  "priceDescription": "Current live price as of last block."
+  "priceDescription": "Prețul curent live de la ultimul bloc.",
+  "removeLiquidityCurrencies": "Remove {{currencyAAmount}} {{currencyASymbol}} and {{currencyBAmount}} {{currencyBSymbol}}",
+  "approve": "Approve",
+  "approving": "Approving",
+  "confirm": "Confirm",
+  "receiveCurrency": "Receive {{currency}}"
 }

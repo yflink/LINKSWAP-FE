@@ -239,5 +239,10 @@
   "selectATokenToFindLiquidity": "Select a token to find your liquidity.",
   "interfaceTheme": "Select a Theme",
   "viewPairAnalytics": "view pair analytics",
-  "priceDescription": "Current live price as of last block."
+  "priceDescription": "Current live price as of last block.",
+  "removeLiquidityCurrencies": "Remove {{currencyAAmount}} {{currencyASymbol}} and {{currencyBAmount}} {{currencyBSymbol}}",
+  "approve": "Approve",
+  "approving": "Approving",
+  "confirm": "Confirm",
+  "receiveCurrency": "Receive {{currency}}"
 }

@@ -241,5 +241,10 @@
   "selectATokenToFindLiquidity": "Scegliere un token per trovare sua liquidità.",
   "interfaceTheme": "Scegliere una Tema",
   "viewPairAnalytics": "Visualizzare L'analisi dei Token",
-  "priceDescription": "Prezzo corrente dall'ultimo blocco."
+  "priceDescription": "Prezzo corrente dall'ultimo blocco.",
+  "removeLiquidityCurrencies": "Remove {{currencyAAmount}} {{currencyASymbol}} and {{currencyBAmount}} {{currencyBSymbol}}",
+  "approve": "Approve",
+  "approving": "Approving",
+  "confirm": "Confirm",
+  "receiveCurrency": "Receive {{currency}}"
 }

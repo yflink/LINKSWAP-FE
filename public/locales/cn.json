@@ -241,5 +241,10 @@
   "selectATokenToFindLiquidity": "选择一个通证来寻找流动性。",
   "interfaceTheme": "选择一个主题",
   "viewPairAnalytics": "查看交易对分析",
-  "priceDescription": "Current live price as of last block."
+  "priceDescription": "现价来自于最近的区块",
+  "removeLiquidityCurrencies": "Remove {{currencyAAmount}} {{currencyASymbol}} and {{currencyBAmount}} {{currencyBSymbol}}",
+  "approve": "Approve",
+  "approving": "Approving",
+  "confirm": "Confirm",
+  "receiveCurrency": "Receive {{currency}}"
 }
