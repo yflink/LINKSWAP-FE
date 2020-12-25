@@ -144,7 +144,7 @@
   "pairedPoolTokens": "{{currencyA}} / {{currencyB}}流动池通证",
   "estimatedOutput": "交易预估，如果价格变化超过{{slippage}}％，您的交易将被撤消。",
   "supplyingCurrencies": "{{currencyAAmount}} {{currencyA}}和{{currencyBAmount}} {{currencyB}}的供应",
-  "happyToSupply": "一旦您对价格满意，请单击查看供应。",
+  "happyToSupply": "如果您对该价格满意，请点击查看供应。",
   "initialPricesAndShare": "初始价格和流动池份额",
   "pricesAndShare": "价格和流动池份额",
   "connectWallet": "连接钱包",
@@ -223,7 +223,7 @@
   "outputWillBeSendTo": "获得的通证将发送至 {{recipient}}",
   "price": "价格",
   "minimumReceived": "最少可得",
-  "maximumSold": "最多克卖",
+  "maximumSold": "最多可卖",
   "transactionWillRevertDescription": "如果数量太多交易可能返回, 在确认前可能会有对您不利的价格。",
   "priceImpact": "价格影响",
   "priceImpactDescription": "市场价和您的价格由交易规模决定",
@@ -242,9 +242,9 @@
   "interfaceTheme": "选择一个主题",
   "viewPairAnalytics": "查看交易对分析",
   "priceDescription": "现价来自于最近的区块",
-  "removeLiquidityCurrencies": "Remove {{currencyAAmount}} {{currencyASymbol}} and {{currencyBAmount}} {{currencyBSymbol}}",
-  "approve": "Approve",
-  "approving": "Approving",
-  "confirm": "Confirm",
-  "receiveCurrency": "Receive {{currency}}"
+  "removeLiquidityCurrencies": "移除 {{currencyAAmount}} {{currencyASymbol}} 和 {{currencyBAmount}} {{currencyBSymbol}}",
+  "approve": "准许",
+  "approving": "准许中",
+  "confirm": "确认",
+  "receiveCurrency": "收到 {{currency}}"
 }
