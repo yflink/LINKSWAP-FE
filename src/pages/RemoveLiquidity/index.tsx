@@ -392,7 +392,7 @@ export default function RemoveLiquidity({
     return (
       <>
         <RowBetween>
-          <Text color={theme.textSecondary} fontWeight={500} fontSize={16}>
+          <Text color={theme.textPrimary} fontWeight={500} fontSize={16}>
             {'LSLP ' + currencyA?.symbol + '/' + currencyB?.symbol}
           </Text>
           <RowFixed>
@@ -405,7 +405,7 @@ export default function RemoveLiquidity({
         {pair && (
           <>
             <RowBetween>
-              <Text color={theme.textSecondary} fontWeight={500} fontSize={16}>
+              <Text color={theme.textPrimary} fontWeight={500} fontSize={16}>
                 {priceString}
               </Text>
               <Text fontWeight={500} fontSize={16} color={theme.textPrimary}>
@@ -536,7 +536,7 @@ export default function RemoveLiquidity({
             {!showDetailed && (
               <>
                 <ColumnCenter>
-                  <ArrowDown size="16" color={theme.textSecondary} />
+                  <ArrowDown size="16" color={theme.textPrimary} />
                 </ColumnCenter>
                 <LightCard>
                   <AutoColumn gap="10px">

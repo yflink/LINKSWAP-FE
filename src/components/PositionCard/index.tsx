@@ -99,11 +99,11 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
             </FixedHeightRow>
             <AutoColumn gap="4px">
               <RowFixed style={{ display: 'flex', width: '100%' }}>
-                <Card style={{marginInlineEnd: 16 }} secondary={true}>
+                <Card style={{ marginInlineEnd: 16 }} secondary={true}>
                   <Text style={{ marginBottom: 4 }}>
                     {token0Deposited ? (
                       <RowFixed>
-                        <Text color="#B6C4D2" fontSize={20} fontWeight={500}>
+                        <Text fontSize={20} fontWeight={500}>
                           {token0Deposited?.toSignificant(6)}
                         </Text>
                       </RowFixed>
@@ -112,7 +112,7 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
                     )}
                   </Text>
 
-                  <Text color="#AFBDCB" fontSize={16} fontWeight={500}>
+                  <Text fontSize={16} fontWeight={500}>
                     {currency0.symbol}
                   </Text>
                 </Card>
@@ -120,7 +120,7 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
                   <Text style={{ marginBottom: 4 }}>
                     {token1Deposited ? (
                       <RowFixed>
-                        <Text color="#888D9B" fontSize={20} fontWeight={500}>
+                        <Text fontSize={20} fontWeight={500}>
                           {token1Deposited?.toSignificant(6)}
                         </Text>
                       </RowFixed>
@@ -129,7 +129,7 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
                     )}
                   </Text>
 
-                  <Text color="#888D9B" fontSize={16} fontWeight={500}>
+                  <Text fontSize={16} fontWeight={500}>
                     {currency1.symbol}
                   </Text>
                 </Card>
@@ -207,9 +207,9 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
           </RowFixed>
           <RowFixed>
             {showMore ? (
-              <ChevronUp size="20" style={{marginInlineStart: '10px' }} />
+              <ChevronUp size="20" style={{ marginInlineStart: '10px' }} />
             ) : (
-              <ChevronDown size="20" style={{marginInlineStart: '10px' }} />
+              <ChevronDown size="20" style={{ marginInlineStart: '10px' }} />
             )}
           </RowFixed>
         </FixedHeightRow>
@@ -244,7 +244,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
                   <Text fontSize={16} fontWeight={500} marginLeft={'6px'}>
                     {token1Deposited?.toSignificant(6)}
                   </Text>
-                  <CurrencyLogo size="20px" style={{marginInlineStart: '8px' }} currency={currency1} />
+                  <CurrencyLogo size="20px" style={{ marginInlineStart: '8px' }} currency={currency1} />
                 </RowFixed>
               ) : (
                 '-'
