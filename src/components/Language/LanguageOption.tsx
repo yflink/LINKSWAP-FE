@@ -13,6 +13,9 @@ export const LanguageOptionBody = styled.div`
   height: 33px;
   overflow: hidden;
 
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    font-size: 13px;
+  `};
   :hover,
   :focus {
     cursor: pointer;
@@ -30,7 +33,7 @@ const LanguageShortCode = styled.span`
   text-transform: uppercase;
 `
 
-function setLang(lang?: string) {
+function setLang(lang?: string | 'en') {
   i18next.changeLanguage(lang!, () => {
     //console.log('changed language to', lang)
   })
@@ -45,7 +48,7 @@ export default function LanguageOptionHelper(props: {
   const currentLanguage = i18next.language || 'en'
   const lang = currentLanguage.substring(0, 2)
   const fontWeight = lang === props.shortCode ? 'bold' : 'normal'
-  const width = props.fullWidth ? '100%' : '8.5rem'
+  const width = props.fullWidth ? '100%' : '8.7rem'
 
   return (
     <LanguageOptionBody style={{ fontWeight: fontWeight, width: width }} onClick={() => setLang(props.shortCode)}>

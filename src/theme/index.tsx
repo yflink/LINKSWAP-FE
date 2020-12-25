@@ -12,9 +12,10 @@ import { Colors } from './styled'
 // Themes
 import { cyberFiTheme } from './settings/cyberfi'
 import { defaultTheme } from './settings/default'
+import { dokiDokiTheme } from './settings/doki'
+import { drcTheme } from './settings/drc'
 import { lightTheme } from './settings/light'
 import { masqTheme } from './settings/masq'
-
 
 export * from './components'
 
@@ -41,6 +42,12 @@ export function colors(theme: string): Colors {
   switch (theme) {
     case 'cyberfi':
       return cyberFiTheme()
+
+    case 'dokidoki':
+      return dokiDokiTheme()
+
+    case 'drc':
+      return drcTheme()
 
     case 'light':
       return lightTheme()
