@@ -1,8 +1,8 @@
 export function dokiDokiTheme() {
-  const mainColor = '#c8a7c6'
-  const mainColorHover = '#e2abc5'
+  const mainColor = '#f993c2'
+  const mainColorHover = '#ff54a3'
   const mainButtonColor = '#ec66ec'
-  const mainButtonColorHover = '#ab6ba1'
+  const mainButtonColorHover = '#ec45ec'
   const appBG = '#604c8b'
   const bodyBGColor = '#f1f3e3'
   const inputBGColor = '#3a3367'
