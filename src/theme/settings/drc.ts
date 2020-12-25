@@ -1,27 +1,27 @@
 export function drcTheme() {
-  const mainColor = '#bc8004'
-  const mainColorHover = '#97661b'
-  const mainButtonColor = '#6526c1'
-  const mainButtonColorHover = '#4f3a87'
-  const appBG = '#0c0812'
-  const bodyBGColor = '#120e1b'
-  const inputBGColor = '#181323'
-  const mainTextColor = '#b2b2b2'
-  const mainTextColorHover = '#c2bebc'
+  const mainColor = '#683232'
+  const mainColorHover = '#3d2d2f'
+  const mainButtonColor = '#f74a68'
+  const mainButtonColorHover = '#d84762'
+  const appBG = '#1a1d24'
+  const bodyBGColor = '#07050a'
+  const inputBGColor = '#07050a'
+  const mainTextColor = '#e0effe'
+  const mainTextColorHover = '#FFF'
   const transparent = 'transparent'
   const buttonBG = '#181323'
-  const buttonBGHover = '#6526c1'
-  const buttonSecondaryBG = '#260e4e'
-  const modalBG = '#191426'
+  const buttonBGHover = '#221b24'
+  const buttonSecondaryBG = '#221b24'
+  const modalBG = '#0f1418'
   const infoText = '#0b090f'
-  const infoBGHover = '#1b0a38'
-  const highLights = '#d68e20'
+  const infoBGHover = '#221b24'
+  const highLights = '#f74a68'
 
   return {
     //App
     appBGColor: appBG,
     appInfoBoxBG: mainColor,
-    appInfoBoxTextColor: infoText,
+    appInfoBoxTextColor: mainTextColor,
     appBoxBG: inputBGColor,
     appBoxBorder: '#373f49',
     appBoxHoverBG: '#373f49',
@@ -79,12 +79,12 @@ export function drcTheme() {
 
     //Footer
     footerBG: bodyBGColor,
-    footerTextColor: mainTextColor,
+    footerTextColor: mainButtonColor,
 
     //Global
-    bodyBG: '#07050a url("../images/themes/masq/background_large.png") center center / cover no-repeat',
-    bodyBGTablet: '#07050a url("../images/themes/masq/background_tablet.png") center center / cover no-repeat',
-    bodyBGMobile: '#07050a url("../images/themes/masq/background_mobile.png") center center / cover no-repeat',
+    bodyBG: '#07050a',
+    bodyBGTablet: '#07050a',
+    bodyBGMobile: '#07050a',
     layerBG: transparent,
     layerBGTablet: transparent,
     layerBGMobile: transparent,
@@ -97,10 +97,10 @@ export function drcTheme() {
 
     //Header
     headerBG: transparent,
-    headerTextColor: mainColor,
+    headerTextColor: mainButtonColor,
     headerButtonBG: infoText,
     headerButtonBGHover: infoBGHover,
-    headerButtonIconColor: mainColor,
+    headerButtonIconColor: mainButtonColor,
     headerModalTextColor: mainTextColor,
     headerModalTextHighlight: mainColor,
 

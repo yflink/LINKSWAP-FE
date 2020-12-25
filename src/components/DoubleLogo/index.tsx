@@ -29,7 +29,7 @@ interface DoubleCurrencyLogoProps {
 export default function DoubleCurrencyLogo({
   currency0,
   currency1,
-  size = 2,
+  size = 18,
   margin = false
 }: DoubleCurrencyLogoProps) {
   return (
