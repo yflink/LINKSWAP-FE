@@ -242,9 +242,9 @@
   "interfaceTheme": "اختر Theme",
   "viewPairAnalytics": "عرض تحليلات زوجًا Token",
   "priceDescription": "السعر الحالي وفقاً لآخر Block",
-  "removeLiquidityCurrencies": "Remove {{currencyAAmount}} {{currencyASymbol}} and {{currencyBAmount}} {{currencyBSymbol}}",
-  "approve": "Approve",
-  "approving": "Approving",
-  "confirm": "Confirm",
-  "receiveCurrency": "Receive {{currency}}"
+  "removeLiquidityCurrencies": "سحب {{currencyAAmount}} {{currencyASymbol}} و {{currencyBAmount}} {{currencyBSymbol}}",
+  "approve": "موافقة",
+  "approving": "اعتماد",
+  "confirm": "تأكيد",
+  "receiveCurrency": "استلام {{currency}}"
 }
