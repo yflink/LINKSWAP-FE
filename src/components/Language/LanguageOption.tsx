@@ -4,6 +4,8 @@ import i18next from 'i18next'
 
 export const LanguageOptionBody = styled.div`
   padding: 0.5rem;
+  padding-inline-start: 1rem;
+  padding-inline-end: 0;
   text-align: start;
   -webkit-column-break-inside: avoid;
   page-break-inside: avoid;
