@@ -65,7 +65,7 @@ export function drcTheme() {
     buttonSelectTextColorActiveHover: mainTextColor,
     buttonSecondaryBG: mainColor,
     buttonSecondaryBorder: transparent,
-    buttonSecondaryTextColor: infoText,
+    buttonSecondaryTextColor: mainTextColor,
     buttonSecondaryBGActive: mainColor,
     buttonSecondaryBorderActive: mainColor,
     buttonSecondaryTextColorActive: infoText,

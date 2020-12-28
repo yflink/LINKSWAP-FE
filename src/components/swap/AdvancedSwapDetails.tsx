@@ -42,7 +42,7 @@ const AnalyticsWrapper = styled.div`
   a {
     color: ${({ theme }) => theme.textPrimary};
     text-decoration: none;
-    font-weight: bold;
+    font-weight: 600;
     :hover,
     :focus {
       text-decoration: underline;

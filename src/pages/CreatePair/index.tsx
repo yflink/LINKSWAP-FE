@@ -412,10 +412,10 @@ export default function CreateNewPool({
                 <ColumnCenter>
                   <BlueCard>
                     <AutoColumn gap="10px">
-                      <TYPE.link fontWeight={600} color={'primaryText1'}>
+                      <TYPE.link fontWeight={600} color={theme.textPrimary}>
                         {t('firstLiquidityProvider')}
                       </TYPE.link>
-                      <TYPE.link fontWeight={400} color={'primaryText1'}>
+                      <TYPE.link fontWeight={400} color={theme.textPrimary}>
                         {t('ratioSetsPrice')}
                       </TYPE.link>
                     </AutoColumn>
@@ -425,10 +425,10 @@ export default function CreateNewPool({
                 <ColumnCenter>
                   <BlueCard>
                     <AutoColumn gap="10px">
-                      <TYPE.link fontWeight={600} color={'primaryText1'}>
+                      <TYPE.link fontWeight={600} color={theme.textPrimary}>
                         {t('noPairSelected')}
                       </TYPE.link>
-                      <TYPE.link fontWeight={400} color={'primaryText1'}>
+                      <TYPE.link fontWeight={400} color={theme.textPrimary}>
                         {t('selectCurrencies')}
                       </TYPE.link>
                     </AutoColumn>
@@ -438,10 +438,10 @@ export default function CreateNewPool({
                 <ColumnCenter>
                   <BlueCard>
                     <AutoColumn gap="10px">
-                      <TYPE.link fontWeight={600} color={'primaryText1'}>
+                      <TYPE.link fontWeight={600} color={theme.textPrimary}>
                         {t('poolAlreadyExists')}
                       </TYPE.link>
-                      <TYPE.link fontWeight={400} color={'primaryText1'}>
+                      <TYPE.link fontWeight={400} color={theme.textPrimary}>
                         {t('cannotCreatePool')}
                       </TYPE.link>
                     </AutoColumn>
