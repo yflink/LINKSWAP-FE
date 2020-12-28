@@ -1,6 +1,6 @@
 export function drcTheme() {
-  const mainColor = '#683232'
-  const mainColorHover = '#3d2d2f'
+  const mainColor = '#133b54'
+  const mainColorHover = '#0c1c2f'
   const mainButtonColor = '#f74a68'
   const mainButtonColorHover = '#d84762'
   const appBG = 'rgba(0, 0, 0, 0.4)'
