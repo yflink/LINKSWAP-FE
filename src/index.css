@@ -1,4 +1,13 @@
 @font-face {
+  font-family: 'Formular Light';
+  src: local('Formular Bold'), url('./assets/fonts/subset-Formular-Medium.woff2') format('woff2'),
+    url('./assets/fonts/subset-Formular-Medium.woff') format('woff');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
   font-family: 'Formular';
   src: local('Formular'), url('./assets/fonts/subset-Formular.woff2') format('woff2'),
     url('./assets/fonts/subset-Formular.woff') format('woff');
