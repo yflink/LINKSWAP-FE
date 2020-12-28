@@ -412,10 +412,10 @@ export default function CreateNewPool({
                 <ColumnCenter>
                   <BlueCard>
                     <AutoColumn gap="10px">
-                      <TYPE.link fontWeight={600} color={theme.textPrimary}>
+                      <TYPE.link fontWeight={600} color={theme.appInfoBoxTextColor}>
                         {t('firstLiquidityProvider')}
                       </TYPE.link>
-                      <TYPE.link fontWeight={400} color={theme.textPrimary}>
+                      <TYPE.link fontWeight={400} color={theme.appInfoBoxTextColor}>
                         {t('ratioSetsPrice')}
                       </TYPE.link>
                     </AutoColumn>
@@ -425,10 +425,10 @@ export default function CreateNewPool({
                 <ColumnCenter>
                   <BlueCard>
                     <AutoColumn gap="10px">
-                      <TYPE.link fontWeight={600} color={theme.textPrimary}>
+                      <TYPE.link fontWeight={600} color={theme.appInfoBoxTextColor}>
                         {t('noPairSelected')}
                       </TYPE.link>
-                      <TYPE.link fontWeight={400} color={theme.textPrimary}>
+                      <TYPE.link fontWeight={400} color={theme.appInfoBoxTextColor}>
                         {t('selectCurrencies')}
                       </TYPE.link>
                     </AutoColumn>
@@ -438,10 +438,10 @@ export default function CreateNewPool({
                 <ColumnCenter>
                   <BlueCard>
                     <AutoColumn gap="10px">
-                      <TYPE.link fontWeight={600} color={theme.textPrimary}>
+                      <TYPE.link fontWeight={600} color={theme.appInfoBoxTextColor}>
                         {t('poolAlreadyExists')}
                       </TYPE.link>
-                      <TYPE.link fontWeight={400} color={theme.textPrimary}>
+                      <TYPE.link fontWeight={400} color={theme.appInfoBoxTextColor}>
                         {t('cannotCreatePool')}
                       </TYPE.link>
                     </AutoColumn>
