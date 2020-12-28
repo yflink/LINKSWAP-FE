@@ -15,6 +15,8 @@ export const LanguageOptionBody = styled.div`
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     font-size: 13px;
+    padding: 0.5rem 0;
+    padding-inline-start: 1rem;
   `};
   :hover,
   :focus {
