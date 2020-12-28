@@ -21,7 +21,7 @@ export function drcTheme() {
     //App
     appBGColor: appBG,
     appInfoBoxBG: mainColor,
-    appInfoBoxTextColor: mainTextColor,
+    appInfoBoxTextColor: mainButtonColorHover,
     appBoxBG: inputBGColor,
     appBoxBorder: '#373f49',
     appBoxHoverBG: '#373f49',
