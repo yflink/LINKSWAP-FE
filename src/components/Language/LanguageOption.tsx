@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import i18next from 'i18next'
 
 export const LanguageOptionBody = styled.div`
-  padding: 0.5rem 1rem;
+  padding: 0.5rem;
   text-align: start;
   -webkit-column-break-inside: avoid;
   page-break-inside: avoid;
@@ -15,8 +15,6 @@ export const LanguageOptionBody = styled.div`
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     font-size: 13px;
-    padding: 0.5rem 0;
-    padding-inline-start: 1rem;
   `};
   :hover,
   :focus {
