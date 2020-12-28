@@ -536,7 +536,7 @@ export default function Swap() {
           </BottomGrouping>
         </Wrapper>
       </AppBody>
-      <AdvancedSwapDetailsDropdown trade={trade} />
+      <AdvancedSwapDetailsDropdown trade={trade}/>
     </>
   )
 }
