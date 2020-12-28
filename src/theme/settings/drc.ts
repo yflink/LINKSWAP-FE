@@ -82,9 +82,9 @@ export function drcTheme() {
     footerTextColor: mainButtonColor,
 
     //Global
-    bodyBG: '#070a11 url("../images/themes/drc/background_mobile.jpg") bottom right / cover no-repeat',
+    bodyBG: '#070a11 url("../images/themes/drc/background_large.jpg") bottom right / cover no-repeat',
     bodyBGTablet: '#070a11 url("../images/themes/drc/background_tablet.jpg") bottom right / cover no-repeat',
-    bodyBGMobile: '#070a11 url("../images/themes/drc/background_large.jpg") bottom right / cover no-repeat',
+    bodyBGMobile: '#070a11 url("../images/themes/drc/background_mobile.jpg") bottom right / cover no-repeat',
     layerBG: transparent,
     layerBGTablet: transparent,
     layerBGMobile: transparent,
