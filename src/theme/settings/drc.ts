@@ -3,15 +3,15 @@ export function drcTheme() {
   const mainColorHover = '#3d2d2f'
   const mainButtonColor = '#f74a68'
   const mainButtonColorHover = '#d84762'
-  const appBG = '#1a1d24'
+  const appBG = 'rgba(0, 0, 0, 0.4)'
   const bodyBGColor = '#070a11'
   const inputBGColor = '#070a11'
   const mainTextColor = '#e0effe'
   const mainTextColorHover = '#FFF'
   const transparent = 'transparent'
   const buttonBG = '#181323'
-  const buttonBGHover = '#221b24'
-  const buttonSecondaryBG = '#221b24'
+  const buttonBGHover = '#1e1e27'
+  const buttonSecondaryBG = '#1e1e27'
   const modalBG = '#0f1418'
   const infoText = '#0b090f'
   const infoBGHover = '#221b24'
@@ -115,7 +115,7 @@ export function drcTheme() {
     modalInputBG: transparent,
     modalInputBorder: mainButtonColor,
     modalInputBorderFocus: mainButtonColorHover,
-    modalFooterBG: 'rgba(0, 0, 0, 0.2)',
+    modalFooterBG: 'rgba(0, 0, 0, 0.4)',
 
     //Navigation
     navigationBG: appBG,
@@ -132,7 +132,7 @@ export function drcTheme() {
     //Text
     textHighlight: highLights,
     textPrimary: mainTextColor,
-    textSecondary: 'rgba(178,178,178,0.5)',
+    textSecondary: '#e0efff',
     textTertiary: '#bfbfbf',
     textDisabled: '#565A69',
 
