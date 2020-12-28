@@ -111,7 +111,7 @@ export function drcTheme() {
     modalLines: mainButtonColor,
     modalButtonBG: mainButtonColor,
     modalButtonText: mainTextColor,
-    modalShadow: 'rgba(0,0,0,.425)',
+    modalShadow: 'rgba(0, 0, 0, 0.4)',
     modalInputBG: transparent,
     modalInputBorder: mainButtonColor,
     modalInputBorderFocus: mainButtonColorHover,
