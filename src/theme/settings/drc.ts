@@ -52,9 +52,9 @@ export function drcTheme() {
     buttonBGDisabled: buttonBG,
     buttonTextColorDisabled: mainTextColor,
     buttonNavigationBG: buttonBG,
-    buttonNavigationTextColor: '#c3c5cb',
+    buttonNavigationTextColor: mainTextColor,
     buttonNavigationBGHover: modalBG,
-    buttonNavigationTextColorHover: '#c3c5cb',
+    buttonNavigationTextColorHover: mainTextColor,
     buttonSelectBG: buttonSecondaryBG,
     buttonSelectTextColor: mainTextColor,
     buttonSelectBGHover: buttonBGHover,
@@ -107,7 +107,7 @@ export function drcTheme() {
     //Modal
     modalBG: modalBG,
     modalBorder: appBG,
-    modalSecondaryBG: appBG,
+    modalSecondaryBG: bodyBGColor,
     modalLines: mainButtonColor,
     modalButtonBG: mainButtonColor,
     modalButtonText: mainTextColor,
@@ -132,7 +132,7 @@ export function drcTheme() {
     //Text
     textHighlight: highLights,
     textPrimary: mainTextColor,
-    textSecondary: '#e0efff',
+    textSecondary: mainTextColor,
     textTertiary: '#bfbfbf',
     textDisabled: '#565A69',
 
