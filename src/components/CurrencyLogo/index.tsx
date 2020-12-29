@@ -11,8 +11,7 @@ import eth from '../../assets/svg/eth.svg'
 import link from '../../assets/svg/link.svg'
 import yfl from '../../assets/svg/yfl.svg'
 
-const getTokenLogoURL = (address: string) =>
-  `https://logos.linkswap.app/${address.toLowerCase()}.png`
+const getTokenLogoURL = (address: string) => `https://logos.linkswap.app/${address.toLowerCase()}.png`
 
 const ethLogoURL = 'https://logos.linkswap.app/eth.png'
 
