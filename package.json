@@ -48,7 +48,6 @@
     "eslint-plugin-prettier": "^3.3.0",
     "eslint-plugin-react": "^7.21.5",
     "eslint-plugin-react-hooks": "^4.2.0",
-    "ethereumjs-abi": "^0.6.8",
     "ethers": "^5.0.24",
     "i18next": "^15.0.9",
     "i18next-browser-languagedetector": "^3.0.1",
