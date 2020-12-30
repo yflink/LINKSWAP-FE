@@ -83,9 +83,9 @@ export function dokiDokiTheme() {
     //Global
     bodyBG: '#c0aff5 url("../images/themes/dokidoki/background_large.png") center center / cover no-repeat',
     bodyBGTablet: '#c0aff5 url("../images/themes/dokidoki/background_tablet.png") center center / cover no-repeat',
-    bodyBGMobile: '#c0aff5',
-    layerBG: '#c0aff5 url("../images/themes/dokidoki/background_large.gif") center center / cover no-repeat',
-    layerBGTablet: '#c0aff5 url("../images/themes/dokidoki/background_large.gif") center center / cover no-repeat',
+    bodyBGMobile: '#c0aff5 url("../images/themes/dokidoki/background_mobile.png") center center / cover no-repeat',
+    layerBG: 'transparent url("../images/themes/dokidoki/background_large.gif") center center / cover no-repeat',
+    layerBGTablet: 'transparent url("../images/themes/dokidoki/background_large.gif") center center / cover no-repeat',
     layerBGMobile: transparent,
     bodyBGColor: bodyBGColor,
     linkColor: mainColor,
