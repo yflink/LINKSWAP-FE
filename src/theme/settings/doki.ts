@@ -81,12 +81,12 @@ export function dokiDokiTheme() {
     footerTextColor: inputBGColor,
 
     //Global
-    bodyBG: '#f1f3e3 url("../images/themes/dokidoki/background_large.gif") center center / cover no-repeat',
-    bodyBGTablet: '#f1f3e3 url("../images/themes/dokidoki/background_large.gif") center center / cover no-repeat',
-    bodyBGMobile: '#f1f3e3 url("../images/themes/dokidoki/background_large.gif") center center / cover no-repeat',
-    layerBG: transparent,
-    layerBGTablet: transparent,
-    layerBGMobile: transparent,
+    bodyBG: '#c0aff5 url("../images/themes/dokidoki/background_large.png") center center / cover no-repeat',
+    bodyBGTablet: '#c0aff5 url("../images/themes/dokidoki/background_tablet.png") center center / cover no-repeat',
+    bodyBGMobile: '#c0aff5 url("../images/themes/dokidoki/background_mobile.png") center center / cover no-repeat',
+    layerBG: '#c0aff5 url("../images/themes/dokidoki/background_large.gif") center center / cover no-repeat',
+    layerBGTablet: '#c0aff5 url("../images/themes/dokidoki/background_large.gif") center center / cover no-repeat',
+    layerBGMobile: '#c0aff5 url("../images/themes/dokidoki/background_large.gif") center center / cover no-repeat',
     bodyBGColor: bodyBGColor,
     linkColor: mainColor,
     linkColorHover: mainColor,
@@ -97,7 +97,7 @@ export function dokiDokiTheme() {
     //Header
     headerBG: transparent,
     headerTextColor: inputBGColor,
-    headerButtonBG: infoText,
+    headerButtonBG: appBG,
     headerButtonBGHover: inputBGColor,
     headerButtonIconColor: highLights,
     headerModalTextColor: mainTextColor,
