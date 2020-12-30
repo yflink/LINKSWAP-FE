@@ -86,7 +86,7 @@ export function dokiDokiTheme() {
     bodyBGMobile: '#c0aff5',
     layerBG: '#c0aff5 url("../images/themes/dokidoki/background_large.gif") center center / cover no-repeat',
     layerBGTablet: '#c0aff5 url("../images/themes/dokidoki/background_large.gif") center center / cover no-repeat',
-    layerBGMobile: '#c0aff5 url("../images/themes/dokidoki/background_large.gif") center center / cover no-repeat',
+    layerBGMobile: transparent,
     bodyBGColor: bodyBGColor,
     linkColor: mainColor,
     linkColorHover: mainColor,
