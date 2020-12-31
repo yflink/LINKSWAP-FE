@@ -1,8 +1,8 @@
 import { ChainId } from '@uniswap/sdk'
-import React, {useContext} from 'react'
+import React, { useContext } from 'react'
 import { isMobile } from 'react-device-detect'
 import { Text } from 'rebass'
-import styled, {ThemeContext} from 'styled-components'
+import styled, { ThemeContext } from 'styled-components'
 
 import { useActiveWeb3React } from '../../hooks'
 import { useETHBalances } from '../../state/wallet/hooks'
@@ -143,8 +143,7 @@ const HeaderControls = styled.div`
 
 const BalanceText = styled(Text)`
   color: ${({ theme }) => theme.headerButtonIconColor}
-
-  ${({ theme }) => theme.mediaWidth.upToMedium`
+    ${({ theme }) => theme.mediaWidth.upToMedium`
     display: none;
   `};
 `
@@ -167,32 +166,23 @@ export default function Header() {
       <RowBetween style={{ alignItems: 'flex-start' }} padding="1rem">
         <HeaderElement>
           <LogoWrapper>
-          <Title href="https://yflink.io">
-            <Logo src={logo}></Logo>
-            <TitleText>YFLINK</TitleText>
-          </Title>{' '}
-          {hasSublogo && (
-            <SubLogo src={theme.logo}></SubLogo>
-          )}
+            <Title href="https://yflink.io">
+              <Logo src={logo}></Logo>
+              <TitleText>YFLINK</TitleText>
+            </Title>{' '}
+            {hasSublogo && <SubLogo src={theme.logo}></SubLogo>}
           </LogoWrapper>
 
           {!isMobile && (
             <HeaderElementMobile>
-              <Title
-                style={{ marginInlineStart: 24 }}
-                target="_blank"
-                href="https://rewards.linkswap.app/"
-              >
+              <Title style={{ marginInlineStart: 24 }} target="_blank" href="https://rewards.linkswap.app/">
                 <MenuText>LP Rewards</MenuText>
               </Title>
               <Title style={{ marginInlineStart: 36 }} target="_blank" href="https://yflink.io/#/stake">
                 <MenuText>Stake & Vote</MenuText>
               </Title>
-              <Title
-                style={{  marginInlineStart: 24 }}
-                href="https://linkswap.app/#/swap?outputCurrency=0x28cb7e841ee97947a86b06fa4090c8451f64c0be"
-              >
-                <MenuText>Buy YFL</MenuText>
+              <Title style={{ marginInlineStart: 24 }} href="https://info.linkswap.app">
+                <MenuText>Charts</MenuText>
               </Title>
             </HeaderElementMobile>
           )}
