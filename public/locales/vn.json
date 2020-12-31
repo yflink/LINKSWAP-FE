@@ -4,7 +4,7 @@
   "switchNetwork": "Vui lòng chuyển sang {{ correctNetwork }}",
   "installWeb3MobileBrowser": "Vui lòng truy cập bằng trình duyệt có hỗ trợ web3 như Trust Wallet hoặc Coinbase Wallet.",
   "installMetamask": "Vui lòng cài đặt Metamask vào trình duyệt Chrome hoặc Brave để sử dụng.",
-  "disconnected": "Đã ngắt kết nối",
+  "disconnected": "Hủy liên kết",
   "swap": "Chuyển đổi",
   "swapAnyway": "Tiếp tục Chuyển đổi",
   "send": "Gửi",
@@ -241,10 +241,10 @@
   "selectATokenToFindLiquidity": "Chọn token để xem thanh khoản của bạn.",
   "interfaceTheme": "Chọn giao diện",
   "viewPairAnalytics": "Xem phân tích cặp token này",
-  "priceDescription": "Giá hiện tại dựa trên khối khai thác gần nhất",
-  "removeLiquidityCurrencies": "Remove {{currencyAAmount}} {{currencyASymbol}} and {{currencyBAmount}} {{currencyBSymbol}}",
-  "approve": "Approve",
-  "approving": "Approving",
-  "confirm": "Confirm",
-  "receiveCurrency": "Receive {{currency}}"
+  "priceDescription": "Giá cập nhật dựa trên khối khai thác gần nhất",
+  "removeLiquidityCurrencies": "Rút {{currencyAAmount}} {{currencyASymbol}} và{{currencyBAmount}} {{currencyBSymbol}} ra khỏi thanh khoản",
+  "approve": "Đồng ý",
+  "approving": "Đang xác nhận",
+  "confirm": "Xác nhận",
+  "receiveCurrency": "Nhận được {{currency}}"
 }

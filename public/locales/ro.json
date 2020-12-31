@@ -218,7 +218,7 @@
   "priceUpdated": "Preț actualizat",
   "outputWillBeSendTo": "Totalul va fi trimis la {{recipient}}",
   "price": "Preț",
-  "minimumReceived": "Minimum received",
+  "minimumReceived": "Minim primit",
   "maximumSold": "Maxim vândut",
   "transactionWillRevertDescription": "Tranzacția dvs. se va reveni dacă există o mișcare mare, nefavorabilă a prețului înainte de a fi confirmată.",
   "priceImpact": "Impactul prețului",
@@ -236,9 +236,9 @@
   "interfaceTheme": "Selectează o temă",
   "viewPairAnalytics": "vezi analitica perechei",
   "priceDescription": "Prețul curent live de la ultimul bloc.",
-  "removeLiquidityCurrencies": "Remove {{currencyAAmount}} {{currencyASymbol}} and {{currencyBAmount}} {{currencyBSymbol}}",
-  "approve": "Approve",
-  "approving": "Approving",
+  "removeLiquidityCurrencies": "Elimină {{currencyAAmount}} {{currencyASymbol}} și {{currencyBAmount}} {{currencyBSymbol}}",
+  "approve": "Aprobă",
+  "approving": "Aprobare",
   "confirm": "Confirm",
-  "receiveCurrency": "Receive {{currency}}"
+  "receiveCurrency": "Primești {{currency}}"
 }
