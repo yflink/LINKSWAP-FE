@@ -180,11 +180,8 @@ export default function Header() {
               <Title style={{ marginInlineStart: 36 }} target="_blank" href="https://yflink.io/#/stake">
                 <MenuText>Stake & Vote</MenuText>
               </Title>
-              <Title
-                style={{ marginInlineStart: 24 }}
-                href="https://linkswap.app/#/swap?outputCurrency=0x28cb7e841ee97947a86b06fa4090c8451f64c0be"
-              >
-                <MenuText>Buy YFL</MenuText>
+              <Title style={{ marginInlineStart: 24 }} target="_blank" href="https://info.linkswap.app">
+                <MenuText>Charts</MenuText>
               </Title>
             </HeaderElementMobile>
           )}
