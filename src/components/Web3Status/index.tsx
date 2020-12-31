@@ -62,6 +62,7 @@ const Web3StatusConnect = styled(Web3StatusGeneric)<{ faded?: boolean }>`
   border: none;
   color: ${({ theme }) => theme.appInfoBoxTextColor};
   font-weight: 500;
+  height: 37px;
 
   :hover,
   :focus {
