@@ -14,6 +14,8 @@ import { RedirectPathToSwapOnly, RedirectToSwap, RedirectThemeOutputToSwap } fro
 import AddLiquidity from './AddLiquidity'
 import { RedirectDuplicateTokenIds, RedirectOldAddLiquidityPathStructure } from './AddLiquidity/redirects'
 
+import Buy from './Buy'
+
 import Pool from './Pool'
 import PoolFinder from './PoolFinder'
 
@@ -118,6 +120,7 @@ export default function App() {
             {/* <Popups /> */}
             <Web3ReactManager>
               <Switch>
+                <Route exact strict path="/buy" component={Buy} />
                 <Route exact strict path="/swap" component={Swap} />
                 <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap} />
                 <Route exact strict path="/swap/:theme/:outputCurrency" component={RedirectThemeOutputToSwap} />

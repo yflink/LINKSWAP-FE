@@ -246,5 +246,11 @@
   "approve": "Approve",
   "approving": "Approving",
   "confirm": "Confirm",
-  "receiveCurrency": "Receive {{currency}}"
+  "receiveCurrency": "Receive {{currency}}",
+  "buyEthereum": "Buy Ethereum",
+  "buyEthereumDescription": "You can buy Ethererum here.",
+  "lastName": "Last name",
+  "firstName": "First name",
+  "email": "E-Mail-Address",
+  "amountOfEth": "ETH Amount"
 }
