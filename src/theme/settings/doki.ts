@@ -49,9 +49,9 @@ export function dokiDokiTheme() {
     buttonBGActiveHover: mainColor,
     buttonTextColorActiveHover: mainTextColor,
     buttonBGDisabled: buttonBG,
-    buttonTextColorDisabled: mainTextColor,
+    buttonTextColorDisabled: inputBGColor,
     buttonNavigationBG: buttonBG,
-    buttonNavigationTextColor: mainButtonColor,
+    buttonNavigationTextColor: inputBGColor,
     buttonNavigationBGHover: modalBG,
     buttonNavigationTextColorHover: mainButtonColor,
     buttonSelectBG: buttonSecondaryBG,
@@ -77,8 +77,8 @@ export function dokiDokiTheme() {
     buttonOutlinedTextColorHover: mainTextColor,
 
     //Footer
-    footerBG: bodyBGColor,
-    footerTextColor: inputBGColor,
+    footerBG: appBG,
+    footerTextColor: mainTextColor,
 
     //Global
     bodyBG: '#c0aff5 url("../images/themes/dokidoki/background_large.png") center center / cover no-repeat',
