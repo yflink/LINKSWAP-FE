@@ -58,7 +58,6 @@ const Logo = styled.img`
 const SubLogo = styled.img`
   height: 30px;
   margin-top: 10px;
-  margin-inline-start: 3px;
 `
 
 const LogoWrapper = styled.div`

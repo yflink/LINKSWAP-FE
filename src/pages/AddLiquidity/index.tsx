@@ -342,13 +342,13 @@ export default function AddLiquidity({
               <ColumnCenter>
                 <BlueCard>
                   <AutoColumn gap="10px">
-                    <TYPE.link fontWeight={600} color={'primaryText1'}>
+                    <TYPE.link fontWeight={600} color={theme.appInfoBoxTextColor}>
                       {t('firstLiquidityProvider')}
                     </TYPE.link>
-                    <TYPE.link fontWeight={400} color={'primaryText1'}>
+                    <TYPE.link fontWeight={400} color={theme.appInfoBoxTextColor}>
                       {t('ratioSetsPrice')}
                     </TYPE.link>
-                    <TYPE.link fontWeight={400} color={'primaryText1'}>
+                    <TYPE.link fontWeight={400} color={theme.appInfoBoxTextColor}>
                       {t('happyToSupply')}
                     </TYPE.link>
                   </AutoColumn>
