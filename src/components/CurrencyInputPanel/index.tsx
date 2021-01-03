@@ -38,7 +38,8 @@ const CurrencySelect = styled.button<{ selected: boolean; primary?: boolean; lef
       }
     }
   }};
-  color: ${({ selected, theme }) => (selected ? theme.appCurrencyInputTextColorActive : theme.appCurrencyInputTextColor)};
+  color: ${({ selected, theme }) =>
+    selected ? theme.appCurrencyInputTextColorActive : theme.appCurrencyInputTextColor};
   border-radius: ${({ left, right }) => (left ? '6px 0px 0px 6px' : right ? '0px 6px 6px 0px' : '6px')};
   box-shadow: ${({ selected }) => (selected ? 'none' : '0px 6px 10px rgba(0, 0, 0, 0.075)')};
   outline: none;
@@ -344,14 +345,15 @@ export function CurrencyDoubleInputPanel({
     initialSelected = 0
   } else {
     initialCurrency = inputCurrency
-    if (initialCurrency === ETHER) {
-      initialSelected = 0
-    } else {
+    if (initialCurrency !== ETHER) {
       initialSelected = 1
+    } else {
+      initialSelected = 0
     }
   }
 
   const [currency, setCurrency] = useState(initialCurrency)
+  const [interaction, setInteraction] = useState(false)
   const [selected, setSelected] = useState(initialSelected)
 
   const [modalOpen, setModalOpen] = useState(false)
@@ -363,12 +365,21 @@ export function CurrencyDoubleInputPanel({
     setModalOpen(false)
   }, [setModalOpen])
 
+  const ethSelected = (!interaction && initialSelected === 0) || (interaction && selected === 0)
+  const selectedCurrency =
+    (!interaction && initialSelected === 0) || (interaction && selected === 0) ? currency1 : currency2
+  const handleCurrency = useCallback(() => {
+    if (selectedCurrency.symbol !== currency.symbol) {
+      setCurrency(selectedCurrency)
+    }
+  }, [setCurrency, selectedCurrency, currency])
+  handleCurrency()
   return (
     <div>
       <CurrencySelectWrapper>
         <CurrencySelect
           style={{ marginBottom: '12px', width: '100%' }}
-          selected={selected === 0}
+          selected={ethSelected}
           primary
           left
           className="open-currency-select-button"
@@ -376,6 +387,7 @@ export function CurrencyDoubleInputPanel({
             if (!disableCurrencySelect) {
               setCurrency(currency1)
               setSelected(0)
+              setInteraction(true)
               if (onCurrencySelect) {
                 onCurrencySelect(currency1)
               }
@@ -404,7 +416,7 @@ export function CurrencyDoubleInputPanel({
         </CurrencySelect>
         <CurrencySelect
           style={{ marginBottom: '12px', width: '100%' }}
-          selected={selected === 1}
+          selected={!ethSelected}
           primary
           right
           className="open-currency-select-button"
@@ -412,6 +424,7 @@ export function CurrencyDoubleInputPanel({
             if (!disableCurrencySelect) {
               setCurrency(currency2)
               setSelected(1)
+              setInteraction(true)
               if (onCurrencySelect) {
                 onCurrencySelect(currency2)
               }
