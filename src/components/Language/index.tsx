@@ -139,7 +139,7 @@ export default function LanguageTab() {
               <LanguageOption shortCode="it" languageString="Italiano" />
             </LanguageWrapper>
             <LanguageWrapper onClick={() => setIsOpen(!isOpen)}>
-              <LanguageOption shortCode="jp" languageString="日本人" />
+              <LanguageOption shortCode="jp" languageString="日本語" />
             </LanguageWrapper>
             <LanguageWrapper onClick={() => setIsOpen(!isOpen)}>
               <LanguageOption shortCode="kr" languageString="한국어" />
