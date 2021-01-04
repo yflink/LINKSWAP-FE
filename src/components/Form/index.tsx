@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { FieldProps } from '../Field'
 
 const FormBody = styled.form`
   width: 100%;
@@ -16,8 +17,13 @@ const FormContainer = styled.div`
   flex-wrap: wrap;
 `
 
+export interface Fields {
+  [key: string]: FieldProps
+}
+
 interface FormProps {
   action: string
+  fields: Fields
   render: () => React.ReactNode
 }
 
@@ -34,6 +40,33 @@ export interface FormState {
   errors: Errors
   submitSuccess?: boolean
 }
+
+export interface InterfaceFormContext extends FormState {
+  setValues: (values: Values) => void
+  validate: (fieldName: string) => void
+}
+
+export const FormContext = React.createContext<any | undefined>(undefined)
+
+/**
+ * Validates whether a field has a value
+ * @param {Values} values - All the field values in the form
+ * @param {string} fieldName - The field to validate
+ * @returns {string} - The error message
+ */
+export const required = (values: Values, fieldName: string): string =>
+  values[fieldName] === undefined || values[fieldName] === null || values[fieldName] === '' ? 'requiredField' : ''
+
+/**
+ * Validates whether a field is a valid email
+ * @param {Values} values - All the field values in the form
+ * @param {string} fieldName - The field to validate
+ * @returns {string} - The error message
+ */
+export const isEmail = (values: Values, fieldName: string): string =>
+  values[fieldName] && values[fieldName].search(/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)
+    ? 'invalidEmail'
+    : ''
 
 export class Form extends React.Component<FormProps, FormState> {
   constructor(props: FormProps) {
@@ -68,6 +101,8 @@ export class Form extends React.Component<FormProps, FormState> {
   private handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault()
 
+    console.log(this.state.values)
+
     if (this.validateForm()) {
       const submitSuccess: boolean = await this.submitForm()
       this.setState({ submitSuccess })
@@ -79,8 +114,12 @@ export class Form extends React.Component<FormProps, FormState> {
    * @returns {boolean} - Whether the form is valid or not
    */
   private validateForm(): boolean {
-    // TODO - validate form
-    return true
+    const errors: Errors = {}
+    Object.keys(this.props.fields).map((fieldName: string) => {
+      errors[fieldName] = this.validate(fieldName)
+    })
+    this.setState({ errors })
+    return !this.haveErrors(errors)
   }
 
   /**
@@ -92,30 +131,59 @@ export class Form extends React.Component<FormProps, FormState> {
     return true
   }
 
+  private setValues = (values: Values) => {
+    this.setState({ values: { ...this.state.values, ...values } })
+  }
+
+  private validate = (fieldName: string): string => {
+    let newError = ''
+
+    if (this.props.fields[fieldName] && this.props.fields[fieldName].validation) {
+      newError = this.props.fields[fieldName].validation!.rule(
+        this.state.values,
+        fieldName,
+        this.props.fields[fieldName].validation!.args
+      )
+    }
+    this.state.errors[fieldName] = newError
+    this.setState({
+      errors: { ...this.state.errors, [fieldName]: newError }
+    })
+    return newError
+  }
+
   public render() {
     const { submitSuccess, errors } = this.state
+    const context: InterfaceFormContext = {
+      ...this.state,
+      setValues: this.setValues,
+      validate: this.validate
+    }
 
+    console.log(context)
     return (
-      <FormBody onSubmit={this.handleSubmit} noValidate={true}>
-        <FormContainer>
-          {this.props.render()}
-          {submitSuccess && (
-            <div className="alert alert-info" role="alert">
-              The form was successfully submitted!
-            </div>
-          )}
-          {submitSuccess === false && !this.haveErrors(errors) && (
-            <div className="alert alert-danger" role="alert">
-              Sorry, an unexpected error has occurred
-            </div>
-          )}
-          {submitSuccess === false && this.haveErrors(errors) && (
-            <div className="alert alert-danger" role="alert">
-              Sorry, the form is invalid. Please review, adjust and try again
-            </div>
-          )}
-        </FormContainer>
-      </FormBody>
+      <FormContext.Provider value={context}>
+        <FormBody onSubmit={this.handleSubmit} noValidate={true}>
+          <FormContainer>
+            {this.props.render()}
+            {submitSuccess && (
+              <div className="alert alert-info" role="alert">
+                The form was successfully submitted!
+              </div>
+            )}
+            {submitSuccess === false && !this.haveErrors(errors) && (
+              <div className="alert alert-danger" role="alert">
+                Sorry, an unexpected error has occurred
+              </div>
+            )}
+            {submitSuccess === false && this.haveErrors(errors) && (
+              <div className="alert alert-danger" role="alert">
+                Sorry, the form is invalid. Please review, adjust and try again
+              </div>
+            )}
+          </FormContainer>
+        </FormBody>
+      </FormContext.Provider>
     )
   }
 }

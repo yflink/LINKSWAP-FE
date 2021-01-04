@@ -20,7 +20,7 @@ const PopoverContainer = styled.div<{ show: boolean }>`
 `
 
 const ReferenceElement = styled.div`
-  display: inline-block;
+  display: block;
 `
 
 const Arrow = styled.div`
@@ -99,19 +99,21 @@ export default function Popover({ content, show, children, placement = 'auto' }:
   useInterval(updateCallback, show ? 100 : null)
 
   return (
-    <>
+    <div style={{ width: '100%' }}>
       <ReferenceElement ref={setReferenceElement as any}>{children}</ReferenceElement>
       <Portal>
         <PopoverContainer show={show} ref={setPopperElement as any} style={styles.popper} {...attributes.popper}>
           {content}
-          <Arrow
-            className={`arrow-${attributes.popper?.['data-popper-placement'] ?? ''}`}
-            ref={setArrowElement as any}
-            style={styles.arrow}
-            {...attributes.arrow}
-          />
+          {content && (
+            <Arrow
+              className={`arrow-${attributes.popper?.['data-popper-placement'] ?? ''}`}
+              ref={setArrowElement as any}
+              style={styles.arrow}
+              {...attributes.arrow}
+            />
+          )}
         </PopoverContainer>
       </Portal>
-    </>
+    </div>
   )
 }

@@ -1,8 +1,15 @@
 import * as React from 'react'
-import { Errors } from '../Form'
+import { Errors, InterfaceFormContext, FormContext, Values } from '../Form'
 import styled from 'styled-components'
+import { MouseoverTooltip } from '../Tooltip'
+import { useTranslation } from 'react-i18next'
 
 type Editor = 'textbox' | 'multilinetextbox' | 'dropdown' | 'email'
+
+export interface Validation {
+  rule: (values: Values, fieldName: string, args: any) => string
+  args?: any
+}
 
 export interface FieldProps {
   id: string
@@ -11,6 +18,7 @@ export interface FieldProps {
   options?: string[]
   value?: any
   style?: React.CSSProperties
+  validation?: Validation
 }
 
 const StyledInput = styled.input<{ error?: boolean }>`
@@ -70,62 +78,72 @@ const FormGroup = styled.div`
 `
 
 export const Field: React.FunctionComponent<FieldProps> = ({ id, label, editor, options, value, style }) => {
+  const getError = (errors: Errors): string => (errors ? errors[id] : '')
+  const getEditorStyle = (errors: Errors): any => (getError(errors) ? { borderColor: 'red' } : {})
+  const { t } = useTranslation()
+
   return (
-    <FormGroup style={style}>
-      {editor!.toLowerCase() === 'textbox' && (
-        <StyledInput
-          id={id}
-          type="text"
-          value={value}
-          placeholder={label}
-          onChange={(e: React.FormEvent<HTMLInputElement>) => console.log(e) /* TODO: push change to form values */}
-          onBlur={(e: React.FormEvent<HTMLInputElement>) => console.log(e) /* TODO: validate field value */}
-          className="form-control"
-        />
-      )}
+    <FormContext.Consumer>
+      {(context: InterfaceFormContext) => (
+        <FormGroup style={style}>
+          <MouseoverTooltip text={t(getError(context.errors))}>
+            {editor!.toLowerCase() === 'textbox' && (
+              <StyledInput
+                id={id}
+                type="text"
+                value={value}
+                placeholder={label}
+                onChange={(e: React.FormEvent<HTMLInputElement>) => context.setValues({ [id]: e.currentTarget.value })}
+                onBlur={() => context.validate(id)}
+                style={getEditorStyle(context.errors)}
+              />
+            )}
 
-      {editor!.toLowerCase() === 'email' && (
-        <StyledInput
-          id={id}
-          type="email"
-          value={value}
-          placeholder={label}
-          onChange={(e: React.FormEvent<HTMLInputElement>) => console.log(e) /* TODO: push change to form values */}
-          onBlur={(e: React.FormEvent<HTMLInputElement>) => console.log(e) /* TODO: validate field value */}
-          className="form-control"
-        />
-      )}
+            {editor!.toLowerCase() === 'email' && (
+              <StyledInput
+                id={id}
+                type="email"
+                value={value}
+                placeholder={label}
+                onChange={(e: React.FormEvent<HTMLInputElement>) => context.setValues({ [id]: e.currentTarget.value })}
+                onBlur={() => context.validate(id)}
+                style={getEditorStyle(context.errors)}
+              />
+            )}
 
-      {editor!.toLowerCase() === 'multilinetextbox' && (
-        <textarea
-          id={id}
-          value={value}
-          onChange={(e: React.FormEvent<HTMLTextAreaElement>) => console.log(e) /* TODO: push change to form values */}
-          onBlur={(e: React.FormEvent<HTMLTextAreaElement>) => console.log(e) /* TODO: validate field value */}
-          className="form-control"
-        />
-      )}
+            {editor!.toLowerCase() === 'multilinetextbox' && (
+              <textarea
+                id={id}
+                value={value}
+                onChange={(e: React.FormEvent<HTMLTextAreaElement>) =>
+                  context.setValues({ [id]: e.currentTarget.value })
+                }
+                onBlur={() => context.validate(id)}
+                style={getEditorStyle(context.errors)}
+              />
+            )}
 
-      {editor!.toLowerCase() === 'dropdown' && (
-        <select
-          id={id}
-          name={id}
-          value={value}
-          onChange={(e: React.FormEvent<HTMLSelectElement>) => console.log(e) /* TODO: push change to form values */}
-          onBlur={(e: React.FormEvent<HTMLSelectElement>) => console.log(e) /* TODO: validate field value */}
-          className="form-control"
-        >
-          {options &&
-            options.map(option => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-        </select>
+            {editor!.toLowerCase() === 'dropdown' && (
+              <select
+                id={id}
+                name={id}
+                value={value}
+                onChange={(e: React.FormEvent<HTMLSelectElement>) => context.setValues({ [id]: e.currentTarget.value })}
+                onBlur={() => context.validate(id)}
+                style={getEditorStyle(context.errors)}
+              >
+                {options &&
+                  options.map(option => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+              </select>
+            )}
+          </MouseoverTooltip>
+        </FormGroup>
       )}
-
-      {/* TODO - display validation error */}
-    </FormGroup>
+    </FormContext.Consumer>
   )
 }
 Field.defaultProps = {

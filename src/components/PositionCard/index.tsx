@@ -134,21 +134,6 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
                   </Text>
                 </Card>
               </RowFixed>
-
-              {/* <FixedHeightRow>
-                <Text color="#888D9B" fontSize={16} fontWeight={500}>
-                  {currency1.symbol}:
-                </Text>
-                {token1Deposited ? (
-                  <RowFixed>
-                    <Text color="#888D9B" fontSize={16} fontWeight={500} marginLeft={'6px'}>
-                      {token1Deposited?.toSignificant(6)}
-                    </Text>
-                  </RowFixed>
-                ) : (
-                  '-'
-                )}
-              </FixedHeightRow> */}
             </AutoColumn>
           </AutoColumn>
         </GreyCard>
@@ -223,7 +208,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
               </RowFixed>
               {token0Deposited ? (
                 <RowFixed>
-                  <Text fontSize={16} fontWeight={500} marginLeft={'6px'}>
+                  <Text fontSize={16} fontWeight={500} style={{ marginInlineStart: '6px' }}>
                     {token0Deposited?.toSignificant(6)}
                   </Text>
                   <CurrencyLogo size="20px" style={{ marginInlineStart: '8px' }} currency={currency0} />
@@ -241,7 +226,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
               </RowFixed>
               {token1Deposited ? (
                 <RowFixed>
-                  <Text fontSize={16} fontWeight={500} marginLeft={'6px'}>
+                  <Text fontSize={16} fontWeight={500} style={{ marginInlineStart: '6px' }}>
                     {token1Deposited?.toSignificant(6)}
                   </Text>
                   <CurrencyLogo size="20px" style={{ marginInlineStart: '8px' }} currency={currency1} />

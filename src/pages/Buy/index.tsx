@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import styled, { ThemeContext } from 'styled-components'
 import { SwapPoolTabs } from '../../components/NavigationTabs'
 
@@ -9,14 +9,18 @@ import { AutoColumn } from '../../components/Column'
 import { useActiveWeb3React } from '../../hooks'
 import AppBody from '../AppBody'
 import { useTranslation } from 'react-i18next'
-import Row, { RowBetween } from '../../components/Row'
+import Row, { RowBetween, RowFixed } from '../../components/Row'
 import { Text } from 'rebass'
 import Question from '../../components/QuestionHelper'
-import { Form } from '../../components/Form'
+import { Form, Fields, required, isEmail } from '../../components/Form'
 import { Field } from '../../components/Field'
-import { ButtonPrimary } from '../../components/Button'
+import { ButtonLight, ButtonPrimary } from '../../components/Button'
 import { Input as NumericalInput } from '../../components/NumericalInput'
 import { TYPE } from '../../theme'
+import QuestionHelper from '../../components/QuestionHelper'
+import { useGetPriceBase } from '../../state/price/hooks'
+import { useCurrencyUsdPrice } from '../../hooks/useCurrencyUsdPrice'
+import { useWalletModalToggle } from '../../state/application/hooks'
 
 const InputPanel = styled.div`
   ${({ theme }) => theme.flexColumnNoWrap}
@@ -50,11 +54,61 @@ const Container = styled.div`
   margin: 0 0 12px;
 `
 
+const AdvancedDetailsFooter = styled.div<{ show: boolean }>`
+  padding-top: calc(16px + 2rem);
+  padding-bottom: 20px;
+  margin-top: -2rem;
+  width: 100%;
+  max-width: 400px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  color: ${({ theme }) => theme.textSecondary};
+  background-color: ${({ theme }) => theme.modalFooterBG};
+  z-index: -1;
+
+  transform: ${({ show }) => (show ? 'translateY(0%)' : 'translateY(-100%)')};
+  transition: transform 300ms ease-in-out;
+`
+
 export default function Buy() {
   const theme = useContext(ThemeContext)
   const { account } = useActiveWeb3React()
   const [amount, setAmount] = useState('0.0')
   const { t } = useTranslation()
+  const showFootermodal = amount !== '' && amount !== '0.0'
+  const priceObject = useGetPriceBase()
+  const formatedUsdPrice = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
+    priceObject['ethPriceBase']
+  )
+  const feeFactor = 0.049
+  const transactionFee = feeFactor * 100
+  const calculatedFees = showFootermodal ? Number(amount) * priceObject['ethPriceBase'] * feeFactor : 0
+  const calculatedTotal = showFootermodal ? Number(amount) * priceObject['ethPriceBase'] + calculatedFees : 0
+  const formatedTotal = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(calculatedTotal)
+  const toggleWalletModal = useWalletModalToggle()
+  const disableBuy = amount === '' || amount === '0.0'
+  useCurrencyUsdPrice()
+
+  const fields: Fields = {
+    firstName: {
+      id: 'firstName',
+      label: t('firstName'),
+      style: { paddingInlineEnd: 6 },
+      validation: { rule: required }
+    },
+    lastName: {
+      id: 'lastName',
+      label: t('lastName'),
+      style: { paddingInlineStart: 6 },
+      validation: { rule: required }
+    },
+    email: {
+      id: 'email',
+      label: t('email'),
+      editor: 'email',
+      validation: { rule: isEmail }
+    }
+  }
 
   return (
     <>
@@ -71,14 +125,15 @@ export default function Buy() {
           </RowBetween>
           <Form
             action="http://localhost:4351/api/contactus"
+            fields={fields}
             render={() => (
               <React.Fragment>
                 <Row>
-                  <Field id="fistName" style={{ paddingInlineEnd: 6 }} label={t('firstName')} />
-                  <Field id="lastName" style={{ paddingInlineStart: 6 }} label={t('lastName')} />
+                  <Field {...fields.firstName} />
+                  <Field {...fields.lastName} />
                 </Row>
                 <Row>
-                  <Field id="email" editor="email" label={t('email')} />
+                  <Field {...fields.email} />
                 </Row>
                 <InputPanel id="amount">
                   <Container>
@@ -102,17 +157,63 @@ export default function Buy() {
                   </Container>
                 </InputPanel>
                 <Row>
-                  <ButtonPrimary id="submit" style={{ padding: 16 }}>
-                    <Text fontWeight={500} fontSize={20}>
-                      {t('buyEthereum')}
-                    </Text>
-                  </ButtonPrimary>
+                  {!account ? (
+                    <ButtonLight onClick={toggleWalletModal}>{t('connectWallet')}</ButtonLight>
+                  ) : (
+                    <ButtonPrimary disabled={Boolean(disableBuy)} id="submit" style={{ padding: 16 }}>
+                      <Text fontWeight={500} fontSize={20}>
+                        {t('buyEthereum')}
+                      </Text>
+                    </ButtonPrimary>
+                  )}
                 </Row>
+                {!account && (
+                  <TYPE.body
+                    color={theme.appInfoBoxTextColor}
+                    style={{ padding: '12px', fontSize: '12px' }}
+                    textAlign="center"
+                  >
+                    {t('walletConnectDisclaimer')}
+                  </TYPE.body>
+                )}
               </React.Fragment>
             )}
           />
         </AutoColumn>
       </AppBody>
+      <AdvancedDetailsFooter show={showFootermodal}>
+        <AutoColumn gap="md" style={{ padding: '0 24px' }}>
+          <RowBetween>
+            <RowFixed>
+              <TYPE.black fontSize={16} fontWeight={600}>
+                {t('buyTotal')}
+              </TYPE.black>
+              <QuestionHelper text={t('buyTotalDescription')} />
+            </RowFixed>
+            <TYPE.black fontSize={16} fontWeight={600}>
+              ~{formatedTotal}
+            </TYPE.black>
+          </RowBetween>
+          <RowBetween>
+            <RowFixed>
+              <TYPE.black fontSize={14} fontWeight={400}>
+                {t('currentEthPrice')}
+              </TYPE.black>
+              <QuestionHelper text={t('priceDescription')} />
+            </RowFixed>
+            {formatedUsdPrice}
+          </RowBetween>
+          <RowBetween>
+            <RowFixed>
+              <TYPE.black fontSize={14} fontWeight={400}>
+                {t('buyFees')}
+              </TYPE.black>
+              <QuestionHelper text={t('buyFeesDescription')} />
+            </RowFixed>
+            {transactionFee}%
+          </RowBetween>
+        </AutoColumn>
+      </AdvancedDetailsFooter>
     </>
   )
 }

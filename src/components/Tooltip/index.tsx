@@ -14,7 +14,13 @@ interface TooltipProps extends Omit<PopoverProps, 'content'> {
 }
 
 export default function Tooltip({ text, ...rest }: TooltipProps) {
-  return <Popover content={<TooltipContainer>{text}</TooltipContainer>} {...rest} />
+  const showToolTip = text.length > 1
+
+  return showToolTip ? (
+    <Popover content={<TooltipContainer>{text}</TooltipContainer>} {...rest} />
+  ) : (
+    <Popover content={null} {...rest} />
+  )
 }
 
 export function MouseoverTooltip({ children, ...rest }: Omit<TooltipProps, 'show'>) {
@@ -23,7 +29,7 @@ export function MouseoverTooltip({ children, ...rest }: Omit<TooltipProps, 'show
   const close = useCallback(() => setShow(false), [setShow])
   return (
     <Tooltip {...rest} show={show}>
-      <div onMouseEnter={open} onMouseLeave={close}>
+      <div style={{ width: '100%' }} onMouseEnter={open} onMouseLeave={close}>
         {children}
       </div>
     </Tooltip>
