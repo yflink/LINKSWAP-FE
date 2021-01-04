@@ -14,6 +14,7 @@ export const LanguageOptionBody = styled.div`
   font-size: 14px;
   height: 33px;
   overflow: hidden;
+
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     font-size: 13px;
   `};

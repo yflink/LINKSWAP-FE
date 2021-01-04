@@ -9,7 +9,12 @@ import Web3ReactManager from '../components/Web3ReactManager'
 import ThemeQueryParamReader from '../theme/ThemeQueryParamReader'
 
 import Swap from './Swap'
-import { RedirectPathToSwapOnly, RedirectToSwap, RedirectThemeOutputToSwap } from './Swap/redirects'
+import {
+  RedirectPathToSwapOnly,
+  RedirectToSwap,
+  RedirectThemeOutputToSwap,
+  RedirectThemeInputOutputToSwap
+} from './Swap/redirects'
 
 import AddLiquidity from './AddLiquidity'
 import { RedirectDuplicateTokenIds, RedirectOldAddLiquidityPathStructure } from './AddLiquidity/redirects'
@@ -124,6 +129,12 @@ export default function App() {
                 <Route exact strict path="/swap" component={Swap} />
                 <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap} />
                 <Route exact strict path="/swap/:theme/:outputCurrency" component={RedirectThemeOutputToSwap} />
+                <Route
+                  exact
+                  strict
+                  path="/swap/:theme/:inputCurrency/:outputCurrency"
+                  component={RedirectThemeInputOutputToSwap}
+                />
                 <Route exact strict path="/send" component={RedirectPathToSwapOnly} />
                 <Route exact strict path="/find" component={PoolFinder} />
                 <Route exact strict path="/pool" component={Pool} />

@@ -195,11 +195,27 @@
       "symbol": "CFi",
       "decimals": 18,
       "logoURI": "https://logos.linkswap.app/0x63b4f3e3fa4e438698ce330e365e831f7ccd1ef4.png"
+    },
+    {
+      "address": "0x910524678c0b1b23ffb9285a81f99c29c11cbaed",
+      "chainId": 1,
+      "name": "Azuki",
+      "symbol": "AZUKI",
+      "decimals": 18,
+      "logoURI": "https://logos.linkswap.app/0x910524678c0b1b23ffb9285a81f99c29c11cbaed.png"
+    },
+    {
+      "address": "0x9ceb84f92a0561fa3cc4132ab9c0b76a59787544",
+      "chainId": 1,
+      "name": "Doki Doki Finance",
+      "symbol": "DOKI",
+      "decimals": 18,
+      "logoURI": "https://logos.linkswap.app/0x9ceb84f92a0561fa3cc4132ab9c0b76a59787544.png"
     }
   ],
   "version": {
-    "major": 2,
-    "minor": 14,
+    "major": 3,
+    "minor": 0,
     "patch": 0
   }
 }
