@@ -399,11 +399,19 @@ export default function Swap() {
                   {Boolean(trade) && (
                     <>
                       <RowBetween>
-                        <TradePrice price={trade?.executionPrice} showInverted={true} priceImpactSeverity={priceImpactSeverity} />
+                        <TradePrice
+                          price={trade?.executionPrice}
+                          showInverted={true}
+                          priceImpactSeverity={priceImpactSeverity}
+                        />
                         <QuestionHelper text={t('priceDescription')} />
                       </RowBetween>
                       <RowBetween>
-                        <TradePrice price={trade?.executionPrice} showInverted={false} priceImpactSeverity={priceImpactSeverity} />
+                        <TradePrice
+                          price={trade?.executionPrice}
+                          showInverted={false}
+                          priceImpactSeverity={priceImpactSeverity}
+                        />
                       </RowBetween>
                     </>
                   )}
@@ -536,7 +544,7 @@ export default function Swap() {
           </BottomGrouping>
         </Wrapper>
       </AppBody>
-      <AdvancedSwapDetailsDropdown trade={trade}/>
+      <AdvancedSwapDetailsDropdown trade={trade} />
     </>
   )
 }

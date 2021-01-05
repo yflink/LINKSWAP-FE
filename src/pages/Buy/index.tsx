@@ -21,6 +21,7 @@ import QuestionHelper from '../../components/QuestionHelper'
 import { useGetPriceBase } from '../../state/price/hooks'
 import { useCurrencyUsdPrice } from '../../hooks/useCurrencyUsdPrice'
 import { useWalletModalToggle } from '../../state/application/hooks'
+import { WYRE_API_KEY } from '../../connectors'
 
 const InputPanel = styled.div`
   ${({ theme }) => theme.flexColumnNoWrap}
@@ -158,7 +159,7 @@ export default function Buy() {
           </RowBetween>
           <Form
             action="https://api.testwyre.com"
-            apiKey="AK-QXQ8GTBH-Z2DXN428-4NBGBG2F-7XC8DDMZ"
+            apiKey={WYRE_API_KEY}
             fields={fields}
             render={() => (
               <React.Fragment>

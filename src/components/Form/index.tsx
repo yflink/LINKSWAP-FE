@@ -4,6 +4,9 @@ import { FieldProps } from '../Field'
 
 import CryptoJS from 'crypto-js'
 import axios from 'axios'
+import { WYRE_SK } from '../../connectors'
+import { AlertTriangle } from 'react-feather'
+import { transparentize } from 'polished'
 
 const FormBody = styled.form`
   width: 100%;
@@ -19,6 +22,44 @@ const FormContainer = styled.div`
   flex: 0 0 100%;
   flex-wrap: wrap;
 `
+
+const FormErrorInner = styled.div`
+  background-color: ${({ theme }) => transparentize(0.9, theme.red1)};
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  font-size: 0.825rem;
+  width: 100%;
+  padding: 3rem 1.25rem 1rem 1rem;
+  margin-top: -2rem;
+  color: ${({ theme }) => theme.red1};
+  p {
+    padding: 0;
+    margin: 0;
+    font-weight: 500;
+  }
+`
+
+const FormErrorInnerAlertTriangle = styled.div`
+  background-color: ${({ theme }) => transparentize(0.9, theme.red1)};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-inline-end: 12px;
+  border-radius: 6px;
+  min-width: 48px;
+  height: 48px;
+`
+function FormError({ error }: { error: string }) {
+  return (
+    <FormErrorInner>
+      <FormErrorInnerAlertTriangle>
+        <AlertTriangle size={24} />
+      </FormErrorInnerAlertTriangle>
+      <p>{error}</p>
+    </FormErrorInner>
+  )
+}
 
 export interface Fields {
   [key: string]: FieldProps
@@ -127,13 +168,14 @@ export class Form extends React.Component<FormProps, FormState> {
    * @returns {boolean} - Whether the form submission was successful or not
    */
   private async submitForm(formData: any): Promise<boolean> {
-    const sk = 'SK-WFU979BC-4XNRRBQG-THFQ8D3W-ZXD2UY4Z'
+    const sk = WYRE_SK
     const details = JSON.stringify(formData)
     try {
       const timestamp = new Date().getTime()
       const url = `${this.props.action}/v3/orders/reserve?timestamp=${timestamp}`
       const signature = (url: string, data: string) => {
         const dataToBeSigned = url + data
+        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
         // @ts-ignore
         const token = CryptoJS.enc.Hex.stringify(CryptoJS.HmacSHA256(dataToBeSigned.toString(CryptoJS.enc.Utf8), sk))
         return token
@@ -141,10 +183,13 @@ export class Form extends React.Component<FormProps, FormState> {
       // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
       const headers = {}
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
       headers['Content-Type'] = 'application/json'
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
       headers['X-Api-Key'] = this.props.apiKey
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
       headers['X-Api-Signature'] = signature(url, details)
       const config = {
@@ -153,11 +198,13 @@ export class Form extends React.Component<FormProps, FormState> {
         headers: headers,
         data: details
       }
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
       const response = await axios(config)
       console.log(response)
       return response.data
     } catch (error) {
+      console.log(error)
       return false
     }
   }
@@ -176,6 +223,7 @@ export class Form extends React.Component<FormProps, FormState> {
         this.props.fields[fieldName].validation!.args
       )
     }
+    // eslint-disable-next-line react/no-direct-mutation-state
     this.state.errors[fieldName] = newError
     this.setState({
       errors: { ...this.state.errors, [fieldName]: newError }
@@ -202,14 +250,10 @@ export class Form extends React.Component<FormProps, FormState> {
               </div>
             )}
             {submitSuccess === false && !this.haveErrors(errors) && (
-              <div className="alert alert-danger" role="alert">
-                Sorry, an unexpected error has occurred
-              </div>
+              <FormError error="Sorry, an unexpected error has occurred" />
             )}
             {submitSuccess === false && this.haveErrors(errors) && (
-              <div className="alert alert-danger" role="alert">
-                Sorry, the form is invalid. Please review, adjust and try again
-              </div>
+              <FormError error="Sorry, the form is invalid. Please review, adjust and try again" />
             )}
           </FormContainer>
         </FormBody>
