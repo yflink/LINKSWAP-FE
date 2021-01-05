@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { MouseoverTooltip } from '../Tooltip'
 import { useTranslation } from 'react-i18next'
 
-type Editor = 'textbox' | 'multilinetextbox' | 'dropdown' | 'email'
+type Editor = 'textbox' | 'multilinetextbox' | 'dropdown' | 'email' | 'hidden'
 
 export interface Validation {
   rule: (values: Values, fieldName: string, args: any) => string
@@ -15,6 +15,7 @@ export interface FieldProps {
   id: string
   label?: string
   editor?: Editor
+  autocomplete?: string
   options?: string[]
   value?: any
   style?: React.CSSProperties
@@ -47,7 +48,7 @@ const StyledInput = styled.input<{ error?: boolean }>`
   }
   transition: border 100ms;
   :focus {
-    border: 1px solid ${({ theme }) => theme.modalInputBorderFocus};
+    border: 1px solid ${({ theme }) => theme.modalInputBorderFocus} !important;
     outline: none;
   }
 
@@ -69,6 +70,10 @@ const StyledInput = styled.input<{ error?: boolean }>`
   ::placeholder {
     color: ${({ theme }) => theme.textTertiary};
   }
+
+  :-webkit-autofill {
+    background-color: ${({ theme }) => theme.appCurrencyInputBG};
+  }
 `
 
 const FormGroup = styled.div`
@@ -77,11 +82,18 @@ const FormGroup = styled.div`
   flex: 1;
 `
 
-export const Field: React.FunctionComponent<FieldProps> = ({ id, label, editor, options, value, style }) => {
+export const Field: React.FunctionComponent<FieldProps> = ({
+  id,
+  label,
+  editor,
+  autocomplete,
+  options,
+  value,
+  style
+}) => {
   const getError = (errors: Errors): string => (errors ? errors[id] : '')
   const getEditorStyle = (errors: Errors): any => (getError(errors) ? { borderColor: 'red' } : {})
   const { t } = useTranslation()
-
   return (
     <FormContext.Consumer>
       {(context: InterfaceFormContext) => (
@@ -90,11 +102,13 @@ export const Field: React.FunctionComponent<FieldProps> = ({ id, label, editor, 
             {editor!.toLowerCase() === 'textbox' && (
               <StyledInput
                 id={id}
+                name={id}
                 type="text"
                 value={value}
                 placeholder={label}
                 onChange={(e: React.FormEvent<HTMLInputElement>) => context.setValues({ [id]: e.currentTarget.value })}
                 onBlur={() => context.validate(id)}
+                autoComplete={autocomplete}
                 style={getEditorStyle(context.errors)}
               />
             )}
@@ -102,23 +116,37 @@ export const Field: React.FunctionComponent<FieldProps> = ({ id, label, editor, 
             {editor!.toLowerCase() === 'email' && (
               <StyledInput
                 id={id}
+                name={id}
                 type="email"
                 value={value}
                 placeholder={label}
                 onChange={(e: React.FormEvent<HTMLInputElement>) => context.setValues({ [id]: e.currentTarget.value })}
                 onBlur={() => context.validate(id)}
+                autoComplete={autocomplete}
                 style={getEditorStyle(context.errors)}
+              />
+            )}
+
+            {editor!.toLowerCase() === 'hidden' && (
+              <input
+                id={id}
+                name={id}
+                type="hidden"
+                value={value}
+                onChange={(e: React.FormEvent<HTMLInputElement>) => context.setValues({ [id]: e.currentTarget.value })}
               />
             )}
 
             {editor!.toLowerCase() === 'multilinetextbox' && (
               <textarea
                 id={id}
+                name={id}
                 value={value}
                 onChange={(e: React.FormEvent<HTMLTextAreaElement>) =>
                   context.setValues({ [id]: e.currentTarget.value })
                 }
                 onBlur={() => context.validate(id)}
+                autoComplete={autocomplete}
                 style={getEditorStyle(context.errors)}
               />
             )}
@@ -130,6 +158,7 @@ export const Field: React.FunctionComponent<FieldProps> = ({ id, label, editor, 
                 value={value}
                 onChange={(e: React.FormEvent<HTMLSelectElement>) => context.setValues({ [id]: e.currentTarget.value })}
                 onBlur={() => context.validate(id)}
+                autoComplete={autocomplete}
                 style={getEditorStyle(context.errors)}
               >
                 {options &&

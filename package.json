@@ -38,9 +38,11 @@
     "@web3-react/walletlink-connector": "^6.1.6",
     "ajv": "^6.12.6",
     "antd": "^4.9.4",
+    "axios": "^0.21.1",
     "cids": "^1.1.4",
     "copy-to-clipboard": "^3.2.0",
     "cross-env": "^7.0.3",
+    "crypto-js": "^4.0.0",
     "cypress": "^4.12.1",
     "es-abstract": "^1.17.7",
     "eslint": "^6.8.0",
@@ -108,5 +110,8 @@
       "last 1 safari version"
     ]
   },
-  "license": "GPL-3.0-or-later"
+  "license": "GPL-3.0-or-later",
+  "dependencies": {
+    "@types/crypto-js": "^4.0.1"
+  }
 }

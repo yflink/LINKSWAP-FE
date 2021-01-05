@@ -80,13 +80,19 @@ export default function Buy() {
   const formatedUsdPrice = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
     priceObject['ethPriceBase']
   )
-  const feeFactor = 0.049
+  const feeFactor = 0.039
   const transactionFee = feeFactor * 100
-  const calculatedFees = showFootermodal ? Number(amount) * priceObject['ethPriceBase'] * feeFactor : 0
+  const calculatedFees = showFootermodal ? Number(amount) * priceObject['ethPriceBase'] * feeFactor + 0.3 : 0
   const calculatedTotal = showFootermodal ? Number(amount) * priceObject['ethPriceBase'] + calculatedFees : 0
   const formatedTotal = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(calculatedTotal)
+  const formatedTransactionFee = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
+    calculatedFees
+  )
+  const minFee = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(5)
   const toggleWalletModal = useWalletModalToggle()
   const disableBuy = amount === '' || amount === '0.0'
+
+  const ethDestination = account ? 'ethereum:' + account : ''
   useCurrencyUsdPrice()
 
   const fields: Fields = {
@@ -94,19 +100,46 @@ export default function Buy() {
       id: 'firstName',
       label: t('firstName'),
       style: { paddingInlineEnd: 6 },
+      autocomplete: 'given-name',
       validation: { rule: required }
     },
     lastName: {
       id: 'lastName',
       label: t('lastName'),
       style: { paddingInlineStart: 6 },
+      autocomplete: 'family-name',
       validation: { rule: required }
     },
     email: {
       id: 'email',
       label: t('email'),
       editor: 'email',
+      autocomplete: 'email',
       validation: { rule: isEmail }
+    },
+    destAmount: {
+      id: 'destAmount',
+      editor: 'hidden'
+    },
+    sourceCurrency: {
+      id: 'sourceCurrency',
+      editor: 'hidden'
+    },
+    destCurrency: {
+      id: 'destCurrency',
+      editor: 'hidden'
+    },
+    dest: {
+      id: 'dest',
+      editor: 'hidden'
+    },
+    referrerAccountId: {
+      id: 'referrerAccountId',
+      editor: 'hidden'
+    },
+    hideTrackBtn: {
+      id: 'hideTrackBtn',
+      editor: 'hidden'
     }
   }
 
@@ -124,7 +157,8 @@ export default function Buy() {
             <Question text={t('buyEthereumDescription')} />
           </RowBetween>
           <Form
-            action="http://localhost:4351/api/contactus"
+            action="https://api.testwyre.com"
+            apiKey="AK-QXQ8GTBH-Z2DXN428-4NBGBG2F-7XC8DDMZ"
             fields={fields}
             render={() => (
               <React.Fragment>
@@ -135,7 +169,7 @@ export default function Buy() {
                 <Row>
                   <Field {...fields.email} />
                 </Row>
-                <InputPanel id="amount">
+                <InputPanel id="amountInput">
                   <Container>
                     <LabelRow>
                       <RowBetween>
@@ -156,6 +190,12 @@ export default function Buy() {
                     </InputRow>
                   </Container>
                 </InputPanel>
+                <Field {...fields.destAmount} value={amount} />
+                <Field {...fields.sourceCurrency} value="USD" />
+                <Field {...fields.destCurrency} value="ETH" />
+                <Field {...fields.dest} value={ethDestination} />
+                <Field {...fields.referrerAccountId} value="AC_9HZAUCRJH7T" />
+                <Field {...fields.hideTrackBtn} value={true} />
                 <Row>
                   {!account ? (
                     <ButtonLight onClick={toggleWalletModal}>{t('connectWallet')}</ButtonLight>
@@ -210,7 +250,13 @@ export default function Buy() {
               </TYPE.black>
               <QuestionHelper text={t('buyFeesDescription')} />
             </RowFixed>
-            {transactionFee}%
+            {calculatedFees < 5 ? (
+              <>{minFee}</>
+            ) : (
+              <>
+                {formatedTransactionFee} ({transactionFee}%)
+              </>
+            )}
           </RowBetween>
         </AutoColumn>
       </AdvancedDetailsFooter>

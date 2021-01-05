@@ -2,6 +2,9 @@ import React from 'react'
 import styled from 'styled-components'
 import { FieldProps } from '../Field'
 
+import CryptoJS from 'crypto-js'
+import axios from 'axios'
+
 const FormBody = styled.form`
   width: 100%;
   margin: 0;
@@ -23,6 +26,7 @@ export interface Fields {
 
 interface FormProps {
   action: string
+  apiKey?: string
   fields: Fields
   render: () => React.ReactNode
 }
@@ -48,23 +52,14 @@ export interface InterfaceFormContext extends FormState {
 
 export const FormContext = React.createContext<any | undefined>(undefined)
 
-/**
- * Validates whether a field has a value
- * @param {Values} values - All the field values in the form
- * @param {string} fieldName - The field to validate
- * @returns {string} - The error message
- */
 export const required = (values: Values, fieldName: string): string =>
   values[fieldName] === undefined || values[fieldName] === null || values[fieldName] === '' ? 'requiredField' : ''
 
-/**
- * Validates whether a field is a valid email
- * @param {Values} values - All the field values in the form
- * @param {string} fieldName - The field to validate
- * @returns {string} - The error message
- */
 export const isEmail = (values: Values, fieldName: string): string =>
-  values[fieldName] && values[fieldName].search(/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)
+  values[fieldName] === undefined ||
+  values[fieldName] === null ||
+  values[fieldName] === '' ||
+  values[fieldName].search(/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)
     ? 'invalidEmail'
     : ''
 
@@ -100,11 +95,16 @@ export class Form extends React.Component<FormProps, FormState> {
    */
   private handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault()
-
-    console.log(this.state.values)
+    const data = new FormData(e.target as HTMLFormElement)
+    const formData = {}
+    for (const pair of data.entries()) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // @ts-ignore
+      formData[pair[0]] = pair[1] === 'true' ? true : pair[1]
+    }
 
     if (this.validateForm()) {
-      const submitSuccess: boolean = await this.submitForm()
+      const submitSuccess: boolean = await this.submitForm(formData)
       this.setState({ submitSuccess })
     }
   }
@@ -126,9 +126,40 @@ export class Form extends React.Component<FormProps, FormState> {
    * Submits the form to the http api
    * @returns {boolean} - Whether the form submission was successful or not
    */
-  private async submitForm(): Promise<boolean> {
-    // TODO - submit the form
-    return true
+  private async submitForm(formData: any): Promise<boolean> {
+    const sk = 'SK-WFU979BC-4XNRRBQG-THFQ8D3W-ZXD2UY4Z'
+    const details = JSON.stringify(formData)
+    try {
+      const timestamp = new Date().getTime()
+      const url = `${this.props.action}/v3/orders/reserve?timestamp=${timestamp}`
+      const signature = (url: string, data: string) => {
+        const dataToBeSigned = url + data
+        // @ts-ignore
+        const token = CryptoJS.enc.Hex.stringify(CryptoJS.HmacSHA256(dataToBeSigned.toString(CryptoJS.enc.Utf8), sk))
+        return token
+      }
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // @ts-ignore
+      const headers = {}
+      // @ts-ignore
+      headers['Content-Type'] = 'application/json'
+      // @ts-ignore
+      headers['X-Api-Key'] = this.props.apiKey
+      // @ts-ignore
+      headers['X-Api-Signature'] = signature(url, details)
+      const config = {
+        method: 'POST',
+        url: url,
+        headers: headers,
+        data: details
+      }
+      // @ts-ignore
+      const response = await axios(config)
+      console.log(response)
+      return response.data
+    } catch (error) {
+      return false
+    }
   }
 
   private setValues = (values: Values) => {
@@ -160,10 +191,9 @@ export class Form extends React.Component<FormProps, FormState> {
       validate: this.validate
     }
 
-    console.log(context)
     return (
       <FormContext.Provider value={context}>
-        <FormBody onSubmit={this.handleSubmit} noValidate={true}>
+        <FormBody onSubmit={this.handleSubmit} noValidate={true} autoComplete="off">
           <FormContainer>
             {this.props.render()}
             {submitSuccess && (
