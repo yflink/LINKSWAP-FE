@@ -3,10 +3,12 @@ import styled from 'styled-components'
 import { FieldProps } from '../Field'
 
 import CryptoJS from 'crypto-js'
-import axios from 'axios'
 import { WYRE_SK } from '../../connectors'
 import { AlertTriangle } from 'react-feather'
 import { transparentize } from 'polished'
+import { AutoColumn, ColumnCenter } from '../Column'
+import { BlueCard } from '../Card'
+import { TYPE } from '../../theme'
 
 const FormBody = styled.form`
   width: 100%;
@@ -50,6 +52,7 @@ const FormErrorInnerAlertTriangle = styled.div`
   min-width: 48px;
   height: 48px;
 `
+
 function FormError({ error }: { error: string }) {
   return (
     <FormErrorInner>
@@ -192,19 +195,33 @@ export class Form extends React.Component<FormProps, FormState> {
       // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
       headers['X-Api-Signature'] = signature(url, details)
-      const config = {
-        method: 'POST',
-        url: url,
+
+      const response = await fetch(url, {
+        method: 'post',
         headers: headers,
-        data: details
+        body: details
+      })
+      const responseBody: any = await response.json()
+      const errors: Errors = {}
+      if (response.status === 400) {
+        Object.keys(responseBody).map((key: string) => {
+          const fieldName = key.charAt(0).toLowerCase() + key.substring(1)
+          errors[fieldName] = responseBody[key]
+        })
+        this.setState({ errors })
       }
-      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-      // @ts-ignore
-      const response = await axios(config)
-      console.log(response)
-      return response.data
+      if (response.status === 200) {
+        if (responseBody.url) {
+          const win = window.open(responseBody.url, '_blank')
+          // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+          // @ts-ignore
+          win.focus()
+        } else {
+          errors['url'] = 'wrongUrl'
+        }
+      }
+      return true
     } catch (error) {
-      console.log(error)
       return false
     }
   }
@@ -243,11 +260,21 @@ export class Form extends React.Component<FormProps, FormState> {
       <FormContext.Provider value={context}>
         <FormBody onSubmit={this.handleSubmit} noValidate={true} autoComplete="off">
           <FormContainer>
-            {this.props.render()}
-            {submitSuccess && (
-              <div className="alert alert-info" role="alert">
-                The form was successfully submitted!
-              </div>
+            {submitSuccess ? (
+              <AutoColumn gap="20px">
+                <ColumnCenter>
+                  <BlueCard>
+                    <AutoColumn gap="10px">
+                      <TYPE.link fontWeight={600}>Thank You!</TYPE.link>
+                      <TYPE.link fontWeight={400}>
+                        Your Purchase will be handled by Wyre. Please proceed in the openend tab of your browser.
+                      </TYPE.link>
+                    </AutoColumn>
+                  </BlueCard>
+                </ColumnCenter>
+              </AutoColumn>
+            ) : (
+              <>{this.props.render()}</>
             )}
             {submitSuccess === false && !this.haveErrors(errors) && (
               <FormError error="Sorry, an unexpected error has occurred" />

@@ -260,5 +260,9 @@
   "buyFees": "Fees",
   "buyFeesDescription": "The pruchase will be handled by Wyre, who apply a 2.9% fee for domestic (US) purchases. LINKSWAP adds 1% to this fee in order to send it to the treasury.",
   "invalidEmail": "This must be in a valid email format",
-  "requiredField": "This must be populated"
+  "requiredField": "This must be populated",
+  "thankYou": "Thank You!",
+  "purchesProcessByWyre": "Your Purchase will be handled by Wyre. Please proceed in the openend tab of your browser.",
+  "undefinedError": "Sorry, an unexpected error has occurred",
+  "invalidFormError": "Sorry, the form is invalid. Please review, adjust and try again"
 }

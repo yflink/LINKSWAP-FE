@@ -21,7 +21,7 @@ import QuestionHelper from '../../components/QuestionHelper'
 import { useGetPriceBase } from '../../state/price/hooks'
 import { useCurrencyUsdPrice } from '../../hooks/useCurrencyUsdPrice'
 import { useWalletModalToggle } from '../../state/application/hooks'
-import { WYRE_API_KEY } from '../../connectors'
+import { WYRE_API_KEY, WYRE_ID } from '../../connectors'
 
 const InputPanel = styled.div`
   ${({ theme }) => theme.flexColumnNoWrap}
@@ -83,8 +83,9 @@ export default function Buy() {
   )
   const feeFactor = 0.039
   const transactionFee = feeFactor * 100
-  const calculatedFees = showFootermodal ? Number(amount) * priceObject['ethPriceBase'] * feeFactor + 0.3 : 0
-  const calculatedTotal = showFootermodal ? Number(amount) * priceObject['ethPriceBase'] + calculatedFees : 0
+  const usdValue = Number(amount) * priceObject['ethPriceBase']
+  const calculatedFees = showFootermodal ? usdValue * feeFactor + 0.3 : 0
+  const calculatedTotal = showFootermodal ? usdValue + calculatedFees : 0
   const formatedTotal = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(calculatedTotal)
   const formatedTransactionFee = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
     calculatedFees
@@ -118,8 +119,8 @@ export default function Buy() {
       autocomplete: 'email',
       validation: { rule: isEmail }
     },
-    destAmount: {
-      id: 'destAmount',
+    amount: {
+      id: 'amount',
       editor: 'hidden'
     },
     sourceCurrency: {
@@ -140,6 +141,10 @@ export default function Buy() {
     },
     hideTrackBtn: {
       id: 'hideTrackBtn',
+      editor: 'hidden'
+    },
+    country: {
+      id: 'country',
       editor: 'hidden'
     }
   }
@@ -191,11 +196,11 @@ export default function Buy() {
                     </InputRow>
                   </Container>
                 </InputPanel>
-                <Field {...fields.destAmount} value={amount} />
+                <Field {...fields.amount} value={usdValue.toFixed(2)} />
                 <Field {...fields.sourceCurrency} value="USD" />
                 <Field {...fields.destCurrency} value="ETH" />
                 <Field {...fields.dest} value={ethDestination} />
-                <Field {...fields.referrerAccountId} value="AC_9HZAUCRJH7T" />
+                <Field {...fields.referrerAccountId} value={WYRE_ID} />
                 <Field {...fields.hideTrackBtn} value={true} />
                 <Row>
                   {!account ? (

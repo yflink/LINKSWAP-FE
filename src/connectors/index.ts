@@ -13,6 +13,7 @@ const PORTIS_ID = process.env.REACT_APP_PORTIS_ID
 
 export const NETWORK_CHAIN_ID: number = parseInt(process.env.REACT_APP_CHAIN_ID ?? '1')
 
+export const WYRE_ID: string = process.env.REACT_APP_WYRE_ID || ''
 export const WYRE_API_KEY: string = process.env.REACT_APP_WYRE_API_KEY || ''
 export const WYRE_SK: string = process.env.REACT_APP_WYRE_API_SK || ''
 
