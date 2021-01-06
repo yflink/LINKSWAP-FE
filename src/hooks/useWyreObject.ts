@@ -2,7 +2,7 @@ import { useWyreObjectManager } from '../state/price/hooks'
 import { WYRE_API_KEY, WYRE_ID, WYRE_SK, WYRE_URL } from '../connectors'
 import CryptoJS from 'crypto-js'
 
-export function useWyreObject(amount: string, account: any): void {
+export function useWyreObject(amount: string, account: any, currencySymbol: string): void {
   const newPriceResponse = useWyreObjectManager()
 
   const getWyreObject = async () => {
@@ -16,7 +16,7 @@ export function useWyreObject(amount: string, account: any): void {
       const details = {
         amount: amount,
         sourceCurrency: 'USD',
-        destCurrency: 'ETH',
+        destCurrency: currencySymbol,
         dest: 'ethereum:' + account,
         accountId: WYRE_ID,
         country: 'US'

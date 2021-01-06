@@ -23,12 +23,11 @@ const AdvancedDetailsFooter = styled.div<{ show: boolean }>`
   transition: transform 300ms ease-in-out;
 `
 
-export function BuyFooter() {
+export function BuyFooter({ currencySymbol }: { currencySymbol: string }) {
   const { t } = useTranslation()
   const wyreObject = useGetWyreObject()
   const priceObject = Boolean(wyreObject.priceResponse) ? wyreObject.priceResponse : false
   const showFootermodal = priceObject
-  const outputCurrency = priceObject ? priceObject.destCurrency : 'ETH'
   const outputAmount = priceObject ? priceObject.destAmount.toFixed(6).replace(/\.?0*$/, '') : '0'
   const ethPrice = priceObject ? (1 / priceObject.destAmount) * priceObject.sourceAmountWithoutFees : 0
   const convertedEthPrice = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(ethPrice)
@@ -36,7 +35,7 @@ export function BuyFooter() {
   const convertedTransactionFee = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
     transactionFee
   )
-  const networkFee = priceObject ? priceObject.fees.ETH * ethPrice : 0
+  const networkFee = priceObject && priceObject.fees[currencySymbol] ? priceObject.fees[currencySymbol] * ethPrice : 0
   const convertedNetworkFee = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(networkFee)
   const total = priceObject ? priceObject.sourceAmount : 0
   const convertedTotal = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(total)
@@ -47,16 +46,16 @@ export function BuyFooter() {
         <RowBetween>
           <RowFixed>
             <TYPE.black fontSize={14} fontWeight={400}>
-              {t('currentWyreEthPrice')}
+              {t('currentWyrePrice', { currencySymbol: currencySymbol })}
             </TYPE.black>
-            <QuestionHelper text={t('wyrePriceDescription')} />
+            <QuestionHelper text={t('wyrePriceDescription', { currencySymbol: currencySymbol })} />
           </RowFixed>
           {convertedEthPrice}
         </RowBetween>
         <RowBetween>
           <RowFixed>
             <TYPE.black fontSize={14} fontWeight={400}>
-              {t('estimatedCurrencyOutput', { currency: outputCurrency })}
+              {t('estimatedCurrencyOutput', { currencySymbol: currencySymbol })}
             </TYPE.black>
           </RowFixed>
           {outputAmount}
@@ -75,7 +74,7 @@ export function BuyFooter() {
             <TYPE.black fontSize={14} fontWeight={400}>
               {t('networkFee')}
             </TYPE.black>
-            <QuestionHelper text={t('networkFeeDescription')} />
+            <QuestionHelper text={t('networkFeeDescription', { currencySymbol: currencySymbol })} />
           </RowFixed>
           {convertedNetworkFee}
         </RowBetween>

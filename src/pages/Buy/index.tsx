@@ -18,6 +18,10 @@ import { useWalletModalToggle } from '../../state/application/hooks'
 import { WYRE_API_KEY, WYRE_ID, WYRE_URL } from '../../connectors'
 import { useWyreObject } from '../../hooks/useWyreObject'
 import { BuyFooter } from '../../components/Buy/footer'
+import DoubleCurrencyLogo from '../../components/DoubleLogo'
+import CurrencyLogo from '../../components/CurrencyLogo'
+import { ETHER } from '@uniswap/sdk'
+import { WrappedTokenInfo } from '../../state/lists/hooks'
 
 const InputPanel = styled.div`
   ${({ theme }) => theme.flexColumnNoWrap}
@@ -65,14 +69,84 @@ const LimitHint = styled.div`
     }
   }
 `
+const CurrencySelectWrapper = styled.div`
+  display: flex;
+  align-items: space-between;
+  width: 100%;
+`
+
+const CurrencySelect = styled.button<{ selected: boolean; primary?: boolean; left?: boolean; right?: boolean }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  font-size: 20px;
+  font-weight: 500;
+  background-color: ${({ selected, primary, theme }) => {
+    if (selected) {
+      return theme.appCurrencyInputBGActive
+    } else {
+      if (primary) {
+        return theme.appCurrencyInputBG
+      } else {
+        return theme.appCurrencyInputBGActive
+      }
+    }
+  }};
+  color: ${({ selected, theme }) =>
+    selected ? theme.appCurrencyInputTextColorActive : theme.appCurrencyInputTextColor};
+  border-radius: ${({ left, right }) => (left ? '6px 0px 0px 6px' : right ? '0px 6px 6px 0px' : '6px')};
+  box-shadow: ${({ selected }) => (selected ? 'none' : '0px 6px 10px rgba(0, 0, 0, 0.075)')};
+  outline: none;
+  cursor: pointer;
+  user-select: none;
+  border: none;
+  padding: 0 0.5rem;
+  [dir='rtl'] & {
+    border-radius: ${({ left, right }) => (left ? '0px 6px 6px 0px' : right ? '6px 0px 0px 6px' : '6px')};
+  }
+  :focus,
+  :hover {
+    background-color: ${({ selected, primary, theme }) => {
+      if (selected) {
+        return theme.appCurrencyInputBGActive
+      } else {
+        if (primary) {
+          return theme.appCurrencyInputBGHover
+        } else {
+          return theme.appCurrencyInputBGActiveHover
+        }
+      }
+    }};
+  }
+`
+
+const StyledTokenName = styled.div<{ active?: boolean }>`
+  margin: 0 0.25rem 0 0.75rem;
+  font-size: ${({ active }) => (active ? '20px' : '20px')};
+`
 
 export default function Buy() {
+  const ETH = ETHER
+  const LINK = new WrappedTokenInfo(
+    {
+      address: '0x514910771af9ca656af840dff83e8264ecf986ca',
+      chainId: 1,
+      name: 'ChainLink',
+      symbol: 'LINK',
+      decimals: 18,
+      logoURI: 'https://logos.linkswap.app/0x514910771af9ca656af840dff83e8264ecf986ca.png'
+    },
+    []
+  )
   const theme = useContext(ThemeContext)
   const { account } = useActiveWeb3React()
   const [amount, setAmount] = useState('')
+  const [currency, setCurrency] = useState('Ethereum')
+  const [currencySymbol, setCurrencySymbol] = useState('ETH')
   const ethDestination = account ? 'ethereum:' + account : ''
   const { t } = useTranslation()
-  useWyreObject(amount, account)
+  useWyreObject(amount, account, currencySymbol)
   const toggleWalletModal = useWalletModalToggle()
   const disableBuy = amount === '' || amount === '0.00'
   const showLimitHint = amount !== '' && amount !== '0.00' && Number(amount) > 500
@@ -136,11 +210,43 @@ export default function Buy() {
       </Card>
       <AppBody>
         <AutoColumn gap="lg" justify="center">
+          <RowBetween>
+            <CurrencySelectWrapper>
+              <CurrencySelect
+                style={{ width: '100%' }}
+                selected={currencySymbol === 'ETH'}
+                primary
+                left
+                className="open-currency-select-button"
+                onClick={() => {
+                  setCurrency('Ethereum')
+                  setCurrencySymbol('ETH')
+                }}
+              >
+                <CurrencyLogo currency={ETH} size={'24px'} position="button" />
+                <StyledTokenName className="pair-name-container">{ETH.symbol}</StyledTokenName>
+              </CurrencySelect>
+              <CurrencySelect
+                style={{ width: '100%' }}
+                selected={currencySymbol !== 'ETH'}
+                primary
+                right
+                className="open-currency-select-button"
+                onClick={() => {
+                  setCurrency('Chainlink')
+                  setCurrencySymbol('LINK')
+                }}
+              >
+                <CurrencyLogo currency={LINK} size={'24px'} position="button" />
+                <StyledTokenName className="pair-name-container">{LINK.symbol}</StyledTokenName>
+              </CurrencySelect>
+            </CurrencySelectWrapper>
+          </RowBetween>
           <RowBetween padding={'0 8px'}>
             <Text color={theme.textPrimary} fontWeight={500}>
-              {t('buyEthereum')}
+              {t('buyCurrency', { currency: currency })}
             </Text>
-            <Question text={t('buyEthereumDescription')} />
+            <Question text={t('buyCurrencyDescription', { currency: currency, currencySymbol: currencySymbol })} />
           </RowBetween>
           <Form
             action={WYRE_URL}
@@ -195,7 +301,7 @@ export default function Buy() {
                 )}
                 <Field {...fields.amount} value={amount} />
                 <Field {...fields.sourceCurrency} value="USD" />
-                <Field {...fields.destCurrency} value="ETH" />
+                <Field {...fields.destCurrency} value={currencySymbol} />
                 <Field {...fields.dest} value={ethDestination} />
                 <Field {...fields.referrerAccountId} value={WYRE_ID} />
                 <Field {...fields.hideTrackBtn} value={true} />
@@ -205,7 +311,7 @@ export default function Buy() {
                   ) : (
                     <ButtonPrimary disabled={Boolean(disableBuy)} id="submit" style={{ padding: 16 }}>
                       <Text fontWeight={500} fontSize={20}>
-                        {t('buyEthereum')}
+                        {t('buyCurrency', { currency: currency })}
                       </Text>
                     </ButtonPrimary>
                   )}
@@ -216,7 +322,7 @@ export default function Buy() {
                     style={{ padding: '12px 0', fontSize: '12px' }}
                     textAlign="center"
                   >
-                    {t('walletConnectDisclaimer')}
+                    {t('walletConnectDisclaimer', { currency: currency, currencySymbol: currencySymbol })}
                   </TYPE.body>
                 )}
                 <RowBetween>
@@ -229,7 +335,7 @@ export default function Buy() {
           />
         </AutoColumn>
       </AppBody>
-      <BuyFooter />
+      <BuyFooter currencySymbol={currencySymbol} />
     </>
   )
 }
