@@ -4,11 +4,8 @@ import { FieldProps } from '../Field'
 
 import CryptoJS from 'crypto-js'
 import { WYRE_SK } from '../../connectors'
-import { AlertTriangle } from 'react-feather'
-import { transparentize } from 'polished'
-import { AutoColumn, ColumnCenter } from '../Column'
-import { BlueCard } from '../Card'
-import { TYPE } from '../../theme'
+import { FormSuccess } from './success'
+import { FormError } from './error'
 
 const FormBody = styled.form`
   width: 100%;
@@ -24,45 +21,6 @@ const FormContainer = styled.div`
   flex: 0 0 100%;
   flex-wrap: wrap;
 `
-
-const FormErrorInner = styled.div`
-  background-color: ${({ theme }) => transparentize(0.9, theme.red1)};
-  border-radius: 1rem;
-  display: flex;
-  align-items: center;
-  font-size: 0.825rem;
-  width: 100%;
-  padding: 3rem 1.25rem 1rem 1rem;
-  margin-top: -2rem;
-  color: ${({ theme }) => theme.red1};
-  p {
-    padding: 0;
-    margin: 0;
-    font-weight: 500;
-  }
-`
-
-const FormErrorInnerAlertTriangle = styled.div`
-  background-color: ${({ theme }) => transparentize(0.9, theme.red1)};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-inline-end: 12px;
-  border-radius: 6px;
-  min-width: 48px;
-  height: 48px;
-`
-
-function FormError({ error }: { error: string }) {
-  return (
-    <FormErrorInner>
-      <FormErrorInnerAlertTriangle>
-        <AlertTriangle size={24} />
-      </FormErrorInnerAlertTriangle>
-      <p>{error}</p>
-    </FormErrorInner>
-  )
-}
 
 export interface Fields {
   [key: string]: FieldProps
@@ -260,28 +218,9 @@ export class Form extends React.Component<FormProps, FormState> {
       <FormContext.Provider value={context}>
         <FormBody onSubmit={this.handleSubmit} noValidate={true} autoComplete="off">
           <FormContainer>
-            {submitSuccess ? (
-              <AutoColumn gap="20px">
-                <ColumnCenter>
-                  <BlueCard>
-                    <AutoColumn gap="10px">
-                      <TYPE.link fontWeight={600}>Thank You!</TYPE.link>
-                      <TYPE.link fontWeight={400}>
-                        Your Purchase will be handled by Wyre. Please proceed in the openend tab of your browser.
-                      </TYPE.link>
-                    </AutoColumn>
-                  </BlueCard>
-                </ColumnCenter>
-              </AutoColumn>
-            ) : (
-              <>{this.props.render()}</>
-            )}
-            {submitSuccess === false && !this.haveErrors(errors) && (
-              <FormError error="Sorry, an unexpected error has occurred" />
-            )}
-            {submitSuccess === false && this.haveErrors(errors) && (
-              <FormError error="Sorry, the form is invalid. Please review, adjust and try again" />
-            )}
+            {submitSuccess ? <FormSuccess /> : <>{this.props.render()}</>}
+            {submitSuccess === false && !this.haveErrors(errors) && <FormError error="undefinedError" />}
+            {submitSuccess === false && this.haveErrors(errors) && <FormError error="invalidFormError" />}
           </FormContainer>
         </FormBody>
       </FormContext.Provider>

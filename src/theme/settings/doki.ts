@@ -105,7 +105,7 @@ export function dokiDokiTheme() {
 
     //Modal
     modalBG: modalBG,
-    modalBorder: appBG,
+    modalBorder: mainButtonColorHover,
     modalSecondaryBG: appBG,
     modalLines: mainButtonColor,
     modalButtonBG: mainButtonColor,

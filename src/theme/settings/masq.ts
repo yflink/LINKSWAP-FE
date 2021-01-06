@@ -13,15 +13,15 @@ export function masqTheme() {
   const buttonBGHover = '#6526c1'
   const buttonSecondaryBG = '#260e4e'
   const modalBG = '#191426'
-  const infoText = '#0b090f'
+  const infoText = '#6526c1'
   const infoBGHover = '#1b0a38'
   const highLights = '#d68e20'
 
   return {
     //App
     appBGColor: appBG,
-    appInfoBoxBG: mainColor,
-    appInfoBoxTextColor: infoText,
+    appInfoBoxBG: buttonSecondaryBG,
+    appInfoBoxTextColor: mainTextColor,
     appBoxBG: inputBGColor,
     appBoxBorder: '#373f49',
     appBoxHoverBG: '#373f49',
@@ -63,15 +63,15 @@ export function masqTheme() {
     buttonSelectTextColorActive: mainTextColor,
     buttonSelectBGActiveHover: mainColor,
     buttonSelectTextColorActiveHover: mainTextColor,
-    buttonSecondaryBG: mainColor,
+    buttonSecondaryBG: buttonSecondaryBG,
     buttonSecondaryBorder: transparent,
-    buttonSecondaryTextColor: infoText,
+    buttonSecondaryTextColor: mainTextColor,
     buttonSecondaryBGActive: mainColor,
     buttonSecondaryBorderActive: mainColor,
-    buttonSecondaryTextColorActive: infoText,
+    buttonSecondaryTextColorActive: mainTextColor,
     buttonSecondaryBGHover: mainColorHover,
     buttonSecondaryBorderHover: mainColorHover,
-    buttonSecondaryTextColorHover: infoText,
+    buttonSecondaryTextColorHover: mainTextColorHover,
     buttonOutlinedBorder: mainColor,
     buttonOutlinedTextColor: mainTextColor,
     buttonOutlinedBorderHover: mainColorHover,

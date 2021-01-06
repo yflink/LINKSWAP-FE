@@ -8,9 +8,9 @@ import { AutoColumn } from '../../components/Column'
 
 import { useActiveWeb3React } from '../../hooks'
 import AppBody from '../AppBody'
-import { useTranslation } from 'react-i18next'
+import { useTranslation, Trans } from 'react-i18next'
 import Row, { RowBetween, RowFixed } from '../../components/Row'
-import { Text } from 'rebass'
+import { Link, Text } from 'rebass'
 import Question from '../../components/QuestionHelper'
 import { Form, Fields, required, isEmail, Errors } from '../../components/Form'
 import { Field } from '../../components/Field'
@@ -54,6 +54,21 @@ const Container = styled.div`
   margin: 0 0 12px;
 `
 
+const LimitHint = styled.div`
+  width: 100%;
+  padding: 0 0 12px;
+
+  a {
+    color: ${({ theme }) => theme.textHighlight};
+    text-decoration: none;
+
+    :hover,
+    :focus {
+      text-decoration: underline;
+    }
+  }
+`
+
 export default function Buy() {
   const theme = useContext(ThemeContext)
   const { account } = useActiveWeb3React()
@@ -63,6 +78,7 @@ export default function Buy() {
   useWyreObject(amount, account)
   const toggleWalletModal = useWalletModalToggle()
   const disableBuy = amount === '' || amount === '0.00'
+  const showLimitHint = amount !== '' && amount !== '0.00' && Number(amount) > 500
 
   const fields: Fields = {
     firstName: {
@@ -164,6 +180,22 @@ export default function Buy() {
                     </InputRow>
                   </Container>
                 </InputPanel>
+                {showLimitHint && (
+                  <LimitHint>
+                    <TYPE.body color={theme.textSecondary} fontWeight={400} fontSize={14}>
+                      <Trans i18nKey="limitHint">
+                        Your purchase might exceed the
+                        <Link
+                          href="https://support.sendwyre.com/en/articles/4457158-card-processing-faqs"
+                          target="_blank"
+                        >
+                          weekly purchase limit
+                        </Link>
+                        of Wyre
+                      </Trans>
+                    </TYPE.body>
+                  </LimitHint>
+                )}
                 <Field {...fields.amount} value={amount} />
                 <Field {...fields.sourceCurrency} value="USD" />
                 <Field {...fields.destCurrency} value="ETH" />
@@ -190,6 +222,11 @@ export default function Buy() {
                     {t('walletConnectDisclaimer')}
                   </TYPE.body>
                 )}
+                <RowBetween>
+                  <TYPE.body color={theme.appInfoBoxTextColor} style={{ padding: '12px', fontSize: '12px' }}>
+                    {t('gdprDisclaimer')}
+                  </TYPE.body>
+                </RowBetween>
               </React.Fragment>
             )}
           />

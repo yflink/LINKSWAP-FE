@@ -35,7 +35,7 @@ const Arrow = styled.div`
     z-index: 9998;
 
     content: '';
-    border: 1px solid ${({ theme }) => theme.headerButtonBG};
+    border: 1px solid ${({ theme }) => theme.modalBorder};
     transform: rotate(45deg);
     background: ${({ theme }) => theme.modalSecondaryBG};
   }
