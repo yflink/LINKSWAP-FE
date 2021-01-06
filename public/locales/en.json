@@ -252,10 +252,10 @@
   "lastName": "Last name",
   "firstName": "First name",
   "email": "E-Mail-Address",
-  "amountOfEth": "ETH Amount",
+  "amountOfUSD": "USD",
   "buyTotal": "Total",
   "buyTotalDescription": "Estimated price of your buy, based on current ETH price without transaction fee",
-  "currentEthPrice": "Current price for 1 ETH",
+  "currentWyreEthPrice": "Wyre price for 1 ETH",
   "walletConnectDisclaimer": "To purchase Ethereum (ETH), you need to connect a web3 wallet such as Meta Mask, Trust Wallet or Coinbase Wallet. This wallet will be used to send the bought ETH to.",
   "buyFees": "Fees",
   "buyFeesDescription": "The pruchase will be handled by Wyre, who apply a 2.9% fee for domestic (US) purchases. LINKSWAP adds 1% to this fee in order to send it to the treasury.",
@@ -264,5 +264,6 @@
   "thankYou": "Thank You!",
   "purchesProcessByWyre": "Your Purchase will be handled by Wyre. Please proceed in the openend tab of your browser.",
   "undefinedError": "Sorry, an unexpected error has occurred",
-  "invalidFormError": "Sorry, the form is invalid. Please review, adjust and try again"
+  "invalidFormError": "Sorry, the form is invalid. Please review, adjust and try again",
+  "estimatedCurrencyOutput": "Estimated {{currency}} amount"
 }

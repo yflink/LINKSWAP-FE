@@ -12,16 +12,15 @@ import { useTranslation } from 'react-i18next'
 import Row, { RowBetween, RowFixed } from '../../components/Row'
 import { Text } from 'rebass'
 import Question from '../../components/QuestionHelper'
-import { Form, Fields, required, isEmail } from '../../components/Form'
+import { Form, Fields, required, isEmail, Errors } from '../../components/Form'
 import { Field } from '../../components/Field'
 import { ButtonLight, ButtonPrimary } from '../../components/Button'
 import { Input as NumericalInput } from '../../components/NumericalInput'
 import { TYPE } from '../../theme'
-import QuestionHelper from '../../components/QuestionHelper'
-import { useGetPriceBase } from '../../state/price/hooks'
-import { useCurrencyUsdPrice } from '../../hooks/useCurrencyUsdPrice'
 import { useWalletModalToggle } from '../../state/application/hooks'
-import { WYRE_API_KEY, WYRE_ID } from '../../connectors'
+import { WYRE_API_KEY, WYRE_ID, WYRE_SK, WYRE_URL } from '../../connectors'
+import { useWyreObject } from '../../hooks/useWyreObject'
+import { BuyFooter } from '../../components/Buy/footer'
 
 const InputPanel = styled.div`
   ${({ theme }) => theme.flexColumnNoWrap}
@@ -55,47 +54,15 @@ const Container = styled.div`
   margin: 0 0 12px;
 `
 
-const AdvancedDetailsFooter = styled.div<{ show: boolean }>`
-  padding-top: calc(16px + 2rem);
-  padding-bottom: 20px;
-  margin-top: -2rem;
-  width: 100%;
-  max-width: 400px;
-  border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px;
-  color: ${({ theme }) => theme.textSecondary};
-  background-color: ${({ theme }) => theme.modalFooterBG};
-  z-index: -1;
-
-  transform: ${({ show }) => (show ? 'translateY(0%)' : 'translateY(-100%)')};
-  transition: transform 300ms ease-in-out;
-`
-
 export default function Buy() {
   const theme = useContext(ThemeContext)
   const { account } = useActiveWeb3React()
-  const [amount, setAmount] = useState('0.0')
-  const { t } = useTranslation()
-  const showFootermodal = amount !== '' && amount !== '0.0'
-  const priceObject = useGetPriceBase()
-  const formatedUsdPrice = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
-    priceObject['ethPriceBase']
-  )
-  const feeFactor = 0.039
-  const transactionFee = feeFactor * 100
-  const usdValue = Number(amount) * priceObject['ethPriceBase']
-  const calculatedFees = showFootermodal ? usdValue * feeFactor + 0.3 : 0
-  const calculatedTotal = showFootermodal ? usdValue + calculatedFees : 0
-  const formatedTotal = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(calculatedTotal)
-  const formatedTransactionFee = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
-    calculatedFees
-  )
-  const minFee = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(5)
-  const toggleWalletModal = useWalletModalToggle()
-  const disableBuy = amount === '' || amount === '0.0'
-
+  const [amount, setAmount] = useState('')
   const ethDestination = account ? 'ethereum:' + account : ''
-  useCurrencyUsdPrice()
+  const { t } = useTranslation()
+  useWyreObject(amount, account)
+  const toggleWalletModal = useWalletModalToggle()
+  const disableBuy = amount === '' || amount === '0.00'
 
   const fields: Fields = {
     firstName: {
@@ -163,7 +130,7 @@ export default function Buy() {
             <Question text={t('buyEthereumDescription')} />
           </RowBetween>
           <Form
-            action="https://api.testwyre.com"
+            action={WYRE_URL}
             apiKey={WYRE_API_KEY}
             fields={fields}
             render={() => (
@@ -180,7 +147,7 @@ export default function Buy() {
                     <LabelRow>
                       <RowBetween>
                         <TYPE.body color={theme.textTertiary} fontWeight={500} fontSize={14}>
-                          {t('amountOfEth')}
+                          {t('amountOfUSD')}
                         </TYPE.body>
                       </RowBetween>
                     </LabelRow>
@@ -189,6 +156,7 @@ export default function Buy() {
                         <NumericalInput
                           style={{ backgroundColor: theme.appBoxBG, padding: '16px' }}
                           className="token-amount-input"
+                          placeholder="0.00"
                           value={amount}
                           onUserInput={val => setAmount(val)}
                         />
@@ -196,7 +164,7 @@ export default function Buy() {
                     </InputRow>
                   </Container>
                 </InputPanel>
-                <Field {...fields.amount} value={usdValue.toFixed(2)} />
+                <Field {...fields.amount} value={amount} />
                 <Field {...fields.sourceCurrency} value="USD" />
                 <Field {...fields.destCurrency} value="ETH" />
                 <Field {...fields.dest} value={ethDestination} />
@@ -227,45 +195,7 @@ export default function Buy() {
           />
         </AutoColumn>
       </AppBody>
-      <AdvancedDetailsFooter show={showFootermodal}>
-        <AutoColumn gap="md" style={{ padding: '0 24px' }}>
-          <RowBetween>
-            <RowFixed>
-              <TYPE.black fontSize={16} fontWeight={600}>
-                {t('buyTotal')}
-              </TYPE.black>
-              <QuestionHelper text={t('buyTotalDescription')} />
-            </RowFixed>
-            <TYPE.black fontSize={16} fontWeight={600}>
-              ~{formatedTotal}
-            </TYPE.black>
-          </RowBetween>
-          <RowBetween>
-            <RowFixed>
-              <TYPE.black fontSize={14} fontWeight={400}>
-                {t('currentEthPrice')}
-              </TYPE.black>
-              <QuestionHelper text={t('priceDescription')} />
-            </RowFixed>
-            {formatedUsdPrice}
-          </RowBetween>
-          <RowBetween>
-            <RowFixed>
-              <TYPE.black fontSize={14} fontWeight={400}>
-                {t('buyFees')}
-              </TYPE.black>
-              <QuestionHelper text={t('buyFeesDescription')} />
-            </RowFixed>
-            {calculatedFees < 5 ? (
-              <>{minFee}</>
-            ) : (
-              <>
-                {formatedTransactionFee} ({transactionFee}%)
-              </>
-            )}
-          </RowBetween>
-        </AutoColumn>
-      </AdvancedDetailsFooter>
+      <BuyFooter />
     </>
   )
 }
