@@ -27,16 +27,18 @@ export function BuyFooter() {
   const { t } = useTranslation()
   const wyreObject = useGetWyreObject()
   const priceObject = Boolean(wyreObject.priceResponse) ? wyreObject.priceResponse : false
-
-  console.log(priceObject)
   const showFootermodal = priceObject
   const outputCurrency = priceObject ? priceObject.destCurrency : 'ETH'
   const outputAmount = priceObject ? priceObject.destAmount.toFixed(6).replace(/\.?0*$/, '') : '0'
-  const ethPrice = priceObject ? priceObject.sourceAmount / priceObject.destAmount : 0
+  const ethPrice = priceObject ? (1 / priceObject.destAmount) * priceObject.sourceAmountWithoutFees : 0
   const convertedEthPrice = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(ethPrice)
-  const fees = priceObject ? priceObject.fees.USD : 0
-  const convertedFees = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(fees)
-  const total = priceObject ? priceObject.sourceAmount + fees : 0
+  const transactionFee = priceObject ? priceObject.fees.USD : 0
+  const convertedTransactionFee = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
+    transactionFee
+  )
+  const networkFee = priceObject ? priceObject.fees.ETH * ethPrice : 0
+  const convertedNetworkFee = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(networkFee)
+  const total = priceObject ? priceObject.sourceAmount : 0
   const convertedTotal = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(total)
 
   return (
@@ -62,11 +64,20 @@ export function BuyFooter() {
         <RowBetween>
           <RowFixed>
             <TYPE.black fontSize={14} fontWeight={400}>
-              {t('buyFees')}
+              {t('transactionFee')}
             </TYPE.black>
-            <QuestionHelper text={t('buyFeesDescription')} />
+            <QuestionHelper text={t('transactionFeeDescription')} />
           </RowFixed>
-          {convertedFees}
+          {convertedTransactionFee}
+        </RowBetween>
+        <RowBetween>
+          <RowFixed>
+            <TYPE.black fontSize={14} fontWeight={400}>
+              {t('networkFee')}
+            </TYPE.black>
+            <QuestionHelper text={t('networkFeeDescription')} />
+          </RowFixed>
+          {convertedNetworkFee}
         </RowBetween>
         <RowBetween>
           <RowFixed>

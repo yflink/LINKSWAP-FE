@@ -6,31 +6,6 @@ export function useWyreObject(amount: string, account: any): void {
   const newPriceResponse = useWyreObjectManager()
 
   const getWyreObject = async () => {
-    const fakeObject = {
-      sourceCurrency: 'USD',
-      sourceAmount: 5.95,
-      destCurrency: 'ETH',
-      destAmount: 0.009880239520958084,
-      exchangeRate: 0.001976047904191616838,
-      equivalencies: {
-        CAD: 4.95,
-        USDC: 0.00992,
-        BTC: 0.00040198,
-        ETH: 0.009880239520958084,
-        GBP: 4.95,
-        DAI: 4.154151233875968493,
-        AUD: 3.87,
-        EUR: 4.95,
-        WETH: 0.009880239520958084,
-        USD: 4.95,
-        MXN: 4.95
-      },
-      fees: {
-        ETH: 0.001,
-        USD: 0.45
-      }
-    }
-
     let returnValue: any
 
     try {
@@ -66,7 +41,7 @@ export function useWyreObject(amount: string, account: any): void {
       headers['X-Api-Key'] = WYRE_API_KEY
       // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
-      headers['X-Api-Signature'] = signature(url, details)
+      headers['X-Api-Signature'] = signature(url, JSON.stringify(details))
       const response = await fetch(url, {
         method: 'post',
         headers: headers,
@@ -79,16 +54,15 @@ export function useWyreObject(amount: string, account: any): void {
         priceObject[fieldName] = responseBody[key]
       })
       if (response.status !== 200) {
-        console.log('error', priceObject)
-        returnValue = fakeObject
+        returnValue = false
       } else {
         returnValue = priceObject
       }
+      return returnValue
     } catch (error) {
-      returnValue = fakeObject
+      return false
     } finally {
-      const finalReturn = returnValue
-      return finalReturn
+      //console.log('fetch complete')
     }
   }
 
