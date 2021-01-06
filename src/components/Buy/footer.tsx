@@ -8,9 +8,7 @@ import { useTranslation } from 'react-i18next'
 import { useGetWyreObject } from '../../state/price/hooks'
 
 const AdvancedDetailsFooter = styled.div<{ show: boolean }>`
-  padding-top: calc(16px + 2rem);
-  padding-bottom: 20px;
-  margin-top: -2rem;
+  padding: 20px 0;
   width: 100%;
   max-width: 400px;
   border-bottom-left-radius: 20px;
@@ -18,7 +16,7 @@ const AdvancedDetailsFooter = styled.div<{ show: boolean }>`
   color: ${({ theme }) => theme.textSecondary};
   background-color: ${({ theme }) => theme.modalFooterBG};
   z-index: -1;
-
+  display: ${({ show }) => (show ? 'block' : 'none')};
   transform: ${({ show }) => (show ? 'translateY(0%)' : 'translateY(-100%)')};
   transition: transform 300ms ease-in-out;
 `
