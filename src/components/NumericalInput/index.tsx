@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { escapeRegExp } from '../../utils'
 
@@ -51,10 +51,22 @@ export const Input = React.memo(function InnerInput({
   fontSize?: string
   align?: 'right' | 'left'
 } & Omit<React.HTMLProps<HTMLInputElement>, 'ref' | 'onChange' | 'onBlur' | 'as'>) {
+  const [typingTimeout, setTypingTimeout] = useState(0)
+
   const enforcer = (nextUserInput: string) => {
-    if (nextUserInput === '' || inputRegex.test(escapeRegExp(nextUserInput))) {
-      onUserInput(nextUserInput)
+    if (typingTimeout !== 0) {
+      clearTimeout(typingTimeout)
     }
+
+    setTypingTimeout(
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // @ts-ignore
+      setTimeout(function() {
+        if (nextUserInput === '' || inputRegex.test(escapeRegExp(nextUserInput))) {
+          onUserInput(nextUserInput)
+        }
+      }, 100)
+    )
   }
 
   return (

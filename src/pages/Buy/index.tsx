@@ -216,14 +216,14 @@ export default function Buy() {
                 {!account && (
                   <TYPE.body
                     color={theme.appInfoBoxTextColor}
-                    style={{ padding: '12px', fontSize: '12px' }}
+                    style={{ padding: '12px 0', fontSize: '12px' }}
                     textAlign="center"
                   >
                     {t('walletConnectDisclaimer')}
                   </TYPE.body>
                 )}
                 <RowBetween>
-                  <TYPE.body color={theme.appInfoBoxTextColor} style={{ padding: '12px', fontSize: '12px' }}>
+                  <TYPE.body color={theme.appInfoBoxTextColor} style={{ padding: '12px 0 0', fontSize: '12px' }}>
                     {t('gdprDisclaimer')}
                   </TYPE.body>
                 </RowBetween>
