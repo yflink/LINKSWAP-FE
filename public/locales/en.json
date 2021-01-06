@@ -251,7 +251,7 @@
   "buyEthereumDescription": "You can purchase Ethererum via Wyre here.",
   "lastName": "Last name",
   "firstName": "First name",
-  "email": "E-Mail-Address",
+  "email": "E Mail Address",
   "amountOfUSD": "USD",
   "buyTotal": "Total",
   "buyTotalDescription": "Estimated total. This can differ to what is displayed on the Wyre Checkout and is just an estimate.",
@@ -271,5 +271,5 @@
   "estimatedCurrencyOutput": "Estimated {{currency}} amount",
   "startSwapping": "Start swapping",
   "limitHint":"Your purchase might exceed the <1>weekly purchase limit</1> of Wyre",
-  "gdprDisclaimer": "Note - information is shared only between you and Wyre. YF Link NEVER collects or even has access to personal information."
+  "gdprDisclaimer": "Note: YF Link does not store any user information. Data is only shared between you and Wyre."
 }

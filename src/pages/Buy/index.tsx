@@ -1,24 +1,21 @@
 import React, { useContext, useState } from 'react'
 import styled, { ThemeContext } from 'styled-components'
 import { SwapPoolTabs } from '../../components/NavigationTabs'
-
 import Card from '../../components/Card'
-
 import { AutoColumn } from '../../components/Column'
-
 import { useActiveWeb3React } from '../../hooks'
 import AppBody from '../AppBody'
 import { useTranslation, Trans } from 'react-i18next'
-import Row, { RowBetween, RowFixed } from '../../components/Row'
+import Row, { RowBetween } from '../../components/Row'
 import { Link, Text } from 'rebass'
 import Question from '../../components/QuestionHelper'
-import { Form, Fields, required, isEmail, Errors } from '../../components/Form'
+import { Form, Fields, required, isEmail } from '../../components/Form'
 import { Field } from '../../components/Field'
 import { ButtonLight, ButtonPrimary } from '../../components/Button'
 import { Input as NumericalInput } from '../../components/NumericalInput'
 import { TYPE } from '../../theme'
 import { useWalletModalToggle } from '../../state/application/hooks'
-import { WYRE_API_KEY, WYRE_ID, WYRE_SK, WYRE_URL } from '../../connectors'
+import { WYRE_API_KEY, WYRE_ID, WYRE_URL } from '../../connectors'
 import { useWyreObject } from '../../hooks/useWyreObject'
 import { BuyFooter } from '../../components/Buy/footer'
 

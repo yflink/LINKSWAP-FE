@@ -49,7 +49,8 @@ export function useWyreObject(amount: string, account: any): void {
       })
       const responseBody: any = await response.json()
       const priceObject: any = {}
-      Object.keys(responseBody).map((key: string) => {
+
+      Object.keys(responseBody).forEach(function(key: string) {
         const fieldName = key.charAt(0).toLowerCase() + key.substring(1)
         priceObject[fieldName] = responseBody[key]
       })

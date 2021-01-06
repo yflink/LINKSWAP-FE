@@ -83,7 +83,7 @@ export class Form extends React.Component<FormProps, FormState> {
    */
   private haveErrors(errors: Errors) {
     let haveError = false
-    Object.keys(errors).map((key: string) => {
+    Object.keys(errors).forEach(function(key: string) {
       if (errors[key].length > 0) {
         haveError = true
       }
@@ -117,8 +117,9 @@ export class Form extends React.Component<FormProps, FormState> {
    */
   private validateForm(): boolean {
     const errors: Errors = {}
-    Object.keys(this.props.fields).map((fieldName: string) => {
-      errors[fieldName] = this.validate(fieldName)
+    const validate = this.validate
+    Object.keys(this.props.fields).forEach(function(fieldName: string) {
+      errors[fieldName] = validate(fieldName)
     })
     this.setState({ errors })
     return !this.haveErrors(errors)
@@ -162,7 +163,7 @@ export class Form extends React.Component<FormProps, FormState> {
       const responseBody: any = await response.json()
       const errors: Errors = {}
       if (response.status === 400) {
-        Object.keys(responseBody).map((key: string) => {
+        Object.keys(responseBody).forEach(function(key: string) {
           const fieldName = key.charAt(0).toLowerCase() + key.substring(1)
           errors[fieldName] = responseBody[key]
         })
