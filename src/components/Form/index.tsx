@@ -162,14 +162,13 @@ export class Form extends React.Component<FormProps, FormState> {
       })
       const responseBody: any = await response.json()
       const errors: Errors = {}
-      if (response.status === 400) {
+      if (response.status !== 200) {
         Object.keys(responseBody).forEach(function(key: string) {
           const fieldName = key.charAt(0).toLowerCase() + key.substring(1)
           errors[fieldName] = responseBody[key]
         })
         this.setState({ errors })
-      }
-      if (response.status === 200) {
+      } else {
         if (responseBody.url) {
           const win = window.open(responseBody.url, '_blank')
           // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
