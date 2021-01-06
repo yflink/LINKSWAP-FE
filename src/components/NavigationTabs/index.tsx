@@ -9,7 +9,7 @@ import QuestionHelper from '../QuestionHelper'
 import swap from '../../assets/svg/swap.svg'
 import pool from '../../assets/svg/pool.svg'
 import create from '../../assets/svg/create.svg'
-import buy from '../../assets/svg/buy.svg'
+import analyze from '../../assets/svg/analyze.svg'
 import { useTranslation } from 'react-i18next'
 
 const Tabs = styled.div`
@@ -69,7 +69,7 @@ const StyledArrowLeft = styled(ArrowLeft)`
   color: ${({ theme }) => theme.textPrimary};
 `
 
-export function SwapPoolTabs({ active }: { active: 'swap' | 'pool' | 'create' | 'buy' }) {
+export function SwapPoolTabs({ active }: { active: 'swap' | 'pool' | 'create' | 'analyze' }) {
   return (
     <Tabs>
       <StyledNavLink id={`swap-nav-link`} to={'/swap'} isActive={() => active === 'swap'}>
