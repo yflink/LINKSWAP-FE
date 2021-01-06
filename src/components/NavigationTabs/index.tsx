@@ -81,9 +81,9 @@ export function SwapPoolTabs({ active }: { active: 'swap' | 'pool' | 'create' | 
       <StyledNavLink id={`pool-nav-link`} to={'/create'} isActive={() => active === 'create'}>
         <Icon src={create} />
       </StyledNavLink>
-      <StyledNavLink id={`pool-nav-link`} to={'/buy'} isActive={() => active === 'buy'}>
-        <Icon src={buy} />
-      </StyledNavLink>
+      <StyledLink id={`pool-nav-link`} href={'https://info.linkswap.app/home'} target="_blank">
+        <IconDisabled src={analyze} />
+      </StyledLink>
     </Tabs>
   )
 }
