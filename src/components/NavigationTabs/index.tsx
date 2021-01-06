@@ -104,7 +104,7 @@ const StyledArrowLeft = styled(ArrowLeft)`
   color: ${({ theme }) => theme.textPrimary};
 `
 
-export function SwapPoolTabs({ active }: { active: 'swap' | 'pool' | 'create' | 'analyze' }) {
+export function SwapPoolTabs({ active }: { active: 'swap' | 'pool' | 'create' | 'analyze' | 'buy' }) {
   return (
     <Tabs>
       <StyledNavLink id={`swap-nav-link`} to={'/swap'} isActive={() => active === 'swap'}>
