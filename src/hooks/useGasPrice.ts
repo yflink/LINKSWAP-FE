@@ -35,19 +35,21 @@ export function useGasPrices(): any {
             }
           } else {
             setFetching(false)
-            return { gasObject }
+            return false
           }
         } catch (e) {
-          return { gasObject }
+          return false
         } finally {
           //console.log('fetched price')
         }
       } else {
-        return { gasObject }
+        return false
       }
     }
     getGasPrices({ fetching: fetching }).then(result => {
-      newGasPrices(result.gasLow, result.gasAverage, result.gasHigh)
+      if (result) {
+        newGasPrices(result.gasLow, result.gasAverage, result.gasHigh)
+      }
     })
   } else {
     return false

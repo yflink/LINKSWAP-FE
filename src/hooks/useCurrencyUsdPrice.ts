@@ -30,19 +30,21 @@ export function useCurrencyUsdPrice(): any {
             return content['data']['bundles'][0]
           } else {
             setFetching(false)
-            return currentPriceBase
+            return false
           }
         } catch (e) {
-          return currentPriceBase
+          return false
         } finally {
           //console.log('fetched price')
         }
       } else {
-        return { currentPriceBase }
+        return false
       }
     }
     getPrice({ fetching: fetching }).then(priceBase => {
-      newPriceBase(priceBase['ethPrice'], priceBase['linkPrice'])
+      if (priceBase) {
+        newPriceBase(priceBase['ethPrice'], priceBase['linkPrice'])
+      }
     })
   } else {
     return false

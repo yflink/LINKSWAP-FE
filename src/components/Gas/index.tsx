@@ -1,5 +1,5 @@
-import React, { useRef, useState } from 'react'
-import styled from 'styled-components'
+import React, { useContext, useRef, useState } from 'react'
+import styled, { ThemeContext } from 'styled-components'
 import { useOnClickOutside } from '../../hooks/useOnClickOutside'
 import { AutoColumn } from '../Column'
 import { Text } from 'rebass'
@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next'
 import GasIcon from './GasIcon'
 import { useGetGasPrices } from '../../state/gas/hooks'
 import { RowBetween } from '../Row'
+import { Dots } from '../swap/styleds'
 
 const StyledMenuIcon = styled.div`
   height: 14px;
@@ -81,13 +82,19 @@ export default function GasTab() {
   const [isOpen, setIsOpen] = useState<any | null>(false)
   useOnClickOutside(node, isOpen ? () => setIsOpen(!isOpen) : undefined)
   const gasObject = useGetGasPrices()
+  const theme = useContext(ThemeContext)
+
   return (
     <StyledMenu ref={node as any}>
       <StyledMenuButton onClick={() => setIsOpen(!isOpen)} id="open-gas-dialog-button">
         <StyledMenuIcon>
           <GasIcon />
         </StyledMenuIcon>
-        <GasPrice>{t('gasPrice', { price: gasObject.averageGas })}</GasPrice>
+        {gasObject.averageGas !== 0 ? (
+          <GasPrice>{t('gasPrice', { price: gasObject.averageGas })}</GasPrice>
+        ) : (
+          <Dots style={{ color: theme.headerModalTextColor }}>{t('loading')}</Dots>
+        )}
       </StyledMenuButton>
       {isOpen && (
         <MenuFlyout>
@@ -97,17 +104,32 @@ export default function GasTab() {
             </Text>
             <Text fontSize={14} style={{ padding: '0.5rem 1rem' }}>
               <RowBetween>
-                {t('safe')} <div>{t('gasPrice', { price: gasObject.lowGas })}</div>
+                {t('safe')}
+                {gasObject.lowGas !== 0 ? (
+                  <div>{t('gasPrice', { price: gasObject.lowGas })}</div>
+                ) : (
+                  <Dots style={{ color: theme.headerModalTextColor }}>{t('loading')}</Dots>
+                )}
               </RowBetween>
             </Text>
             <Text fontSize={14} style={{ padding: '0.5rem 1rem' }}>
               <RowBetween>
-                {t('standard')} <div>{t('gasPrice', { price: gasObject.averageGas })}</div>
+                {t('standard')}
+                {gasObject.averageGas !== 0 ? (
+                  <div>{t('gasPrice', { price: gasObject.averageGas })}</div>
+                ) : (
+                  <Dots style={{ color: theme.headerModalTextColor }}>{t('loading')}</Dots>
+                )}
               </RowBetween>
             </Text>
             <Text fontSize={14} style={{ padding: '0.5rem 1rem' }}>
               <RowBetween>
-                {t('fast')} <div>{t('gasPrice', { price: gasObject.highGas })}</div>
+                {t('fast')}
+                {gasObject.highGas !== 0 ? (
+                  <div>{t('gasPrice', { price: gasObject.highGas })}</div>
+                ) : (
+                  <Dots style={{ color: theme.headerModalTextColor }}>{t('loading')}</Dots>
+                )}
               </RowBetween>
             </Text>
           </AutoColumn>
