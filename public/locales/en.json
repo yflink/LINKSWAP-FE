@@ -271,5 +271,10 @@
   "estimatedCurrencyOutput": "Estimated {{currencySymbol}} amount.",
   "startSwapping": "Swap",
   "limitHint":"Your purchase might exceed the <1>weekly purchase limit</1> of Wyre.",
-  "gdprDisclaimer": "Note: YF Link does not store any user information. Data is only shared between you and Wyre."
+  "gdprDisclaimer": "Note: YF Link does not store any user information. Data is only shared between you and Wyre.",
+  "gasPrices": "Gas Tracker",
+  "safe": "Safe",
+  "standard": "Standard",
+  "fast": "Fast",
+  "gasPrice": "{{price}} gwei"
 }

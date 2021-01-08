@@ -12,9 +12,11 @@ import { YellowCard } from '../Card'
 import Theme from '../Theme'
 import Settings from '../Settings'
 import Language from '../Language'
+import Gas from '../Gas'
 
 import { RowBetween } from '../Row'
 import Web3Status from '../Web3Status'
+import { useGasPrices } from '../../hooks/useGasPrice'
 
 const HeaderFrame = styled.div`
   display: flex;
@@ -110,6 +112,7 @@ const AccountElement = styled.div<{ active: boolean }>`
   border-radius: 6px;
   white-space: nowrap;
   width: 100%;
+
   :focus {
     border: 1px solid blue;
   }
@@ -160,6 +163,8 @@ export default function Header() {
   const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']
   const theme = useContext(ThemeContext)
   const hasSublogo = theme.logo.length > 2
+  useGasPrices()
+
   return (
     <HeaderFrame>
       <RowBetween style={{ alignItems: 'flex-start' }} padding="1rem">
@@ -186,24 +191,31 @@ export default function Header() {
             </HeaderElementMobile>
           )}
         </HeaderElement>
-        <HeaderControls>
+        <HeaderControls style={{ flex: '0' }}>
           <HeaderElementWrap>
             <Theme />
             <Language />
             <Settings />
           </HeaderElementWrap>
-          <HeaderElement>
-            <TestnetWrapper>
-              {!isMobile && chainId && NETWORK_LABELS[chainId] && <NetworkCard>{NETWORK_LABELS[chainId]}</NetworkCard>}
-            </TestnetWrapper>
-            <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
-              {account && userEthBalance ? (
-                <BalanceText style={{ flexShrink: 0 }} pl="0.75rem" pr="0.5rem" fontWeight={500}>
-                  {userEthBalance?.toSignificant(4)} ETH
-                </BalanceText>
-              ) : null}
-              <Web3Status />
-            </AccountElement>
+          <HeaderElement style={{ flexWrap: 'wrap', flexGrow: 0 }}>
+            <RowBetween>
+              <TestnetWrapper>
+                {!isMobile && chainId && NETWORK_LABELS[chainId] && (
+                  <NetworkCard>{NETWORK_LABELS[chainId]}</NetworkCard>
+                )}
+              </TestnetWrapper>
+              <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
+                {account && userEthBalance ? (
+                  <BalanceText style={{ flexShrink: 0 }} pl="0.75rem" pr="0.5rem" fontWeight={500}>
+                    {userEthBalance?.toSignificant(4)} ETH
+                  </BalanceText>
+                ) : null}
+                <Web3Status />
+              </AccountElement>
+            </RowBetween>
+            <RowBetween>
+              <Gas />
+            </RowBetween>
           </HeaderElement>
         </HeaderControls>
       </RowBetween>

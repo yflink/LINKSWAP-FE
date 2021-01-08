@@ -83,7 +83,7 @@ export default function ThemeTab() {
 
   return (
     <StyledMenu ref={node as any}>
-      <StyledMenuButton onClick={() => setIsOpen(!isOpen)} id="open-themeStringg-button">
+      <StyledMenuButton onClick={() => setIsOpen(!isOpen)} id="open-theme-dialog-button">
         <img src={layoutLogo} width="22px" height="22px" alt={t('inferfaceTheme')} />
       </StyledMenuButton>
       {isOpen && (
