@@ -18,7 +18,7 @@ export const WYRE_ID: string = process.env.REACT_APP_WYRE_ID || ''
 export const WYRE_API_KEY: string = process.env.REACT_APP_WYRE_API_KEY || ''
 export const WYRE_SK: string = process.env.REACT_APP_WYRE_API_SK || ''
 
-export const ETH_API_KEY: string = process.env.REACT_APP_ETHERSCAN_API_KEY || ''
+export const ETH_API_KEY: string = process.env.REACT_APP_ETHERSCAN_API_KEY || 'NOETHERSCANAPIKEY'
 
 if (typeof NETWORK_URL === 'undefined') {
   throw new Error(`REACT_APP_NETWORK_URL must be a defined environment variable`)
