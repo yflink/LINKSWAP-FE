@@ -28,10 +28,14 @@ export function useGasPrices(): any {
           if (response.ok) {
             const content = await response.json()
             setFetching(false)
-            return {
-              gasLow: content.result.SafeGasPrice,
-              gasAverage: content.result.ProposeGasPrice,
-              gasHigh: content.result.FastGasPrice
+            if (content.status === '0') {
+              return false
+            } else {
+              return {
+                gasLow: content.result.SafeGasPrice,
+                gasAverage: content.result.ProposeGasPrice,
+                gasHigh: content.result.FastGasPrice
+              }
             }
           } else {
             setFetching(false)
