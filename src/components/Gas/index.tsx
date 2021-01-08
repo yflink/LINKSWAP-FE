@@ -93,7 +93,7 @@ export default function GasTab() {
         {Boolean(gasObject.averageGas) ? (
           <GasPrice>{t('gasPrice', { price: gasObject.averageGas })}</GasPrice>
         ) : (
-          <Dots style={{ color: theme.headerModalTextColor }}>{t('loading')}</Dots>
+          <Dots style={{ marginInlineStart: '0.5rem', color: theme.headerModalTextColor }}>{t('loading')}</Dots>
         )}
       </StyledMenuButton>
       {isOpen && (
