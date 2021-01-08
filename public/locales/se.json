@@ -266,8 +266,13 @@
   "purchesProcessByWyre": "Your purchase will be handled by Wyre. Please proceed in the opened tab of your browser.",
   "undefinedError": "Sorry, an unexpected error has occurred!",
   "invalidFormError": "Sorry, the form is invalid. Please review and try again.",
-  "estimatedCurrencyOutput": "Estimated {{currencySymbol}} amount.",
+  "estimatedCurrencyOutput": "Estimated {{currencySymbol}} amount",
   "startSwapping": "Swap",
   "limitHint":"Your purchase might exceed the <1>weekly purchase limit</1> of Wyre.",
-  "gdprDisclaimer": "Note: YF Link does not store any user information. Data is only shared between you and Wyre."
+  "gdprDisclaimer": "Note: YF Link does not store any user information. Data is only shared between you and Wyre.",
+  "gasPrices": "Gas Tracker",
+  "safe": "Safe",
+  "standard": "Standard",
+  "fast": "Fast",
+  "gasPrice": "{{price}} gwei"
 }
