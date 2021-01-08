@@ -8,8 +8,10 @@ export function useGasPrices(): any {
   const gasObject = useGetGasPrices()
   const timeDiff = currentTimestamp() - gasObject.timestamp
   const [fetching, setFetching] = useState<boolean>(false)
+  const [initial, setInitial] = useState<boolean>(false)
 
-  if ((timeDiff > 30000 && !fetching) || (gasObject.lowGas === 0 && !fetching)) {
+  if ((timeDiff > 30000 && !fetching) || (gasObject.lowGas === 0 && !initial)) {
+    setInitial(true)
     const getGasPrices = async ({ fetching }: { fetching: boolean }) => {
       if (!fetching) {
         setFetching(true)
