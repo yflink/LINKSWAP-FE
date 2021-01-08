@@ -90,7 +90,7 @@ export default function GasTab() {
         <StyledMenuIcon>
           <GasIcon />
         </StyledMenuIcon>
-        {gasObject.averageGas !== 0 ? (
+        {Boolean(gasObject.averageGas) ? (
           <GasPrice>{t('gasPrice', { price: gasObject.averageGas })}</GasPrice>
         ) : (
           <Dots style={{ color: theme.headerModalTextColor }}>{t('loading')}</Dots>
@@ -105,7 +105,7 @@ export default function GasTab() {
             <Text fontSize={14} style={{ padding: '0.5rem 1rem' }}>
               <RowBetween>
                 {t('safe')}
-                {gasObject.lowGas !== 0 ? (
+                {Boolean(gasObject.lowGas) ? (
                   <div>{t('gasPrice', { price: gasObject.lowGas })}</div>
                 ) : (
                   <Dots style={{ color: theme.headerModalTextColor }}>{t('loading')}</Dots>
@@ -115,7 +115,7 @@ export default function GasTab() {
             <Text fontSize={14} style={{ padding: '0.5rem 1rem' }}>
               <RowBetween>
                 {t('standard')}
-                {gasObject.averageGas !== 0 ? (
+                {Boolean(gasObject.averageGas) ? (
                   <div>{t('gasPrice', { price: gasObject.averageGas })}</div>
                 ) : (
                   <Dots style={{ color: theme.headerModalTextColor }}>{t('loading')}</Dots>
@@ -125,7 +125,7 @@ export default function GasTab() {
             <Text fontSize={14} style={{ padding: '0.5rem 1rem' }}>
               <RowBetween>
                 {t('fast')}
-                {gasObject.highGas !== 0 ? (
+                {Boolean(gasObject.highGas) ? (
                   <div>{t('gasPrice', { price: gasObject.highGas })}</div>
                 ) : (
                   <Dots style={{ color: theme.headerModalTextColor }}>{t('loading')}</Dots>
