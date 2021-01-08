@@ -6,10 +6,11 @@ import { Text } from 'rebass'
 import { useTranslation } from 'react-i18next'
 import GasIcon from './GasIcon'
 import { useGetGasPrices } from '../../state/gas/hooks'
+import { RowBetween } from '../Row'
 
 const StyledMenuIcon = styled.div`
-  height: 22px;
-  width: 22px;
+  height: 14px;
+  width: 14px;
   > * {
     fill: ${({ theme }) => theme.headerButtonIconColor};
   }
@@ -17,40 +18,44 @@ const StyledMenuIcon = styled.div`
 
 const StyledMenuButton = styled.button`
   position: relative;
-  width: 100%;
-  height: 100%;
+  width: auto;
   border: none;
-  margin: 0;
-  padding: 0;
-  height: 35px;
-  background-color: ${({ theme }) => theme.headerButtonBG};
+  margin: 0.25rem 0 0 0;
+  background-color: transparent;
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 0.15rem 0.5rem;
-  border-radius: 0.5rem;
+  justify-content: flex-end;
+  padding: 0.25rem 0.5rem;
+  border-radius: 2px;
+  background-color: ${({ theme }) => theme.headerButtonBG};
 
   :hover,
   :focus {
+    background-color: ${({ theme }) => theme.headerButtonBGHover};
     cursor: pointer;
     outline: none;
-    background-color: ${({ theme }) => theme.headerButtonBGHover};
   }
 `
 
 const StyledMenu = styled.div`
-  margin-inline-start: 0.5rem;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
   position: relative;
   border: none;
   text-align: start;
+  flex: 0 0 100%;
+  width: 100%;
+`
+
+const GasPrice = styled.div`
+  margin-inline-start: 0.5rem;
+  color: ${({ theme }) => theme.headerButtonIconColor};
 `
 
 const MenuFlyout = styled.span`
   max-width: 100vw;
-  width: 12rem;
+  width: 11rem;
   background-color: ${({ theme }) => theme.modalBG};
   box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.01), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04),
     0px 24px 32px rgba(0, 0, 0, 0.01);
@@ -60,7 +65,7 @@ const MenuFlyout = styled.span`
   display: flex;
   flex-direction: column;
   position: absolute;
-  top: 3rem;
+  top: 2.2rem;
   right: 0;
   z-index: 100;
 
@@ -82,6 +87,7 @@ export default function GasTab() {
         <StyledMenuIcon>
           <GasIcon />
         </StyledMenuIcon>
+        <GasPrice>{t('gasPrice', { price: gasObject.averageGas })}</GasPrice>
       </StyledMenuButton>
       {isOpen && (
         <MenuFlyout>
@@ -90,13 +96,19 @@ export default function GasTab() {
               {t('gasPrices')}
             </Text>
             <Text fontSize={14} style={{ padding: '0.5rem 1rem' }}>
-              {t('low', { price: gasObject.lowGas })}
+              <RowBetween>
+                {t('safe')} <div>{t('gasPrice', { price: gasObject.lowGas })}</div>
+              </RowBetween>
             </Text>
             <Text fontSize={14} style={{ padding: '0.5rem 1rem' }}>
-              {t('average', { price: gasObject.averageGas })}
+              <RowBetween>
+                {t('standard')} <div>{t('gasPrice', { price: gasObject.averageGas })}</div>
+              </RowBetween>
             </Text>
             <Text fontSize={14} style={{ padding: '0.5rem 1rem' }}>
-              {t('high', { price: gasObject.highGas })}
+              <RowBetween>
+                {t('fast')} <div>{t('gasPrice', { price: gasObject.highGas })}</div>
+              </RowBetween>
             </Text>
           </AutoColumn>
         </MenuFlyout>
