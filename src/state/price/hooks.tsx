@@ -16,7 +16,8 @@ export function usePriceBaseManager(): (ethPriceBase: number, linkPriceBase: num
 export function useGetPriceBase(): any {
   return {
     ethPriceBase: useSelector<AppState, AppState['price']['ethPriceBase']>(state => state.price.ethPriceBase),
-    linkPriceBase: useSelector<AppState, AppState['price']['linkPriceBase']>(state => state.price.linkPriceBase)
+    linkPriceBase: useSelector<AppState, AppState['price']['linkPriceBase']>(state => state.price.linkPriceBase),
+    timestamp: useSelector<AppState, AppState['price']['timestamp']>(state => state.price.timestamp)
   }
 }
 
