@@ -33,6 +33,7 @@ const HeaderFrame = styled.div`
 
 const HeaderElement = styled.div`
   display: flex;
+  flex: 0;
   align-items: flex-start;
 `
 
@@ -112,6 +113,7 @@ const AccountElement = styled.div<{ active: boolean }>`
   border-radius: 6px;
   white-space: nowrap;
   width: 100%;
+
   :focus {
     border: 1px solid blue;
   }
@@ -133,6 +135,7 @@ const NetworkCard = styled(YellowCard)`
 
 const HeaderControls = styled.div`
   display: flex;
+  flex: 0;
   flex-direction: row;
   align-items: flex-start;
 
