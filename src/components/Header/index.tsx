@@ -33,7 +33,6 @@ const HeaderFrame = styled.div`
 
 const HeaderElement = styled.div`
   display: flex;
-  flex: 0;
   align-items: flex-start;
 `
 
@@ -135,7 +134,6 @@ const NetworkCard = styled(YellowCard)`
 
 const HeaderControls = styled.div`
   display: flex;
-  flex: 0;
   flex-direction: row;
   align-items: flex-start;
 
@@ -193,13 +191,13 @@ export default function Header() {
             </HeaderElementMobile>
           )}
         </HeaderElement>
-        <HeaderControls>
+        <HeaderControls style={{ flex: 0 }}>
           <HeaderElementWrap>
             <Theme />
             <Language />
             <Settings />
           </HeaderElementWrap>
-          <HeaderElement style={{ flexWrap: 'wrap' }}>
+          <HeaderElement style={{ flexWrap: 'wrap', flex: 0 }}>
             <RowBetween>
               <TestnetWrapper>
                 {!isMobile && chainId && NETWORK_LABELS[chainId] && (
