@@ -191,13 +191,13 @@ export default function Header() {
             </HeaderElementMobile>
           )}
         </HeaderElement>
-        <HeaderControls style={{ flex: 0 }}>
+        <HeaderControls style={{ flex: '0' }}>
           <HeaderElementWrap>
             <Theme />
             <Language />
             <Settings />
           </HeaderElementWrap>
-          <HeaderElement style={{ flexWrap: 'wrap', flex: 0 }}>
+          <HeaderElement style={{ flexWrap: 'wrap', flexGrow: 0 }}>
             <RowBetween>
               <TestnetWrapper>
                 {!isMobile && chainId && NETWORK_LABELS[chainId] && (
