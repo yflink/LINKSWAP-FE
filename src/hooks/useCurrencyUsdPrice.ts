@@ -7,8 +7,10 @@ export function useCurrencyUsdPrice(): any {
   const currentPriceBase = useGetPriceBase()
   const timeDiff = currentTimestamp() - currentPriceBase.timestamp
   const [fetching, setFetching] = useState<boolean>(false)
+  const [initial, setInitial] = useState<boolean>(false)
 
-  if ((timeDiff > 10000 && !fetching) || (currentPriceBase.ethPriceBase === 0 && !fetching)) {
+  if ((timeDiff > 10000 && !fetching) || (currentPriceBase.ethPriceBase === 0 && !initial)) {
+    setInitial(true)
     const getPrice = async ({ fetching }: { fetching: boolean }) => {
       if (!fetching) {
         setFetching(true)
@@ -28,19 +30,21 @@ export function useCurrencyUsdPrice(): any {
             return content['data']['bundles'][0]
           } else {
             setFetching(false)
-            return currentPriceBase
+            return false
           }
         } catch (e) {
-          return currentPriceBase
+          return false
         } finally {
           //console.log('fetched price')
         }
       } else {
-        return { currentPriceBase }
+        return false
       }
     }
     getPrice({ fetching: fetching }).then(priceBase => {
-      newPriceBase(priceBase['ethPrice'], priceBase['linkPrice'])
+      if (priceBase) {
+        newPriceBase(priceBase['ethPrice'], priceBase['linkPrice'])
+      }
     })
   } else {
     return false

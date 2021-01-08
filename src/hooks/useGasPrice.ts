@@ -8,8 +8,10 @@ export function useGasPrices(): any {
   const gasObject = useGetGasPrices()
   const timeDiff = currentTimestamp() - gasObject.timestamp
   const [fetching, setFetching] = useState<boolean>(false)
+  const [initial, setInitial] = useState<boolean>(false)
 
-  if ((timeDiff > 30000 && !fetching) || (gasObject.lowGas === 0 && !fetching)) {
+  if ((timeDiff > 30000 && !fetching) || (gasObject.lowGas === 0 && !initial)) {
+    setInitial(true)
     const getGasPrices = async ({ fetching }: { fetching: boolean }) => {
       if (!fetching) {
         setFetching(true)
@@ -26,26 +28,32 @@ export function useGasPrices(): any {
           if (response.ok) {
             const content = await response.json()
             setFetching(false)
-            return {
-              gasLow: content.result.SafeGasPrice,
-              gasAverage: content.result.ProposeGasPrice,
-              gasHigh: content.result.FastGasPrice
+            if (content.status === '0') {
+              return false
+            } else {
+              return {
+                gasLow: content.result.SafeGasPrice,
+                gasAverage: content.result.ProposeGasPrice,
+                gasHigh: content.result.FastGasPrice
+              }
             }
           } else {
             setFetching(false)
-            return { gasObject }
+            return false
           }
         } catch (e) {
-          return { gasObject }
+          return false
         } finally {
           //console.log('fetched price')
         }
       } else {
-        return { gasObject }
+        return false
       }
     }
     getGasPrices({ fetching: fetching }).then(result => {
-      newGasPrices(result.gasLow, result.gasAverage, result.gasHigh)
+      if (result) {
+        newGasPrices(result.gasLow, result.gasAverage, result.gasHigh)
+      }
     })
   } else {
     return false
