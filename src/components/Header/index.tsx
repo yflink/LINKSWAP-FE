@@ -12,9 +12,11 @@ import { YellowCard } from '../Card'
 import Theme from '../Theme'
 import Settings from '../Settings'
 import Language from '../Language'
+import Gas from '../Gas'
 
 import { RowBetween } from '../Row'
 import Web3Status from '../Web3Status'
+import { useGasPrices } from '../../hooks/useGasPrice'
 
 const HeaderFrame = styled.div`
   display: flex;
@@ -160,6 +162,8 @@ export default function Header() {
   const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']
   const theme = useContext(ThemeContext)
   const hasSublogo = theme.logo.length > 2
+  useGasPrices()
+
   return (
     <HeaderFrame>
       <RowBetween style={{ alignItems: 'flex-start' }} padding="1rem">
@@ -191,6 +195,7 @@ export default function Header() {
             <Theme />
             <Language />
             <Settings />
+            <Gas />
           </HeaderElementWrap>
           <HeaderElement>
             <TestnetWrapper>

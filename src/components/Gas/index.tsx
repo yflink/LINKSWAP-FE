@@ -3,10 +3,17 @@ import styled from 'styled-components'
 import { useOnClickOutside } from '../../hooks/useOnClickOutside'
 import { AutoColumn } from '../Column'
 import { Text } from 'rebass'
-import { Separator } from '../SearchModal/styleds'
 import { useTranslation } from 'react-i18next'
-import ThemeOption from './ThemeOption'
-import { useGetTheme } from '../../state/user/hooks'
+import GasIcon from './GasIcon'
+import { useGetGasPrices } from '../../state/gas/hooks'
+
+const StyledMenuIcon = styled.div`
+  height: 22px;
+  width: 22px;
+  > * {
+    fill: ${({ theme }) => theme.headerButtonIconColor};
+  }
+`
 
 const StyledMenuButton = styled.button`
   position: relative;
@@ -29,10 +36,6 @@ const StyledMenuButton = styled.button`
     outline: none;
     background-color: ${({ theme }) => theme.headerButtonBGHover};
   }
-
-  svg {
-    margin-top: 2px;
-  }
 `
 
 const StyledMenu = styled.div`
@@ -43,12 +46,6 @@ const StyledMenu = styled.div`
   position: relative;
   border: none;
   text-align: start;
-`
-const ThemeContainer = styled.div`
-  padding: 0.5rem 0;
-  width: 100%;
-  break-inside: avoid-column;
-  page-break-inside: avoid;
 `
 
 const MenuFlyout = styled.span`
@@ -73,34 +70,35 @@ const MenuFlyout = styled.span`
   }
 `
 
-export default function ThemeTab() {
+export default function GasTab() {
   const node = useRef<HTMLDivElement>()
   const { t } = useTranslation()
   const [isOpen, setIsOpen] = useState<any | null>(false)
-  const currentTheme = useGetTheme()
-  const layoutLogo = './images/themes/' + currentTheme + '/logo.png'
   useOnClickOutside(node, isOpen ? () => setIsOpen(!isOpen) : undefined)
-
+  const gasObject = useGetGasPrices()
   return (
     <StyledMenu ref={node as any}>
-      <StyledMenuButton onClick={() => setIsOpen(!isOpen)} id="open-theme-dialog-button">
-        <img src={layoutLogo} width="22px" height="22px" alt={t('inferfaceTheme')} />
+      <StyledMenuButton onClick={() => setIsOpen(!isOpen)} id="open-gas-dialog-button">
+        <StyledMenuIcon>
+          <GasIcon />
+        </StyledMenuIcon>
       </StyledMenuButton>
       {isOpen && (
         <MenuFlyout>
           <AutoColumn style={{ padding: '1rem 0 0.5rem' }}>
             <Text fontWeight={600} fontSize={14} style={{ padding: '0 1rem 0.5rem' }}>
-              {t('interfaceTheme')}
+              {t('gasPrices')}
             </Text>
-            <ThemeOption themeName="LINKSWAP" themeString="default" />
-            <ThemeOption themeName="LINKSWAP light" themeString="light" />
+            <Text fontSize={14} style={{ padding: '0.5rem 1rem' }}>
+              {t('low', { price: gasObject.lowGas })}
+            </Text>
+            <Text fontSize={14} style={{ padding: '0.5rem 1rem' }}>
+              {t('average', { price: gasObject.averageGas })}
+            </Text>
+            <Text fontSize={14} style={{ padding: '0.5rem 1rem' }}>
+              {t('high', { price: gasObject.highGas })}
+            </Text>
           </AutoColumn>
-          <Separator />
-          <ThemeContainer>
-            <ThemeOption themeName="CyberFi" themeString="cyberfi" />
-            <ThemeOption themeName="DOKI DOKI" themeString="dokidoki" />
-            <ThemeOption themeName="MASQ" themeString="masq" />
-          </ThemeContainer>
         </MenuFlyout>
       )}
     </StyledMenu>

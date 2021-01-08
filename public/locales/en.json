@@ -271,5 +271,9 @@
   "estimatedCurrencyOutput": "Estimated {{currencySymbol}} amount.",
   "startSwapping": "Swap",
   "limitHint":"Your purchase might exceed the <1>weekly purchase limit</1> of Wyre.",
-  "gdprDisclaimer": "Note: YF Link does not store any user information. Data is only shared between you and Wyre."
+  "gdprDisclaimer": "Note: YF Link does not store any user information. Data is only shared between you and Wyre.",
+  "gasPrice": "Ethereum transaction costs",
+  "low": "Low: {{price}} gwei",
+  "average": "Average: {{price}} gwei",
+  "high": "High: {{price}} gwei"
 }
