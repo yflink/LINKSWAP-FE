@@ -20,7 +20,7 @@ const StyledMenuButton = styled.button`
   position: relative;
   width: auto;
   border: none;
-  margin: 0.25rem 0 0 0;
+  margin: 0.5rem 0 0 0;
   background-color: transparent;
   display: flex;
   align-items: center;
