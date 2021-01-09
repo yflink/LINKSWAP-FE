@@ -57,7 +57,6 @@ const HeaderWrapper = styled.div`
 `
 
 const BodyWrapper = styled.div`
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -69,10 +68,6 @@ const BodyWrapper = styled.div`
   ${({ theme }) => theme.mediaWidth.upToSmall`
     padding: 0 0 16px;
   `};-
-`
-
-const Marginer = styled.div`
-  margin-top: 5rem;
 `
 
 const FooterWrapper = styled.div`
@@ -148,7 +143,6 @@ export default function App() {
                 <Route component={RedirectPathToSwapOnly} />
               </Switch>
             </Web3ReactManager>
-            <Marginer />
           </BodyWrapper>
           <FooterWrapper>
             <a target="_blank" rel="noopener noreferrer" href="https://certificate.quantstamp.com/full/linkswap">
