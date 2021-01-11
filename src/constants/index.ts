@@ -29,6 +29,50 @@ export const COMP = new Token(ChainId.MAINNET, '0xc00e94Cb662C3520282E6f57172140
 export const MKR = new Token(ChainId.MAINNET, '0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2', 18, 'MKR', 'Maker')
 export const AMPL = new Token(ChainId.MAINNET, '0xD46bA6D942050d489DBd938a2C909A5d5039A161', 9, 'AMPL', 'Ampleforth')
 
+export const BUSD = new Token(ChainId.MAINNET, '0x4fabb145d64652a948d72533023f6e7a623c7c53', 18, 'BUSD', 'Binance USD')
+export const DPI = new Token(
+  ChainId.MAINNET,
+  '0x1494ca1f11d487c2bbe4543e90080aeba4ba3c2b',
+  18,
+  'DPI',
+  'DefiPulse Index'
+)
+export const CEL = new Token(ChainId.MAINNET, '0xaaaebe6fe48e54f431b0c390cfaf0b017d09d42d', 4, 'CEL', 'Celsius')
+export const MASQ = new Token(ChainId.MAINNET, '0x06f3c323f0238c72bf35011071f2b5b7f43a054c', 18, 'MASQ', 'MASQ')
+export const YAX = new Token(ChainId.MAINNET, '0xb1dc9124c395c1e97773ab855d66e879f053a289', 18, 'YAX', 'yAxis')
+export const WBTC = new Token(ChainId.MAINNET, '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599', 8, 'WBTC', 'Wrapped BTC')
+export const GSWAP = new Token(
+  ChainId.MAINNET,
+  '0xaac41ec512808d64625576eddd580e7ea40ef8b2',
+  18,
+  'GSWAP',
+  'gameswap.org'
+)
+export const DOKI = new Token(
+  ChainId.MAINNET,
+  '0x9ceb84f92a0561fa3cc4132ab9c0b76a59787544',
+  18,
+  'DOKI',
+  'DokiDokiFinance'
+)
+export const SNX = new Token(
+  ChainId.MAINNET,
+  '0xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f',
+  18,
+  'SNX',
+  'Synthetix Network'
+)
+export const CFI = new Token(ChainId.MAINNET, '0x63b4f3e3fa4e438698ce330e365e831f7ccd1ef4', 18, 'CFI', 'CyberFi Token')
+export const AZUKI = new Token(
+  ChainId.MAINNET,
+  '0x910524678c0b1b23ffb9285a81f99c29c11cbaed',
+  18,
+  'AZUKI',
+  'DokiDokiAzuki'
+)
+export const DRC = new Token(ChainId.MAINNET, '0xb78b3320493a4efaa1028130c5ba26f0b6085ef8', 18, 'DRC', 'Dracula Token')
+export const BONK = new Token(ChainId.MAINNET, '0x6d6506e6f438ede269877a0a720026559110b7d5', 18, 'BONK', 'BONKTOKEN')
+
 const WETH_ONLY: ChainTokenList = {
   [ChainId.MAINNET]: [WETH[ChainId.MAINNET]],
   [ChainId.ROPSTEN]: [WETH[ChainId.ROPSTEN]],
@@ -68,7 +112,22 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
 export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } = {
   [ChainId.MAINNET]: [
     [YFL, WETHER],
-    [YFL, LINK]
+    [LINK, YFL],
+    [LINK, USDC],
+    [USDC, WETHER],
+    [BUSD, LINK],
+    [DPI, LINK],
+    [CEL, LINK],
+    [MASQ, WETHER],
+    [LINK, YAX],
+    [WBTC, LINK],
+    [LINK, GSWAP],
+    [LINK, DOKI],
+    [LINK, SNX],
+    [LINK, CFI],
+    [LINK, AZUKI],
+    [DRC, WETHER],
+    [BONK, WETHER]
   ]
 }
 
