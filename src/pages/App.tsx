@@ -73,10 +73,6 @@ const BodyWrapper = styled.div`
   `};-
 `
 
-const Marginer = styled.div`
-  margin-top: 5rem;
-`
-
 const FooterWrapper = styled.div`
   position: fixed;
   height: 32px;
@@ -151,7 +147,6 @@ export default function App() {
                 <Route component={RedirectPathToSwapOnly} />
               </Switch>
             </Web3ReactManager>
-            <Marginer />
           </BodyWrapper>
           <FooterWrapper>
             <a target="_blank" rel="noopener noreferrer" href="https://certificate.quantstamp.com/full/linkswap">
