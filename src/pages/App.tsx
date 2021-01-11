@@ -148,7 +148,7 @@ export default function App() {
                 <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
                 <Route exact strict path="/create" component={CreatePair} />
                 <Route exact strict path="/stake" component={StakeOverview} />
-                <Route exact strict path="/stake/:pool" component={RedirectToStake} />
+                <Route exact strict path="/stake/:currencyIdA/:currencyIdB" component={RedirectToStake} />
                 <Route exact path="/create/:currencyIdA" component={CreatePairRedirectOldPathStructure} />
                 <Route exact path="/create/:currencyIdA/:currencyIdB" component={CreatePairRedirectDuplicateTokenIds} />
                 <Route exact strict path="/previewlisting" component={PreviewListing} />{' '}

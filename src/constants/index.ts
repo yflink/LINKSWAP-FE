@@ -178,34 +178,62 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     href: null,
     color: '#315CF5'
   }
-  // COINBASE_LINK: {
-  //   name: 'Open in Coinbase Wallet',
-  //   iconName: 'coinbaseWalletIcon.svg',
-  //   description: 'Open in Coinbase Wallet app.',
-  //   href: 'https://go.cb-w.com/mtUDhEZPy1',
-  //   color: '#315CF5',
-  //   mobile: true,
-  //   mobileOnly: true
-  // },
-  // FORTMATIC: {
-  //   connector: fortmatic,
-  //   name: 'Fortmatic',
-  //   iconName: 'fortmaticIcon.png',
-  //   description: 'Login using Fortmatic hosted wallet',
-  //   href: null,
-  //   color: '#6748FF',
-  //   mobile: true
-  // },
-  // Portis: {
-  //   connector: portis,
-  //   name: 'Portis',
-  //   iconName: 'portisIcon.png',
-  //   description: 'Login using Portis hosted wallet',
-  //   href: null,
-  //   color: '#4A6C9B',
-  //   mobile: true
-  // }
 }
+
+export const ACTIVE_REWARD_POOLS = [
+  {
+    address: '0x7e5A536F3d79791E283940ec379CEE10C9C40e86',
+    rewardsAddress: '0x72368fB97dab2B94A5664EbeEbF504EF482fF149'
+  },
+  {
+    address: '0x189A730921550314934019d184EC05726881D481',
+    rewardsAddress: '0x35FC734948B36370c15387342F048aC87210bC22'
+  },
+  {
+    address: '0x639916bB4B29859FADF7A272185a3212157F8CE1',
+    rewardsAddress: '0xfa9712cCc86c6BD52187125dCA4c2B9C7bAa3Ef8'
+  },
+  {
+    address: '0x9d996bDD1F65C835EE92Cd0b94E15d886EF14D63',
+    rewardsAddress: '0x0D03Cff17367478c3349a579e50259D8A793BBc8'
+  },
+  {
+    address: '0xf36c9fc3c2aBE4132019444AfF914Fc8DC9785a9',
+    rewardsAddress: '0x603065B7e2F69c897F154Ca429a2B96Cf4703f56'
+  },
+  {
+    address: '0x626B88542495d2e341d285969F8678B99cd91DA7',
+    rewardsAddress: '0xf4C17025B623665AAcAb958FC0fa454b1265A219'
+  },
+  {
+    address: '0xdef0CEF53E0D4c6A5E568c53EdCf45CeB33DBE46',
+    rewardsAddress: '0x4e33D27CBCCe9Fe1c4a21A0f7C8b31C9CF5c0B75'
+  },
+  {
+    address: '0x37CeE65899dA4B1738412814155540C98DFd752C',
+    rewardsAddress: '0x790aDfE75706cf70191b2bD729048e42d8Ed9f60'
+  },
+  {
+    address: '0xFe04c284a9725c141CF6de85D7E8452af1B48ab7',
+    rewardsAddress: '0x017FAD4b7a54C1ACe95Ca614954e4D0d12CDb27E'
+  },
+  {
+    address: '0x983c9a1BCf0eB980a232D1b17bFfd6Bbf68Fe4Ce',
+    rewardsAddress: '0x997d4BAbf8290A19EcDCbD10058fC438EB6F30DE'
+  },
+  {
+    address: '0xf68c01198cDdEaFB9d2EA43368FC9fA509A339Fa',
+    rewardsAddress: '0x9667947B67199C91c109Be912807190cc490A2A3'
+  },
+  {
+    address: '0xB7Cd446a2a80d4770C6bECde661B659cFC55acf5',
+    rewardsAddress: '0xa74Ef3faB9E94578c79e0077f6Bd572C9efc8733'
+  },
+  {
+    address: '0xbe755C548D585dbc4e3Fe4bcD712a32Fd81e5Ba0',
+    rewardsAddress: '0x795BD26b99082E59478cfe8d9Cd207bb196808E4'
+  }
+]
 
 export const NetworkContextName = 'NETWORK'
 

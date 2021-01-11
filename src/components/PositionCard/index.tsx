@@ -20,9 +20,26 @@ import { RowBetween, RowFixed } from '../Row'
 
 import { Dots } from '../swap/styleds'
 import { useTranslation } from 'react-i18next'
+import { toV2LiquidityToken } from '../../state/user/hooks'
+import { ACTIVE_REWARD_POOLS } from '../../constants'
+import { StakeSVG } from '../SVG'
 
 export const FixedHeightRow = styled(RowBetween)`
   height: 24px;
+`
+
+export const StakeIcon = styled.div`
+  height: 20px;
+  display: inline-block;
+  margin-inline-start: 10px;
+
+  > svg {
+    height: 20px;
+    width: auto;
+    * {
+      fill: ${({ theme }) => theme.textPrimary};
+    }
+  }
 `
 
 export const HoverCard = styled(Card)`
@@ -172,11 +189,19 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
 
   const { t } = useTranslation()
 
+  let rewards = false
+  const liquidityToken = pair.liquidityToken
+  ACTIVE_REWARD_POOLS.forEach((pool: any) => {
+    if (pool.address === liquidityToken.address) {
+      rewards = true
+    }
+  })
+
   return (
     <HoverCard border={border}>
       <AutoColumn gap="12px">
         <FixedHeightRow onClick={() => setShowMore(!showMore)} style={{ cursor: 'pointer' }}>
-          <RowFixed>
+          <RowFixed style={{ position: 'relative' }}>
             <DoubleCurrencyLogo currency0={currency0} currency1={currency1} margin={true} size={20} />
             {!currency0 || !currency1 ? (
               <Text fontWeight={500} fontSize={20}>
@@ -188,6 +213,11 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
                 <p style={{ fontWeight: 100, fontSize: 18, margin: '18px 8px 0px 8px' }}> | </p>
                 <p style={{ fontWeight: 500, fontSize: 18 }}>{currency1.symbol}</p>
               </div>
+            )}
+            {rewards && (
+              <StakeIcon>
+                <StakeSVG />
+              </StakeIcon>
             )}
           </RowFixed>
           <RowFixed>
@@ -265,6 +295,13 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
                 {t('remove')}
               </ButtonSecondary>
             </RowBetween>
+            {rewards && (
+              <RowBetween marginTop="10px">
+                <ButtonSecondary as={Link} width="100%" to={`/stake/${currencyId(currency0)}/${currencyId(currency1)}`}>
+                  {t('stake')}
+                </ButtonSecondary>
+              </RowBetween>
+            )}
           </AutoColumn>
         )}
       </AutoColumn>

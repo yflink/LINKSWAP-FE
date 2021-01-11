@@ -151,6 +151,7 @@ interface CurrencyInputPanelProps {
   pair?: Pair | null
   hideInput?: boolean
   hideSelect?: boolean
+  hideCurrencySelect?: boolean
   otherCurrency?: Currency | null
   id: string
   showCommonBases?: boolean
@@ -170,6 +171,7 @@ export default function CurrencyInputPanel({
   pair = null, // used for double token logo
   hideInput = false,
   hideSelect = false,
+  hideCurrencySelect = false,
   otherCurrency,
   id,
   showCommonBases
@@ -187,36 +189,38 @@ export default function CurrencyInputPanel({
 
   return (
     <div>
-      <CurrencySelect
-        style={{ marginBottom: '12px', width: '100%' }}
-        selected={!!currency}
-        className="open-currency-select-button"
-        onClick={() => {
-          if (!disableCurrencySelect) {
-            setModalOpen(true)
-          }
-        }}
-      >
-        {pair ? (
-          <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} margin={true} />
-        ) : currency ? (
-          <CurrencyLogo currency={currency} position="button" />
-        ) : null}
-        {pair ? (
-          <StyledTokenName className="pair-name-container">
-            {pair?.token0.symbol}:{pair?.token1.symbol}
-          </StyledTokenName>
-        ) : (
-          <StyledTokenName className="token-symbol-container" active={Boolean(currency && currency.symbol)}>
-            {(currency && currency.symbol && currency.symbol.length > 20
-              ? currency.symbol.slice(0, 4) +
-                '...' +
-                currency.symbol.slice(currency.symbol.length - 5, currency.symbol.length)
-              : currency?.symbol) || t('selectToken')}
-          </StyledTokenName>
-        )}
-        {/* {!disableCurrencySelect && <StyledDropDown selected={!!currency} />} */}
-      </CurrencySelect>
+      {!hideCurrencySelect && (
+        <CurrencySelect
+          style={{ marginBottom: '12px', width: '100%' }}
+          selected={!!currency}
+          className="open-currency-select-button"
+          onClick={() => {
+            if (!disableCurrencySelect) {
+              setModalOpen(true)
+            }
+          }}
+        >
+          {pair ? (
+            <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} margin={true} />
+          ) : currency ? (
+            <CurrencyLogo currency={currency} position="button" />
+          ) : null}
+          {pair ? (
+            <StyledTokenName className="pair-name-container">
+              {pair?.token0.symbol}:{pair?.token1.symbol}
+            </StyledTokenName>
+          ) : (
+            <StyledTokenName className="token-symbol-container" active={Boolean(currency && currency.symbol)}>
+              {(currency && currency.symbol && currency.symbol.length > 20
+                ? currency.symbol.slice(0, 4) +
+                  '...' +
+                  currency.symbol.slice(currency.symbol.length - 5, currency.symbol.length)
+                : currency?.symbol) || t('selectToken')}
+            </StyledTokenName>
+          )}
+          {/* {!disableCurrencySelect && <StyledDropDown selected={!!currency} />} */}
+        </CurrencySelect>
+      )}
       {!hideSelect && (
         <InputPanel id={id}>
           <Container hideInput={hideInput}>

@@ -276,5 +276,8 @@
   "safe": "Safe",
   "standard": "Standard",
   "fast": "Fast",
-  "gasPrice": "{{price}} gwei"
+  "gasPrice": "{{price}} gwei",
+  "stake": "Stake",
+  "stakeLPToken": "Stake {{currencyASymbol}} | {{currencyBSymbol}} LP Token",
+  "stakeLPTokenDescription": "By staking your {{currencyASymbol}} | {{currencyBSymbol}} LINKSWAP Liquidity Provider Token (LSLP) LSLP you will be eligible to earn staking rewards"
 }
