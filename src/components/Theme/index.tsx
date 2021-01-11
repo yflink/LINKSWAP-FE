@@ -98,7 +98,8 @@ export default function ThemeTab() {
           <Separator />
           <ThemeContainer>
             <ThemeOption themeName="CyberFi" themeString="cyberfi" />
-            <ThemeOption themeName="DOKI DOKI" themeString="dokidoki" />
+            <ThemeOption themeName="Doki Doki" themeString="dokidoki" />
+            <ThemeOption themeName="DRC" themeString="DRC" />
             <ThemeOption themeName="MASQ" themeString="masq" />
           </ThemeContainer>
         </MenuFlyout>
