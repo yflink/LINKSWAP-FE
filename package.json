@@ -111,6 +111,8 @@
   },
   "license": "GPL-3.0-or-later",
   "dependencies": {
-    "@types/crypto-js": "^4.0.1"
+    "@types/crypto-js": "^4.0.1",
+    "web3": "^1.3.1",
+    "web3-utils": "^1.3.1"
   }
 }

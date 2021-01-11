@@ -1,7 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
 import { TokenAmount } from '@uniswap/sdk'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useMemo, useState } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import { Text } from 'rebass'
 import styled, { ThemeContext } from 'styled-components'
@@ -12,7 +12,7 @@ import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import { SwapPoolTabs } from '../../components/NavigationTabs'
 import { RowBetween } from '../../components/Row'
 import { useTranslation } from 'react-i18next'
-import { ACTIVE_REWARD_POOLS } from '../../constants'
+import { ACTIVE_REWARD_POOLS, WETHER } from '../../constants'
 import { useActiveWeb3React } from '../../hooks'
 import { useCurrency, useToken } from '../../hooks/Tokens'
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
@@ -27,9 +27,9 @@ import AppBody, { AppBodyDark } from '../AppBody'
 import { Dots, Wrapper } from '../Pool/styleds'
 import QuestionHelper from '../../components/QuestionHelper'
 import { WrappedTokenInfo } from '../../state/lists/hooks'
-import { wrappedCurrency } from '../../utils/wrappedCurrency'
 import ReactGA from 'react-ga'
 import { addTransaction } from '../../state/transactions/actions'
+import { StakingPositionCard } from '../../components/PositionCard'
 
 const Tabs = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -49,6 +49,7 @@ export default function StakeIntoPool({
     params: { currencyIdA, currencyIdB }
   }
 }: RouteComponentProps<{ currencyIdA?: string; currencyIdB?: string }>) {
+  const [balance, setBalance] = useState(0)
   const { account, chainId, library } = useActiveWeb3React()
   const theme = useContext(ThemeContext)
 
@@ -59,7 +60,6 @@ export default function StakeIntoPool({
   let liquidityToken
   let wrappedLiquidityToken
   let rewardsContractAddress: any
-
   if (tokenA && tokenB) {
     liquidityToken = toV2LiquidityToken([tokenA, tokenB])
 
@@ -99,11 +99,12 @@ export default function StakeIntoPool({
     wrappedLiquidityToken ?? undefined,
     undefined
   )
-  const { onFieldAInput, onFieldBInput } = useMintActionHandlers(noLiquidity)
+  const { onFieldAInput } = useMintActionHandlers(noLiquidity)
   const formattedAmounts = {
     [independentField]: typedValue,
     [dependentField]: parsedAmounts[dependentField]?.toSignificant(6) ?? ''
   }
+
   // get the max amounts user can add
   const maxAmounts: { [field in Field]?: TokenAmount } = [Field.CURRENCY_A].reduce((accumulator, field) => {
     return {
@@ -122,6 +123,18 @@ export default function StakeIntoPool({
   const [approvalA, approveACallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_A], rewardsContractAddress)
 
   const { t } = useTranslation()
+
+  useMemo(() => {
+    if (!chainId || !library || !account) return
+    const rewardsContract = getContract(rewardsContractAddress, StakingRewards, library, account)
+    const method: (...args: any) => Promise<BigNumber> = rewardsContract.balanceOf
+    const args: Array<string | string[] | number> = [account]
+    method(...args).then(response => {
+      if (BigNumber.isBigNumber(response)) {
+        setBalance(Number(response.toHexString()) / Math.pow(10, 18))
+      }
+    })
+  }, [account, chainId, library, rewardsContractAddress, StakingRewards])
 
   async function onAdd(contractAddress: string) {
     if (!chainId || !library || !account) return
@@ -166,6 +179,9 @@ export default function StakeIntoPool({
         }
       })
   }
+
+  const { [Field.CURRENCY_A]: parsedAmountA } = parsedAmounts
+  const buttonSting = parsedAmountA ? t('stake') : t('enterAmount')
 
   return (
     <>
@@ -213,7 +229,12 @@ export default function StakeIntoPool({
           <AutoColumn gap={'md'}>
             {approvalA === ApprovalState.NOT_APPROVED || approvalA === ApprovalState.PENDING ? (
               <RowBetween>
-                <ButtonPrimary onClick={approveACallback} disabled={approvalA === ApprovalState.PENDING} width="100%">
+                <ButtonPrimary
+                  style={{ fontSize: '20px' }}
+                  onClick={approveACallback}
+                  disabled={approvalA === ApprovalState.PENDING}
+                  width="100%"
+                >
                   {approvalA === ApprovalState.PENDING ? <Dots>{t('approving')}</Dots> : t('approve')}
                 </ButtonPrimary>
               </RowBetween>
@@ -225,13 +246,18 @@ export default function StakeIntoPool({
                 disabled={approvalA !== ApprovalState.APPROVED}
               >
                 <Text fontSize={20} fontWeight={500}>
-                  {t('stake')}
+                  {buttonSting}
                 </Text>
               </ButtonPrimary>
             )}
           </AutoColumn>
         )}
       </AppBodyDark>
+      {account && chainId && library && balance > 0 && (
+        <AutoColumn style={{ marginTop: '1rem', maxWidth: '420px', width: '100%' }}>
+          <StakingPositionCard balance={balance} currencys={[currencyA, currencyB]} token={liquidityToken} />
+        </AutoColumn>
+      )}
     </>
   )
 }

@@ -168,7 +168,7 @@ export default function CurrencyInputPanel({
   currency,
   disableCurrencySelect = false,
   hideBalance = false,
-  pair = null, // used for double token logo
+  pair = null,
   hideInput = false,
   hideSelect = false,
   hideCurrencySelect = false,

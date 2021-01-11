@@ -1,7 +1,7 @@
 import { JSBI, Pair, Percent } from '@uniswap/sdk'
 import { darken } from 'polished'
 import React, { useState } from 'react'
-import { ChevronDown, ChevronUp } from 'react-feather'
+import { ChevronDown, ChevronUp, ExternalLink } from 'react-feather'
 import { Link } from 'react-router-dom'
 import { Text } from 'rebass'
 import styled from 'styled-components'
@@ -20,10 +20,20 @@ import { RowBetween, RowFixed } from '../Row'
 
 import { Dots } from '../swap/styleds'
 import { useTranslation } from 'react-i18next'
-import { toV2LiquidityToken } from '../../state/user/hooks'
 import { ACTIVE_REWARD_POOLS } from '../../constants'
 import { StakeSVG } from '../SVG'
 
+const ExternalLinkIcon = styled(ExternalLink)`
+  display: inline-block;
+  margin-inline-start: 3px;
+  width: 14px;
+  height: 14px;
+  margin-bottom: -2px;
+
+  > * {
+    stroke: ${({ theme }) => theme.textPrimary};
+  }
+`
 export const FixedHeightRow = styled(RowBetween)`
   height: 24px;
 `
@@ -41,6 +51,29 @@ export const StakeIcon = styled.div`
     }
   }
 `
+const AnalyticsWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 8px 0 0;
+  padding: 0.5rem;
+  border-radius: 6px;
+  font-size: 14px;
+  line-height: 14px;
+  border: 1px solid ${({ theme }) => theme.textSecondary};
+
+  a {
+    color: ${({ theme }) => theme.textPrimary};
+    text-decoration: none;
+    font-weight: 600;
+    :hover,
+    :focus {
+      text-decoration: underline;
+    }
+  }
+`
 
 export const HoverCard = styled(Card)`
   background-color: ${({ theme }) => theme.appBoxBG};
@@ -52,8 +85,16 @@ export const HoverCard = styled(Card)`
 
 interface PositionCardProps {
   pair: Pair
+  token?: any
+  currencys?: any
   showUnwrapped?: boolean
   border?: string
+}
+
+interface StakingPositionCardProps {
+  balance: any
+  currencys: any
+  token: any
 }
 
 export function MinimalPositionCard({ pair, showUnwrapped = false, border }: PositionCardProps) {
@@ -306,5 +347,56 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
         )}
       </AutoColumn>
     </HoverCard>
+  )
+}
+
+export function StakingPositionCard({ currencys, balance, token }: StakingPositionCardProps) {
+  const { t } = useTranslation()
+  const tokenPairAddress = token ? 'https://info.linkswap.app/pair/' + token.address : false
+
+  return (
+    <>
+      <GreyCard>
+        <AutoColumn gap="12px">
+          <FixedHeightRow>
+            <RowFixed>
+              <Text fontWeight={500} fontSize={16}>
+                {t('myStakedPosition')}
+              </Text>
+            </RowFixed>
+          </FixedHeightRow>
+          <RowBetween>
+            <RowFixed>
+              <DoubleCurrencyLogo currency0={currencys[0]} currency1={currencys[1]} margin={true} size={20} />
+              {!currencys[0] || !currencys[1] ? (
+                <Text fontWeight={500} fontSize={20}>
+                  <Dots>{t('loading')}</Dots>
+                </Text>
+              ) : (
+                <div style={{ display: 'flex' }}>
+                  <p style={{ fontWeight: 500, fontSize: 18, margin: '0 4px' }}>{currencys[0].symbol}</p>
+                  <p style={{ fontWeight: 100, fontSize: 18, margin: '0 4px' }}> | </p>
+                  <p style={{ fontWeight: 500, fontSize: 18, margin: '0 4px' }}>{currencys[1].symbol}</p>
+                </div>
+              )}
+            </RowFixed>
+            <RowFixed>
+              <Text fontWeight={500} fontSize={20}>
+                {balance === 0 ? 0 : balance.toFixed(6)}
+              </Text>
+            </RowFixed>
+          </RowBetween>
+          {tokenPairAddress && (
+            <RowBetween>
+              <AnalyticsWrapper>
+                <a target="_blank" rel="noopener noreferrer" href={tokenPairAddress}>
+                  {t('viewPairAnalytics')} <ExternalLinkIcon />
+                </a>
+              </AnalyticsWrapper>
+            </RowBetween>
+          )}
+        </AutoColumn>
+      </GreyCard>
+    </>
   )
 }
