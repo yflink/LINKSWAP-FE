@@ -17,7 +17,7 @@ import { AutoColumn } from '../Column'
 import CurrencyLogo from '../CurrencyLogo'
 import DoubleCurrencyLogo from '../DoubleLogo'
 import { RowBetween, RowFixed } from '../Row'
-
+import { Countdown } from '../Countdown'
 import { Dots } from '../swap/styleds'
 import { useTranslation } from 'react-i18next'
 import { ACTIVE_REWARD_POOLS } from '../../constants'
@@ -412,6 +412,7 @@ export function FullStakingCard({ values, my }: { values: any; my: boolean }) {
   const currency0 = unwrappedToken(values.tokens[0])
   const currency1 = unwrappedToken(values.tokens[1])
   const [userBalance, setUserBalance] = useState(0)
+  const [periodFinish, setPeriodFinish] = useState(0)
   const isHighlighted = userBalance > 0 && !my
   const liquidityToken = unwrappedToken(values.liquidityToken)
 
@@ -427,8 +428,17 @@ export function FullStakingCard({ values, my }: { values: any; my: boolean }) {
     })
   }, [account, chainId, library, values, StakingRewards, liquidityToken])
 
+  useMemo(() => {
+    if (!chainId || !library || !account) return
+    const rewardsContract = getContract(values.rewardsAddress, StakingRewards, library, account)
+    const method: (...args: any) => Promise<BigNumber> = rewardsContract.periodFinish
+    method().then(response => {
+      setPeriodFinish(hexStringToNumber(response.toHexString(), 0))
+    })
+  }, [account, chainId, library, values, StakingRewards])
+
   if (my) {
-    console.log(values)
+    console.log(periodFinish)
   }
 
   return (
@@ -468,8 +478,14 @@ export function FullStakingCard({ values, my }: { values: any; my: boolean }) {
             )}
             <RowBetween>
               <Text>{t('stakedTokenAmount')}</Text>
-
               {userBalance}
+            </RowBetween>
+            <RowBetween>
+              <Text fontWeight={600}>{t('stakePoolStats')}</Text>
+            </RowBetween>
+            <RowBetween>
+              <Text>{t('timeRemaining')}</Text>
+              <Countdown ends={periodFinish} format="DD[d] HH[h] mm[m] ss[s]" />
             </RowBetween>
           </AutoColumn>
         )}

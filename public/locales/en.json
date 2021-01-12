@@ -285,7 +285,11 @@
   "activeStakePoolsDescription": "Stake your LINKSWAP Liquidity Provider Token (LSLP) and earn daily rewards",
   "myStakeablePositions": "My unstaked Liquidity",
   "myStakeablePositionsDescriptions": "You have unstaked LINKSWAP Liquidity Provider Tokens (LSLP) for those pools.",
-  "stakableTokenAmount": "Unstaked Tokens",
-  "stakedTokenAmount": "Staked Tokens",
-  "stakePoolStats": "Pool Stats"
+  "stakableTokenAmount": "Unstaked Tokens:",
+  "stakedTokenAmount": "Staked Tokens:",
+  "stakePoolStats": "Pool Stats",
+  "timeRemaining": "Status:",
+  "endsIn": "Ends in: {{time}}",
+  "expired": "Pool Rewards Expired",
+  "notStarted": "Pool Rewards not Started yet"
 }
