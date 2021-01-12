@@ -1,6 +1,6 @@
 import { JSBI, Pair, Percent } from '@uniswap/sdk'
 import { darken } from 'polished'
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { ChevronDown, ChevronUp, ExternalLink } from 'react-feather'
 import { Link } from 'react-router-dom'
 import { Text } from 'rebass'
@@ -22,6 +22,10 @@ import { Dots } from '../swap/styleds'
 import { useTranslation } from 'react-i18next'
 import { ACTIVE_REWARD_POOLS } from '../../constants'
 import { StakeSVG } from '../SVG'
+import { getContract } from '../../utils'
+import { StakingRewards } from '../../pages/Stake/stakingAbi'
+import { BigNumber } from '@ethersproject/bignumber'
+import hexStringToNumber from '../../utils/hexStringToNumber'
 
 const ExternalLinkIcon = styled(ExternalLink)`
   display: inline-block;
@@ -38,7 +42,7 @@ export const FixedHeightRow = styled(RowBetween)`
   height: 24px;
 `
 
-export const StakeIcon = styled.div`
+const StakeIcon = styled.div`
   height: 20px;
   display: inline-block;
   margin-inline-start: 10px;
@@ -75,9 +79,9 @@ const AnalyticsWrapper = styled.div`
   }
 `
 
-export const HoverCard = styled(Card)`
+export const HoverCard = styled(Card)<{ highlight?: boolean }>`
   background-color: ${({ theme }) => theme.appBoxBG};
-  border: 1px solid ${({ theme }) => theme.appBoxBG};
+  border: 1px solid ${({ theme, highlight }) => (highlight ? theme.textHighlight : theme.appBoxBG)};
   :hover {
     border: 1px solid ${({ theme }) => darken(0.06, theme.textTertiary)};
   }
@@ -246,7 +250,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
             <DoubleCurrencyLogo currency0={currency0} currency1={currency1} margin={true} size={20} />
             {!currency0 || !currency1 ? (
               <Text fontWeight={500} fontSize={20}>
-                <Dots>t{'loading'}</Dots>
+                <Dots>{t('loading')}</Dots>
               </Text>
             ) : (
               <div style={{ display: 'flex' }}>
@@ -398,5 +402,78 @@ export function StakingPositionCard({ currencys, balance, token }: StakingPositi
         </AutoColumn>
       </GreyCard>
     </>
+  )
+}
+
+export function FullStakingCard({ values, my }: { values: any; my: boolean }) {
+  const { account, chainId, library } = useActiveWeb3React()
+  const [showMore, setShowMore] = useState(false)
+  const { t } = useTranslation()
+  const currency0 = unwrappedToken(values.tokens[0])
+  const currency1 = unwrappedToken(values.tokens[1])
+  const [userBalance, setUserBalance] = useState(0)
+  const isHighlighted = userBalance > 0 && !my
+  const liquidityToken = unwrappedToken(values.liquidityToken)
+
+  useMemo(() => {
+    if (!chainId || !library || !account) return
+    const rewardsContract = getContract(values.rewardsAddress, StakingRewards, library, account)
+    const method: (...args: any) => Promise<BigNumber> = rewardsContract.balanceOf
+    const args: Array<string | string[] | number> = [account]
+    method(...args).then(response => {
+      if (BigNumber.isBigNumber(response)) {
+        setUserBalance(hexStringToNumber(response.toHexString(), liquidityToken.decimals, 6))
+      }
+    })
+  }, [account, chainId, library, values, StakingRewards, liquidityToken])
+
+  if (my) {
+    console.log(values)
+  }
+
+  return (
+    <HoverCard highlight={isHighlighted}>
+      <AutoColumn gap="12px">
+        <FixedHeightRow onClick={() => setShowMore(!showMore)} style={{ cursor: 'pointer' }}>
+          <RowFixed style={{ position: 'relative' }}>
+            <DoubleCurrencyLogo currency0={currency0} currency1={currency1} margin={true} size={20} />
+            {!currency0 || !currency1 ? (
+              <Text fontWeight={500} fontSize={20}>
+                <Dots>{t('loading')}</Dots>
+              </Text>
+            ) : (
+              <div style={{ display: 'flex' }}>
+                <p style={{ fontWeight: 500, fontSize: 18 }}>{currency0.symbol}</p>
+                <p style={{ fontWeight: 100, fontSize: 18, margin: '18px 8px 0px 8px' }}> | </p>
+                <p style={{ fontWeight: 500, fontSize: 18 }}>{currency1.symbol}</p>
+              </div>
+            )}
+          </RowFixed>
+          <RowFixed>
+            {showMore ? (
+              <ChevronUp size="20" style={{ marginInlineStart: '10px' }} />
+            ) : (
+              <ChevronDown size="20" style={{ marginInlineStart: '10px' }} />
+            )}
+          </RowFixed>
+        </FixedHeightRow>
+        {showMore && (
+          <AutoColumn gap="8px">
+            {my && (
+              <RowBetween>
+                <Text>{t('stakableTokenAmount')}</Text>
+
+                {values['balance']}
+              </RowBetween>
+            )}
+            <RowBetween>
+              <Text>{t('stakedTokenAmount')}</Text>
+
+              {userBalance}
+            </RowBetween>
+          </AutoColumn>
+        )}
+      </AutoColumn>
+    </HoverCard>
   )
 }
