@@ -57,18 +57,21 @@ export default function StakeIntoPool({
   const currencyB = useCurrency(currencyIdB)
   const tokenA = useToken(currencyIdA)
   const tokenB = useToken(currencyIdB)
+  const [rewardsContractAddress, setRewardsContractAddress] = useState('')
   let liquidityToken
   let wrappedLiquidityToken
-  let rewardsContractAddress: any
   if (tokenA && tokenB) {
     liquidityToken = toV2LiquidityToken([tokenA, tokenB])
 
     const liquidityTokenAddress = liquidityToken.address
-    ACTIVE_REWARD_POOLS.forEach((pool: any) => {
-      if (pool.address === liquidityTokenAddress) {
-        rewardsContractAddress = pool.rewardsAddress
-      }
-    })
+    if (!!rewardsContractAddress) {
+      ACTIVE_REWARD_POOLS.forEach((pool: any) => {
+        if (pool.address === liquidityTokenAddress) {
+          setRewardsContractAddress(pool.rewardsAddress)
+        }
+      })
+    }
+
     wrappedLiquidityToken = new WrappedTokenInfo(
       {
         address: liquidityTokenAddress,

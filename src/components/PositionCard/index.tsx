@@ -661,7 +661,7 @@ export function FullStakingCard({ values, my, show }: { values: any; my: boolean
                 {numberToUsd(userShareUsd)} ({numberToPercent(userShare)})
               </RowBetween>
             )}
-            {userRewards.length > 0 ? (
+            {userRewards.length > 0 && userRewards[0] > 0 ? (
               <RowBetween style={{ alignItems: 'flex-start' }}>
                 <Text>{t('claimableRewards')}</Text>
                 <Text style={{ textAlign: 'end' }}>
