@@ -26,6 +26,8 @@ import { getContract } from '../../utils'
 import { StakingRewards } from '../../pages/Stake/stakingAbi'
 import { BigNumber } from '@ethersproject/bignumber'
 import hexStringToNumber from '../../utils/hexStringToNumber'
+import { useSelectedTokenList } from '../../state/lists/hooks'
+import numberToPercent from '../../utils/numberToPercent'
 
 const ExternalLinkIcon = styled(ExternalLink)`
   display: inline-block;
@@ -43,12 +45,12 @@ export const FixedHeightRow = styled(RowBetween)`
 `
 
 const StakeIcon = styled.div`
-  height: 20px;
+  height: 22px;
   display: inline-block;
   margin-inline-start: 10px;
 
   > svg {
-    height: 20px;
+    height: 22px;
     width: auto;
     * {
       fill: ${({ theme }) => theme.textPrimary};
@@ -79,11 +81,21 @@ const AnalyticsWrapper = styled.div`
   }
 `
 
-export const HoverCard = styled(Card)<{ highlight?: boolean }>`
+export const HoverCard = styled(Card)`
+  background-color: ${({ theme }) => theme.appBoxBG};
+  border: 1px solid ${({ theme }) => theme.appBoxBG};
+  :hover {
+    border: 1px solid ${({ theme }) => darken(0.06, theme.textTertiary)};
+  }
+`
+
+const StakingCard = styled(Card)<{ highlight?: boolean }>`
+  font-size: 14px;
+  line-height: 18px;
   background-color: ${({ theme }) => theme.appBoxBG};
   border: 1px solid ${({ theme, highlight }) => (highlight ? theme.textHighlight : theme.appBoxBG)};
   :hover {
-    border: 1px solid ${({ theme }) => darken(0.06, theme.textTertiary)};
+    border: 1px solid ${({ theme, highlight }) => (highlight ? theme.textHighlight : theme.textTertiary)};
   }
 `
 
@@ -140,7 +152,7 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
             </FixedHeightRow>
             <FixedHeightRow onClick={() => setShowMore(!showMore)}>
               <RowFixed>
-                <DoubleCurrencyLogo currency0={currency0} currency1={currency1} margin={true} size={20} />
+                <DoubleCurrencyLogo currency0={currency0} currency1={currency1} margin={true} size={22} />
                 {!currency0 || !currency1 ? (
                   <Text fontWeight={500} fontSize={20}>
                     <Dots>{t('loading')}</Dots>
@@ -247,7 +259,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
       <AutoColumn gap="12px">
         <FixedHeightRow onClick={() => setShowMore(!showMore)} style={{ cursor: 'pointer' }}>
           <RowFixed style={{ position: 'relative' }}>
-            <DoubleCurrencyLogo currency0={currency0} currency1={currency1} margin={true} size={20} />
+            <DoubleCurrencyLogo currency0={currency0} currency1={currency1} margin={true} size={22} />
             {!currency0 || !currency1 ? (
               <Text fontWeight={500} fontSize={20}>
                 <Dots>{t('loading')}</Dots>
@@ -286,7 +298,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
                   <Text fontSize={16} fontWeight={500} style={{ marginInlineStart: '6px' }}>
                     {token0Deposited?.toSignificant(6)}
                   </Text>
-                  <CurrencyLogo size="20px" style={{ marginInlineStart: '8px' }} currency={currency0} />
+                  <CurrencyLogo size="22px" style={{ marginInlineStart: '8px' }} currency={currency0} />
                 </RowFixed>
               ) : (
                 '-'
@@ -304,7 +316,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
                   <Text fontSize={16} fontWeight={500} style={{ marginInlineStart: '6px' }}>
                     {token1Deposited?.toSignificant(6)}
                   </Text>
-                  <CurrencyLogo size="20px" style={{ marginInlineStart: '8px' }} currency={currency1} />
+                  <CurrencyLogo size="22px" style={{ marginInlineStart: '8px' }} currency={currency1} />
                 </RowFixed>
               ) : (
                 '-'
@@ -371,7 +383,7 @@ export function StakingPositionCard({ currencys, balance, token }: StakingPositi
           </FixedHeightRow>
           <RowBetween>
             <RowFixed>
-              <DoubleCurrencyLogo currency0={currencys[0]} currency1={currencys[1]} margin={true} size={20} />
+              <DoubleCurrencyLogo currency0={currencys[0]} currency1={currencys[1]} margin={true} size={22} />
               {!currencys[0] || !currencys[1] ? (
                 <Text fontWeight={500} fontSize={20}>
                   <Dots>{t('loading')}</Dots>
@@ -413,12 +425,20 @@ export function FullStakingCard({ values, my }: { values: any; my: boolean }) {
   const currency1 = unwrappedToken(values.tokens[1])
   const [userBalance, setUserBalance] = useState(0)
   const [periodFinish, setPeriodFinish] = useState(0)
+  const [rewardTokens, setRewardTokens] = useState<string[]>([])
+  const [rewardTokenRates, setRewardTokenRates] = useState<string[]>([])
+  const [totalSupply, setTotalSupply] = useState(0)
   const isHighlighted = userBalance > 0 && !my
   const liquidityToken = unwrappedToken(values.liquidityToken)
+  const rewardInfo: any[] = []
+  const allTokens = useSelectedTokenList()
+  const rewardsContract =
+    !chainId || !library || !account ? false : getContract(values.rewardsAddress, StakingRewards, library, account)
+
+  //console.log(rewardsContract)
 
   useMemo(() => {
-    if (!chainId || !library || !account) return
-    const rewardsContract = getContract(values.rewardsAddress, StakingRewards, library, account)
+    if (!rewardsContract || !account) return
     const method: (...args: any) => Promise<BigNumber> = rewardsContract.balanceOf
     const args: Array<string | string[] | number> = [account]
     method(...args).then(response => {
@@ -426,36 +446,105 @@ export function FullStakingCard({ values, my }: { values: any; my: boolean }) {
         setUserBalance(hexStringToNumber(response.toHexString(), liquidityToken.decimals, 6))
       }
     })
-  }, [account, chainId, library, values, StakingRewards, liquidityToken])
+  }, [account, values, rewardsContract, liquidityToken])
 
   useMemo(() => {
-    if (!chainId || !library || !account) return
-    const rewardsContract = getContract(values.rewardsAddress, StakingRewards, library, account)
+    if (!rewardsContract || !account) return
     const method: (...args: any) => Promise<BigNumber> = rewardsContract.periodFinish
     method().then(response => {
       setPeriodFinish(hexStringToNumber(response.toHexString(), 0))
     })
-  }, [account, chainId, library, values, StakingRewards])
+  }, [account, values, rewardsContract])
 
-  if (my) {
-    console.log(periodFinish)
+  useMemo(() => {
+    if (!rewardsContract || !account) return
+    const method: (...args: any) => Promise<BigNumber> = rewardsContract.totalSupply
+    method().then(response => {
+      setTotalSupply(hexStringToNumber(response.toHexString(), liquidityToken.decimals))
+    })
+  }, [account, values, rewardsContract, liquidityToken])
+
+  useMemo(() => {
+    if (!rewardsContract || !account) return
+    const method: (...args: any) => Promise<string> = rewardsContract.rewardTokens
+    const args = 0
+    const rewardTokensArray = rewardTokens
+    method(args).then(response => {
+      rewardTokensArray[0] = response
+      setRewardTokens(rewardTokensArray)
+    })
+  }, [account, values, rewardsContract])
+
+  useMemo(() => {
+    if (!rewardsContract || !account) return
+    const method: (...args: any) => Promise<string> = rewardsContract.rewardTokens
+    const args = 1
+    const rewardTokensArray = rewardTokens
+    method(args).then(response => {
+      if (response !== '0x0000000000000000000000000000000000000000') {
+        rewardTokensArray[1] = response
+        setRewardTokens(rewardTokensArray)
+      }
+    })
+  }, [account, values, rewardsContract])
+
+  useMemo(() => {
+    if (!rewardsContract || !account) return
+    const method: (...args: any) => Promise<BigNumber> = rewardsContract.rewardRate
+    const args = 0
+    const rewardTokenRatesArray = rewardTokenRates
+    method(args).then(response => {
+      rewardTokenRatesArray[0] = response.toHexString()
+      setRewardTokenRates(rewardTokenRatesArray)
+    })
+  }, [account, values, rewardsContract, rewardTokens])
+
+  useMemo(() => {
+    if (!rewardsContract || !account) return
+    const method: (...args: any) => Promise<BigNumber> = rewardsContract.rewardRate
+    const args = 1
+    const rewardTokenRatesArray = rewardTokenRates
+    method(args).then(response => {
+      rewardTokenRatesArray[1] = response.toHexString()
+      setRewardTokenRates(rewardTokenRatesArray)
+    })
+  }, [account, values, rewardsContract, rewardTokens])
+
+  if (chainId && rewardTokens.length) {
+    rewardTokens.forEach((tokenAddress: string, index: number) => {
+      if (allTokens[chainId][tokenAddress]) {
+        const tokenInfo = {
+          address: tokenAddress,
+          decimals: allTokens[chainId][tokenAddress].decimals,
+          symbol: allTokens[chainId][tokenAddress].symbol,
+          rate: 0
+        }
+
+        if (rewardTokenRates[index]) {
+          tokenInfo.rate = hexStringToNumber(rewardTokenRates[index], tokenInfo.decimals, 2, true)
+        }
+        rewardInfo.push(tokenInfo)
+      }
+    })
   }
 
+  const userShare = totalSupply > 0 && userBalance > 0 ? userBalance / (totalSupply / 100) : 0
+
   return (
-    <HoverCard highlight={isHighlighted}>
+    <StakingCard highlight={isHighlighted}>
       <AutoColumn gap="12px">
         <FixedHeightRow onClick={() => setShowMore(!showMore)} style={{ cursor: 'pointer' }}>
           <RowFixed style={{ position: 'relative' }}>
-            <DoubleCurrencyLogo currency0={currency0} currency1={currency1} margin={true} size={20} />
+            <DoubleCurrencyLogo currency0={currency0} currency1={currency1} margin={true} size={22} />
             {!currency0 || !currency1 ? (
               <Text fontWeight={500} fontSize={20}>
                 <Dots>{t('loading')}</Dots>
               </Text>
             ) : (
               <div style={{ display: 'flex' }}>
-                <p style={{ fontWeight: 500, fontSize: 18 }}>{currency0.symbol}</p>
-                <p style={{ fontWeight: 100, fontSize: 18, margin: '18px 8px 0px 8px' }}> | </p>
-                <p style={{ fontWeight: 500, fontSize: 18 }}>{currency1.symbol}</p>
+                <p style={{ fontWeight: 500, fontSize: 18, margin: '0 4px' }}>{currency0.symbol}</p>
+                <p style={{ fontWeight: 100, fontSize: 18, margin: '0 4px' }}> | </p>
+                <p style={{ fontWeight: 500, fontSize: 18, margin: '0 4px' }}>{currency1.symbol}</p>
               </div>
             )}
           </RowFixed>
@@ -472,24 +561,84 @@ export function FullStakingCard({ values, my }: { values: any; my: boolean }) {
             {my && (
               <RowBetween>
                 <Text>{t('stakableTokenAmount')}</Text>
-
                 {values['balance']}
               </RowBetween>
             )}
+            {userBalance > 0 && (
+              <RowBetween>
+                <Text>{t('stakedTokenAmount')}</Text>
+                {userBalance}
+              </RowBetween>
+            )}
+            {userBalance > 0 && userShare > 0 && (
+              <RowBetween>
+                <Text>{t('yourPoolShare')}</Text>
+                {numberToPercent(userShare)}
+              </RowBetween>
+            )}
+            {my && (
+              <RowBetween marginTop="10px">
+                <ButtonSecondary as={Link} width="100%" to={`/stake/${currencyId(currency0)}/${currencyId(currency1)}`}>
+                  {t('stake')}
+                </ButtonSecondary>
+              </RowBetween>
+            )}
             <RowBetween>
-              <Text>{t('stakedTokenAmount')}</Text>
-              {userBalance}
+              <Text style={{ margin: '12px 0 0' }} fontSize="16px" fontWeight={600}>
+                {t('stakePoolStats')}
+              </Text>
             </RowBetween>
-            <RowBetween>
-              <Text fontWeight={600}>{t('stakePoolStats')}</Text>
-            </RowBetween>
+            {rewardInfo.length > 0 && (
+              <RowBetween style={{ alignItems: 'flex-start' }}>
+                <Text>{t('stakePoolRewards')}</Text>
+                <Text style={{ textAlign: 'end' }}>
+                  {rewardInfo[0]['rate'] > 0 && (
+                    <div>
+                      {t('stakeRewardPerDay', { rate: rewardInfo[0].rate, currencySymbol: rewardInfo[0].symbol })}
+                    </div>
+                  )}
+                  {rewardInfo.length > 1 && rewardInfo[1]['rate'] > 0 && (
+                    <div style={{ textAlign: 'end' }}>
+                      {t('stakeRewardPerDay', { rate: rewardInfo[1].rate, currencySymbol: rewardInfo[1].symbol })}
+                    </div>
+                  )}
+                </Text>
+              </RowBetween>
+            )}
             <RowBetween>
               <Text>{t('timeRemaining')}</Text>
               <Countdown ends={periodFinish} format="DD[d] HH[h] mm[m] ss[s]" />
             </RowBetween>
+            {userBalance > 0 && !my && (
+              <RowBetween marginTop="10px">
+                <ButtonSecondary
+                  as={Link}
+                  width="48%"
+                  style={{ marginInlineEnd: '1%' }}
+                  to={`/unstake/${currencyId(currency0)}/${currencyId(currency1)}`}
+                >
+                  {t('claimRewards')}
+                </ButtonSecondary>
+                <ButtonSecondary
+                  as={Link}
+                  width="48%"
+                  style={{ marginInlineStart: '1%' }}
+                  to={`/unstake/${currencyId(currency0)}/${currencyId(currency1)}`}
+                >
+                  {t('unstake')}
+                </ButtonSecondary>
+              </RowBetween>
+            )}
+            {userBalance === 0 && !my && periodFinish > 0 && (
+              <RowBetween marginTop="10px">
+                <ButtonSecondary as={Link} to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`} width="100%">
+                  {t('addLiquidity')}
+                </ButtonSecondary>
+              </RowBetween>
+            )}
           </AutoColumn>
         )}
       </AutoColumn>
-    </HoverCard>
+    </StakingCard>
   )
 }
