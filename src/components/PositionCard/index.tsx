@@ -11,7 +11,7 @@ import { useActiveWeb3React } from '../../hooks'
 import { useTokenBalance } from '../../state/wallet/hooks'
 import { currencyId } from '../../utils/currencyId'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
-import { ButtonSecondary } from '../Button'
+import { ButtonLight, ButtonSecondary } from '../Button'
 import Card, { GreyCard } from '../Card'
 import { AutoColumn } from '../Column'
 import CurrencyLogo from '../CurrencyLogo'
@@ -23,11 +23,14 @@ import { useTranslation } from 'react-i18next'
 import { ACTIVE_REWARD_POOLS } from '../../constants'
 import { StakeSVG } from '../SVG'
 import { getContract } from '../../utils'
-import { StakingRewards } from '../../pages/Stake/stakingAbi'
+import { LINKSWAPLPToken, StakingRewards } from '../../pages/Stake/stakingAbi'
 import { BigNumber } from '@ethersproject/bignumber'
 import hexStringToNumber from '../../utils/hexStringToNumber'
 import { useSelectedTokenList } from '../../state/lists/hooks'
-import numberToPercent from '../../utils/numberToPercent'
+import { useGetLPTokenPrices, useGetTokenPrices } from '../../state/price/hooks'
+import { numberToUsd, numberToPercent, numberToSignificant } from '../../utils/numberUtils'
+import { getNetworkLibrary } from '../../connectors'
+import { useWalletModalToggle } from '../../state/application/hooks'
 
 const ExternalLinkIcon = styled(ExternalLink)`
   display: inline-block;
@@ -35,8 +38,7 @@ const ExternalLinkIcon = styled(ExternalLink)`
   width: 14px;
   height: 14px;
   margin-bottom: -2px;
-
-  > * {
+  numberToPercent > * {
     stroke: ${({ theme }) => theme.textPrimary};
   }
 `
@@ -417,28 +419,42 @@ export function StakingPositionCard({ currencys, balance, token }: StakingPositi
   )
 }
 
-export function FullStakingCard({ values, my }: { values: any; my: boolean }) {
+export function FullStakingCard({ values, my, show }: { values: any; my: boolean; show?: boolean | false }) {
   const { account, chainId, library } = useActiveWeb3React()
-  const [showMore, setShowMore] = useState(false)
+  const [showMore, setShowMore] = useState(show)
   const { t } = useTranslation()
   const currency0 = unwrappedToken(values.tokens[0])
   const currency1 = unwrappedToken(values.tokens[1])
   const [userBalance, setUserBalance] = useState(0)
+  const [userRewards, setUserRewards] = useState<any[]>([])
   const [periodFinish, setPeriodFinish] = useState(0)
   const [rewardTokens, setRewardTokens] = useState<string[]>([])
   const [rewardTokenRates, setRewardTokenRates] = useState<string[]>([])
   const [totalSupply, setTotalSupply] = useState(0)
+  const [totalLPSupply, setTotalLPSupply] = useState(0)
   const isHighlighted = userBalance > 0 && !my
   const liquidityToken = unwrappedToken(values.liquidityToken)
   const rewardInfo: any[] = []
   const allTokens = useSelectedTokenList()
+  const { tokenPrices } = useGetTokenPrices()
+  const { lpTokenPrices } = useGetLPTokenPrices()
+  const id = values.liquidityToken.address.toLowerCase()
+  const toggleWalletModal = useWalletModalToggle()
+  const fakeAccount = '0x0000000000000000000000000000000000000000'
+  const fakeChainId = 1
+  const fakeLibrary = getNetworkLibrary()
   const rewardsContract =
-    !chainId || !library || !account ? false : getContract(values.rewardsAddress, StakingRewards, library, account)
-
-  //console.log(rewardsContract)
+    !chainId || !library || !account
+      ? getContract(values.rewardsAddress, StakingRewards, fakeLibrary, fakeAccount)
+      : getContract(values.rewardsAddress, StakingRewards, library, account)
+  const lpContract =
+    !chainId || !library || !account
+      ? getContract(values.liquidityToken.address, LINKSWAPLPToken, fakeLibrary, fakeAccount)
+      : getContract(values.liquidityToken.address, LINKSWAPLPToken, library, account)
+  let apy = 0
 
   useMemo(() => {
-    if (!rewardsContract || !account) return
+    if (!rewardsContract || !account || userBalance > 0) return
     const method: (...args: any) => Promise<BigNumber> = rewardsContract.balanceOf
     const args: Array<string | string[] | number> = [account]
     method(...args).then(response => {
@@ -449,23 +465,23 @@ export function FullStakingCard({ values, my }: { values: any; my: boolean }) {
   }, [account, values, rewardsContract, liquidityToken])
 
   useMemo(() => {
-    if (!rewardsContract || !account) return
+    if (!rewardsContract || periodFinish > 0) return
     const method: (...args: any) => Promise<BigNumber> = rewardsContract.periodFinish
     method().then(response => {
       setPeriodFinish(hexStringToNumber(response.toHexString(), 0))
     })
-  }, [account, values, rewardsContract])
+  }, [values, rewardsContract])
 
   useMemo(() => {
-    if (!rewardsContract || !account) return
+    if (!rewardsContract || totalSupply > 0) return
     const method: (...args: any) => Promise<BigNumber> = rewardsContract.totalSupply
     method().then(response => {
       setTotalSupply(hexStringToNumber(response.toHexString(), liquidityToken.decimals))
     })
-  }, [account, values, rewardsContract, liquidityToken])
+  }, [values, rewardsContract, liquidityToken])
 
   useMemo(() => {
-    if (!rewardsContract || !account) return
+    if (!rewardsContract || rewardTokens.length > 0) return
     const method: (...args: any) => Promise<string> = rewardsContract.rewardTokens
     const args = 0
     const rewardTokensArray = rewardTokens
@@ -473,23 +489,23 @@ export function FullStakingCard({ values, my }: { values: any; my: boolean }) {
       rewardTokensArray[0] = response
       setRewardTokens(rewardTokensArray)
     })
-  }, [account, values, rewardsContract])
+  }, [values, rewardsContract])
 
   useMemo(() => {
-    if (!rewardsContract || !account) return
+    if (!rewardsContract || rewardTokens.length > 1) return
     const method: (...args: any) => Promise<string> = rewardsContract.rewardTokens
     const args = 1
     const rewardTokensArray = rewardTokens
     method(args).then(response => {
-      if (response !== '0x0000000000000000000000000000000000000000') {
+      if (response !== fakeAccount) {
         rewardTokensArray[1] = response
         setRewardTokens(rewardTokensArray)
       }
     })
-  }, [account, values, rewardsContract])
+  }, [values, rewardsContract])
 
   useMemo(() => {
-    if (!rewardsContract || !account) return
+    if (!rewardsContract || rewardTokenRates.length > 0) return
     const method: (...args: any) => Promise<BigNumber> = rewardsContract.rewardRate
     const args = 0
     const rewardTokenRatesArray = rewardTokenRates
@@ -497,10 +513,10 @@ export function FullStakingCard({ values, my }: { values: any; my: boolean }) {
       rewardTokenRatesArray[0] = response.toHexString()
       setRewardTokenRates(rewardTokenRatesArray)
     })
-  }, [account, values, rewardsContract, rewardTokens])
+  }, [values, rewardsContract, rewardTokens])
 
   useMemo(() => {
-    if (!rewardsContract || !account) return
+    if (!rewardsContract || rewardTokenRates.length > 1) return
     const method: (...args: any) => Promise<BigNumber> = rewardsContract.rewardRate
     const args = 1
     const rewardTokenRatesArray = rewardTokenRates
@@ -508,40 +524,109 @@ export function FullStakingCard({ values, my }: { values: any; my: boolean }) {
       rewardTokenRatesArray[1] = response.toHexString()
       setRewardTokenRates(rewardTokenRatesArray)
     })
-  }, [account, values, rewardsContract, rewardTokens])
+  }, [values, rewardsContract, rewardTokens])
 
-  if (chainId && rewardTokens.length) {
+  useMemo(() => {
+    if (!lpContract || totalLPSupply > 0) return
+    const method: (...args: any) => Promise<BigNumber> = lpContract.totalSupply
+    method().then(response => {
+      setTotalLPSupply(hexStringToNumber(response.toHexString(), liquidityToken.decimals))
+    })
+  }, [values, lpContract, liquidityToken])
+
+  useMemo(() => {
+    const wrappedRewardToken0 = allTokens['1'][rewardTokens[0]] || false
+    if (!rewardsContract || !account || !wrappedRewardToken0) return
+    const method: (...args: any) => Promise<any> = rewardsContract.earned
+    const args: Array<string | number> = [account, 0x00]
+    const userRewardArray = userRewards
+    method(...args).then(response => {
+      userRewardArray[0] = hexStringToNumber(response.toHexString(), wrappedRewardToken0.decimals)
+      setUserRewards(userRewardArray)
+    })
+  }, [values, rewardsContract, rewardTokens, allTokens])
+
+  useMemo(() => {
+    const wrappedRewardToken1 = allTokens['1'][rewardTokens[1]] || false
+    if (!rewardsContract || !account || !wrappedRewardToken1) return
+    const method: (...args: any) => Promise<any> = rewardsContract.earned
+    const args: Array<string | number> = [account, 0x01]
+    const userRewardArray = userRewards
+    method(...args).then(response => {
+      userRewardArray[1] = hexStringToNumber(response.toHexString(), wrappedRewardToken1.decimals)
+      setUserRewards(userRewardArray)
+    })
+  }, [values, rewardsContract, rewardTokens, allTokens])
+
+  if ((chainId && rewardTokens.length) || (fakeChainId && rewardTokens.length)) {
+    const chainIdNumber = chainId ? chainId : fakeChainId
     rewardTokens.forEach((tokenAddress: string, index: number) => {
-      if (allTokens[chainId][tokenAddress]) {
+      if (allTokens[chainIdNumber][tokenAddress]) {
         const tokenInfo = {
-          address: tokenAddress,
-          decimals: allTokens[chainId][tokenAddress].decimals,
-          symbol: allTokens[chainId][tokenAddress].symbol,
-          rate: 0
+          address: tokenAddress.toLowerCase(),
+          decimals: allTokens[chainIdNumber][tokenAddress].decimals,
+          symbol: allTokens[chainIdNumber][tokenAddress].symbol,
+          rate: 0,
+          price: 0
         }
 
         if (rewardTokenRates[index]) {
           tokenInfo.rate = hexStringToNumber(rewardTokenRates[index], tokenInfo.decimals, 2, true)
         }
+
+        if (tokenPrices[tokenInfo.address]) {
+          tokenInfo.price = tokenPrices[tokenInfo.address].price
+        }
         rewardInfo.push(tokenInfo)
       }
     })
   }
-
+  const stakePoolTotalLiq = lpTokenPrices ? lpTokenPrices[id].totalLiq : 0
   const userShare = totalSupply > 0 && userBalance > 0 ? userBalance / (totalSupply / 100) : 0
+  const lpTokenPrice = stakePoolTotalLiq && totalLPSupply > 0 ? stakePoolTotalLiq / totalLPSupply : 0
+  const stakePoolTotalDeposited = lpTokenPrice ? totalSupply * lpTokenPrice : 0
+  const userShareUsd = lpTokenPrice && userBalance ? userBalance * lpTokenPrice : 0
+
+  if (apy === 0 && tokenPrices && stakePoolTotalDeposited && rewardInfo.length > 0 && periodFinish > 0) {
+    let totalDailyRewardValue = 0
+    if (rewardInfo[0] && rewardInfo[0].rate > 0) {
+      const dailyToken0Value = rewardInfo[0].rate * rewardInfo[0].price
+      if (dailyToken0Value > 0) {
+        totalDailyRewardValue += dailyToken0Value
+      }
+    }
+
+    if (rewardInfo[1] && rewardInfo[1].rate > 0) {
+      const dailyToken1Value = rewardInfo[1].rate * rewardInfo[1].price
+      if (dailyToken1Value > 0) {
+        totalDailyRewardValue += dailyToken1Value
+      }
+    }
+
+    if (!!totalSupply) {
+      const yearlyRewardsValue = totalDailyRewardValue * 365
+      const perDepositedDollarYearlyReward = yearlyRewardsValue / stakePoolTotalDeposited
+      apy = perDepositedDollarYearlyReward * 100
+    }
+  }
 
   return (
     <StakingCard highlight={isHighlighted}>
       <AutoColumn gap="12px">
-        <FixedHeightRow onClick={() => setShowMore(!showMore)} style={{ cursor: 'pointer' }}>
-          <RowFixed style={{ position: 'relative' }}>
+        <FixedHeightRow onClick={() => setShowMore(!showMore)} style={{ cursor: 'pointer', position: 'relative' }}>
+          {apy > 0 && !my && (
+            <div style={{ position: 'absolute', right: '-13px', top: '-16px', fontSize: '12px' }}>
+              {t('apy', { apy: numberToPercent(apy) })}
+            </div>
+          )}
+          <RowFixed>
             <DoubleCurrencyLogo currency0={currency0} currency1={currency1} margin={true} size={22} />
             {!currency0 || !currency1 ? (
               <Text fontWeight={500} fontSize={20}>
                 <Dots>{t('loading')}</Dots>
               </Text>
             ) : (
-              <div style={{ display: 'flex' }}>
+              <div style={{ display: 'flex', position: 'relative' }}>
                 <p style={{ fontWeight: 500, fontSize: 18, margin: '0 4px' }}>{currency0.symbol}</p>
                 <p style={{ fontWeight: 100, fontSize: 18, margin: '0 4px' }}> | </p>
                 <p style={{ fontWeight: 500, fontSize: 18, margin: '0 4px' }}>{currency1.symbol}</p>
@@ -561,20 +646,46 @@ export function FullStakingCard({ values, my }: { values: any; my: boolean }) {
             {my && (
               <RowBetween>
                 <Text>{t('stakableTokenAmount')}</Text>
-                {values['balance']}
+                {numberToSignificant(values['balance'])}
               </RowBetween>
             )}
             {userBalance > 0 && (
               <RowBetween>
                 <Text>{t('stakedTokenAmount')}</Text>
-                {userBalance}
+                {numberToSignificant(userBalance)}
               </RowBetween>
             )}
-            {userBalance > 0 && userShare > 0 && (
+            {userBalance > 0 && userShare > 0 && userShareUsd > 0 && (
               <RowBetween>
                 <Text>{t('yourPoolShare')}</Text>
-                {numberToPercent(userShare)}
+                {numberToUsd(userShareUsd)} ({numberToPercent(userShare)})
               </RowBetween>
+            )}
+            {userRewards.length > 0 ? (
+              <RowBetween style={{ alignItems: 'flex-start' }}>
+                <Text>{t('claimableRewards')}</Text>
+                <Text style={{ textAlign: 'end' }}>
+                  {userRewards.length > 0 && rewardInfo.length > 0 && userRewards[0] > 0 && (
+                    <div>
+                      {numberToSignificant(userRewards[0])} {rewardInfo[0].symbol}
+                    </div>
+                  )}
+                  {userRewards.length > 1 && rewardInfo.length > 1 && userRewards[1] > 0 && (
+                    <div>
+                      {numberToSignificant(userRewards[1])} {rewardInfo[1].symbol}
+                    </div>
+                  )}
+                </Text>
+              </RowBetween>
+            ) : (
+              <>
+                {periodFinish > 0 && userBalance > 0 && (
+                  <RowBetween style={{ alignItems: 'flex-start' }}>
+                    <Text>{t('claimableRewards')}</Text>
+                    <Dots>{t('loading')}</Dots>
+                  </RowBetween>
+                )}
+              </>
             )}
             {my && (
               <RowBetween marginTop="10px">
@@ -588,6 +699,18 @@ export function FullStakingCard({ values, my }: { values: any; my: boolean }) {
                 {t('stakePoolStats')}
               </Text>
             </RowBetween>
+            {stakePoolTotalLiq > 0 && (
+              <RowBetween style={{ alignItems: 'flex-start' }}>
+                <Text>{t('stakePoolTotalLiq')}</Text>
+                <Text>{numberToUsd(stakePoolTotalLiq)}</Text>
+              </RowBetween>
+            )}
+            {stakePoolTotalDeposited > 0 && (
+              <RowBetween style={{ alignItems: 'flex-start' }}>
+                <Text>{t('stakePoolTotalDeposited')}</Text>
+                <Text>{numberToUsd(stakePoolTotalDeposited)}</Text>
+              </RowBetween>
+            )}
             {rewardInfo.length > 0 && (
               <RowBetween style={{ alignItems: 'flex-start' }}>
                 <Text>{t('stakePoolRewards')}</Text>
@@ -601,6 +724,9 @@ export function FullStakingCard({ values, my }: { values: any; my: boolean }) {
                     <div style={{ textAlign: 'end' }}>
                       {t('stakeRewardPerDay', { rate: rewardInfo[1].rate, currencySymbol: rewardInfo[1].symbol })}
                     </div>
+                  )}
+                  {apy > 0 && (
+                    <div style={{ textAlign: 'end', marginTop: '8px' }}>{t('apy', { apy: numberToPercent(apy) })}</div>
                   )}
                 </Text>
               </RowBetween>
@@ -629,11 +755,27 @@ export function FullStakingCard({ values, my }: { values: any; my: boolean }) {
                 </ButtonSecondary>
               </RowBetween>
             )}
+            {userBalance > 0 && userRewards.length > 0 && !my && (
+              <RowBetween marginTop="10px">
+                <ButtonSecondary
+                  as={Link}
+                  width="100%"
+                  style={{ marginInlineEnd: '1%' }}
+                  to={`/unstake/${currencyId(currency0)}/${currencyId(currency1)}`}
+                >
+                  {t('unstakeAndClaim')}
+                </ButtonSecondary>
+              </RowBetween>
+            )}
             {userBalance === 0 && !my && periodFinish > 0 && (
               <RowBetween marginTop="10px">
-                <ButtonSecondary as={Link} to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`} width="100%">
-                  {t('addLiquidity')}
-                </ButtonSecondary>
+                {!account ? (
+                  <ButtonLight onClick={toggleWalletModal}>{t('connectWallet')}</ButtonLight>
+                ) : (
+                  <ButtonSecondary as={Link} to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`} width="100%">
+                    {t('addLiquidity')}
+                  </ButtonSecondary>
+                )}
               </RowBetween>
             )}
           </AutoColumn>

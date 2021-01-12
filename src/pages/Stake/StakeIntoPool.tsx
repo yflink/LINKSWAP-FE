@@ -29,7 +29,7 @@ import QuestionHelper from '../../components/QuestionHelper'
 import { WrappedTokenInfo } from '../../state/lists/hooks'
 import ReactGA from 'react-ga'
 import { addTransaction } from '../../state/transactions/actions'
-import { StakingPositionCard } from '../../components/PositionCard'
+import { FullStakingCard, StakingPositionCard } from '../../components/PositionCard'
 
 const Tabs = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -114,7 +114,6 @@ export default function StakeIntoPool({
   }, {})
 
   const [approvalA, approveACallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_A], rewardsContractAddress)
-
   const { t } = useTranslation()
 
   useMemo(() => {
@@ -175,6 +174,12 @@ export default function StakeIntoPool({
 
   const { [Field.CURRENCY_A]: parsedAmountA } = parsedAmounts
   const buttonSting = parsedAmountA ? t('stake') : t('enterAmount')
+
+  const stakingValues = {
+    liquidityToken: liquidityToken,
+    rewardsAddress: rewardsContractAddress,
+    tokens: [currencyA, currencyB]
+  }
 
   return (
     <>
@@ -248,7 +253,7 @@ export default function StakeIntoPool({
       </AppBodyDark>
       {account && chainId && library && balance > 0 && (
         <AutoColumn style={{ marginTop: '1rem', maxWidth: '420px', width: '100%' }}>
-          <StakingPositionCard balance={balance} currencys={[currencyA, currencyB]} token={liquidityToken} />
+          <FullStakingCard values={stakingValues} my={true} show={true} />
         </AutoColumn>
       )}
     </>

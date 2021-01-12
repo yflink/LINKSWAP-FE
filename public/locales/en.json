@@ -279,6 +279,7 @@
   "gasPrice": "{{price}} gwei",
   "stake": "Stake",
   "unstake": "Unstake",
+  "unstakeAndClaim": "Unstake All & Claim Rewards",
   "stakeLPToken": "Stake {{currencyASymbol}} | {{currencyBSymbol}} LP Token",
   "stakeLPTokenDescription": "By staking your {{currencyASymbol}} | {{currencyBSymbol}} LINKSWAP Liquidity Provider Token (LSLP) you will be eligible to earn staking rewards",
   "myStakedPosition": "Your staked position",
@@ -296,5 +297,8 @@
   "stakePoolRewards": "Rewards",
   "stakeRewardPerDay": "{{rate}} {{currencySymbol}} / day",
   "claimableRewards": "Claimable Rewards",
-  "claimRewards": "Claim Rewards"
+  "claimRewards": "Claim Rewards",
+  "stakePoolTotalLiq": "Total Liquidity",
+  "stakePoolTotalDeposited": "Total Deposited",
+  "apy": "APY: ~{{apy}}"
 }

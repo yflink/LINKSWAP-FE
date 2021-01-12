@@ -25,6 +25,10 @@ import { useTranslation } from 'react-i18next'
 import { StakePools } from '../../components/Stake'
 import Transaction from '../../components/AccountDetails/Transaction'
 import { ACTIVE_REWARD_POOLS } from '../../constants'
+import { useGetTokenPrices } from '../../state/price/hooks'
+import { useTokenUsdPrices } from '../../hooks/useTokenUsdPrice'
+import { useCurrencyUsdPrice } from '../../hooks/useCurrencyUsdPrice'
+import { useLPTokenUsdPrices } from '../../hooks/useLPTokenUsdPrice'
 
 export const MyStakePools = styled(BodyWrapper)`
   margin: 0 0 24px;
@@ -107,6 +111,8 @@ export default function StakeOverview() {
   }, [tokenPairsWithLiquidityTokens, ACTIVE_REWARD_POOLS])
   const { t } = useTranslation()
 
+  useTokenUsdPrices()
+  useLPTokenUsdPrices()
   return (
     <>
       <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.appBGColor, marginBottom: '16px' }}>
