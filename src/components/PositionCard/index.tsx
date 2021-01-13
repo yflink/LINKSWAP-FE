@@ -550,7 +550,7 @@ export function FullStakingCard({
       rewardTokenRatesArray[1] = response.toHexString()
       setRewardTokenRates(rewardTokenRatesArray)
     })
-  }, [rewardsContract, rewardTokenRates])
+  }, [rewardsContract, rewardTokenRates, showMore, show])
 
   useMemo(() => {
     if (!lpContract) return
