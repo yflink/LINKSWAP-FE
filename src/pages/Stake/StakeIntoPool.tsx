@@ -62,7 +62,7 @@ export default function StakeIntoPool({
   const [rewardsContractAddress, setRewardsContractAddress] = useState(fakeContract)
   let liquidityToken
   let wrappedLiquidityToken
-  let hasError = false
+  let hasError
   if (tokenA && tokenB) {
     liquidityToken = toV2LiquidityToken([tokenA, tokenB])
 
