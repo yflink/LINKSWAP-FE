@@ -278,10 +278,16 @@
   "fast": "Fast",
   "gasPrice": "{{price}} gwei",
   "stake": "Stake",
+  "staking": "Staking",
   "unstake": "Unstake",
+  "unstaking": "Unstaking",
   "unstakeAndClaim": "Unstake All & Claim Rewards",
   "stakeLPToken": "Stake {{currencyASymbol}} | {{currencyBSymbol}} LP Token",
+  "stakeLPTokenAmount": "Stake {{amount}} {{currencyASymbol}} | {{currencyBSymbol}} LP Token",
   "stakeLPTokenDescription": "By staking your {{currencyASymbol}} | {{currencyBSymbol}} LINKSWAP Liquidity Provider Token (LSLP) you will be eligible to earn staking rewards",
+  "unStakeLPToken": "Unstake {{currencyASymbol}} | {{currencyBSymbol}} LP Token",
+  "unStakeLPTokenAmount": "Unstake {{amount}} {{currencyASymbol}} | {{currencyBSymbol}} LP Token",
+  "unStakeLPTokenDescription": "By unstaking your {{currencyASymbol}} | {{currencyBSymbol}} LINKSWAP Liquidity Provider Token (LSLP) you will no longer be eligible to earn staking rewards",
   "myStakedPosition": "Your staked position",
   "stakePools": "LP Reward Pools",
   "stakePoolsDescription": "Stake your LINKSWAP Liquidity Provider Token (LSLP) and earn daily rewards",
@@ -302,5 +308,6 @@
   "stakePoolTotalDeposited": "Total Deposited",
   "apy": "APY: ~{{apy}}",
   "onlyShowYourStakePools": "Only show Pools you staked in",
-  "showExpiredStakePools": "Show inactive Pools"
+  "showExpiredStakePools": "Show inactive Pools",
+  "insufficientStakedCurrencyBalance": "Insufficient staked {{ inputCurrency }} Balance"
 }

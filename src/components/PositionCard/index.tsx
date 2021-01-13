@@ -473,7 +473,7 @@ export function FullStakingCard({
   let apy = 0
 
   useMemo(() => {
-    if (!rewardsContract || !account || userBalance > 0) return
+    if (!rewardsContract || !account) return
     const method: (...args: any) => Promise<BigNumber> = rewardsContract.balanceOf
     const args: Array<string | string[] | number> = [account]
     method(...args).then(response => {

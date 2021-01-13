@@ -12,7 +12,7 @@ import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import { SwapPoolTabs } from '../../components/NavigationTabs'
 import { RowBetween } from '../../components/Row'
 import { useTranslation } from 'react-i18next'
-import { ACTIVE_REWARD_POOLS } from '../../constants'
+import { ACTIVE_REWARD_POOLS, ROUTER_ADDRESS, WETHER } from '../../constants'
 import { useActiveWeb3React } from '../../hooks'
 import { useCurrency, useToken } from '../../hooks/Tokens'
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
@@ -31,6 +31,7 @@ import ReactGA from 'react-ga'
 import { FullStakingCard } from '../../components/PositionCard'
 import { useCurrencyBalance } from '../../state/wallet/hooks'
 import { useTransactionAdder } from '../../state/transactions/hooks'
+import hexStringToNumber from '../../utils/hexStringToNumber'
 
 const Tabs = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -45,13 +46,14 @@ const ActiveText = styled.div`
   font-size: 20px;
 `
 
-export default function StakeIntoPool({
+export default function Unstake({
   match: {
     params: { currencyIdA, currencyIdB }
   }
 }: RouteComponentProps<{ currencyIdA?: string; currencyIdB?: string }>) {
   const [balance, setBalance] = useState(0)
-  const [staking, setStaking] = useState(false)
+  const [userBalance, setUserBalance] = useState(0)
+  const [unstaking, setUnstaking] = useState(false)
   const { account, chainId, library } = useActiveWeb3React()
   const theme = useContext(ThemeContext)
   const currencyA = useCurrency(currencyIdA)
@@ -60,7 +62,7 @@ export default function StakeIntoPool({
   const tokenB = useToken(currencyIdB)
   const fakeContract = '0x0000000000000000000000000000000000000000'
   const [rewardsContractAddress, setRewardsContractAddress] = useState(fakeContract)
-  let liquidityToken
+  let liquidityToken: any
   let wrappedLiquidityToken
   let hasError = false
   if (tokenA && tokenB) {
@@ -89,7 +91,7 @@ export default function StakeIntoPool({
   }
   const toggleWalletModal = useWalletModalToggle()
   const { independentField, typedValue } = useMintState()
-  const { dependentField, currencies, currencyBalances, parsedAmounts, noLiquidity } = useDerivedMintInfo(
+  const { dependentField, currencies, parsedAmounts, noLiquidity } = useDerivedMintInfo(
     wrappedLiquidityToken ?? undefined,
     undefined
   )
@@ -99,18 +101,12 @@ export default function StakeIntoPool({
     [dependentField]: parsedAmounts[dependentField]?.toSignificant(6) ?? ''
   }
 
-  // get the max amounts user can add
-  const maxAmounts: { [field in Field]?: TokenAmount } = [Field.CURRENCY_A].reduce((accumulator, field) => {
-    return {
-      ...accumulator,
-      [field]: maxAmountSpend(currencyBalances[field])
-    }
-  }, {})
+  const maxAmount = userBalance | 0
 
   const atMaxAmounts: { [field in Field]?: TokenAmount } = [Field.CURRENCY_A].reduce((accumulator, field) => {
     return {
       ...accumulator,
-      [field]: maxAmounts[field]?.equalTo(parsedAmounts[field] ?? '0')
+      [field]: maxAmount === Number(parsedAmounts[field] ?? '0')
     }
   }, {})
 
@@ -120,7 +116,7 @@ export default function StakeIntoPool({
 
   const { [Field.CURRENCY_A]: parsedAmountA } = parsedAmounts
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, liquidityToken ?? undefined)
-  let buttonString = parsedAmountA ? t('stake') : t('enterAmount')
+  let buttonString = parsedAmountA ? t('unstake') : t('enterAmount')
 
   async function onAdd(contractAddress: string) {
     if (rewardsContractAddress === fakeContract || !chainId || !library || !account) return
@@ -132,8 +128,8 @@ export default function StakeIntoPool({
       return
     }
 
-    const estimate = router.estimateGas.stake
-    const method: (...args: any) => Promise<TransactionResponse> = router.stake
+    const estimate = router.estimateGas.unstake
+    const method: (...args: any) => Promise<TransactionResponse> = router.unstake
     const args: Array<string | string[] | number> = [parsedAmountA.raw.toString()]
 
     const value: BigNumber | null = null
@@ -143,25 +139,24 @@ export default function StakeIntoPool({
           ...(value ? { value } : {}),
           gasLimit: calculateGasMargin(estimatedGasLimit)
         }).then(response => {
-          setStaking(true)
-          setBalance(Number(selectedCurrencyBalance?.toSignificant(6)))
+          setUnstaking(true)
+          setBalance(userBalance)
           addTransaction(response, {
-            summary: t('stakeLPTokenAmount', {
+            summary: t('unStakeLPTokenAmount', {
               currencyASymbol: currencyA?.symbol,
               currencyBSymbol: currencyB?.symbol,
               amount: parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)
             })
           })
-
           ReactGA.event({
             category: 'Staking',
-            action: 'Stake',
+            action: 'Unstake',
             label: currencies[Field.CURRENCY_A]?.symbol
           })
         })
       )
       .catch(error => {
-        setStaking(false)
+        setUnstaking(false)
         if (error?.code !== 4001) {
           console.error(error)
         }
@@ -169,12 +164,9 @@ export default function StakeIntoPool({
   }
 
   const currentBalance = Number(selectedCurrencyBalance?.toSignificant(6))
-  if (
-    (parsedAmountA &&
-      Number(parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)) > Number(maxAmounts[Field.CURRENCY_A]?.toExact())) ||
-    currentBalance === 0
-  ) {
-    buttonString = t('insufficientCurrencyBalance', { inputCurrency: currencies[Field.CURRENCY_A]?.symbol })
+
+  if ((parsedAmountA && Number(parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)) > userBalance) || userBalance === 0) {
+    buttonString = t('insufficientStakedCurrencyBalance', { inputCurrency: currencies[Field.CURRENCY_A]?.symbol })
     hasError = true
   } else {
     hasError = false
@@ -189,11 +181,23 @@ export default function StakeIntoPool({
   }
 
   useMemo(() => {
-    if (balance !== currentBalance) {
-      setStaking(false)
+    if (rewardsContractAddress === fakeContract || !chainId || !library || !account) return
+    const rewardsContract = getContract(rewardsContractAddress, StakingRewards, library, account)
+    const method: (...args: any) => Promise<BigNumber> = rewardsContract.balanceOf
+    const args: Array<string | string[] | number> = [account]
+    method(...args).then(response => {
+      if (BigNumber.isBigNumber(response)) {
+        setUserBalance(hexStringToNumber(response.toHexString(), liquidityToken.decimals, 6))
+      }
+    })
+  }, [account, unstaking, rewardsContractAddress, liquidityToken])
+
+  useMemo(() => {
+    if (balance !== userBalance) {
+      setUnstaking(false)
       onFieldAInput('')
     }
-  }, [balance, currentBalance, setStaking])
+  }, [balance, userBalance, setUnstaking])
 
   return (
     <>
@@ -204,13 +208,13 @@ export default function StakeIntoPool({
         <Tabs>
           <RowBetween style={{ padding: '1rem 0' }}>
             <ActiveText>
-              {t('stakeLPToken', {
+              {t('unStakeLPToken', {
                 currencyASymbol: currencyA?.symbol,
                 currencyBSymbol: currencyB?.symbol
               })}
             </ActiveText>
             <QuestionHelper
-              text={t('stakeLPTokenDescription', {
+              text={t('unStakeLPTokenDescription', {
                 currencyASymbol: currencyA?.symbol,
                 currencyBSymbol: currencyB?.symbol
               })}
@@ -221,14 +225,16 @@ export default function StakeIntoPool({
           <AutoColumn gap="20px">
             <CurrencyInputPanel
               hideCurrencySelect={true}
+              balanceOveride={true}
+              newBalance={userBalance}
               value={formattedAmounts[Field.CURRENCY_A]}
               onUserInput={onFieldAInput}
               onMax={() => {
-                onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
+                onFieldAInput(String(userBalance) ?? '')
               }}
               showMaxButton={!atMaxAmounts[Field.CURRENCY_A]}
               currency={currencies[Field.CURRENCY_A]}
-              id="stake-input-tokena"
+              id="unstake-input-tokena"
               showCommonBases
             />
           </AutoColumn>
@@ -239,20 +245,9 @@ export default function StakeIntoPool({
           <ButtonLight onClick={toggleWalletModal}>{t('connectWallet')}</ButtonLight>
         ) : (
           <AutoColumn gap={'md'}>
-            {approvalA === ApprovalState.NOT_APPROVED || approvalA === ApprovalState.PENDING ? (
-              <RowBetween>
-                <ButtonPrimary
-                  style={{ fontSize: '20px' }}
-                  onClick={approveACallback}
-                  disabled={approvalA === ApprovalState.PENDING}
-                  width="100%"
-                >
-                  {approvalA === ApprovalState.PENDING ? <Dots>{t('approving')}</Dots> : t('approve')}
-                </ButtonPrimary>
-              </RowBetween>
-            ) : staking ? (
+            {unstaking ? (
               <ButtonPrimary style={{ fontSize: '20px' }} disabled={true}>
-                <Dots>{t('staking')}</Dots>
+                <Dots>{t('unstaking')}</Dots>
               </ButtonPrimary>
             ) : (
               <ButtonPrimary
@@ -260,21 +255,11 @@ export default function StakeIntoPool({
                 onClick={() => {
                   onAdd(rewardsContractAddress)
                 }}
-                disabled={approvalA !== ApprovalState.APPROVED || hasError}
+                disabled={hasError || !parsedAmountA}
               >
                 <Text fontSize={20} fontWeight={500}>
                   {buttonString}
                 </Text>
-              </ButtonPrimary>
-            )}
-            {hasError && (
-              <ButtonPrimary
-                style={{ fontSize: '20px' }}
-                as={Link}
-                to={`/add/${currencyIdA}/${currencyIdB}`}
-                width="100%"
-              >
-                {t('addLiquidity')}
               </ButtonPrimary>
             )}
           </AutoColumn>
