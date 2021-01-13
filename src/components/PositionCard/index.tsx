@@ -443,6 +443,7 @@ export function FullStakingCard({
   const currency0 = unwrappedToken(values.tokens[0])
   const currency1 = unwrappedToken(values.tokens[1])
   const [rawUserBalance, setRawUserBalance] = useState<string>('0x00')
+  const [apy, setApy] = useState(0)
   const [userBalance, setUserBalance] = useState(0)
   const [userRewards, setUserRewards] = useState<any[]>([])
   const [periodFinish, setPeriodFinish] = useState(0)
@@ -475,7 +476,6 @@ export function FullStakingCard({
     !chainId || !library || !account
       ? getContract(values.liquidityToken.address, LINKSWAPLPToken, fakeLibrary, fakeAccount)
       : getContract(values.liquidityToken.address, LINKSWAPLPToken, library, account)
-  let apy = 0
 
   useMemo(() => {
     if (!rewardsContract || !account) return
@@ -612,7 +612,7 @@ export function FullStakingCard({
   const stakePoolTotalDeposited = lpTokenPrice ? totalSupply * lpTokenPrice : 0
   const userShareUsd = lpTokenPrice && userBalance ? userBalance * lpTokenPrice : 0
 
-  if (apy === 0 && tokenPrices && stakePoolTotalDeposited && rewardInfo.length > 0 && periodFinish > 0) {
+  if (apy === 0 && tokenPrices && stakePoolTotalDeposited && rewardInfo.length > 0) {
     let totalDailyRewardValue = 0
     if (rewardInfo[0] && rewardInfo[0].rate > 0) {
       const dailyToken0Value = rewardInfo[0].rate * rewardInfo[0].price
@@ -631,7 +631,7 @@ export function FullStakingCard({
     if (!!totalSupply) {
       const yearlyRewardsValue = totalDailyRewardValue * 365
       const perDepositedDollarYearlyReward = yearlyRewardsValue / stakePoolTotalDeposited
-      apy = perDepositedDollarYearlyReward * 100
+      setApy(perDepositedDollarYearlyReward * 100)
     }
   }
 
