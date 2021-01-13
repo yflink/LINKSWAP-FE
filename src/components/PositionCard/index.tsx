@@ -474,7 +474,6 @@ export function FullStakingCard({
   const id = values.liquidityToken.address.toLowerCase()
   const toggleWalletModal = useWalletModalToggle()
   const fakeAccount = '0x0000000000000000000000000000000000000000'
-  const fakeChainId = 1
   const fakeLibrary = getNetworkLibrary()
   const headerRowStyles = show ? 'defaut' : 'pointer'
   const addTransaction = useTransactionAdder()
