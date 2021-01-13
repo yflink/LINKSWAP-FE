@@ -443,7 +443,6 @@ export function FullStakingCard({
   const currency0 = unwrappedToken(values.tokens[0])
   const currency1 = unwrappedToken(values.tokens[1])
   const [rawUserBalance, setRawUserBalance] = useState<string>('0x00')
-  const [apy, setApy] = useState(0)
   const [userBalance, setUserBalance] = useState(0)
   const [userRewards, setUserRewards] = useState<any[]>([])
   const [periodFinish, setPeriodFinish] = useState(0)
@@ -468,6 +467,7 @@ export function FullStakingCard({
   const isInactive = remaining < 1
   const headerRowStyles = show ? 'defaut' : 'pointer'
   const addTransaction = useTransactionAdder()
+  let apy = 0
   const rewardsContract =
     !chainId || !library || !account
       ? getContract(values.rewardsAddress, StakingRewards, fakeLibrary, fakeAccount)
@@ -631,7 +631,7 @@ export function FullStakingCard({
     if (!!totalSupply) {
       const yearlyRewardsValue = totalDailyRewardValue * 365
       const perDepositedDollarYearlyReward = yearlyRewardsValue / stakePoolTotalDeposited
-      setApy(perDepositedDollarYearlyReward * 100)
+      apy = perDepositedDollarYearlyReward * 100
     }
   }
 
