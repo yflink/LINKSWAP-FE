@@ -6,10 +6,7 @@ import { ArrowLeft } from 'react-feather'
 import { RowBetween } from '../Row'
 import QuestionHelper from '../QuestionHelper'
 
-import swap from '../../assets/svg/swap.svg'
-import pool from '../../assets/svg/pool.svg'
-import create from '../../assets/svg/create.svg'
-import buy from '../../assets/svg/buy.svg'
+import { SwapSVG, PoolSVG, StakeSVG, BuySVG } from '../SVG'
 import { useTranslation } from 'react-i18next'
 
 const Tabs = styled.div`
@@ -35,29 +32,40 @@ const StyledNavLink = styled(NavLink).attrs({
   outline: none;
   cursor: pointer;
   text-decoration: none;
-  color: ${({ theme }) => theme.navigationTabIconColor};
+  * {
+    fill: ${({ theme }) => theme.navigationTabIconColor};
+  }
   background-color: ${({ theme }) => theme.navigationTabBG};
   font-size: 20px;
   padding: 30px;
   &.${activeClassName} {
     background-color: ${({ theme }) => theme.navigationTabBGActive};
-    color: ${({ theme }) => theme.navigationTabIconColorActive};
+    * {
+      fill: ${({ theme }) => theme.navigationTabIconColorActive};
+    }
     :hover,
     :focus {
       background-color: ${({ theme }) => theme.navigationTabBGActive};
-      color: ${({ theme }) => theme.navigationTabIconColorActive};
+      * {
+        fill: ${({ theme }) => theme.navigationTabIconColorActive};
+      }
     }
   }
   :hover,
   :focus {
-    color: ${({ theme }) => theme.navigationTabIconColorHover};
     background-color: ${({ theme }) => theme.navigationTabBGHover};
+    * {
+      fill: ${({ theme }) => theme.navigationTabIconColorHover};
+    }
   }
 `
 
-const Icon = styled.img`
+const Icon = styled.span`
   margin: 16px;
-  height: 28px;
+  > svg {
+    height: 28px;
+    width: auto;
+  }
 `
 
 const ActiveText = styled.div`
@@ -69,20 +77,28 @@ const StyledArrowLeft = styled(ArrowLeft)`
   color: ${({ theme }) => theme.textPrimary};
 `
 
-export function SwapPoolTabs({ active }: { active: 'swap' | 'pool' | 'create' | 'buy' }) {
+export function SwapPoolTabs({ active }: { active: 'swap' | 'pool' | 'stake' | 'create' | 'buy' }) {
   return (
     <Tabs>
       <StyledNavLink id={`swap-nav-link`} to={'/swap'} isActive={() => active === 'swap'}>
-        <Icon src={swap} />
+        <Icon>
+          <SwapSVG />
+        </Icon>
       </StyledNavLink>
       <StyledNavLink id={`pool-nav-link`} to={'/pool'} isActive={() => active === 'pool'}>
-        <Icon src={pool} />
+        <Icon>
+          <PoolSVG />
+        </Icon>
       </StyledNavLink>
-      <StyledNavLink id={`pool-nav-link`} to={'/create'} isActive={() => active === 'create'}>
-        <Icon src={create} />
+      <StyledNavLink id={`stake-nav-link`} to={'/stake'} isActive={() => active === 'stake'}>
+        <Icon>
+          <StakeSVG />
+        </Icon>
       </StyledNavLink>
-      <StyledNavLink id={`pool-nav-link`} to={'/buy'} isActive={() => active === 'buy'}>
-        <Icon src={buy} />
+      <StyledNavLink id={`buy-nav-link`} to={'/buy'} isActive={() => active === 'buy'}>
+        <Icon>
+          <BuySVG />
+        </Icon>
       </StyledNavLink>
     </Tabs>
   )
@@ -127,9 +143,6 @@ export function CreateTabs() {
     <Tabs>
       <RowBetween style={{ padding: '1rem 0' }}>
         <div style={{ width: 32 }}></div>
-        {/* <HistoryLink to="/create">
-          <StyledArrowLeft />
-        </HistoryLink> */}
         <ActiveText>{t('createPair')}</ActiveText>
         <QuestionHelper text={t('creatingAPair')} />
       </RowBetween>

@@ -6604,9 +6604,9 @@
                   "subdenomination": null,
                   "typeDescriptions": {
                     "typeIdentifier": "t_stringliteral_bfcc8ef98ffbf7b6c3fec7bf5185b566b9863e35a9d83acd49ad6824b5969738",
-                    "typeString": "literal_string \"Uniswap V2\""
+                    "typeString": "literal_string \"LINKSWAP LP Token\""
                   },
-                  "value": "Uniswap V2"
+                  "value": "LINKSWAP LP Token"
                 },
                 "visibility": "public"
               },
@@ -6649,7 +6649,7 @@
                     "typeIdentifier": "t_stringliteral_0c49a525f6758cfb27d0ada1467d2a2e99733995423d47ae30ae4ba2ba563255",
                     "typeString": "literal_string \"UNI-V2\""
                   },
-                  "value": "UNI-V2"
+                  "value": "LSLP"
                 },
                 "visibility": "public"
               },

@@ -39,6 +39,8 @@ import { Dots, Wrapper } from '../Pool/styleds'
 import { ConfirmAddModalBottom } from './ConfirmAddModalBottom'
 import { currencyId } from '../../utils/currencyId'
 import { PoolPriceBar } from './PoolPriceBar'
+import { useTokenUsdPrices } from '../../hooks/useTokenUsdPrice'
+import { useLPTokenUsdPrices } from '../../hooks/useLPTokenUsdPrice'
 
 export default function AddLiquidity({
   match: {
@@ -314,6 +316,8 @@ export default function AddLiquidity({
     setTxHash('')
   }, [onFieldAInput, txHash])
 
+  useTokenUsdPrices()
+  useLPTokenUsdPrices()
   return (
     <>
       <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.appBGColor, marginBottom: '16px' }}>
@@ -355,18 +359,6 @@ export default function AddLiquidity({
                 </BlueCard>
               </ColumnCenter>
             )}
-            {/* <CurrencyInputPanel
-              value={formattedAmounts[Field.CURRENCY_A]}
-              onUserInput={onFieldAInput}
-              onMax={() => {
-                onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
-              }}
-              onCurrencySelect={handleCurrencyASelect}
-              showMaxButton={!atMaxAmounts[Field.CURRENCY_A]}
-              currency={currencies[Field.CURRENCY_A]}
-              id="add-liquidity-input-tokena"
-              showCommonBases
-            /> */}
             <CurrencyDoubleInputPanel
               value={formattedAmounts[Field.CURRENCY_A]}
               onUserInput={onFieldAInput}

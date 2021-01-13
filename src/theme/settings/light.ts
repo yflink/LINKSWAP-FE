@@ -35,7 +35,6 @@ export function lightTheme() {
     appCurrencyInputBGActiveHover: mainColorHover,
     appCurrencyInputTextColorActiveHover: mainTextColor,
 
-
     //Buttons
     buttonBG: mainColor,
     buttonTextColor: mainTextColor,
@@ -115,7 +114,7 @@ export function lightTheme() {
     //Navigation
     navigationBG: appBG,
     navigationTabBG: transparent,
-    navigationTabIconColor: '#000',
+    navigationTabIconColor: mainTextColor,
     navigationTabBGHover: transparent,
     navigationTabIconColorHover: mainTextColor,
     navigationTabBGActive: mainColor,

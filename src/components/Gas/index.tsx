@@ -4,7 +4,7 @@ import { useOnClickOutside } from '../../hooks/useOnClickOutside'
 import { AutoColumn } from '../Column'
 import { Text } from 'rebass'
 import { useTranslation } from 'react-i18next'
-import GasIcon from './GasIcon'
+import { GasSVG } from '../SVG'
 import { useGetGasPrices } from '../../state/gas/hooks'
 import { RowBetween } from '../Row'
 import { Dots } from '../swap/styleds'
@@ -88,7 +88,7 @@ export default function GasTab() {
     <StyledMenu ref={node as any}>
       <StyledMenuButton onClick={() => setIsOpen(!isOpen)} id="open-gas-dialog-button">
         <StyledMenuIcon>
-          <GasIcon />
+          <GasSVG />
         </StyledMenuIcon>
         {Boolean(gasObject.averageGas) ? (
           <GasPrice>{t('gasPrice', { price: gasObject.averageGas })}</GasPrice>
