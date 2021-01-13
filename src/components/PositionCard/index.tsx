@@ -446,8 +446,8 @@ export function FullStakingCard({
   const [userBalance, setUserBalance] = useState(0)
   const [userRewards, setUserRewards] = useState<any[]>([])
   const [periodFinish, setPeriodFinish] = useState(0)
-  const [rewardTokens, setRewardTokens] = useState<string[]>([])
-  const [rewardTokenRates, setRewardTokenRates] = useState<string[]>([])
+  const [rewardTokens, setRewardTokens] = useState<string[]>(['', ''])
+  const [rewardTokenRates, setRewardTokenRates] = useState<string[]>(['', ''])
   const [totalSupply, setTotalSupply] = useState(0)
   const [totalLPSupply, setTotalLPSupply] = useState(0)
   const isHighlighted = userBalance > 0 && !my
@@ -477,116 +477,110 @@ export function FullStakingCard({
       ? getContract(values.liquidityToken.address, LINKSWAPLPToken, fakeLibrary, fakeAccount)
       : getContract(values.liquidityToken.address, LINKSWAPLPToken, library, account)
 
-  useMemo(() => {
-    if (!rewardsContract || !account) return
+  async function getUserBalance(account: string) {
     const method: (...args: any) => Promise<BigNumber> = rewardsContract.balanceOf
-    const args: Array<string | string[] | number> = [account]
+    const args: Array<string> = [account]
     method(...args).then(response => {
       if (BigNumber.isBigNumber(response)) {
         setRawUserBalance(response.toHexString())
         setUserBalance(hexStringToNumber(response.toHexString(), liquidityToken.decimals, 6))
       }
     })
-  }, [account, rewardsContract, liquidityToken])
+  }
 
-  useMemo(() => {
-    if (!rewardsContract) return
+  async function getUserRewards(account: string, index: number, wrappedRewardToken: any, indexString: string) {
+    const method: (...args: any) => Promise<any> = rewardsContract.earned
+    const args: Array<string | number> = [account, indexString]
+    const userRewardArray = userRewards
+    method(...args).then(response => {
+      userRewardArray[index] = hexStringToNumber(response.toHexString(), wrappedRewardToken.decimals)
+      setUserRewards(userRewardArray)
+    })
+  }
+
+  async function getPeriodFinish() {
     const method: (...args: any) => Promise<BigNumber> = rewardsContract.periodFinish
     method().then(response => {
       setPeriodFinish(hexStringToNumber(response.toHexString(), 0))
     })
-  }, [rewardsContract])
+  }
 
-  useMemo(() => {
-    if (!rewardsContract || totalSupply > 0) return
+  async function getTotalSupply() {
     const method: (...args: any) => Promise<BigNumber> = rewardsContract.totalSupply
     method().then(response => {
       setTotalSupply(hexStringToNumber(response.toHexString(), liquidityToken.decimals))
     })
-  }, [rewardsContract, liquidityToken, totalSupply])
+  }
 
-  useMemo(() => {
-    if (!rewardsContract || rewardTokens.length > 0) return
-    const method: (...args: any) => Promise<string> = rewardsContract.rewardTokens
-    const args = 0
-    const rewardTokensArray = rewardTokens
-    method(args).then(response => {
-      rewardTokensArray[0] = response
-      setRewardTokens(rewardTokensArray)
-    })
-  }, [rewardsContract, rewardTokens])
-
-  useMemo(() => {
-    if (!rewardsContract || rewardTokens.length > 1) return
-    const method: (...args: any) => Promise<string> = rewardsContract.rewardTokens
-    const args = 1
-    const rewardTokensArray = rewardTokens
-    method(args).then(response => {
-      if (response !== fakeAccount) {
-        rewardTokensArray[1] = response
-        setRewardTokens(rewardTokensArray)
-      }
-    })
-  }, [rewardsContract, rewardTokens])
-
-  useMemo(() => {
-    if (!rewardsContract || rewardTokenRates.length > 0) return
-    const method: (...args: any) => Promise<BigNumber> = rewardsContract.rewardRate
-    const args = 0
-    const rewardTokenRatesArray = rewardTokenRates
-    method(args).then(response => {
-      rewardTokenRatesArray[0] = response.toHexString()
-      setRewardTokenRates(rewardTokenRatesArray)
-    })
-  }, [rewardsContract, rewardTokenRates])
-
-  useMemo(() => {
-    if (!showMore && !show) return
-    if (!rewardsContract || rewardTokenRates.length > 1) return
-    const method: (...args: any) => Promise<BigNumber> = rewardsContract.rewardRate
-    const args = 1
-    const rewardTokenRatesArray = rewardTokenRates
-    method(args).then(response => {
-      rewardTokenRatesArray[1] = response.toHexString()
-      setRewardTokenRates(rewardTokenRatesArray)
-    })
-  }, [rewardsContract, rewardTokenRates, showMore, show])
-
-  useMemo(() => {
-    if (!lpContract) return
+  async function getTotalLPSupply() {
     const method: (...args: any) => Promise<BigNumber> = lpContract.totalSupply
     method().then(response => {
       setTotalLPSupply(hexStringToNumber(response.toHexString(), liquidityToken.decimals))
     })
-  }, [lpContract, liquidityToken])
+  }
 
-  useMemo(() => {
-    if (!showMore && !show) return
-    const wrappedRewardToken0 = allTokens['1'][rewardTokens[0]] || false
-    if (!rewardsContract || !account || !wrappedRewardToken0) return
-    const method: (...args: any) => Promise<any> = rewardsContract.earned
-    const args: Array<string | number> = [account, 0x00]
-    const userRewardArray = userRewards
-    method(...args).then(response => {
-      userRewardArray[0] = hexStringToNumber(response.toHexString(), wrappedRewardToken0.decimals)
-      setUserRewards(userRewardArray)
+  async function getRewardTokens(index: number) {
+    const method: (...args: any) => Promise<string> = rewardsContract.rewardTokens
+    const args = index
+    const rewardTokensArray = rewardTokens
+    method(args).then(response => {
+      rewardTokensArray[index] = response
+      setRewardTokens(rewardTokensArray)
     })
-  }, [rewardsContract, rewardTokens, allTokens, account, userRewards, showMore, show])
-
-  useMemo(() => {
-    if (!showMore && !show) return
-    const wrappedRewardToken1 = allTokens['1'][rewardTokens[1]] || false
-    if (!rewardsContract || !account || !wrappedRewardToken1) return
-    const method: (...args: any) => Promise<any> = rewardsContract.earned
-    const args: Array<string | number> = [account, 0x01]
-    const userRewardArray = userRewards
-    method(...args).then(response => {
-      userRewardArray[1] = hexStringToNumber(response.toHexString(), wrappedRewardToken1.decimals)
-      setUserRewards(userRewardArray)
+  }
+  async function getRewardTokenRates(index: number) {
+    const method: (...args: any) => Promise<BigNumber> = rewardsContract.rewardRate
+    const args = index
+    const rewardTokenRatesArray = rewardTokenRates
+    method(args).then(response => {
+      rewardTokenRatesArray[index] = response.toHexString()
+      setRewardTokenRates(rewardTokenRatesArray)
     })
-  }, [rewardsContract, rewardTokens, allTokens, account, userRewards, showMore, show])
+  }
 
-  if ((chainId && rewardTokens.length) || (fakeChainId && rewardTokens.length)) {
+  if (rewardsContract) {
+    if (account) {
+      if (userBalance === 0) {
+        getUserBalance(account)
+      }
+
+      if (rewardTokens[0] !== '') {
+        const wrappedRewardToken0 = allTokens['1'][rewardTokens[0]] || false
+        getUserRewards(account, 0, wrappedRewardToken0, '0x00')
+      }
+
+      if (rewardTokens[1] !== '') {
+        const wrappedRewardToken1 = allTokens['1'][rewardTokens[1]] || false
+        getUserRewards(account, 1, wrappedRewardToken1, '0x01')
+      }
+    }
+    if (periodFinish === 0) {
+      getPeriodFinish()
+    }
+    if (totalSupply === 0) {
+      getTotalSupply()
+    }
+    if (rewardTokens[0] === '') {
+      getRewardTokens(0)
+    }
+    if (rewardTokens[1] === '') {
+      getRewardTokens(1)
+    }
+    if (rewardTokenRates[0] === '') {
+      getRewardTokenRates(0)
+    }
+    if (rewardTokenRates[1] === '') {
+      getRewardTokenRates(1)
+    }
+  }
+
+  if (lpContract) {
+    if (totalLPSupply === 0) {
+      getTotalLPSupply()
+    }
+  }
+
+  if (rewardTokens[0] !== '' && rewardTokens[1] !== '') {
     const chainIdNumber = chainId ? chainId : fakeChainId
     rewardTokens.forEach((tokenAddress: string, index: number) => {
       if (allTokens[chainIdNumber][tokenAddress]) {
@@ -646,7 +640,7 @@ export function FullStakingCard({
 
     const value: BigNumber | null = null
     await estimate(value ? { value } : {})
-      .then(estimatedGasLimit =>
+      .then(() =>
         method().then(response => {
           addTransaction(response, {
             summary: t('claimRewardsOnPool', {
