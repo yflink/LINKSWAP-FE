@@ -51,12 +51,12 @@ export const FixedHeightRow = styled(RowBetween)`
 `
 
 const StakeIcon = styled.div`
-  height: 22px;
+  height: 18px;
   display: inline-block;
   margin-inline-start: 10px;
 
   > svg {
-    height: 22px;
+    height: 18px;
     width: auto;
     * {
       fill: ${({ theme }) => theme.textPrimary};
