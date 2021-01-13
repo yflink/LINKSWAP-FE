@@ -182,7 +182,7 @@ export default function StakeIntoPool({
 
   const stakingValues = {
     address: liquidityToken?.address,
-    liquidityToken: liquidityToken,
+    liquidityToken: wrappedLiquidityToken,
     rewardsAddress: rewardsContractAddress,
     tokens: [currencyA, currencyB],
     balance: currentBalance || 0
@@ -280,7 +280,7 @@ export default function StakeIntoPool({
           </AutoColumn>
         )}
       </AppBodyDark>
-      {account && chainId && library && rewardsContractAddress && (
+      {account && rewardsContractAddress && wrappedLiquidityToken && (
         <AutoColumn style={{ marginTop: '1rem', maxWidth: '420px', width: '100%' }}>
           <FullStakingCard values={stakingValues} my={true} show={true} />
         </AutoColumn>
