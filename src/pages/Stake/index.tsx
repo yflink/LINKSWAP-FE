@@ -20,6 +20,7 @@ import { ACTIVE_REWARD_POOLS } from '../../constants'
 import { useTokenUsdPrices } from '../../hooks/useTokenUsdPrice'
 import { useLPTokenUsdPrices } from '../../hooks/useLPTokenUsdPrice'
 import Toggle from '../../components/Toggle'
+
 export const MyStakePools = styled(BodyWrapper)`
   margin: 0 0 24px;
 `
@@ -31,6 +32,7 @@ export default function StakeOverview() {
   const [allRewardPools, setAllRewardPools] = useState<any | null>([])
   const [showOwn, setShowOwn] = useState(false)
   const [showExpired, setShowExpired] = useState(false)
+  // fetch the user's balances of all tracked V2 LP tokens
   const trackedTokenPairs = useTrackedTokenPairs()
   const tokenPairsWithLiquidityTokens = useMemo(
     () => trackedTokenPairs.map(tokens => ({ liquidityToken: toV2LiquidityToken(tokens), tokens })),
@@ -44,6 +46,7 @@ export default function StakeOverview() {
     liquidityTokens
   )
 
+  // fetch the reserves for all V2 pools in which the user has a balance
   const liquidityTokensWithBalances = useMemo(
     () =>
       tokenPairsWithLiquidityTokens.filter(({ liquidityToken }) =>
@@ -56,29 +59,26 @@ export default function StakeOverview() {
   const v2IsLoading =
     fetchingV2PairBalances || v2Pairs?.length < liquidityTokensWithBalances.length || v2Pairs?.some(V2Pair => !V2Pair)
 
-  useMemo(() => {
-    if (Boolean(myRewardPools)) {
-      const myStakePools: any[] = []
-      ACTIVE_REWARD_POOLS.forEach(poolObject => {
-        let returnValue: any = false
-        liquidityTokensWithBalances.forEach((pool: any) => {
-          if (pool.liquidityToken.address === poolObject.address) {
-            pool.rewardsAddress = poolObject.rewardsAddress
-            pool.balance = v2PairsBalances[pool.liquidityToken.address]?.toSignificant(6) || 0
-            returnValue = pool
-            return
-          }
-        })
-        if (returnValue) {
-          myStakePools.push(returnValue)
+  if (myRewardPools.length === 0) {
+    const myStakePools: any[] = []
+    ACTIVE_REWARD_POOLS.forEach(poolObject => {
+      let returnValue: any = false
+      liquidityTokensWithBalances.forEach((pool: any) => {
+        if (pool.liquidityToken.address === poolObject.address) {
+          pool.rewardsAddress = poolObject.rewardsAddress
+          pool.balance = v2PairsBalances[pool.liquidityToken.address]?.toSignificant(6) || 0
+          returnValue = pool
+          return
         }
       })
+      if (returnValue) {
+        myStakePools.push(returnValue)
+        setMyRewardPools(myStakePools)
+      }
+    })
+  }
 
-      setMyRewardPools(myStakePools)
-    }
-  }, [liquidityTokensWithBalances, v2PairsBalances, myRewardPools])
-
-  useMemo(() => {
+  if (allRewardPools.length === 0) {
     if (Boolean(allRewardPools)) {
       const allStakePools: any[] = []
       ACTIVE_REWARD_POOLS.forEach(poolObject => {
@@ -92,14 +92,13 @@ export default function StakeOverview() {
         })
         if (returnValue) {
           allStakePools.push(returnValue)
+          setAllRewardPools(allStakePools)
         }
       })
-
-      setAllRewardPools(allStakePools)
     }
-  }, [tokenPairsWithLiquidityTokens, allRewardPools])
-  const { t } = useTranslation()
+  }
 
+  const { t } = useTranslation()
   useTokenUsdPrices()
   useLPTokenUsdPrices()
   return (
