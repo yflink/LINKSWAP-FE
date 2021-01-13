@@ -39,6 +39,8 @@ import { Dots, Wrapper } from '../Pool/styleds'
 import { ConfirmAddModalBottom } from './ConfirmAddModalBottom'
 import { currencyId } from '../../utils/currencyId'
 import { PoolPriceBar } from './PoolPriceBar'
+import { useTokenUsdPrices } from '../../hooks/useTokenUsdPrice'
+import { useLPTokenUsdPrices } from '../../hooks/useLPTokenUsdPrice'
 
 export default function AddLiquidity({
   match: {
@@ -314,6 +316,8 @@ export default function AddLiquidity({
     setTxHash('')
   }, [onFieldAInput, txHash])
 
+  useTokenUsdPrices()
+  useLPTokenUsdPrices()
   return (
     <>
       <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.appBGColor, marginBottom: '16px' }}>

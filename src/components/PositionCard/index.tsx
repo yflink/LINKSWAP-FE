@@ -34,7 +34,6 @@ import moment from 'moment'
 import { TransactionResponse } from '@ethersproject/providers'
 import ReactGA from 'react-ga'
 import { useTransactionAdder } from '../../state/transactions/hooks'
-import tokenList from '../../../src/assets/lists/linkswapTokenList.json'
 
 const ExternalLinkIcon = styled(ExternalLink)`
   display: inline-block;

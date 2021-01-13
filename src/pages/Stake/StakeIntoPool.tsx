@@ -31,6 +31,8 @@ import ReactGA from 'react-ga'
 import { FullStakingCard } from '../../components/PositionCard'
 import { useCurrencyBalance } from '../../state/wallet/hooks'
 import { useTransactionAdder } from '../../state/transactions/hooks'
+import { useTokenUsdPrices } from '../../hooks/useTokenUsdPrice'
+import { useLPTokenUsdPrices } from '../../hooks/useLPTokenUsdPrice'
 
 const Tabs = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -195,6 +197,8 @@ export default function StakeIntoPool({
     }
   }, [balance, currentBalance, setStaking, onFieldAInput])
 
+  useTokenUsdPrices()
+  useLPTokenUsdPrices()
   return (
     <>
       <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.appBGColor, marginBottom: '16px' }}>
