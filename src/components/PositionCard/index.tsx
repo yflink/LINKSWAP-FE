@@ -764,16 +764,16 @@ export function FullStakingCard({
                   {numberToUsd(userShareUsd)} ({numberToPercent(userShare)})
                 </RowBetween>
               )}
-              {(userRewards.length > 0 && userRewards[0] > 0) || (userRewards.length > 0 && userRewards[1] > 0) ? (
+              {userRewards.length > 0 ? (
                 <RowBetween style={{ alignItems: 'flex-start' }}>
                   <Text>{t('claimableRewards')}</Text>
                   <Text style={{ textAlign: 'end' }}>
-                    {userRewards.length > 0 && rewardInfo.length > 0 && userRewards[0] > 0 && (
+                    {userRewards.length >= 1 && userRewards[0] > 0 && (
                       <div>
                         {numberToSignificant(userRewards[0])} {rewardInfo[0].symbol}
                       </div>
                     )}
-                    {userRewards.length > 1 && rewardInfo.length > 1 && userRewards[1] > 0 && (
+                    {userRewards.length === 2 && userRewards[1] > 0 && (
                       <div>
                         {numberToSignificant(userRewards[1])} {rewardInfo[1].symbol}
                       </div>
@@ -782,7 +782,7 @@ export function FullStakingCard({
                 </RowBetween>
               ) : (
                 <>
-                  {periodFinish > 0 && userBalance > 0 && (
+                  {userBalance > 0 && (
                     <RowBetween style={{ alignItems: 'flex-start' }}>
                       <Text>{t('claimableRewards')}</Text>
                       <Dots>{t('loading')}</Dots>
