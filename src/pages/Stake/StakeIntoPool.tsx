@@ -193,7 +193,7 @@ export default function StakeIntoPool({
       setStaking(false)
       onFieldAInput('')
     }
-  }, [balance, currentBalance, setStaking])
+  }, [balance, currentBalance, setStaking, onFieldAInput])
 
   return (
     <>

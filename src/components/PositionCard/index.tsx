@@ -22,7 +22,7 @@ import { Dots } from '../swap/styleds'
 import { useTranslation } from 'react-i18next'
 import { ACTIVE_REWARD_POOLS } from '../../constants'
 import { StakeSVG } from '../SVG'
-import { getContract } from '../../utils'
+import { calculateGasMargin, getContract } from '../../utils'
 import { LINKSWAPLPToken, StakingRewards } from '../../pages/Stake/stakingAbi'
 import { BigNumber } from '@ethersproject/bignumber'
 import hexStringToNumber from '../../utils/hexStringToNumber'
@@ -31,8 +31,10 @@ import { useGetLPTokenPrices, useGetTokenPrices } from '../../state/price/hooks'
 import { numberToUsd, numberToPercent, numberToSignificant } from '../../utils/numberUtils'
 import { getNetworkLibrary } from '../../connectors'
 import { useWalletModalToggle } from '../../state/application/hooks'
-import { useCountdown } from '../../hooks/useCountdown'
 import moment from 'moment'
+import { TransactionResponse } from '@ethersproject/providers'
+import ReactGA from 'react-ga'
+import { useTransactionAdder } from '../../state/transactions/hooks'
 
 const ExternalLinkIcon = styled(ExternalLink)`
   display: inline-block;
@@ -440,6 +442,7 @@ export function FullStakingCard({
   const { t } = useTranslation()
   const currency0 = unwrappedToken(values.tokens[0])
   const currency1 = unwrappedToken(values.tokens[1])
+  const [rawUserBalance, setRawUserBalance] = useState<string>('0x00')
   const [userBalance, setUserBalance] = useState(0)
   const [userRewards, setUserRewards] = useState<any[]>([])
   const [periodFinish, setPeriodFinish] = useState(0)
@@ -461,7 +464,9 @@ export function FullStakingCard({
   const then: any = periodFinish > 0 ? moment.unix(periodFinish) : 0
   const now: any = moment()
   const remaining = periodFinish > 0 ? moment(then - now).unix() : 1
-  const isInactive = remaining < 100000
+  const isInactive = remaining < 1
+  const headerRowStyles = show ? 'defaut' : 'pointer'
+  const addTransaction = useTransactionAdder()
   const rewardsContract =
     !chainId || !library || !account
       ? getContract(values.rewardsAddress, StakingRewards, fakeLibrary, fakeAccount)
@@ -478,10 +483,11 @@ export function FullStakingCard({
     const args: Array<string | string[] | number> = [account]
     method(...args).then(response => {
       if (BigNumber.isBigNumber(response)) {
+        setRawUserBalance(response.toHexString())
         setUserBalance(hexStringToNumber(response.toHexString(), liquidityToken.decimals, 6))
       }
     })
-  }, [account, values, rewardsContract, liquidityToken])
+  }, [account, rewardsContract, liquidityToken])
 
   useMemo(() => {
     if (!rewardsContract || periodFinish > 0) return
@@ -489,7 +495,7 @@ export function FullStakingCard({
     method().then(response => {
       setPeriodFinish(hexStringToNumber(response.toHexString(), 0))
     })
-  }, [values, rewardsContract])
+  }, [rewardsContract, periodFinish])
 
   useMemo(() => {
     if (!rewardsContract || totalSupply > 0) return
@@ -497,7 +503,7 @@ export function FullStakingCard({
     method().then(response => {
       setTotalSupply(hexStringToNumber(response.toHexString(), liquidityToken.decimals))
     })
-  }, [values, rewardsContract, liquidityToken])
+  }, [rewardsContract, liquidityToken, totalSupply])
 
   useMemo(() => {
     if (!rewardsContract || rewardTokens.length > 0) return
@@ -508,7 +514,7 @@ export function FullStakingCard({
       rewardTokensArray[0] = response
       setRewardTokens(rewardTokensArray)
     })
-  }, [values, rewardsContract])
+  }, [rewardsContract, rewardTokens])
 
   useMemo(() => {
     if (!rewardsContract || rewardTokens.length > 1) return
@@ -521,7 +527,7 @@ export function FullStakingCard({
         setRewardTokens(rewardTokensArray)
       }
     })
-  }, [values, rewardsContract])
+  }, [rewardsContract, rewardTokens])
 
   useMemo(() => {
     if (!rewardsContract || rewardTokenRates.length > 0) return
@@ -532,7 +538,7 @@ export function FullStakingCard({
       rewardTokenRatesArray[0] = response.toHexString()
       setRewardTokenRates(rewardTokenRatesArray)
     })
-  }, [values, rewardsContract, rewardTokens])
+  }, [rewardsContract, rewardTokenRates])
 
   useMemo(() => {
     if (!rewardsContract || rewardTokenRates.length > 1) return
@@ -543,7 +549,7 @@ export function FullStakingCard({
       rewardTokenRatesArray[1] = response.toHexString()
       setRewardTokenRates(rewardTokenRatesArray)
     })
-  }, [values, rewardsContract, rewardTokens])
+  }, [rewardsContract, rewardTokenRates])
 
   useMemo(() => {
     if (!lpContract || totalLPSupply > 0) return
@@ -551,7 +557,7 @@ export function FullStakingCard({
     method().then(response => {
       setTotalLPSupply(hexStringToNumber(response.toHexString(), liquidityToken.decimals))
     })
-  }, [values, lpContract, liquidityToken])
+  }, [lpContract, liquidityToken, totalLPSupply])
 
   useMemo(() => {
     const wrappedRewardToken0 = allTokens['1'][rewardTokens[0]] || false
@@ -563,7 +569,7 @@ export function FullStakingCard({
       userRewardArray[0] = hexStringToNumber(response.toHexString(), wrappedRewardToken0.decimals)
       setUserRewards(userRewardArray)
     })
-  }, [values, rewardsContract, rewardTokens, allTokens])
+  }, [rewardsContract, rewardTokens, allTokens, account, userRewards])
 
   useMemo(() => {
     const wrappedRewardToken1 = allTokens['1'][rewardTokens[1]] || false
@@ -575,7 +581,7 @@ export function FullStakingCard({
       userRewardArray[1] = hexStringToNumber(response.toHexString(), wrappedRewardToken1.decimals)
       setUserRewards(userRewardArray)
     })
-  }, [values, rewardsContract, rewardTokens, allTokens])
+  }, [rewardsContract, rewardTokens, allTokens, account, userRewards])
 
   if ((chainId && rewardTokens.length) || (fakeChainId && rewardTokens.length)) {
     const chainIdNumber = chainId ? chainId : fakeChainId
@@ -629,7 +635,72 @@ export function FullStakingCard({
     }
   }
 
-  const headerRowStyles = show ? 'defaut' : 'pointer'
+  async function claimRewards(rewardsContractAddress: string) {
+    if (!chainId || !library || !account) return
+    const router = getContract(rewardsContractAddress, StakingRewards, library, account)
+    const estimate = router.estimateGas.claimRewards
+    const method: () => Promise<TransactionResponse> = router.claimRewards
+
+    const value: BigNumber | null = null
+    await estimate(value ? { value } : {})
+      .then(estimatedGasLimit =>
+        method().then(response => {
+          addTransaction(response, {
+            summary: t('claimRewardsOnPool', {
+              currencyASymbol: currency0?.symbol,
+              currencyBSymbol: currency1?.symbol
+            })
+          })
+
+          ReactGA.event({
+            category: 'Staking',
+            action: 'ClaimRewards',
+            label: currency0?.symbol + ' | ' + currency1?.symbol
+          })
+        })
+      )
+      .catch(error => {
+        if (error?.code !== 4001) {
+          console.error(error)
+        }
+      })
+  }
+
+  async function unstakeAndClaimRewards(rewardsContractAddress: string) {
+    if (!chainId || !library || !account || !rawUserBalance) return
+    const router = getContract(rewardsContractAddress, StakingRewards, library, account)
+    const estimate = router.estimateGas.unstakeAndClaimRewards
+    const method: (...args: any) => Promise<TransactionResponse> = router.unstakeAndClaimRewards
+    const args: Array<string> = [rawUserBalance]
+
+    const value: BigNumber | null = null
+    await estimate(...args, value ? { value } : {})
+      .then(estimatedGasLimit =>
+        method(...args, {
+          ...(value ? { value } : {}),
+          gasLimit: calculateGasMargin(estimatedGasLimit)
+        }).then(response => {
+          addTransaction(response, {
+            summary: t('unstakeAndClaimRewardsOnPool', {
+              currencyASymbol: currency0?.symbol,
+              currencyBSymbol: currency1?.symbol
+            })
+          })
+
+          ReactGA.event({
+            category: 'Staking',
+            action: 'UnstkeAndClaimRewards',
+            label: currency0?.symbol + ' | ' + currency1?.symbol
+          })
+        })
+      )
+      .catch(error => {
+        if (error?.code !== 4001) {
+          console.error(error)
+        }
+      })
+  }
+
   if ((userBalance === 0 && showOwn) || (isInactive && !showExpired) || (!isInactive && showExpired)) {
     return <></>
   } else {
@@ -786,10 +857,11 @@ export function FullStakingCard({
               {userBalance > 0 && !my && !isInactive && (
                 <RowBetween marginTop="10px">
                   <ButtonSecondary
-                    as={Link}
+                    onClick={() => {
+                      claimRewards(values.rewardsAddress)
+                    }}
                     width="48%"
                     style={{ marginInlineEnd: '1%' }}
-                    to={`/unstake/${currencyId(currency0)}/${currencyId(currency1)}`}
                   >
                     {t('claimRewards')}
                   </ButtonSecondary>
@@ -803,13 +875,14 @@ export function FullStakingCard({
                   </ButtonSecondary>
                 </RowBetween>
               )}
-              {userBalance > 0 && userRewards.length > 0 && !my && (
+              {userBalance > 0 && !my && !isInactive && (
                 <RowBetween marginTop="10px">
                   <ButtonSecondary
-                    as={Link}
+                    onClick={() => {
+                      unstakeAndClaimRewards(values.rewardsAddress)
+                    }}
                     width="100%"
                     style={{ marginInlineEnd: '1%' }}
-                    to={`/unstake/${currencyId(currency0)}/${currencyId(currency1)}`}
                   >
                     {t('unstakeAndClaim')}
                   </ButtonSecondary>

@@ -2,7 +2,7 @@ import { BigNumber } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
 import { TokenAmount } from '@uniswap/sdk'
 import React, { useContext, useMemo, useState } from 'react'
-import { Link, RouteComponentProps } from 'react-router-dom'
+import { RouteComponentProps } from 'react-router-dom'
 import { Text } from 'rebass'
 import styled, { ThemeContext } from 'styled-components'
 import { ButtonLight, ButtonPrimary } from '../../components/Button'
@@ -12,17 +12,15 @@ import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import { SwapPoolTabs } from '../../components/NavigationTabs'
 import { RowBetween } from '../../components/Row'
 import { useTranslation } from 'react-i18next'
-import { ACTIVE_REWARD_POOLS, ROUTER_ADDRESS, WETHER } from '../../constants'
+import { ACTIVE_REWARD_POOLS } from '../../constants'
 import { useActiveWeb3React } from '../../hooks'
 import { useCurrency, useToken } from '../../hooks/Tokens'
-import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { Field } from '../../state/mint/actions'
 import { StakingRewards } from './stakingAbi'
 import { useDerivedMintInfo, useMintActionHandlers, useMintState } from '../../state/mint/hooks'
 import { toV2LiquidityToken } from '../../state/user/hooks'
 import { calculateGasMargin, getContract } from '../../utils'
-import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import AppBody, { AppBodyDark } from '../AppBody'
 import { Dots, Wrapper } from '../Pool/styleds'
 import QuestionHelper from '../../components/QuestionHelper'
@@ -111,7 +109,6 @@ export default function Unstake({
   }, {})
 
   const addTransaction = useTransactionAdder()
-  const [approvalA, approveACallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_A], rewardsContractAddress)
   const { t } = useTranslation()
 
   const { [Field.CURRENCY_A]: parsedAmountA } = parsedAmounts
@@ -190,14 +187,14 @@ export default function Unstake({
         setUserBalance(hexStringToNumber(response.toHexString(), liquidityToken.decimals, 6))
       }
     })
-  }, [account, unstaking, rewardsContractAddress, liquidityToken])
+  }, [account, rewardsContractAddress, liquidityToken, chainId, library])
 
   useMemo(() => {
     if (balance !== userBalance) {
       setUnstaking(false)
       onFieldAInput('')
     }
-  }, [balance, userBalance, setUnstaking])
+  }, [balance, userBalance, setUnstaking, onFieldAInput])
 
   return (
     <>

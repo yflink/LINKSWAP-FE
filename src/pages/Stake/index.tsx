@@ -1,21 +1,14 @@
 import React, { useContext, useMemo, useState } from 'react'
 import styled, { ThemeContext } from 'styled-components'
-import { Pair } from '@uniswap/sdk'
-import { Link } from 'react-router-dom'
 import { SwapPoolTabs } from '../../components/NavigationTabs'
-
 import Card from '../../components/Card'
-
 import Question from '../../components/QuestionHelper'
-import FullPositionCard from '../../components/PositionCard'
 import { useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks'
-import { StyledInternalLink, TYPE } from '../../theme'
+import { TYPE } from '../../theme'
 import { Text } from 'rebass'
 import { LightCard } from '../../components/Card'
 import { RowBetween } from '../../components/Row'
-import { ButtonPrimary } from '../../components/Button'
 import { AutoColumn } from '../../components/Column'
-
 import { useActiveWeb3React } from '../../hooks'
 import { usePairs } from '../../data/Reserves'
 import { toV2LiquidityToken, useTrackedTokenPairs } from '../../state/user/hooks'
@@ -23,14 +16,10 @@ import AppBody, { BodyWrapper } from '../AppBody'
 import { Dots } from '../../components/swap/styleds'
 import { useTranslation } from 'react-i18next'
 import { StakePools } from '../../components/Stake'
-import Transaction from '../../components/AccountDetails/Transaction'
 import { ACTIVE_REWARD_POOLS } from '../../constants'
-import { useGetTokenPrices } from '../../state/price/hooks'
 import { useTokenUsdPrices } from '../../hooks/useTokenUsdPrice'
-import { useCurrencyUsdPrice } from '../../hooks/useCurrencyUsdPrice'
 import { useLPTokenUsdPrices } from '../../hooks/useLPTokenUsdPrice'
 import Toggle from '../../components/Toggle'
-
 export const MyStakePools = styled(BodyWrapper)`
   margin: 0 0 24px;
 `
@@ -42,7 +31,6 @@ export default function StakeOverview() {
   const [allRewardPools, setAllRewardPools] = useState<any | null>([])
   const [showOwn, setShowOwn] = useState(false)
   const [showExpired, setShowExpired] = useState(false)
-  // fetch the user's balances of all tracked V2 LP tokens
   const trackedTokenPairs = useTrackedTokenPairs()
   const tokenPairsWithLiquidityTokens = useMemo(
     () => trackedTokenPairs.map(tokens => ({ liquidityToken: toV2LiquidityToken(tokens), tokens })),
@@ -56,7 +44,6 @@ export default function StakeOverview() {
     liquidityTokens
   )
 
-  // fetch the reserves for all V2 pools in which the user has a balance
   const liquidityTokensWithBalances = useMemo(
     () =>
       tokenPairsWithLiquidityTokens.filter(({ liquidityToken }) =>
@@ -72,7 +59,7 @@ export default function StakeOverview() {
   useMemo(() => {
     if (Boolean(myRewardPools)) {
       const myStakePools: any[] = []
-      ACTIVE_REWARD_POOLS.map(poolObject => {
+      ACTIVE_REWARD_POOLS.forEach(poolObject => {
         let returnValue: any = false
         liquidityTokensWithBalances.forEach((pool: any) => {
           if (pool.liquidityToken.address === poolObject.address) {
@@ -89,12 +76,12 @@ export default function StakeOverview() {
 
       setMyRewardPools(myStakePools)
     }
-  }, [liquidityTokensWithBalances, ACTIVE_REWARD_POOLS, v2PairsBalances])
+  }, [liquidityTokensWithBalances, v2PairsBalances, myRewardPools])
 
   useMemo(() => {
     if (Boolean(allRewardPools)) {
       const allStakePools: any[] = []
-      ACTIVE_REWARD_POOLS.map(poolObject => {
+      ACTIVE_REWARD_POOLS.forEach(poolObject => {
         let returnValue: any = false
         tokenPairsWithLiquidityTokens.forEach((pool: any) => {
           if (pool.liquidityToken.address === poolObject.address) {
@@ -110,7 +97,7 @@ export default function StakeOverview() {
 
       setAllRewardPools(allStakePools)
     }
-  }, [tokenPairsWithLiquidityTokens, ACTIVE_REWARD_POOLS])
+  }, [tokenPairsWithLiquidityTokens, allRewardPools])
   const { t } = useTranslation()
 
   useTokenUsdPrices()

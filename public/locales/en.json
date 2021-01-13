@@ -309,5 +309,7 @@
   "apy": "APY: ~{{apy}}",
   "onlyShowYourStakePools": "Only show Pools you staked in",
   "showExpiredStakePools": "Show inactive Pools",
-  "insufficientStakedCurrencyBalance": "Insufficient staked {{ inputCurrency }} Balance"
+  "insufficientStakedCurrencyBalance": "Insufficient staked {{ inputCurrency }} Balance",
+  "claimRewardsOnPool": "Claim Rewards for {{currencyASymbol}} | {{currencyBSymbol}} LP Token",
+  "unstakeAndClaimRewardsOnPool": "Unstake all and Claim Rewards {{currencyASymbol}} | {{currencyBSymbol}} LP Token"
 }

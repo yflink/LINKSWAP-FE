@@ -13,6 +13,7 @@ export const useCountdown = (to: number): any => {
   }
 
   useEffect(() => {
+    // eslint-disable-next-line
     then = moment.unix(to)
     calc()
     const interval = setInterval(calc, 1000)
