@@ -707,53 +707,43 @@ export function FullStakingCard({
     return (
       <StakingCard highlight={isHighlighted} show={show}>
         <AutoColumn gap="12px">
-          {apy || show ? (
-            <FixedHeightRow
-              onClick={() => {
-                if (!show) {
-                  setShowMore(!showMore)
-                }
-              }}
-              style={{ cursor: headerRowStyles, position: 'relative' }}
-            >
-              {apy > 0 && !my && !isInactive && (
-                <div style={{ position: 'absolute', right: '-13px', top: '-16px', fontSize: '12px' }}>
-                  {t('apy', { apy: numberToPercent(apy) })}
-                </div>
-              )}
-              <RowFixed>
-                <DoubleCurrencyLogo currency0={currency0} currency1={currency1} margin={true} size={22} />
-                {!currency0 || !currency1 ? (
-                  <Text fontWeight={500} fontSize={20}>
-                    <Dots>{t('loading')}</Dots>
-                  </Text>
-                ) : (
-                  <div style={{ display: 'flex', position: 'relative' }}>
-                    <p style={{ fontWeight: 500, fontSize: 18, margin: '0 4px' }}>{currency0.symbol}</p>
-                    <p style={{ fontWeight: 100, fontSize: 18, margin: '0 4px' }}> | </p>
-                    <p style={{ fontWeight: 500, fontSize: 18, margin: '0 4px' }}>{currency1.symbol}</p>
-                  </div>
-                )}
-              </RowFixed>
-              {!show && (
-                <RowFixed>
-                  {showMore ? (
-                    <ChevronUp size="20" style={{ marginInlineStart: '10px' }} />
-                  ) : (
-                    <ChevronDown size="20" style={{ marginInlineStart: '10px' }} />
-                  )}
-                </RowFixed>
-              )}
-            </FixedHeightRow>
-          ) : (
-            <FixedHeightRow>
-              <RowFixed>
+          <FixedHeightRow
+            onClick={() => {
+              if (!show) {
+                setShowMore(!showMore)
+              }
+            }}
+            style={{ cursor: headerRowStyles, position: 'relative' }}
+          >
+            {apy > 0 && !my && !isInactive && (
+              <div style={{ position: 'absolute', right: '-13px', top: '-16px', fontSize: '12px' }}>
+                {t('apy', { apy: numberToPercent(apy) })}
+              </div>
+            )}
+            <RowFixed>
+              <DoubleCurrencyLogo currency0={currency0} currency1={currency1} margin={true} size={22} />
+              {!currency0 || !currency1 ? (
                 <Text fontWeight={500} fontSize={20}>
                   <Dots>{t('loading')}</Dots>
                 </Text>
+              ) : (
+                <div style={{ display: 'flex', position: 'relative' }}>
+                  <p style={{ fontWeight: 500, fontSize: 18, margin: '0 4px' }}>{currency0.symbol}</p>
+                  <p style={{ fontWeight: 100, fontSize: 18, margin: '0 4px' }}> | </p>
+                  <p style={{ fontWeight: 500, fontSize: 18, margin: '0 4px' }}>{currency1.symbol}</p>
+                </div>
+              )}
+            </RowFixed>
+            {!show && (
+              <RowFixed>
+                {showMore ? (
+                  <ChevronUp size="20" style={{ marginInlineStart: '10px' }} />
+                ) : (
+                  <ChevronDown size="20" style={{ marginInlineStart: '10px' }} />
+                )}
               </RowFixed>
-            </FixedHeightRow>
-          )}
+            )}
+          </FixedHeightRow>
           {showMore && (
             <AutoColumn gap="8px">
               {my && (
