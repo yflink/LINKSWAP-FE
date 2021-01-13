@@ -17,7 +17,7 @@ import { AutoColumn } from '../Column'
 import CurrencyLogo from '../CurrencyLogo'
 import DoubleCurrencyLogo from '../DoubleLogo'
 import { RowBetween, RowFixed } from '../Row'
-import { Countdown } from '../Countdown'
+import Countdown from '../Countdown'
 import { Dots } from '../swap/styleds'
 import { useTranslation } from 'react-i18next'
 import { ACTIVE_REWARD_POOLS } from '../../constants'
@@ -490,12 +490,12 @@ export function FullStakingCard({
   }, [account, rewardsContract, liquidityToken])
 
   useMemo(() => {
-    if (!rewardsContract || periodFinish > 0) return
+    if (!rewardsContract) return
     const method: (...args: any) => Promise<BigNumber> = rewardsContract.periodFinish
     method().then(response => {
       setPeriodFinish(hexStringToNumber(response.toHexString(), 0))
     })
-  }, [rewardsContract, periodFinish])
+  }, [rewardsContract])
 
   useMemo(() => {
     if (!rewardsContract || totalSupply > 0) return
@@ -552,12 +552,12 @@ export function FullStakingCard({
   }, [rewardsContract, rewardTokenRates])
 
   useMemo(() => {
-    if (!lpContract || totalLPSupply > 0) return
+    if (!lpContract) return
     const method: (...args: any) => Promise<BigNumber> = lpContract.totalSupply
     method().then(response => {
       setTotalLPSupply(hexStringToNumber(response.toHexString(), liquidityToken.decimals))
     })
-  }, [lpContract, liquidityToken, totalLPSupply])
+  }, [lpContract, liquidityToken])
 
   useMemo(() => {
     const wrappedRewardToken0 = allTokens['1'][rewardTokens[0]] || false

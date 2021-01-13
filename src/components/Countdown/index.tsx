@@ -8,7 +8,7 @@ interface CountdownProps {
   ends: number
   format: string
 }
-export function Countdown({ ends, format }: CountdownProps) {
+export default function Countdown({ ends, format }: CountdownProps) {
   const remaining = useCountdown(ends)
   const { t } = useTranslation()
   const duration = moment.duration(remaining, 'seconds')
