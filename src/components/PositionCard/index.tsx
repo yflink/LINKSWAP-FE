@@ -718,9 +718,13 @@ export function FullStakingCard({
             }}
             style={{ cursor: headerRowStyles, position: 'relative' }}
           >
-            {apy > 0 && !my && !isInactive && (
+            {!my && !isInactive && (
               <div style={{ position: 'absolute', right: '-13px', top: '-16px', fontSize: '12px' }}>
-                {t('apy', { apy: numberToPercent(apy) })}
+                {apy > 0 ? (
+                  <p style={{ margin: 0 }}>{t('apy', { apy: numberToPercent(apy) })}</p>
+                ) : (
+                  <Dots>{t('loading')}</Dots>
+                )}
               </div>
             )}
             <RowFixed>
