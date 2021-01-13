@@ -179,9 +179,6 @@ export default function Header() {
 
           {!isMobile && (
             <HeaderElementMobile>
-              <Title style={{ marginInlineStart: 24 }} target="_blank" href="https://rewards.linkswap.app/">
-                <MenuText>LP Rewards</MenuText>
-              </Title>
               <Title style={{ marginInlineStart: 24 }} target="_blank" href="https://yflink.io/#/stake">
                 <MenuText>Stake & Vote</MenuText>
               </Title>
