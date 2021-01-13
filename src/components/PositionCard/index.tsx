@@ -1,6 +1,6 @@
 import { JSBI, Pair, Percent } from '@uniswap/sdk'
 import { darken } from 'polished'
-import React, { useMemo, useState } from 'react'
+import React, { useState } from 'react'
 import { ChevronDown, ChevronUp, ExternalLink } from 'react-feather'
 import { Link } from 'react-router-dom'
 import { Text } from 'rebass'
