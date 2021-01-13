@@ -130,10 +130,12 @@ export default function StakeOverview() {
               </Text>
               <Question text={t('stakePoolsDescription')} />
             </RowBetween>
-            <RowBetween>
-              <TYPE.body color={theme.textSecondary}>{t('onlyShowYourStakePools')}</TYPE.body>
-              <Toggle id="show-own-stakes-button" isActive={showOwn} toggle={() => setShowOwn(!showOwn)} />
-            </RowBetween>
+            {account && (
+              <RowBetween>
+                <TYPE.body color={theme.textSecondary}>{t('onlyShowYourStakePools')}</TYPE.body>
+                <Toggle id="show-own-stakes-button" isActive={showOwn} toggle={() => setShowOwn(!showOwn)} />
+              </RowBetween>
+            )}
             <RowBetween>
               <TYPE.body color={theme.textSecondary}>{t('showExpiredStakePools')}</TYPE.body>
               <Toggle
