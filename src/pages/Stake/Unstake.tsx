@@ -30,6 +30,8 @@ import { FullStakingCard } from '../../components/PositionCard'
 import { useCurrencyBalance } from '../../state/wallet/hooks'
 import { useTransactionAdder } from '../../state/transactions/hooks'
 import hexStringToNumber from '../../utils/hexStringToNumber'
+import { useTokenUsdPrices } from '../../hooks/useTokenUsdPrice'
+import { useLPTokenUsdPrices } from '../../hooks/useLPTokenUsdPrice'
 
 const Tabs = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -196,6 +198,8 @@ export default function Unstake({
     }
   }, [balance, userBalance, setUnstaking, onFieldAInput])
 
+  useTokenUsdPrices()
+  useLPTokenUsdPrices()
   return (
     <>
       <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.appBGColor, marginBottom: '16px' }}>
