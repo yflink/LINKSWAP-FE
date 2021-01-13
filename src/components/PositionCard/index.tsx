@@ -541,6 +541,7 @@ export function FullStakingCard({
   }, [rewardsContract, rewardTokenRates])
 
   useMemo(() => {
+    if (!showMore && !show) return
     if (!rewardsContract || rewardTokenRates.length > 1) return
     const method: (...args: any) => Promise<BigNumber> = rewardsContract.rewardRate
     const args = 1
@@ -560,6 +561,7 @@ export function FullStakingCard({
   }, [lpContract, liquidityToken])
 
   useMemo(() => {
+    if (!showMore && !show) return
     const wrappedRewardToken0 = allTokens['1'][rewardTokens[0]] || false
     if (!rewardsContract || !account || !wrappedRewardToken0) return
     const method: (...args: any) => Promise<any> = rewardsContract.earned
@@ -569,9 +571,10 @@ export function FullStakingCard({
       userRewardArray[0] = hexStringToNumber(response.toHexString(), wrappedRewardToken0.decimals)
       setUserRewards(userRewardArray)
     })
-  }, [rewardsContract, rewardTokens, allTokens, account, userRewards])
+  }, [rewardsContract, rewardTokens, allTokens, account, userRewards, showMore, show])
 
   useMemo(() => {
+    if (!showMore && !show) return
     const wrappedRewardToken1 = allTokens['1'][rewardTokens[1]] || false
     if (!rewardsContract || !account || !wrappedRewardToken1) return
     const method: (...args: any) => Promise<any> = rewardsContract.earned
@@ -581,7 +584,7 @@ export function FullStakingCard({
       userRewardArray[1] = hexStringToNumber(response.toHexString(), wrappedRewardToken1.decimals)
       setUserRewards(userRewardArray)
     })
-  }, [rewardsContract, rewardTokens, allTokens, account, userRewards])
+  }, [rewardsContract, rewardTokens, allTokens, account, userRewards, showMore, show])
 
   if ((chainId && rewardTokens.length) || (fakeChainId && rewardTokens.length)) {
     const chainIdNumber = chainId ? chainId : fakeChainId
@@ -764,7 +767,7 @@ export function FullStakingCard({
                   {numberToUsd(userShareUsd)} ({numberToPercent(userShare)})
                 </RowBetween>
               )}
-              {userRewards.length > 0 ? (
+              {userBalance > 0 && userRewards.length > 0 ? (
                 <RowBetween style={{ alignItems: 'flex-start' }}>
                   <Text>{t('claimableRewards')}</Text>
                   <Text style={{ textAlign: 'end' }}>
