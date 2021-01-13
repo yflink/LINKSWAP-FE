@@ -21,7 +21,7 @@ export function useTokenUsdPrices(): any {
               'Content-Type': 'application/json'
             },
             body:
-              '{"query":"{  tokenDayDatas(orderBy: date, orderDirection: desc) {    token {    id  }    priceUSD  }}","variables":null}',
+              '{"query":"{ tokenDayDatas(orderBy: date, orderDirection: desc) { token { id symbol decimals } priceUSD  }}","variables":null}',
             method: 'POST'
           })
 
@@ -32,6 +32,8 @@ export function useTokenUsdPrices(): any {
             const tokenPrices: Record<string, any> = {}
             tokenData.forEach((token: any) => {
               const tokenObject = {
+                symbol: token.token.symbol,
+                decimals: token.token.decimals,
                 price: token.priceUSD
               }
               tokenPrices[token.token.id] = tokenObject
