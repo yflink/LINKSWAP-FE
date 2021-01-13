@@ -26,7 +26,6 @@ import { calculateGasMargin, getContract } from '../../utils'
 import { LINKSWAPLPToken, StakingRewards } from '../../pages/Stake/stakingAbi'
 import { BigNumber } from '@ethersproject/bignumber'
 import hexStringToNumber from '../../utils/hexStringToNumber'
-import { useSelectedTokenList } from '../../state/lists/hooks'
 import { useGetLPTokenPrices, useGetTokenPrices } from '../../state/price/hooks'
 import { numberToUsd, numberToPercent, numberToSignificant } from '../../utils/numberUtils'
 import { getNetworkLibrary } from '../../connectors'
@@ -35,6 +34,7 @@ import moment from 'moment'
 import { TransactionResponse } from '@ethersproject/providers'
 import ReactGA from 'react-ga'
 import { useTransactionAdder } from '../../state/transactions/hooks'
+import tokenList from '../../../src/assets/lists/linkswapTokenList.json'
 
 const ExternalLinkIcon = styled(ExternalLink)`
   display: inline-block;
@@ -444,7 +444,7 @@ export function FullStakingCard({
   const currency1 = unwrappedToken(values.tokens[1])
   const [rawUserBalance, setRawUserBalance] = useState<string>('0x00')
   const [userBalance, setUserBalance] = useState(0)
-  const [userRewards, setUserRewards] = useState<any[]>([])
+  const [userRewards, setUserRewards] = useState<string[]>(['', ''])
   const [periodFinish, setPeriodFinish] = useState(0)
   const [rewardTokens, setRewardTokens] = useState<string[]>(['', ''])
   const [rewardTokenRates, setRewardTokenRates] = useState<string[]>(['', ''])
@@ -452,8 +452,24 @@ export function FullStakingCard({
   const [totalLPSupply, setTotalLPSupply] = useState(0)
   const isHighlighted = userBalance > 0 && !my
   const liquidityToken = unwrappedToken(values.liquidityToken)
-  const rewardInfo: any[] = []
-  const allTokens = useSelectedTokenList()
+  const rewardInfo: any[] = [
+    {
+      address: '',
+      decimals: 18,
+      symbol: '',
+      rate: 0,
+      price: 0,
+      userReward: 0
+    },
+    {
+      address: '',
+      decimals: 18,
+      symbol: '',
+      rate: 0,
+      price: 0,
+      userReward: 0
+    }
+  ]
   const { tokenPrices } = useGetTokenPrices()
   const { lpTokenPrices } = useGetLPTokenPrices()
   const id = values.liquidityToken.address.toLowerCase()
@@ -461,12 +477,12 @@ export function FullStakingCard({
   const fakeAccount = '0x0000000000000000000000000000000000000000'
   const fakeChainId = 1
   const fakeLibrary = getNetworkLibrary()
+  const headerRowStyles = show ? 'defaut' : 'pointer'
+  const addTransaction = useTransactionAdder()
   const then: any = periodFinish > 0 ? moment.unix(periodFinish) : 0
   const now: any = moment()
   const remaining = periodFinish > 0 ? moment(then - now).unix() : 1
   const isInactive = remaining < 1
-  const headerRowStyles = show ? 'defaut' : 'pointer'
-  const addTransaction = useTransactionAdder()
   let apy = 0
   const rewardsContract =
     !chainId || !library || !account
@@ -488,12 +504,12 @@ export function FullStakingCard({
     })
   }
 
-  async function getUserRewards(account: string, index: number, wrappedRewardToken: any, indexString: string) {
+  async function getUserRewards(account: string, index: number, indexString: string) {
     const method: (...args: any) => Promise<any> = rewardsContract.earned
     const args: Array<string | number> = [account, indexString]
     const userRewardArray = userRewards
     method(...args).then(response => {
-      userRewardArray[index] = hexStringToNumber(response.toHexString(), wrappedRewardToken.decimals)
+      userRewardArray[index] = response.toHexString()
       setUserRewards(userRewardArray)
     })
   }
@@ -545,13 +561,11 @@ export function FullStakingCard({
       }
 
       if (rewardTokens[0] !== '') {
-        const wrappedRewardToken0 = allTokens['1'][rewardTokens[0]] || false
-        getUserRewards(account, 0, wrappedRewardToken0, '0x00')
+        getUserRewards(account, 0, '0x00')
       }
 
       if (rewardTokens[1] !== '') {
-        const wrappedRewardToken1 = allTokens['1'][rewardTokens[1]] || false
-        getUserRewards(account, 1, wrappedRewardToken1, '0x01')
+        getUserRewards(account, 1, '0x01')
       }
     }
     if (periodFinish === 0) {
@@ -573,52 +587,59 @@ export function FullStakingCard({
       getRewardTokenRates(1)
     }
   }
-
   if (lpContract) {
     if (totalLPSupply === 0) {
       getTotalLPSupply()
     }
   }
 
-  if (rewardTokens[0] !== '' && rewardTokens[1] !== '') {
-    const chainIdNumber = chainId ? chainId : fakeChainId
-    rewardTokens.forEach((tokenAddress: string, index: number) => {
-      if (allTokens[chainIdNumber][tokenAddress]) {
-        const tokenInfo = {
-          address: tokenAddress.toLowerCase(),
-          decimals: allTokens[chainIdNumber][tokenAddress].decimals,
-          symbol: allTokens[chainIdNumber][tokenAddress].symbol,
-          rate: 0,
-          price: 0
-        }
+  if (rewardTokens[0] !== '' && rewardTokens[1] !== '' && tokenPrices) {
+    const token0Address = rewardTokens[0].toLowerCase()
+    const token1Address = rewardTokens[1].toLowerCase()
+    if (tokenPrices[token0Address]) {
+      rewardInfo[0].address = token0Address
+      rewardInfo[0].decimals = tokenPrices[token0Address].decimals
+      rewardInfo[0].symbol = tokenPrices[token0Address].symbol
+      rewardInfo[0].price = tokenPrices[token0Address].price
 
-        if (rewardTokenRates[index]) {
-          tokenInfo.rate = hexStringToNumber(rewardTokenRates[index], tokenInfo.decimals, 2, true)
-        }
-
-        if (tokenPrices[tokenInfo.address]) {
-          tokenInfo.price = tokenPrices[tokenInfo.address].price
-        }
-        rewardInfo.push(tokenInfo)
+      if (rewardTokenRates[0]) {
+        rewardInfo[0].rate = hexStringToNumber(rewardTokenRates[0], rewardInfo[0].decimals, 2, true)
       }
-    })
+    }
+
+    if (tokenPrices[token1Address]) {
+      rewardInfo[1].address = token1Address
+      rewardInfo[1].decimals = tokenPrices[token1Address].decimals
+      rewardInfo[1].symbol = tokenPrices[token1Address].symbol
+      rewardInfo[1].price = tokenPrices[token1Address].price
+
+      if (rewardTokenRates[1]) {
+        rewardInfo[1].rate = hexStringToNumber(rewardTokenRates[1], rewardInfo[1].decimals, 2, true)
+      }
+    }
   }
+
+  if (userRewards[0] !== '' && userRewards[1] !== '') {
+    rewardInfo[0].userReward = hexStringToNumber(userRewards[0], rewardInfo[0].decimals)
+    rewardInfo[1].userReward = hexStringToNumber(userRewards[1], rewardInfo[1].decimals)
+  }
+
   const stakePoolTotalLiq = lpTokenPrices ? lpTokenPrices[id].totalLiq : 0
   const userShare = totalSupply > 0 && userBalance > 0 ? userBalance / (totalSupply / 100) : 0
   const lpTokenPrice = stakePoolTotalLiq && totalLPSupply > 0 ? stakePoolTotalLiq / totalLPSupply : 0
   const stakePoolTotalDeposited = lpTokenPrice ? totalSupply * lpTokenPrice : 0
   const userShareUsd = lpTokenPrice && userBalance ? userBalance * lpTokenPrice : 0
 
-  if (apy === 0 && tokenPrices && stakePoolTotalDeposited && rewardInfo.length > 0) {
+  if (apy === 0 && tokenPrices && stakePoolTotalDeposited) {
     let totalDailyRewardValue = 0
-    if (rewardInfo[0] && rewardInfo[0].rate > 0) {
+    if (rewardInfo[0].rate > 0) {
       const dailyToken0Value = rewardInfo[0].rate * rewardInfo[0].price
       if (dailyToken0Value > 0) {
         totalDailyRewardValue += dailyToken0Value
       }
     }
 
-    if (rewardInfo[1] && rewardInfo[1].rate > 0) {
+    if (rewardInfo[1].rate > 0) {
       const dailyToken1Value = rewardInfo[1].rate * rewardInfo[1].price
       if (dailyToken1Value > 0) {
         totalDailyRewardValue += dailyToken1Value
@@ -765,20 +786,18 @@ export function FullStakingCard({
                   {numberToUsd(userShareUsd)} ({numberToPercent(userShare)})
                 </RowBetween>
               )}
-              {userBalance > 0 &&
-              userRewards.length > 0 &&
-              ((userRewards.length >= 1 && userRewards[0] > 0) || (userRewards.length >= 1 && userRewards[1] > 0)) ? (
+              {rewardInfo[0].userReward > 0 || rewardInfo[1].userReward > 0 ? (
                 <RowBetween style={{ alignItems: 'flex-start' }}>
                   <Text>{t('claimableRewards')}</Text>
                   <Text style={{ textAlign: 'end' }}>
-                    {userRewards.length >= 1 && userRewards[0] > 0 && (
+                    {rewardInfo[0].userReward > 0 && (
                       <div>
-                        {numberToSignificant(userRewards[0])} {rewardInfo[0].symbol}
+                        {numberToSignificant(rewardInfo[0].userReward)} {rewardInfo[0].symbol}
                       </div>
                     )}
-                    {userRewards.length >= 1 && userRewards[1] > 0 && (
+                    {rewardInfo[1].userReward > 0 && (
                       <div>
-                        {numberToSignificant(userRewards[1])} {rewardInfo[1].symbol}
+                        {numberToSignificant(rewardInfo[1].userReward)} {rewardInfo[1].symbol}
                       </div>
                     )}
                   </Text>
