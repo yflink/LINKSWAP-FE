@@ -355,18 +355,6 @@ export default function AddLiquidity({
                 </BlueCard>
               </ColumnCenter>
             )}
-            {/* <CurrencyInputPanel
-              value={formattedAmounts[Field.CURRENCY_A]}
-              onUserInput={onFieldAInput}
-              onMax={() => {
-                onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
-              }}
-              onCurrencySelect={handleCurrencyASelect}
-              showMaxButton={!atMaxAmounts[Field.CURRENCY_A]}
-              currency={currencies[Field.CURRENCY_A]}
-              id="add-liquidity-input-tokena"
-              showCommonBases
-            /> */}
             <CurrencyDoubleInputPanel
               value={formattedAmounts[Field.CURRENCY_A]}
               onUserInput={onFieldAInput}

@@ -35,7 +35,6 @@ export function defaultTheme() {
     appCurrencyInputBGActiveHover: mainColorHover,
     appCurrencyInputTextColorActiveHover: mainTextColor,
 
-
     //Buttons
     buttonBG: mainColor,
     buttonTextColor: mainTextColor,
@@ -116,7 +115,7 @@ export function defaultTheme() {
     navigationBG: appBG,
     navigationTabBG: transparent,
     navigationTabIconColor: mainTextColor,
-    navigationTabBGHover: transparent,
+    navigationTabBGHover: 'rgba(41, 91, 219, .5)',
     navigationTabIconColorHover: mainTextColor,
     navigationTabBGActive: mainColor,
     navigationTabIconColorActive: mainTextColor,

@@ -167,8 +167,7 @@ export function usePairAdder(): (pair: Pair) => void {
  * @param tokenB the other token
  */
 export function toV2LiquidityToken([tokenA, tokenB]: [Token, Token]): Token {
-  console.log(tokenA.symbol, tokenB.symbol, Pair.getAddress(tokenA, tokenB))
-  return new Token(tokenA.chainId, Pair.getAddress(tokenA, tokenB), 18, 'LSLP', 'LINKSWAP LP Token (LSLP)')
+  return new Token(tokenA.chainId, Pair.getAddress(tokenA, tokenB), 18, 'LSLP', 'LINKSWAP LP Token')
 }
 
 /**
