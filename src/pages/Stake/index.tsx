@@ -29,6 +29,7 @@ import { useGetTokenPrices } from '../../state/price/hooks'
 import { useTokenUsdPrices } from '../../hooks/useTokenUsdPrice'
 import { useCurrencyUsdPrice } from '../../hooks/useCurrencyUsdPrice'
 import { useLPTokenUsdPrices } from '../../hooks/useLPTokenUsdPrice'
+import Toggle from '../../components/Toggle'
 
 export const MyStakePools = styled(BodyWrapper)`
   margin: 0 0 24px;
@@ -39,7 +40,8 @@ export default function StakeOverview() {
   const { account } = useActiveWeb3React()
   const [myRewardPools, setMyRewardPools] = useState<any | null>([])
   const [allRewardPools, setAllRewardPools] = useState<any | null>([])
-
+  const [showOwn, setShowOwn] = useState(false)
+  const [showExpired, setShowExpired] = useState(false)
   // fetch the user's balances of all tracked V2 LP tokens
   const trackedTokenPairs = useTrackedTokenPairs()
   const tokenPairsWithLiquidityTokens = useMemo(
@@ -122,7 +124,7 @@ export default function StakeOverview() {
         <MyStakePools>
           <AutoColumn gap="lg" justify="center">
             <AutoColumn gap="12px" style={{ width: '100%' }}>
-              <RowBetween padding={'0 8px'}>
+              <RowBetween>
                 <Text color={theme.textPrimary} fontWeight={500}>
                   {t('myStakeablePositions')}
                 </Text>
@@ -136,13 +138,24 @@ export default function StakeOverview() {
       <AppBody>
         <AutoColumn gap="lg" justify="center">
           <AutoColumn gap="12px" style={{ width: '100%' }}>
-            <RowBetween padding={'0 8px'}>
+            <RowBetween>
               <Text color={theme.textPrimary} fontWeight={500}>
-                {t('activeStakePools')}
+                {t('stakePools')}
               </Text>
-              <Question text={t('activeStakePoolsDescription')} />
+              <Question text={t('stakePoolsDescription')} />
             </RowBetween>
-
+            <RowBetween>
+              <TYPE.body color={theme.textSecondary}>{t('onlyShowYourStakePools')}</TYPE.body>
+              <Toggle id="show-own-stakes-button" isActive={showOwn} toggle={() => setShowOwn(!showOwn)} />
+            </RowBetween>
+            <RowBetween>
+              <TYPE.body color={theme.textSecondary}>{t('showExpiredStakePools')}</TYPE.body>
+              <Toggle
+                id="show-expired-stakes-button"
+                isActive={showExpired}
+                toggle={() => setShowExpired(!showExpired)}
+              />
+            </RowBetween>
             {v2IsLoading ? (
               <LightCard padding="40px">
                 <TYPE.body color={theme.textPrimary} textAlign="center">
@@ -150,7 +163,7 @@ export default function StakeOverview() {
                 </TYPE.body>
               </LightCard>
             ) : allRewardPools.length > 0 ? (
-              <StakePools poolArray={allRewardPools} my={false} />
+              <StakePools poolArray={allRewardPools} showOwn={showOwn} showExpired={showExpired} my={false} />
             ) : (
               <LightCard padding="40px">
                 <TYPE.body color={theme.textPrimary} textAlign="center">

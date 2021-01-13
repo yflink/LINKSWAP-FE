@@ -283,10 +283,10 @@
   "stakeLPToken": "Stake {{currencyASymbol}} | {{currencyBSymbol}} LP Token",
   "stakeLPTokenDescription": "By staking your {{currencyASymbol}} | {{currencyBSymbol}} LINKSWAP Liquidity Provider Token (LSLP) you will be eligible to earn staking rewards",
   "myStakedPosition": "Your staked position",
-  "activeStakePools": "Active LP Reward Pools",
-  "activeStakePoolsDescription": "Stake your LINKSWAP Liquidity Provider Token (LSLP) and earn daily rewards",
+  "stakePools": "LP Reward Pools",
+  "stakePoolsDescription": "Stake your LINKSWAP Liquidity Provider Token (LSLP) and earn daily rewards",
   "myStakeablePositions": "Your unstaked Liquidity",
-  "myStakeablePositionsDescriptions": "You have unstaked LINKSWAP Liquidity Provider Tokens (LSLP) for those pools.",
+  "myStakeablePositionsDescription": "You have unstaked LINKSWAP Liquidity Provider Tokens (LSLP) for those pools.",
   "stakableTokenAmount": "Unstaked Tokens",
   "stakedTokenAmount": "Currently staked Tokens",
   "stakePoolStats": "Pool Stats",
@@ -300,5 +300,7 @@
   "claimRewards": "Claim Rewards",
   "stakePoolTotalLiq": "Total Liquidity",
   "stakePoolTotalDeposited": "Total Deposited",
-  "apy": "APY: ~{{apy}}"
+  "apy": "APY: ~{{apy}}",
+  "onlyShowYourStakePools": "Only show Pools you staked in",
+  "showExpiredStakePools": "Show inactive Pools"
 }

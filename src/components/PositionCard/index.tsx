@@ -31,6 +31,8 @@ import { useGetLPTokenPrices, useGetTokenPrices } from '../../state/price/hooks'
 import { numberToUsd, numberToPercent, numberToSignificant } from '../../utils/numberUtils'
 import { getNetworkLibrary } from '../../connectors'
 import { useWalletModalToggle } from '../../state/application/hooks'
+import { useCountdown } from '../../hooks/useCountdown'
+import moment from 'moment'
 
 const ExternalLinkIcon = styled(ExternalLink)`
   display: inline-block;
@@ -91,13 +93,14 @@ export const HoverCard = styled(Card)`
   }
 `
 
-const StakingCard = styled(Card)<{ highlight?: boolean }>`
+const StakingCard = styled(Card)<{ highlight?: boolean; show?: boolean }>`
   font-size: 14px;
   line-height: 18px;
   background-color: ${({ theme }) => theme.appBoxBG};
   border: 1px solid ${({ theme, highlight }) => (highlight ? theme.textHighlight : theme.appBoxBG)};
   :hover {
-    border: 1px solid ${({ theme, highlight }) => (highlight ? theme.textHighlight : theme.textTertiary)};
+    border: 1px solid
+      ${({ theme, highlight, show }) => (highlight ? theme.textHighlight : show ? theme.appBoxBG : theme.textTertiary)};
   }
 `
 
@@ -419,7 +422,19 @@ export function StakingPositionCard({ currencys, balance, token }: StakingPositi
   )
 }
 
-export function FullStakingCard({ values, my, show }: { values: any; my: boolean; show?: boolean | false }) {
+export function FullStakingCard({
+  values,
+  my,
+  show,
+  showOwn,
+  showExpired
+}: {
+  values: any
+  my: boolean
+  show?: boolean | false
+  showOwn?: boolean | false
+  showExpired?: boolean | true
+}) {
   const { account, chainId, library } = useActiveWeb3React()
   const [showMore, setShowMore] = useState(show)
   const { t } = useTranslation()
@@ -443,6 +458,10 @@ export function FullStakingCard({ values, my, show }: { values: any; my: boolean
   const fakeAccount = '0x0000000000000000000000000000000000000000'
   const fakeChainId = 1
   const fakeLibrary = getNetworkLibrary()
+  const then: any = periodFinish > 0 ? moment.unix(periodFinish) : 0
+  const now: any = moment()
+  const remaining = periodFinish > 0 ? moment(then - now).unix() : 1
+  const isInactive = remaining < 100000
   const rewardsContract =
     !chainId || !library || !account
       ? getContract(values.rewardsAddress, StakingRewards, fakeLibrary, fakeAccount)
@@ -610,177 +629,211 @@ export function FullStakingCard({ values, my, show }: { values: any; my: boolean
     }
   }
 
-  return (
-    <StakingCard highlight={isHighlighted}>
-      <AutoColumn gap="12px">
-        <FixedHeightRow onClick={() => setShowMore(!showMore)} style={{ cursor: 'pointer', position: 'relative' }}>
-          {apy > 0 && !my && (
-            <div style={{ position: 'absolute', right: '-13px', top: '-16px', fontSize: '12px' }}>
-              {t('apy', { apy: numberToPercent(apy) })}
-            </div>
-          )}
-          <RowFixed>
-            <DoubleCurrencyLogo currency0={currency0} currency1={currency1} margin={true} size={22} />
-            {!currency0 || !currency1 ? (
-              <Text fontWeight={500} fontSize={20}>
-                <Dots>{t('loading')}</Dots>
-              </Text>
-            ) : (
-              <div style={{ display: 'flex', position: 'relative' }}>
-                <p style={{ fontWeight: 500, fontSize: 18, margin: '0 4px' }}>{currency0.symbol}</p>
-                <p style={{ fontWeight: 100, fontSize: 18, margin: '0 4px' }}> | </p>
-                <p style={{ fontWeight: 500, fontSize: 18, margin: '0 4px' }}>{currency1.symbol}</p>
-              </div>
-            )}
-          </RowFixed>
-          <RowFixed>
-            {showMore ? (
-              <ChevronUp size="20" style={{ marginInlineStart: '10px' }} />
-            ) : (
-              <ChevronDown size="20" style={{ marginInlineStart: '10px' }} />
-            )}
-          </RowFixed>
-        </FixedHeightRow>
-        {showMore && (
-          <AutoColumn gap="8px">
-            {my && (
-              <RowBetween>
-                <Text>{t('stakableTokenAmount')}</Text>
-                {numberToSignificant(values['balance'])}
-              </RowBetween>
-            )}
-            {userBalance > 0 && (
-              <RowBetween>
-                <Text>{t('stakedTokenAmount')}</Text>
-                {numberToSignificant(userBalance)}
-              </RowBetween>
-            )}
-            {userBalance > 0 && userShare > 0 && userShareUsd > 0 && (
-              <RowBetween>
-                <Text>{t('yourPoolShare')}</Text>
-                {numberToUsd(userShareUsd)} ({numberToPercent(userShare)})
-              </RowBetween>
-            )}
-            {userRewards.length > 0 && userRewards[0] > 0 ? (
-              <RowBetween style={{ alignItems: 'flex-start' }}>
-                <Text>{t('claimableRewards')}</Text>
-                <Text style={{ textAlign: 'end' }}>
-                  {userRewards.length > 0 && rewardInfo.length > 0 && userRewards[0] > 0 && (
-                    <div>
-                      {numberToSignificant(userRewards[0])} {rewardInfo[0].symbol}
-                    </div>
-                  )}
-                  {userRewards.length > 1 && rewardInfo.length > 1 && userRewards[1] > 0 && (
-                    <div>
-                      {numberToSignificant(userRewards[1])} {rewardInfo[1].symbol}
-                    </div>
-                  )}
-                </Text>
-              </RowBetween>
-            ) : (
-              <>
-                {periodFinish > 0 && userBalance > 0 && (
-                  <RowBetween style={{ alignItems: 'flex-start' }}>
-                    <Text>{t('claimableRewards')}</Text>
+  const headerRowStyles = show ? 'defaut' : 'pointer'
+  if ((userBalance === 0 && showOwn) || (isInactive && !showExpired) || (!isInactive && showExpired)) {
+    return <></>
+  } else {
+    return (
+      <StakingCard highlight={isHighlighted} show={show}>
+        <AutoColumn gap="12px">
+          {apy || show ? (
+            <FixedHeightRow
+              onClick={() => {
+                if (!show) {
+                  setShowMore(!showMore)
+                }
+              }}
+              style={{ cursor: headerRowStyles, position: 'relative' }}
+            >
+              {apy > 0 && !my && !isInactive && (
+                <div style={{ position: 'absolute', right: '-13px', top: '-16px', fontSize: '12px' }}>
+                  {t('apy', { apy: numberToPercent(apy) })}
+                </div>
+              )}
+              <RowFixed>
+                <DoubleCurrencyLogo currency0={currency0} currency1={currency1} margin={true} size={22} />
+                {!currency0 || !currency1 ? (
+                  <Text fontWeight={500} fontSize={20}>
                     <Dots>{t('loading')}</Dots>
-                  </RowBetween>
+                  </Text>
+                ) : (
+                  <div style={{ display: 'flex', position: 'relative' }}>
+                    <p style={{ fontWeight: 500, fontSize: 18, margin: '0 4px' }}>{currency0.symbol}</p>
+                    <p style={{ fontWeight: 100, fontSize: 18, margin: '0 4px' }}> | </p>
+                    <p style={{ fontWeight: 500, fontSize: 18, margin: '0 4px' }}>{currency1.symbol}</p>
+                  </div>
                 )}
-              </>
-            )}
-            {my && (
-              <RowBetween marginTop="10px">
-                <ButtonSecondary as={Link} width="100%" to={`/stake/${currencyId(currency0)}/${currencyId(currency1)}`}>
-                  {t('stake')}
-                </ButtonSecondary>
-              </RowBetween>
-            )}
-            <RowBetween>
-              <Text style={{ margin: '12px 0 0' }} fontSize="16px" fontWeight={600}>
-                {t('stakePoolStats')}
-              </Text>
-            </RowBetween>
-            {stakePoolTotalLiq > 0 && (
-              <RowBetween style={{ alignItems: 'flex-start' }}>
-                <Text>{t('stakePoolTotalLiq')}</Text>
-                <Text>{numberToUsd(stakePoolTotalLiq)}</Text>
-              </RowBetween>
-            )}
-            {stakePoolTotalDeposited > 0 && (
-              <RowBetween style={{ alignItems: 'flex-start' }}>
-                <Text>{t('stakePoolTotalDeposited')}</Text>
-                <Text>{numberToUsd(stakePoolTotalDeposited)}</Text>
-              </RowBetween>
-            )}
-            {rewardInfo.length > 0 && (
-              <RowBetween style={{ alignItems: 'flex-start' }}>
-                <Text>{t('stakePoolRewards')}</Text>
-                <Text style={{ textAlign: 'end' }}>
-                  {rewardInfo[0]['rate'] > 0 && (
-                    <div>
-                      {t('stakeRewardPerDay', { rate: rewardInfo[0].rate, currencySymbol: rewardInfo[0].symbol })}
-                    </div>
+              </RowFixed>
+              {!show && (
+                <RowFixed>
+                  {showMore ? (
+                    <ChevronUp size="20" style={{ marginInlineStart: '10px' }} />
+                  ) : (
+                    <ChevronDown size="20" style={{ marginInlineStart: '10px' }} />
                   )}
-                  {rewardInfo.length > 1 && rewardInfo[1]['rate'] > 0 && (
-                    <div style={{ textAlign: 'end' }}>
-                      {t('stakeRewardPerDay', { rate: rewardInfo[1].rate, currencySymbol: rewardInfo[1].symbol })}
-                    </div>
+                </RowFixed>
+              )}
+            </FixedHeightRow>
+          ) : (
+            <FixedHeightRow>
+              <RowFixed>
+                <Text fontWeight={500} fontSize={20}>
+                  <Dots>{t('loading')}</Dots>
+                </Text>
+              </RowFixed>
+            </FixedHeightRow>
+          )}
+          {showMore && (
+            <AutoColumn gap="8px">
+              {my && (
+                <RowBetween>
+                  <Text>{t('stakableTokenAmount')}</Text>
+                  {numberToSignificant(values['balance'])}
+                </RowBetween>
+              )}
+              {userBalance > 0 && (
+                <RowBetween>
+                  <Text>{t('stakedTokenAmount')}</Text>
+                  {numberToSignificant(userBalance)}
+                </RowBetween>
+              )}
+              {userBalance > 0 && userShare > 0 && userShareUsd > 0 && (
+                <RowBetween>
+                  <Text>{t('yourPoolShare')}</Text>
+                  {numberToUsd(userShareUsd)} ({numberToPercent(userShare)})
+                </RowBetween>
+              )}
+              {(userRewards.length > 0 && userRewards[0] > 0) || (userRewards.length > 0 && userRewards[1] > 0) ? (
+                <RowBetween style={{ alignItems: 'flex-start' }}>
+                  <Text>{t('claimableRewards')}</Text>
+                  <Text style={{ textAlign: 'end' }}>
+                    {userRewards.length > 0 && rewardInfo.length > 0 && userRewards[0] > 0 && (
+                      <div>
+                        {numberToSignificant(userRewards[0])} {rewardInfo[0].symbol}
+                      </div>
+                    )}
+                    {userRewards.length > 1 && rewardInfo.length > 1 && userRewards[1] > 0 && (
+                      <div>
+                        {numberToSignificant(userRewards[1])} {rewardInfo[1].symbol}
+                      </div>
+                    )}
+                  </Text>
+                </RowBetween>
+              ) : (
+                <>
+                  {periodFinish > 0 && userBalance > 0 && (
+                    <RowBetween style={{ alignItems: 'flex-start' }}>
+                      <Text>{t('claimableRewards')}</Text>
+                      <Dots>{t('loading')}</Dots>
+                    </RowBetween>
                   )}
-                  {apy > 0 && (
-                    <div style={{ textAlign: 'end', marginTop: '8px' }}>{t('apy', { apy: numberToPercent(apy) })}</div>
-                  )}
+                </>
+              )}
+              {my && !show && (
+                <RowBetween marginTop="10px">
+                  <ButtonSecondary
+                    as={Link}
+                    width="100%"
+                    to={`/stake/${currencyId(currency0)}/${currencyId(currency1)}`}
+                  >
+                    {t('stake')}
+                  </ButtonSecondary>
+                </RowBetween>
+              )}
+              <RowBetween>
+                <Text style={{ margin: '12px 0 0' }} fontSize="16px" fontWeight={600}>
+                  {t('stakePoolStats')}
                 </Text>
               </RowBetween>
-            )}
-            <RowBetween>
-              <Text>{t('timeRemaining')}</Text>
-              <Countdown ends={periodFinish} format="DD[d] HH[h] mm[m] ss[s]" />
-            </RowBetween>
-            {userBalance > 0 && !my && (
-              <RowBetween marginTop="10px">
-                <ButtonSecondary
-                  as={Link}
-                  width="48%"
-                  style={{ marginInlineEnd: '1%' }}
-                  to={`/unstake/${currencyId(currency0)}/${currencyId(currency1)}`}
-                >
-                  {t('claimRewards')}
-                </ButtonSecondary>
-                <ButtonSecondary
-                  as={Link}
-                  width="48%"
-                  style={{ marginInlineStart: '1%' }}
-                  to={`/unstake/${currencyId(currency0)}/${currencyId(currency1)}`}
-                >
-                  {t('unstake')}
-                </ButtonSecondary>
+              {stakePoolTotalLiq > 0 && (
+                <RowBetween style={{ alignItems: 'flex-start' }}>
+                  <Text>{t('stakePoolTotalLiq')}</Text>
+                  <Text>{numberToUsd(stakePoolTotalLiq)}</Text>
+                </RowBetween>
+              )}
+              {stakePoolTotalDeposited > 0 && (
+                <RowBetween style={{ alignItems: 'flex-start' }}>
+                  <Text>{t('stakePoolTotalDeposited')}</Text>
+                  <Text>{numberToUsd(stakePoolTotalDeposited)}</Text>
+                </RowBetween>
+              )}
+              {rewardInfo.length > 0 && (
+                <RowBetween style={{ alignItems: 'flex-start' }}>
+                  <Text>{t('stakePoolRewards')}</Text>
+                  <Text style={{ textAlign: 'end' }}>
+                    {rewardInfo[0]['rate'] > 0 && (
+                      <div>
+                        {t('stakeRewardPerDay', { rate: rewardInfo[0].rate, currencySymbol: rewardInfo[0].symbol })}
+                      </div>
+                    )}
+                    {rewardInfo.length > 1 && rewardInfo[1]['rate'] > 0 && (
+                      <div style={{ textAlign: 'end' }}>
+                        {t('stakeRewardPerDay', { rate: rewardInfo[1].rate, currencySymbol: rewardInfo[1].symbol })}
+                      </div>
+                    )}
+                    {apy > 0 && !isInactive && (
+                      <div style={{ textAlign: 'end', marginTop: '8px' }}>
+                        {t('apy', { apy: numberToPercent(apy) })}
+                      </div>
+                    )}
+                  </Text>
+                </RowBetween>
+              )}
+              <RowBetween>
+                <Text>{t('timeRemaining')}</Text>
+                <Countdown ends={periodFinish} format="DD[d] HH[h] mm[m] ss[s]" />
               </RowBetween>
-            )}
-            {userBalance > 0 && userRewards.length > 0 && !my && (
-              <RowBetween marginTop="10px">
-                <ButtonSecondary
-                  as={Link}
-                  width="100%"
-                  style={{ marginInlineEnd: '1%' }}
-                  to={`/unstake/${currencyId(currency0)}/${currencyId(currency1)}`}
-                >
-                  {t('unstakeAndClaim')}
-                </ButtonSecondary>
-              </RowBetween>
-            )}
-            {userBalance === 0 && !my && periodFinish > 0 && (
-              <RowBetween marginTop="10px">
-                {!account ? (
-                  <ButtonLight onClick={toggleWalletModal}>{t('connectWallet')}</ButtonLight>
-                ) : (
-                  <ButtonSecondary as={Link} to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`} width="100%">
-                    {t('addLiquidity')}
+              {userBalance > 0 && !my && !isInactive && (
+                <RowBetween marginTop="10px">
+                  <ButtonSecondary
+                    as={Link}
+                    width="48%"
+                    style={{ marginInlineEnd: '1%' }}
+                    to={`/unstake/${currencyId(currency0)}/${currencyId(currency1)}`}
+                  >
+                    {t('claimRewards')}
                   </ButtonSecondary>
-                )}
-              </RowBetween>
-            )}
-          </AutoColumn>
-        )}
-      </AutoColumn>
-    </StakingCard>
-  )
+                  <ButtonSecondary
+                    as={Link}
+                    width="48%"
+                    style={{ marginInlineStart: '1%' }}
+                    to={`/unstake/${currencyId(currency0)}/${currencyId(currency1)}`}
+                  >
+                    {t('unstake')}
+                  </ButtonSecondary>
+                </RowBetween>
+              )}
+              {userBalance > 0 && userRewards.length > 0 && !my && (
+                <RowBetween marginTop="10px">
+                  <ButtonSecondary
+                    as={Link}
+                    width="100%"
+                    style={{ marginInlineEnd: '1%' }}
+                    to={`/unstake/${currencyId(currency0)}/${currencyId(currency1)}`}
+                  >
+                    {t('unstakeAndClaim')}
+                  </ButtonSecondary>
+                </RowBetween>
+              )}
+              {userBalance === 0 && !my && !isInactive && (
+                <RowBetween marginTop="10px">
+                  {!account ? (
+                    <ButtonLight onClick={toggleWalletModal}>{t('connectWallet')}</ButtonLight>
+                  ) : (
+                    <ButtonSecondary
+                      as={Link}
+                      to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}
+                      width="100%"
+                    >
+                      {t('addLiquidity')}
+                    </ButtonSecondary>
+                  )}
+                </RowBetween>
+              )}
+            </AutoColumn>
+          )}
+        </AutoColumn>
+      </StakingCard>
+    )
+  }
 }

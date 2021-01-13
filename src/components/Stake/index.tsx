@@ -4,9 +4,11 @@ import { FullStakingCard } from '../PositionCard'
 interface PoolArrayProps {
   poolArray: any[]
   my: boolean
+  showOwn?: boolean | false
+  showExpired?: boolean | false
 }
 
-export function StakePools({ poolArray, my }: PoolArrayProps) {
+export function StakePools({ poolArray, my, showOwn, showExpired }: PoolArrayProps) {
   const values: any[] = []
 
   poolArray.forEach((pool, index) => {
@@ -15,7 +17,7 @@ export function StakePools({ poolArray, my }: PoolArrayProps) {
   return (
     <>
       {poolArray.map((stakingPool, index) => (
-        <FullStakingCard values={values[index]} my={my} key={index} />
+        <FullStakingCard values={values[index]} my={my} showOwn={showOwn} showExpired={showExpired} key={index} />
       ))}
     </>
   )

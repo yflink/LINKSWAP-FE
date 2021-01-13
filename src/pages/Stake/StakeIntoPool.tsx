@@ -30,6 +30,7 @@ import { WrappedTokenInfo } from '../../state/lists/hooks'
 import ReactGA from 'react-ga'
 import { addTransaction } from '../../state/transactions/actions'
 import { FullStakingCard, StakingPositionCard } from '../../components/PositionCard'
+import { useCurrencyBalance } from '../../state/wallet/hooks'
 
 const Tabs = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -64,7 +65,7 @@ export default function StakeIntoPool({
     liquidityToken = toV2LiquidityToken([tokenA, tokenB])
 
     const liquidityTokenAddress = liquidityToken.address
-    if (!!rewardsContractAddress) {
+    if (rewardsContractAddress === '') {
       ACTIVE_REWARD_POOLS.forEach((pool: any) => {
         if (pool.address === liquidityTokenAddress) {
           setRewardsContractAddress(pool.rewardsAddress)
@@ -120,7 +121,7 @@ export default function StakeIntoPool({
   const { t } = useTranslation()
 
   useMemo(() => {
-    if (!chainId || !library || !account) return
+    if (rewardsContractAddress === '' || !chainId || !library || !account) return
     const rewardsContract = getContract(rewardsContractAddress, StakingRewards, library, account)
     const method: (...args: any) => Promise<BigNumber> = rewardsContract.balanceOf
     const args: Array<string | string[] | number> = [account]
@@ -132,7 +133,7 @@ export default function StakeIntoPool({
   }, [account, chainId, library, rewardsContractAddress, StakingRewards])
 
   async function onAdd(contractAddress: string) {
-    if (!chainId || !library || !account) return
+    if (rewardsContractAddress === '' || !chainId || !library || !account) return
     const router = getContract(contractAddress, StakingRewards, library, account)
 
     const { [Field.CURRENCY_A]: parsedAmountA } = parsedAmounts
@@ -178,10 +179,14 @@ export default function StakeIntoPool({
   const { [Field.CURRENCY_A]: parsedAmountA } = parsedAmounts
   const buttonSting = parsedAmountA ? t('stake') : t('enterAmount')
 
+  const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, liquidityToken ?? undefined)
+
   const stakingValues = {
+    address: liquidityToken?.address,
     liquidityToken: liquidityToken,
     rewardsAddress: rewardsContractAddress,
-    tokens: [currencyA, currencyB]
+    tokens: [currencyA, currencyB],
+    balance: selectedCurrencyBalance?.toSignificant(6) || 0
   }
 
   return (
@@ -254,7 +259,7 @@ export default function StakeIntoPool({
           </AutoColumn>
         )}
       </AppBodyDark>
-      {account && chainId && library && balance > 0 && (
+      {account && chainId && library && rewardsContractAddress && (
         <AutoColumn style={{ marginTop: '1rem', maxWidth: '420px', width: '100%' }}>
           <FullStakingCard values={stakingValues} my={true} show={true} />
         </AutoColumn>
