@@ -193,7 +193,7 @@ export default function StakeIntoPool({
   }
 
   const passedCurrencyA = currencyIdA === 'ETH' ? WETH['1'] : currencyA
-  const passedCurrencyB = currencyIdB === 'ETH' ? WETH['1'] : currencyA
+  const passedCurrencyB = currencyIdB === 'ETH' ? WETH['1'] : currencyB
 
   const stakingValues = {
     address: liquidityToken?.address,
