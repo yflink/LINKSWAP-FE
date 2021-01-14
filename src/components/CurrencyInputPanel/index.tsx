@@ -12,6 +12,7 @@ import { TYPE } from '../../theme'
 import { WrappedTokenInfo } from '../../state/lists/hooks'
 import { useCurrencyBalance } from '../../state/wallet/hooks'
 import { useActiveWeb3React } from '../../hooks'
+import { numberToSignificant } from '../../utils/numberUtils'
 
 // import { ReactComponent as DropDown } from '../../assets/images/dropdown.svg'
 
@@ -244,7 +245,7 @@ export default function CurrencyInputPanel({
                       {!hideBalance && !!currency && selectedCurrencyBalance && !balanceOveride
                         ? t('balance', { balanceInput: selectedCurrencyBalance?.toSignificant(6) })
                         : balanceOveride
-                        ? newBalance
+                        ? numberToSignificant(newBalance)
                         : ' -'}
                     </TYPE.body>
                   )}
