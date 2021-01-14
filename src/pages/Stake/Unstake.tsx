@@ -171,9 +171,9 @@ export default function Unstake({
       })
   }
 
-  const currentBalance = Number(selectedCurrencyBalance?.toSignificant(6))
+  const currentBalance = userBalance
 
-  if ((parsedAmountA && Number(parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)) > userBalance) || userBalance === 0) {
+  if ((parsedAmountA && Number(parsedAmounts[Field.CURRENCY_A]?.toExact()) > userBalance) || userBalance === 0) {
     buttonString = t('insufficientStakedCurrencyBalance', { inputCurrency: currencies[Field.CURRENCY_A]?.symbol })
     hasError = true
   } else {
@@ -198,7 +198,7 @@ export default function Unstake({
     const args: Array<string | string[] | number> = [account]
     method(...args).then(response => {
       if (BigNumber.isBigNumber(response)) {
-        setUserBalance(hexStringToNumber(response.toHexString(), liquidityToken.decimals, 6))
+        setUserBalance(hexStringToNumber(response.toHexString(), liquidityToken.decimals))
       }
     })
   }, [account, rewardsContractAddress, liquidityToken, chainId, library])

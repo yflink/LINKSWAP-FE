@@ -74,7 +74,6 @@ export default function StakeIntoPool({
     tokenB = WETH['1']
   }
 
-  console.log(currencyA, currencyB)
   if (tokenA && tokenB) {
     liquidityToken = toV2LiquidityToken([tokenA, tokenB])
 
@@ -180,10 +179,11 @@ export default function StakeIntoPool({
       })
   }
 
-  const currentBalance = Number(selectedCurrencyBalance?.toSignificant(6))
+  const currentBalance = Number(maxAmounts[Field.CURRENCY_A]?.toExact())
+
   if (
     (parsedAmountA &&
-      Number(parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)) > Number(maxAmounts[Field.CURRENCY_A]?.toExact())) ||
+      Number(parsedAmounts[Field.CURRENCY_A]?.toExact()) > Number(maxAmounts[Field.CURRENCY_A]?.toExact())) ||
     currentBalance === 0
   ) {
     buttonString = t('insufficientCurrencyBalance', { inputCurrency: currencies[Field.CURRENCY_A]?.symbol })
