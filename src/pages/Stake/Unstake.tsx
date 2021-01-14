@@ -171,8 +171,6 @@ export default function Unstake({
       })
   }
 
-  const currentBalance = userBalance
-
   if ((parsedAmountA && Number(parsedAmounts[Field.CURRENCY_A]?.toExact()) > userBalance) || userBalance === 0) {
     buttonString = t('insufficientStakedCurrencyBalance', { inputCurrency: currencies[Field.CURRENCY_A]?.symbol })
     hasError = true
@@ -181,14 +179,14 @@ export default function Unstake({
   }
 
   const passedCurrencyA = currencyIdA === 'ETH' ? WETH['1'] : currencyA
-  const passedCurrencyB = currencyIdB === 'ETH' ? WETH['1'] : currencyA
+  const passedCurrencyB = currencyIdB === 'ETH' ? WETH['1'] : currencyB
 
   const stakingValues = {
     address: liquidityToken?.address,
     liquidityToken: wrappedLiquidityToken,
     rewardsAddress: rewardsContractAddress,
     tokens: [passedCurrencyA, passedCurrencyB],
-    balance: currentBalance || 0
+    balance: Number(selectedCurrencyBalance?.toSignificant(6)) || 0
   }
 
   useMemo(() => {
