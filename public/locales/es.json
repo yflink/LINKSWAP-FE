@@ -146,7 +146,7 @@
   "supplyingCurrencies": "Se suministra {{currencyAAmount}} {{currencyA}} y {{currencyBAmount}} {{currencyB}}",
   "happyToSupply": "Una vez que esté satisfecho con la tasa, haga clic en suministrar para revisar.",
   "initialPricesAndShare": "Precios iniciales y participación en el pool",
-  "pricesAndShare": "Precios y participación en el grupo de fondos",
+  "pricesAndShare": "Precios y participación en el Pool",
   "connectWallet": "Conectar Billetera",
   "supply": "Suministro",
   "tokenName": "Nombre del Token",
