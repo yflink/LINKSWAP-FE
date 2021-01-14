@@ -1,6 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
-import { currencyEquals, TokenAmount, WETH } from '@uniswap/sdk'
+import { TokenAmount, WETH } from '@uniswap/sdk'
 import React, { useContext, useMemo, useState } from 'react'
 import { Link, RouteComponentProps } from 'react-router-dom'
 import { Text } from 'rebass'
