@@ -1,6 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
-import { TokenAmount } from '@uniswap/sdk'
+import { currencyEquals, TokenAmount, WETH } from '@uniswap/sdk'
 import React, { useContext, useMemo, useState } from 'react'
 import { Link, RouteComponentProps } from 'react-router-dom'
 import { Text } from 'rebass'
@@ -58,13 +58,23 @@ export default function StakeIntoPool({
   const theme = useContext(ThemeContext)
   const currencyA = useCurrency(currencyIdA)
   const currencyB = useCurrency(currencyIdB)
-  const tokenA = useToken(currencyIdA)
-  const tokenB = useToken(currencyIdB)
   const fakeContract = '0x0000000000000000000000000000000000000000'
   const [rewardsContractAddress, setRewardsContractAddress] = useState(fakeContract)
   let liquidityToken
   let wrappedLiquidityToken
   let hasError
+  let tokenA = useToken(currencyIdA)
+  let tokenB = useToken(currencyIdB)
+
+  if (!tokenA) {
+    tokenA = WETH['1']
+  }
+
+  if (!tokenB) {
+    tokenB = WETH['1']
+  }
+
+  console.log(currencyA, currencyB)
   if (tokenA && tokenB) {
     liquidityToken = toV2LiquidityToken([tokenA, tokenB])
 
@@ -182,11 +192,14 @@ export default function StakeIntoPool({
     hasError = false
   }
 
+  const passedCurrencyA = currencyIdA === 'ETH' ? WETH['1'] : currencyA
+  const passedCurrencyB = currencyIdB === 'ETH' ? WETH['1'] : currencyA
+
   const stakingValues = {
     address: liquidityToken?.address,
     liquidityToken: wrappedLiquidityToken,
     rewardsAddress: rewardsContractAddress,
-    tokens: [currencyA, currencyB],
+    tokens: [passedCurrencyA, passedCurrencyB],
     balance: currentBalance || 0
   }
 
