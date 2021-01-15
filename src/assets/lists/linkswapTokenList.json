@@ -4,6 +4,7 @@
   "keywords": ["linkswap", "link", "swap"],
   "timestamp": "2020-15-12T00:00:00+00:00",
   "tags":{
+    "base":{"name":"base","description":"baseDescription"},
     "stablecoin":{"name":"stablecoin","description":"stablecoinDescription"},
     "linkcheck":{"name":"linkcheck","description":"linkcheckDescription"}
   },
@@ -14,7 +15,7 @@
       "name": "YFLink",
       "symbol": "YFL",
       "decimals": 18,
-      "tags": ["linkcheck"],
+      "tags": ["base"],
       "logoURI": "https://logos.linkswap.app/0x28cb7e841ee97947a86b06fa4090c8451f64c0be.png"
     },
     {

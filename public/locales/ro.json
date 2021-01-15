@@ -305,5 +305,11 @@
   "showExpiredStakePools": "Afișați pool-urile inactive",
   "insufficientStakedCurrencyBalance": "Staked sold insuficient {{inputCurrency}}",
   "claimRewardsOnPool": "Obțineți recompensă pentru {{currencyASymbol}} | {{currencyBSymbol}} Token LP",
-  "unstakeAndClaimRewardsOnPool": "Unstake toate și revendicați recompensele {{currencyASymbol}} | {{currencyBSymbol}} Token LP"
+  "unstakeAndClaimRewardsOnPool": "Unstake toate și revendicați recompensele {{currencyASymbol}} | {{currencyBSymbol}} Token LP",
+  "linkcheck": "Linkcheck",
+  "linkcheckDescription": "This coin has successfully completed LINKCHECK Verification.",
+  "stablecoin": "Stablecoin",
+  "stablecoinDescription": "A stablecoin is a class of cryptocurrencies that attempts to offer price stability and are backed by a reserve asset.",
+  "base": "Base",
+  "baseDescription": "The home currency for LINKSWAP and the YF Link ecosystem."
 }

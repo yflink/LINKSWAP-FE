@@ -311,5 +311,11 @@
   "showExpiredStakePools": "Afficher les Pools inactives",
   "insufficientStakedCurrencyBalance": "Solde insuffisant en {{ inputCurrency }}",
   "claimRewardsOnPool": "Réclamer les Récompenses pour {{currencyASymbol}} | {{currencyBSymbol}} LP Token",
-  "unstakeAndClaimRewardsOnPool": "Unstake tout et Réclamer les Récompenses {{currencyASymbol}} | {{currencyBSymbol}} LP Token"
+  "unstakeAndClaimRewardsOnPool": "Unstake tout et Réclamer les Récompenses {{currencyASymbol}} | {{currencyBSymbol}} LP Token",
+  "linkcheck": "Linkcheck",
+  "linkcheckDescription": "This coin has successfully completed LINKCHECK Verification.",
+  "stablecoin": "Stablecoin",
+  "stablecoinDescription": "A stablecoin is a class of cryptocurrencies that attempts to offer price stability and are backed by a reserve asset.",
+  "base": "Base",
+  "baseDescription": "The home currency for LINKSWAP and the YF Link ecosystem."
 }
