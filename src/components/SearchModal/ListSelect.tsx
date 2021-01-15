@@ -157,9 +157,9 @@ const ListRow = memo(function ListRow({ listUrl, onBack }: { listUrl: string; on
   return (
     <Row key={listUrl} align="center" padding="16px" id={listUrlRowHTMLId(listUrl)}>
       {list.logoURI ? (
-        <ListLogo style={{marginInlineEnd: '1rem' }} logoURI={list.logoURI} alt={`${list.name} list logo`} />
+        <ListLogo style={{ marginInlineEnd: '1rem' }} logoURI={list.logoURI} alt={`${list.name} list logo`} />
       ) : (
-        <div style={{ width: '24px', height: '24px',marginInlineEnd: '1rem' }} />
+        <div style={{ width: '24px', height: '24px', marginInlineEnd: '1rem' }} />
       )}
       <Column style={{ flex: '1' }}>
         <Row>
@@ -188,7 +188,7 @@ const ListRow = memo(function ListRow({ listUrl, onBack }: { listUrl: string; on
             padding: '.8rem .35rem',
             borderRadius: '12px',
             fontSize: '14px',
-           marginInlineEnd: '0.5rem'
+            marginInlineEnd: '0.5rem'
           }}
           onClick={toggle}
           ref={setReferenceElement}
@@ -344,7 +344,9 @@ export function ListSelect({ onDismiss, onBack }: { onDismiss: () => void; onBac
       <PaddedColumn gap="14px">
         <Text fontWeight={600}>
           {t('addList')}
-          <QuestionHelper text={t('tokenLists')} />
+          <div style={{ display: 'inline-block' }}>
+            <QuestionHelper text={t('tokenLists')} />
+          </div>
         </Text>
         <Row>
           <SearchInput
@@ -356,11 +358,7 @@ export function ListSelect({ onDismiss, onBack }: { onDismiss: () => void; onBac
             onKeyDown={handleEnterKey}
             style={{ height: '2.75rem', borderRadius: 12, padding: '12px', flex: 1, minWidth: 0 }}
           />
-          <AddListButton
-            onClick={handleAddList}
-            disabled={!validUrl}
-            style={{ width: 'auto', flex: '0 0 auto' }}
-          >
+          <AddListButton onClick={handleAddList} disabled={!validUrl} style={{ width: 'auto', flex: '0 0 auto' }}>
             {t('add')}
           </AddListButton>
         </Row>
