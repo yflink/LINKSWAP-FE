@@ -136,8 +136,8 @@ export default function Unstake({
       return
     }
 
-    const estimate = router.estimateGas.unstake
-    const method: (...args: any) => Promise<TransactionResponse> = router.unstake
+    const estimate = router.estimateGas.unstakeAndClaimRewards
+    const method: (...args: any) => Promise<TransactionResponse> = router.unstakeAndClaimRewards
     const args: Array<string | string[] | number> = [parsedAmountA.raw.toString()]
 
     const value: BigNumber | null = null
