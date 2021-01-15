@@ -9,17 +9,12 @@
       "chainId": 1,
       "name": "YFLink",
       "symbol": "YFL",
-      "tags": ["linkcheck"],
+      "tags": [ {
+        "name": "linkcheck",
+        "description": "linkcheckVerified"
+      }],
       "decimals": 18,
       "logoURI": "https://logos.linkswap.app/0x28cb7e841ee97947a86b06fa4090c8451f64c0be.png"
-    },
-    {
-      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
-      "chainId": 1,
-      "name": "WrappedEther",
-      "symbol": "WETH",
-      "decimals": 18,
-      "logoURI": "https://logos.linkswap.app/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.png"
     },
     {
       "address": "0x514910771af9ca656af840dff83e8264ecf986ca",
