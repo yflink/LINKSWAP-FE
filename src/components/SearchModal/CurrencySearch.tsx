@@ -143,7 +143,9 @@ export function CurrencySearch({
         <RowBetween>
           <Text fontWeight={500} fontSize={16}>
             {t('selectToken')}
-            <QuestionHelper text={t('tokenSearchPlaceholder')} />
+            <div style={{ display: 'inline-block' }}>
+              <QuestionHelper text={t('tokenSearchPlaceholder')} />
+            </div>
           </Text>
           <CloseIcon onClick={onDismiss} />
         </RowBetween>
