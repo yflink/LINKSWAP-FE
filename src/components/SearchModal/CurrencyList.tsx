@@ -65,6 +65,9 @@ function TokenTags({ currency }: { currency: Currency }) {
   return (
     <TagContainer>
       <MouseoverTooltip text={tag.description}>
+        {tag.name === 'linkcheck' && (
+          <div style={{ position: 'absolute', right: '20px', top: '50%', transform: 'translateY(-50%' }}>LC</div>
+        )}
         <Tag key={tag.id}>{tag.name}</Tag>
       </MouseoverTooltip>
       {tags.length > 1 ? (
@@ -106,6 +109,7 @@ function CurrencyRow({
   const { t } = useTranslation()
 
   // only show add or remove buttons if not on selected list
+  console.log(currency)
   return (
     <MenuItem
       style={style}

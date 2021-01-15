@@ -3,6 +3,10 @@
   "logoURI": "https://logos.linkswap.app/0x28cb7e841ee97947a86b06fa4090c8451f64c0be.png",
   "keywords": ["linkswap", "link", "swap"],
   "timestamp": "2020-15-12T00:00:00+00:00",
+  "tags":{
+    "stablecoin":{"name":"stablecoin","description":"stablecoinDescription"},
+    "linkcheck":{"name":"linkcheck","description":"linkcheckDescription"}
+  },
   "tokens": [
     {
       "address": "0x28cb7e841ee97947a86b06fa4090c8451f64c0be",
@@ -10,6 +14,7 @@
       "name": "YFLink",
       "symbol": "YFL",
       "decimals": 18,
+      "tags": ["linkcheck"],
       "logoURI": "https://logos.linkswap.app/0x28cb7e841ee97947a86b06fa4090c8451f64c0be.png"
     },
     {
@@ -34,10 +39,7 @@
       "name": "USDCoin",
       "symbol": "USDC",
       "decimals": 6,
-      "tags": [ {
-        "name": "stablecoin",
-        "description": "stablecoinDescription"
-      }],
+      "tags": ["stablecoin"],
       "logoURI": "https://logos.linkswap.app/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.png"
     },
     {
@@ -46,10 +48,7 @@
       "name": "TetherUSD",
       "symbol": "USDT",
       "decimals": 6,
-      "tags": [ {
-        "name": "stablecoin",
-        "description": "stablecoinDescription"
-      }],
+      "tags": ["stablecoin"],
       "logoURI": "https://logos.linkswap.app/0xdac17f958d2ee523a2206206994597c13d831ec7.png"
     },
     {
@@ -58,10 +57,7 @@
       "name": "DaiStablecoin",
       "symbol": "DAI",
       "decimals": 18,
-      "tags": [ {
-        "name": "stablecoin",
-        "description": "stablecoinDescription"
-      }],
+      "tags": ["stablecoin"],
       "logoURI": "https://logos.linkswap.app/0x6b175474e89094c44da98b954eedeac495271d0f.png"
     },
     {
@@ -70,10 +66,7 @@
       "name": "yearnCurve",
       "symbol": "yUSD",
       "decimals": 18,
-      "tags": [ {
-        "name": "stablecoin",
-        "description": "stablecoinDescription"
-      }],
+      "tags": ["stablecoin"],
       "logoURI": "https://logos.linkswap.app/0x5dbcf33d8c2e976c6b560249878e6f1491bca25c.png"
     },
     {
@@ -106,10 +99,7 @@
       "name": "BUSD",
       "symbol": "BUSD",
       "decimals": 18,
-      "tags": [ {
-        "name": "stablecoin",
-        "description": "stablecoinDescription"
-      }],
+      "tags": ["stablecoin"],
       "logoURI": "https://logos.linkswap.app/0x4fabb145d64652a948d72533023f6e7a623c7c53.png"
     },
     {
@@ -230,10 +220,7 @@
       "name": "Doki Doki Finance",
       "symbol": "DOKI",
       "decimals": 18,
-      "tags": [ {
-        "name": "linkcheck",
-        "description": "linkcheckVerified"
-      }],
+      "tags": ["linkcheck"],
       "logoURI": "https://logos.linkswap.app/0x9ceb84f92a0561fa3cc4132ab9c0b76a59787544.png"
     }
   ],

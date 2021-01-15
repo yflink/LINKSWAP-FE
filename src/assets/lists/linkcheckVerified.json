@@ -3,16 +3,17 @@
   "logoURI": "https://logos.linkswap.app/linkcheck.png",
   "keywords": ["linkswap", "link", "swap"],
   "timestamp": "2020-09-01T00:00:00+00:00",
+    "tags":{
+    "stablecoin":{"name":"stablecoin","description":"stablecoinDescription"},
+    "linkcheck":{"name":"linkcheck","description":"linkcheckDescription"}
+  },
   "tokens": [
     {
       "address": "0x28cb7e841ee97947a86b06fa4090c8451f64c0be",
       "chainId": 1,
       "name": "YFLink",
       "symbol": "YFL",
-      "tags": [ {
-        "name": "linkcheck",
-        "description": "linkcheckVerified"
-      }],
+      "tags": ["linkcheck"],
       "decimals": 18,
       "logoURI": "https://logos.linkswap.app/0x28cb7e841ee97947a86b06fa4090c8451f64c0be.png"
     },
@@ -30,7 +31,7 @@
       "name": "Doki Doki Finance",
       "symbol": "DOKI",
       "decimals": 18,
-      "tags":["linkcheck"],
+      "tags": ["linkcheck"],
       "logoURI": "https://logos.linkswap.app/0x9ceb84f92a0561fa3cc4132ab9c0b76a59787544.png"
     }
   ],
