@@ -89,6 +89,10 @@ export function useSelectedListUrl(): string | undefined {
   return useSelector<AppState, AppState['lists']['selectedListUrl']>(state => state.lists.selectedListUrl)
 }
 
+export function useMainTokenList(): TokenAddressMap {
+  return useTokenList('https://linkswap.app/lists/linkswapTokenList.json')
+}
+
 export function useSelectedTokenList(): TokenAddressMap {
   return useTokenList(useSelectedListUrl())
 }
