@@ -30,7 +30,7 @@ const StyledBalanceText = styled(Text)`
 `
 
 const Tag = styled.div`
-  background-color: ${({ theme }) => theme.buttonBG};
+  background-color: ${({ theme }) => theme.modalSecondaryBG};
   color: ${({ theme }) => theme.textSecondary};
   font-size: 14px;
   border-radius: 6px;
@@ -43,6 +43,13 @@ const Tag = styled.div`
   margin-inline-end: 4px;
 `
 
+const LinkCheck = styled.img`
+  padding: 0.25rem 0.3rem 0.25rem 0.3rem;
+  box-sizing: content-box;
+  width: 20px;
+  height: 20px;
+`
+
 function Balance({ balance }: { balance: CurrencyAmount }) {
   return <StyledBalanceText title={balance.toExact()}>{balance.toSignificant(4)}</StyledBalanceText>
 }
@@ -53,6 +60,7 @@ const TagContainer = styled.div`
 `
 
 function TokenTags({ currency }: { currency: Currency }) {
+  const { t } = useTranslation()
   if (!(currency instanceof WrappedTokenInfo)) {
     return <span />
   }
@@ -64,17 +72,18 @@ function TokenTags({ currency }: { currency: Currency }) {
 
   return (
     <TagContainer>
-      <MouseoverTooltip text={tag.description}>
-        {tag.name === 'linkcheck' && (
-          <div style={{ position: 'absolute', right: '20px', top: '50%', transform: 'translateY(-50%' }}>LC</div>
+      <MouseoverTooltip text={t(tag.description)}>
+        {tag.name === 'linkcheck' ? (
+          <LinkCheck src="https://logos.linkswap.app/linkcheck.png" alt={t(tag.description)} />
+        ) : (
+          <Tag key={tag.id}>{t(tag.name)}</Tag>
         )}
-        <Tag key={tag.id}>{tag.name}</Tag>
       </MouseoverTooltip>
       {tags.length > 1 ? (
         <MouseoverTooltip
           text={tags
             .slice(1)
-            .map(({ name, description }) => `${name}: ${description}`)
+            .map(({ name, description }) => `${t(name)}: ${t(description)}`)
             .join('; \n')}
         >
           <Tag>...</Tag>

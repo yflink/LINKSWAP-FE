@@ -311,5 +311,9 @@
   "showExpiredStakePools": "Show inactive Pools",
   "insufficientStakedCurrencyBalance": "Insufficient staked {{ inputCurrency }} Balance",
   "claimRewardsOnPool": "Claim Rewards for {{currencyASymbol}} | {{currencyBSymbol}} LP Token",
-  "unstakeAndClaimRewardsOnPool": "Unstake all and Claim Rewards {{currencyASymbol}} | {{currencyBSymbol}} LP Token"
+  "unstakeAndClaimRewardsOnPool": "Unstake all and Claim Rewards {{currencyASymbol}} | {{currencyBSymbol}} LP Token",
+  "linkcheck": "Linkcheck",
+  "linkcheckDescription": "This coin has successfully completed the LINKCHECK audition",
+  "stablecoin": "Stablecoin",
+  "stablecoinDescription": "A stablecoin is a class of cryptocurrencies that attempts to offer price stability and are backed by a reserve asset."
 }
