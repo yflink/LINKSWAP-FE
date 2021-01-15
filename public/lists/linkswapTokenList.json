@@ -1,6 +1,6 @@
 {
   "name": "LINKSWAP Launch List",
-  "logoURI": "https://yflink.io/static/media/YFLink-header-logo.cffb7453.svg",
+  "logoURI": "https://logos.linkswap.app/0x28cb7e841ee97947a86b06fa4090c8451f64c0be.png",
   "keywords": ["linkswap", "link", "swap"],
   "timestamp": "2020-15-12T00:00:00+00:00",
   "tokens": [
@@ -34,6 +34,7 @@
       "name": "USDCoin",
       "symbol": "USDC",
       "decimals": 6,
+      "tags":["stablecoin"],
       "logoURI": "https://logos.linkswap.app/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.png"
     },
     {
