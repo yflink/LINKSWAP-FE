@@ -22,6 +22,8 @@ import { toV2LiquidityToken, useTrackedTokenPairs } from '../../state/user/hooks
 import AppBody from '../AppBody'
 import { Dots } from '../../components/swap/styleds'
 import { useTranslation } from 'react-i18next'
+import { useTokenUsdPrices } from '../../hooks/useTokenUsdPrice'
+import { useLPTokenUsdPrices } from '../../hooks/useLPTokenUsdPrice'
 
 export default function Pool() {
   const theme = useContext(ThemeContext)
@@ -61,7 +63,8 @@ export default function Pool() {
   const hasV1Liquidity = false // useUserHasLiquidityInAllTokens()
 
   const { t } = useTranslation()
-
+  useTokenUsdPrices()
+  useLPTokenUsdPrices()
   return (
     <>
       <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.appBGColor, marginBottom: '16px' }}>
