@@ -938,7 +938,7 @@ export function FullStakingCard({
                   </ButtonSecondary>
                 </RowBetween>
               )}
-              {userBalance === 0 && !my && !isInactive && (
+              {!my && !isInactive && (
                 <RowBetween marginTop="10px">
                   {!account ? (
                     <ButtonLight onClick={toggleWalletModal}>{t('connectWallet')}</ButtonLight>
