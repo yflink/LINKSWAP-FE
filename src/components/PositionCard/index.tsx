@@ -223,8 +223,7 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
 }
 
 export default function FullPositionCard({ pair, border }: PositionCardProps) {
-  const { account } = useActiveWeb3React()
-
+  const { account, chainId, library } = useActiveWeb3React()
   const currency0 = unwrappedToken(pair.token0)
   const currency1 = unwrappedToken(pair.token1)
 
@@ -232,7 +231,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
 
   const userPoolBalance = useTokenBalance(account ?? undefined, pair.liquidityToken)
   const totalPoolTokens = useTotalSupply(pair.liquidityToken)
-
+  const [totalLPSupply, setTotalLPSupply] = useState(0)
   const poolTokenPercentage =
     !!userPoolBalance && !!totalPoolTokens && JSBI.greaterThanOrEqual(totalPoolTokens.raw, userPoolBalance.raw)
       ? new Percent(userPoolBalance.raw, totalPoolTokens.raw)
@@ -249,11 +248,37 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
           pair.getLiquidityValue(pair.token1, totalPoolTokens, userPoolBalance, false)
         ]
       : [undefined, undefined]
-
+  const fakeAccount = '0x0000000000000000000000000000000000000000'
+  const fakeLibrary = getNetworkLibrary()
+  const liquidityToken = pair.liquidityToken
+  const lpContract =
+    !chainId || !library || !account
+      ? getContract(liquidityToken.address, LINKSWAPLPToken, fakeLibrary, fakeAccount)
+      : getContract(liquidityToken.address, LINKSWAPLPToken, library, account)
   const { t } = useTranslation()
+  const { lpTokenPrices } = useGetLPTokenPrices()
+  const id: string = liquidityToken.address.toLowerCase()
+
+  async function getTotalLPSupply() {
+    const method: (...args: any) => Promise<BigNumber> = lpContract.totalSupply
+    method().then(response => {
+      setTotalLPSupply(hexStringToNumber(response.toHexString(), liquidityToken.decimals))
+    })
+  }
+
+  if (lpContract) {
+    if (totalLPSupply === 0) {
+      getTotalLPSupply()
+    }
+  }
+
+  const stakePoolTotalLiq = lpTokenPrices ? lpTokenPrices[id].totalLiq : 0
+  const lpTokenPrice = stakePoolTotalLiq && totalLPSupply > 0 ? stakePoolTotalLiq / totalLPSupply : 0
+  const userShareFactor = lpTokenPrice && poolTokenPercentage ? Number(poolTokenPercentage.toFixed(10)) / 100 : 0
+  const userShareUsd = userShareFactor > 0 && stakePoolTotalLiq > 0 ? stakePoolTotalLiq * userShareFactor : 0
 
   let rewards = false
-  const liquidityToken = pair.liquidityToken
+
   ACTIVE_REWARD_POOLS.forEach((pool: any) => {
     if (pool.address === liquidityToken.address) {
       rewards = true
@@ -295,16 +320,16 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
           <AutoColumn gap="8px">
             <FixedHeightRow>
               <RowFixed>
-                <Text fontSize={16} fontWeight={500}>
+                <Text fontSize={14} fontWeight={500}>
                   {t('pooledCurrency', { currency: currency0.symbol })}
                 </Text>
               </RowFixed>
               {token0Deposited ? (
                 <RowFixed>
-                  <Text fontSize={16} fontWeight={500} style={{ marginInlineStart: '6px' }}>
+                  <Text fontSize={14} fontWeight={500} style={{ marginInlineStart: '6px' }}>
                     {token0Deposited?.toSignificant(6)}
                   </Text>
-                  <CurrencyLogo size="22px" style={{ marginInlineStart: '8px' }} currency={currency0} />
+                  <CurrencyLogo size="20px" style={{ marginInlineStart: '8px' }} currency={currency0} />
                 </RowFixed>
               ) : (
                 '-'
@@ -313,43 +338,58 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
 
             <FixedHeightRow>
               <RowFixed>
-                <Text fontSize={16} fontWeight={500}>
+                <Text fontSize={14} fontWeight={500}>
                   {t('pooledCurrency', { currency: currency1.symbol })}
                 </Text>
               </RowFixed>
               {token1Deposited ? (
                 <RowFixed>
-                  <Text fontSize={16} fontWeight={500} style={{ marginInlineStart: '6px' }}>
+                  <Text fontSize={14} fontWeight={500} style={{ marginInlineStart: '6px' }}>
                     {token1Deposited?.toSignificant(6)}
                   </Text>
-                  <CurrencyLogo size="22px" style={{ marginInlineStart: '8px' }} currency={currency1} />
+                  <CurrencyLogo size="20px" style={{ marginInlineStart: '8px' }} currency={currency1} />
                 </RowFixed>
               ) : (
                 '-'
               )}
             </FixedHeightRow>
             <FixedHeightRow>
-              <Text fontSize={16} fontWeight={500}>
+              <Text fontSize={14} fontWeight={500}>
                 {t('yourPoolTokens')}
               </Text>
-              <Text fontSize={16} fontWeight={500}>
+              <Text fontSize={14} fontWeight={500}>
                 {userPoolBalance ? userPoolBalance.toSignificant(4) : '-'}
               </Text>
             </FixedHeightRow>
             <FixedHeightRow>
-              <Text fontSize={16} fontWeight={500}>
-                {t('yourPoolShare')}
+              <Text fontSize={14} fontWeight={500}>
+                {t('stakePoolTotalLiq')}
               </Text>
-              <Text fontSize={16} fontWeight={500}>
-                {poolTokenPercentage ? poolTokenPercentage.toFixed(2) + '%' : '-'}
+              <Text fontSize={14} fontWeight={500}>
+                {stakePoolTotalLiq ? numberToUsd(stakePoolTotalLiq) : '-'}
               </Text>
             </FixedHeightRow>
+            <FixedHeightRow>
+              <Text fontSize={14} fontWeight={500}>
+                {t('yourPoolShare')}
+              </Text>
+              {userShareUsd > 0 ? (
+                <Text fontSize={14} fontWeight={500}>
+                  {poolTokenPercentage ? (
+                    <span>
+                      {numberToUsd(userShareUsd)} ({poolTokenPercentage.toFixed(2) + '%'})
+                    </span>
+                  ) : (
+                    <span>{numberToUsd(userShareUsd)}</span>
+                  )}
+                </Text>
+              ) : (
+                <Text fontSize={14} fontWeight={500}>
+                  {poolTokenPercentage ? poolTokenPercentage.toFixed(2) + '%' : '-'}
+                </Text>
+              )}
+            </FixedHeightRow>
 
-            {/* <AutoRow justify="center" marginTop={'10px'}>
-              <ExternalLink href={`https://uniswap.info/pair/${pair.liquidityToken.address}`}>
-                View pool information ↗
-              </ExternalLink>
-            </AutoRow> */}
             <RowBetween marginTop="10px">
               <ButtonSecondary as={Link} to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`} width="48%">
                 {t('add')}
