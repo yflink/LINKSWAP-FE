@@ -1,5 +1,6 @@
 import { Text } from 'rebass'
 import styled from 'styled-components'
+import { ExternalLink } from 'react-feather'
 
 export const Wrapper = styled.div`
   position: relative;
@@ -51,6 +52,42 @@ export const Dots = styled.span`
     }
     66% {
       content: '...';
+    }
+  }
+`
+
+export const ExternalLinkIcon = styled(ExternalLink)`
+  display: inline-block;
+  margin-inline-start: 3px;
+  width: 14px;
+  height: 14px;
+  margin-bottom: -2px;
+
+  > * {
+    stroke: ${({ theme }) => theme.textPrimary};
+  }
+`
+
+export const AnalyticsWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 1rem 0 0;
+  padding: 0.5rem;
+  border-radius: 6px;
+  font-size: 14px;
+  line-height: 14px;
+  border: 1px solid ${({ theme }) => theme.textSecondary};
+
+  a {
+    color: ${({ theme }) => theme.textPrimary};
+    text-decoration: none;
+    font-weight: 600;
+    :hover,
+    :focus {
+      text-decoration: underline;
     }
   }
 `
