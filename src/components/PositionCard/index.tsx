@@ -223,7 +223,7 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
 }
 
 export default function FullPositionCard({ pair, border }: PositionCardProps) {
-  const { account, chainId, library } = useActiveWeb3React()
+  const { account, library } = useActiveWeb3React()
   const currency0 = unwrappedToken(pair.token0)
   const currency1 = unwrappedToken(pair.token1)
 
@@ -252,7 +252,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
   const fakeLibrary = getNetworkLibrary()
   const liquidityToken = pair.liquidityToken
   const lpContract =
-    !chainId || !library || !account
+    !library || !account
       ? getContract(liquidityToken.address, LINKSWAPLPToken, fakeLibrary, fakeAccount)
       : getContract(liquidityToken.address, LINKSWAPLPToken, library, account)
   const { t } = useTranslation()
