@@ -1,5 +1,5 @@
 import React, { useContext, useMemo } from 'react'
-import { ThemeContext } from 'styled-components'
+import styled, { ThemeContext } from 'styled-components'
 import { Pair } from '@uniswap/sdk'
 import { Link } from 'react-router-dom'
 import { SwapPoolTabs } from '../../components/NavigationTabs'
@@ -24,6 +24,8 @@ import { Dots } from '../../components/swap/styleds'
 import { useTranslation } from 'react-i18next'
 import { useTokenUsdPrices } from '../../hooks/useTokenUsdPrice'
 import { useLPTokenUsdPrices } from '../../hooks/useLPTokenUsdPrice'
+import { ExternalLink } from 'react-feather'
+import { AnalyticsWrapper, ExternalLinkIcon } from './styleds'
 
 export default function Pool() {
   const theme = useContext(ThemeContext)
@@ -61,6 +63,8 @@ export default function Pool() {
   const allV2PairsWithLiquidity = v2Pairs.map(([, pair]) => pair).filter((v2Pair): v2Pair is Pair => Boolean(v2Pair))
 
   const hasV1Liquidity = false // useUserHasLiquidityInAllTokens()
+
+  const tokenPairAddress = account ? 'https://info.linkswap.app/account/' + account : false
 
   const { t } = useTranslation()
   useTokenUsdPrices()
@@ -110,6 +114,15 @@ export default function Pool() {
                   {t('noLiquidityFound')}
                 </TYPE.body>
               </LightCard>
+            )}
+            {allV2PairsWithLiquidity?.length > 0 && tokenPairAddress && (
+              <RowBetween>
+                <AnalyticsWrapper>
+                  <a target="_blank" rel="noopener noreferrer" href={tokenPairAddress}>
+                    {t('viewYourLiquidityAnalytics')} <ExternalLinkIcon />
+                  </a>
+                </AnalyticsWrapper>
+              </RowBetween>
             )}
             <div>
               <Text textAlign="center" fontSize={14} style={{ padding: '.5rem 0 .5rem 0' }}>
