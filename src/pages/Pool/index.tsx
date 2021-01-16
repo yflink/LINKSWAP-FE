@@ -1,5 +1,5 @@
 import React, { useContext, useMemo } from 'react'
-import styled, { ThemeContext } from 'styled-components'
+import { ThemeContext } from 'styled-components'
 import { Pair } from '@uniswap/sdk'
 import { Link } from 'react-router-dom'
 import { SwapPoolTabs } from '../../components/NavigationTabs'
@@ -24,7 +24,6 @@ import { Dots } from '../../components/swap/styleds'
 import { useTranslation } from 'react-i18next'
 import { useTokenUsdPrices } from '../../hooks/useTokenUsdPrice'
 import { useLPTokenUsdPrices } from '../../hooks/useLPTokenUsdPrice'
-import { ExternalLink } from 'react-feather'
 import { AnalyticsWrapper, ExternalLinkIcon } from './styleds'
 
 export default function Pool() {
