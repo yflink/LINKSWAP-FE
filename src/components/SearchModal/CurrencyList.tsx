@@ -118,7 +118,6 @@ function CurrencyRow({
   const { t } = useTranslation()
 
   // only show add or remove buttons if not on selected list
-  console.log(currency)
   return (
     <MenuItem
       style={style}
