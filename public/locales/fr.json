@@ -313,10 +313,10 @@
   "claimRewardsOnPool": "Réclamer les Récompenses pour {{currencyASymbol}} | {{currencyBSymbol}} LP Token",
   "unstakeAndClaimRewardsOnPool": "Unstake tout et Réclamer les Récompenses {{currencyASymbol}} | {{currencyBSymbol}} LP Token",
   "linkcheck": "Linkcheck",
-  "linkcheckDescription": "This coin has successfully completed LINKCHECK Verification.",
+  "linkcheckDescription": "Cette monnaie a complété avec succès la vérification LINKCHECK.",
   "stablecoin": "Stablecoin",
-  "stablecoinDescription": "A stablecoin is a class of cryptocurrencies that attempts to offer price stability and are backed by a reserve asset.",
+  "stablecoinDescription": "Un stablecoin est une catégorie de cryptomonnaie qui tente d'offrir une stabilité des prix et sont garanties par un actif de réserve.",
   "base": "Base",
-  "baseDescription": "The home currency for LINKSWAP and the YF Link ecosystem.",
-  "viewYourLiquidityAnalytics": "View your total earned fees"
+  "baseDescription": "La monnaie utilisée pour LINKSWAP et l'écosystème YF Link.",
+  "viewYourLiquidityAnalytics": "Voir le total de vos frais gagnés."
 }
