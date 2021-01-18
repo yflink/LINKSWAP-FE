@@ -143,6 +143,30 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
       : [undefined, undefined]
 
   const { t } = useTranslation()
+  let currencyA = currency0
+  let currencyB = currency1
+  switch (currency1?.symbol) {
+    case 'LINK':
+      if (currency0?.symbol !== 'ETH' && currency0?.symbol !== 'YFL') {
+        currencyA = currency1
+        currencyB = currency0
+      }
+      break
+
+    case 'ETH':
+      if (currency0?.symbol !== 'LINK' && currency0?.symbol !== 'YFL') {
+        currencyA = currency1
+        currencyB = currency0
+      }
+      break
+
+    case 'YFL':
+      if (currency0?.symbol !== 'LINK' && currency0?.symbol !== 'ETH') {
+        currencyA = currency1
+        currencyB = currency0
+      }
+      break
+  }
 
   return (
     <>
@@ -158,16 +182,16 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
             </FixedHeightRow>
             <FixedHeightRow onClick={() => setShowMore(!showMore)}>
               <RowFixed>
-                <DoubleCurrencyLogo currency0={currency0} currency1={currency1} margin={true} size={22} />
+                <DoubleCurrencyLogo currency0={currencyA} currency1={currencyB} margin={true} size={22} />
                 {!currency0 || !currency1 ? (
                   <Text fontWeight={500} fontSize={20}>
                     <Dots>{t('loading')}</Dots>
                   </Text>
                 ) : (
                   <div style={{ display: 'flex' }}>
-                    <p style={{ fontWeight: 500, fontSize: 18 }}>{currency0.symbol}</p>
+                    <p style={{ fontWeight: 500, fontSize: 18 }}>{currencyA.symbol}</p>
                     <p style={{ fontWeight: 100, fontSize: 18, margin: '18px 8px 0px 8px' }}> | </p>
-                    <p style={{ fontWeight: 500, fontSize: 18 }}>{currency1.symbol}</p>
+                    <p style={{ fontWeight: 500, fontSize: 18 }}>{currencyB.symbol}</p>
                   </div>
                 )}
               </RowFixed>
@@ -278,28 +302,52 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
   const userShareUsd = userShareFactor > 0 && stakePoolTotalLiq > 0 ? stakePoolTotalLiq * userShareFactor : 0
 
   let rewards = false
+  let currencyA = currency0
+  let currencyB = currency1
 
   ACTIVE_REWARD_POOLS.forEach((pool: any) => {
     if (pool.address === liquidityToken.address) {
       rewards = true
     }
   })
+  switch (currency1?.symbol) {
+    case 'LINK':
+      if (currency0?.symbol !== 'ETH' && currency0?.symbol !== 'YFL') {
+        currencyA = currency1
+        currencyB = currency0
+      }
+      break
+
+    case 'ETH':
+      if (currency0?.symbol !== 'LINK' && currency0?.symbol !== 'YFL') {
+        currencyA = currency1
+        currencyB = currency0
+      }
+      break
+
+    case 'YFL':
+      if (currency0?.symbol !== 'LINK' && currency0?.symbol !== 'ETH') {
+        currencyA = currency1
+        currencyB = currency0
+      }
+      break
+  }
 
   return (
     <HoverCard border={border}>
       <AutoColumn gap="12px">
         <FixedHeightRow onClick={() => setShowMore(!showMore)} style={{ cursor: 'pointer' }}>
           <RowFixed style={{ position: 'relative' }}>
-            <DoubleCurrencyLogo currency0={currency0} currency1={currency1} margin={true} size={22} />
+            <DoubleCurrencyLogo currency0={currencyA} currency1={currencyB} margin={true} size={22} />
             {!currency0 || !currency1 ? (
               <Text fontWeight={500} fontSize={20}>
                 <Dots>{t('loading')}</Dots>
               </Text>
             ) : (
               <div style={{ display: 'flex' }}>
-                <p style={{ fontWeight: 500, fontSize: 18 }}>{currency0.symbol}</p>
+                <p style={{ fontWeight: 500, fontSize: 18 }}>{currencyA.symbol}</p>
                 <p style={{ fontWeight: 100, fontSize: 18, margin: '18px 8px 0px 8px' }}> | </p>
-                <p style={{ fontWeight: 500, fontSize: 18 }}>{currency1.symbol}</p>
+                <p style={{ fontWeight: 500, fontSize: 18 }}>{currencyB.symbol}</p>
               </div>
             )}
             {rewards && (
@@ -522,6 +570,8 @@ export function FullStakingCard({
   const remaining = periodFinish > 0 ? moment(then - now).unix() : 1
   const isInactive = remaining < 1
   let apy = 0
+  let currencyA = currency0
+  let currencyB = currency1
   const rewardsContract =
     !chainId || !library || !account
       ? getContract(values.rewardsAddress, StakingRewards, fakeLibrary, fakeAccount)
@@ -757,6 +807,29 @@ export function FullStakingCard({
       })
   }
 
+  switch (currency1?.symbol) {
+    case 'LINK':
+      if (currency0?.symbol !== 'ETH' && currency0?.symbol !== 'YFL') {
+        currencyA = currency1
+        currencyB = currency0
+      }
+      break
+
+    case 'ETH':
+      if (currency0?.symbol !== 'LINK' && currency0?.symbol !== 'YFL') {
+        currencyA = currency1
+        currencyB = currency0
+      }
+      break
+
+    case 'YFL':
+      if (currency0?.symbol !== 'LINK' && currency0?.symbol !== 'ETH') {
+        currencyA = currency1
+        currencyB = currency0
+      }
+      break
+  }
+
   if ((userBalance === 0 && showOwn) || (isInactive && !showExpired) || (!isInactive && showExpired)) {
     return <></>
   } else {
@@ -781,16 +854,16 @@ export function FullStakingCard({
               </div>
             )}
             <RowFixed>
-              <DoubleCurrencyLogo currency0={currency0} currency1={currency1} margin={true} size={22} />
+              <DoubleCurrencyLogo currency0={currencyA} currency1={currencyB} margin={true} size={22} />
               {!currency0 || !currency1 ? (
                 <Text fontWeight={500} fontSize={20}>
                   <Dots>{t('loading')}</Dots>
                 </Text>
               ) : (
                 <div style={{ display: 'flex', position: 'relative' }}>
-                  <p style={{ fontWeight: 500, fontSize: 18, margin: '0 4px' }}>{currency0.symbol}</p>
+                  <p style={{ fontWeight: 500, fontSize: 18, margin: '0 4px' }}>{currencyA.symbol}</p>
                   <p style={{ fontWeight: 100, fontSize: 18, margin: '0 4px' }}> | </p>
-                  <p style={{ fontWeight: 500, fontSize: 18, margin: '0 4px' }}>{currency1.symbol}</p>
+                  <p style={{ fontWeight: 500, fontSize: 18, margin: '0 4px' }}>{currencyB.symbol}</p>
                 </div>
               )}
             </RowFixed>
