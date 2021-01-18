@@ -313,10 +313,10 @@
   "claimRewardsOnPool": "Claim beloningen voor {{currencyASymbol}} | {{currencyBSymbol}} LP Token",
   "unstakeAndClaimRewardsOnPool": "Alle staking ongedaan maken en beloningen claimen {{currencyASymbol}} | {{currencyBSymbol}} LP Token",
   "linkcheck": "Linkcheck",
-  "linkcheckDescription": "This coin has successfully completed LINKCHECK Verification.",
+  "linkcheckDescription": "Dit project heeft de LINKCHECK-verificatie met succes voltooid.",
   "stablecoin": "Stablecoin",
-  "stablecoinDescription": "A stablecoin is a class of cryptocurrencies that attempts to offer price stability and are backed by a reserve asset.",
-  "base": "Base",
-  "baseDescription": "The home currency for LINKSWAP and the YF Link ecosystem.",
-  "viewYourLiquidityAnalytics": "View your total earned fees"
+  "stablecoinDescription": "Een stablecoin is een klasse van cryptocurrencies die prijsstabiliteit probeert te bieden en wordt ondersteund door een reserve asset.",
+  "base": "Basis",
+  "baseDescription": "De eigen valuta voor LINKSWAP en het YF Link-ecosysteem.",
+  "viewYourLiquidityAnalytics": "Bekijk uw totale verdiende vergoedingen."
 }
