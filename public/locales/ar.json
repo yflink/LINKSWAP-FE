@@ -273,7 +273,7 @@
   "limitHint":"قد تتجاوز عملية الشراء الخاصة بك <1> حد الشراء الأسبوعي </ 1> الخاص بـ Wyre.",
   "gdprDisclaimer": "ملاحظة: YF Link لايحتفظ بأي معلومات للمستخدم. تتم مشاركة البيانات فقط بينك وبين Wyre.",
   "gasPrices": "تعقب الغاز",
-  "safe": "آمنة",
+  "safe": "آمن",
   "standard": "اساسي",
   "fast": "بسرعة",
   "gasPrice": "{{price}} gwei",
@@ -313,10 +313,10 @@
   "claimRewardsOnPool": "تحصيل مكافاءات {{currencyASymbol}} | {{currencyBSymbol}} Tokens LP",
   "unstakeAndClaimRewardsOnPool": "قم بفك كامل الحصة مع تحصيل مكافآت {{currencyASymbol}} | {{currencyBSymbol}} Tokens LP",
   "linkcheck": "Linkcheck",
-  "linkcheckDescription": "This coin has successfully completed LINKCHECK Verification.",
-  "stablecoin": "Stablecoin",
-  "stablecoinDescription": "A stablecoin is a class of cryptocurrencies that attempts to offer price stability and are backed by a reserve asset.",
+  "linkcheckDescription": "أكملت هذه العملة بنجاح التحقق من LINKCHECK.",
+  "stablecoin": "عملة مستقرة",
+  "stablecoinDescription": "العملة المستقرة هي فئة من العملات المشفرة تحاول توفير استقرار الأسعار وتكون مدعومة بأصل احتياطي.",
   "base": "Base",
-  "baseDescription": "The home currency for LINKSWAP and the YF Link ecosystem.",
-  "viewYourLiquidityAnalytics": "View your total earned fees"
+  "baseDescription": "العملة المحلية لـ LINKSWAP ecosystem YF Link.",
+  "viewYourLiquidityAnalytics": "عرض إجمالي الرسوم المكتسبة"
 }
