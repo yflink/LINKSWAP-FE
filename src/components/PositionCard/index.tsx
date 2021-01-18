@@ -998,7 +998,7 @@ export function FullStakingCard({
                   </ButtonSecondary>
                 </RowBetween>
               )}
-              {userBalance > 0 && !my && !isInactive && (
+              {userBalance > 0 && !my && (
                 <RowBetween marginTop="10px">
                   <ButtonSecondary
                     onClick={() => {
