@@ -307,10 +307,10 @@
   "claimRewardsOnPool": "Получить вознаграждение за {{currencyASymbol}} | {{currencyBSymbol}} Токен LP",
   "unstakeAndClaimRewardsOnPool": "Unstake все ставки и получите вознаграждение {{currencyASymbol}} | {{currencyBSymbol}} Токен LP",
   "linkcheck": "Linkcheck",
-  "linkcheckDescription": "This coin has successfully completed LINKCHECK Verification.",
-  "stablecoin": "Stablecoin",
-  "stablecoinDescription": "A stablecoin is a class of cryptocurrencies that attempts to offer price stability and are backed by a reserve asset.",
-  "base": "Base",
-  "baseDescription": "The home currency for LINKSWAP and the YF Link ecosystem.",
-  "viewYourLiquidityAnalytics": "View your total earned fees"
+  "linkcheckDescription": "Эта монета успешно прошла проверку LINKCHECK.",
+  "stablecoin": "Стабильная монета",
+  "stablecoinDescription": "Стабильная монета - это класс криптовалют, который пытается обеспечить стабильность цен и поддерживается резервным активом.",
+  "base": "База",
+  "baseDescription": "Основная валюта для LINKSWAP и экосистемы YF Link.",
+  "viewYourLiquidityAnalytics": "Смотреть общий заработок комиссий"
 }
