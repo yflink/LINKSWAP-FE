@@ -311,10 +311,10 @@
   "claimRewardsOnPool": "Gör krav på belöningar för {{currencyASymbol}} | {{currencyBSymbol}} LP Token",
   "unstakeAndClaimRewardsOnPool": "Unstake allt och gör krav på belöningar {{currencyASymbol}} | {{currencyBSymbol}} LP Token",
   "linkcheck": "Linkcheck",
-  "linkcheckDescription": "This coin has successfully completed LINKCHECK Verification.",
+  "linkcheckDescription": "Detta mynt har slutfört LINKCHECK-verifieringen.",
   "stablecoin": "Stablecoin",
-  "stablecoinDescription": "A stablecoin is a class of cryptocurrencies that attempts to offer price stability and are backed by a reserve asset.",
-  "base": "Base",
-  "baseDescription": "The home currency for LINKSWAP and the YF Link ecosystem.",
-  "viewYourLiquidityAnalytics": "View your total earned fees"
+  "stablecoinDescription": "En stablecoin är en klass av kryptovalutor som försöker erbjuda prisstabilitet och stöds av en reservtillgång.",
+  "base": "Bas",
+  "baseDescription": "Hemvalutan för LINKSWAP och YF Link-ekosystemet.",
+  "viewYourLiquidityAnalytics": "Visa dina totala intjänade avgifter"
 }
