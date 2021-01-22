@@ -67,11 +67,11 @@ export default function Unstake({
   let tokenB = useToken(currencyIdB)
 
   if (!tokenA) {
-    tokenA = WETH['1']
+    tokenA = chainId ? WETH[chainId] : WETH['1']
   }
 
   if (!tokenB) {
-    tokenB = WETH['1']
+    tokenB = chainId ? WETH[chainId] : WETH['1']
   }
 
   if (tokenA && tokenB) {
