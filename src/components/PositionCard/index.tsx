@@ -951,7 +951,7 @@ export function FullStakingCard({
                   <Text>{numberToUsd(stakePoolTotalDeposited)}</Text>
                 </RowBetween>
               )}
-              {rewardInfo.length > 0 && (
+              {rewardInfo.length > 0 && !isInactive && (
                 <RowBetween style={{ alignItems: 'flex-start' }}>
                   <Text>{t('stakePoolRewards')}</Text>
                   <Text style={{ textAlign: 'end' }}>
