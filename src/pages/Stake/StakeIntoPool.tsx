@@ -67,11 +67,11 @@ export default function StakeIntoPool({
   let tokenB = useToken(currencyIdB)
 
   if (!tokenA) {
-    tokenA = WETH['1']
+    tokenA = chainId ? WETH[chainId] : WETH['1']
   }
 
   if (!tokenB) {
-    tokenB = WETH['1']
+    tokenB = chainId ? WETH[chainId] : WETH['1']
   }
 
   if (tokenA && tokenB) {
@@ -192,8 +192,8 @@ export default function StakeIntoPool({
     hasError = false
   }
 
-  const passedCurrencyA = currencyIdA === 'ETH' ? WETH['1'] : currencyA
-  const passedCurrencyB = currencyIdB === 'ETH' ? WETH['1'] : currencyB
+  const passedCurrencyA = currencyIdA === 'ETH' ? (chainId ? WETH[chainId] : WETH['1']) : currencyA
+  const passedCurrencyB = currencyIdB === 'ETH' ? (chainId ? WETH[chainId] : WETH['1']) : currencyB
 
   const stakingValues = {
     address: liquidityToken?.address,
