@@ -186,7 +186,6 @@ export default function CurrencyList({
   showETH: boolean
 }) {
   const itemData = useMemo(() => (showETH ? [Currency.ETHER, ...currencies] : currencies), [currencies, showETH])
-
   const Row = useCallback(
     ({ data, index, style }) => {
       const currency: Currency = data[index]
@@ -207,7 +206,6 @@ export default function CurrencyList({
   )
 
   const itemKey = useCallback((index: number, data: any) => currencyKey(data[index]), [])
-
   return (
     <FixedSizeList
       height={height}

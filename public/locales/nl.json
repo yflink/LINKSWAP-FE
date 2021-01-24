@@ -318,5 +318,6 @@
   "stablecoinDescription": "Een stablecoin is een klasse van cryptocurrencies die prijsstabiliteit probeert te bieden en wordt ondersteund door een reserve asset.",
   "base": "Basis",
   "baseDescription": "De eigen valuta voor LINKSWAP en het YF Link-ecosysteem.",
-  "viewYourLiquidityAnalytics": "Bekijk uw totale verdiende vergoedingen."
+  "viewYourLiquidityAnalytics": "Bekijk uw totale verdiende vergoedingen.",
+  "noSearchResult": "No token was found for your search input. Please check to make sure the token name or contract address exists"
 }

@@ -312,5 +312,6 @@
   "stablecoinDescription": "Стабильная монета - это класс криптовалют, который пытается обеспечить стабильность цен и поддерживается резервным активом.",
   "base": "База",
   "baseDescription": "Основная валюта для LINKSWAP и экосистемы YF Link.",
-  "viewYourLiquidityAnalytics": "Смотреть общий заработок комиссий"
+  "viewYourLiquidityAnalytics": "Смотреть общий заработок комиссий",
+  "noSearchResult": "No token was found for your search input. Please check to make sure the token name or contract address exists"
 }

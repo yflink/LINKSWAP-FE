@@ -318,5 +318,6 @@
   "stablecoinDescription": "العملة المستقرة هي فئة من العملات المشفرة تحاول توفير استقرار الأسعار وتكون مدعومة بأصل احتياطي.",
   "base": "Base",
   "baseDescription": "العملة المحلية لـ LINKSWAP ecosystem YF Link.",
-  "viewYourLiquidityAnalytics": "عرض إجمالي الرسوم المكتسبة"
+  "viewYourLiquidityAnalytics": "عرض إجمالي الرسوم المكتسبة",
+  "noSearchResult": "No token was found for your search input. Please check to make sure the token name or contract address exists"
 }

@@ -318,5 +318,6 @@
   "stablecoinDescription": "Un stablecoin est une catégorie de cryptomonnaie qui tente d'offrir une stabilité des prix et sont garanties par un actif de réserve.",
   "base": "Base",
   "baseDescription": "La monnaie utilisée pour LINKSWAP et l'écosystème YF Link.",
-  "viewYourLiquidityAnalytics": "Voir le total de vos frais gagnés."
+  "viewYourLiquidityAnalytics": "Voir le total de vos frais gagnés.",
+  "noSearchResult": "No token was found for your search input. Please check to make sure the token name or contract address exists"
 }

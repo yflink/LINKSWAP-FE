@@ -10,7 +10,7 @@ import { useAllTokens, useToken } from '../../hooks/Tokens'
 import { useSelectedListInfo } from '../../state/lists/hooks'
 import { CloseIcon, LinkStyledButton, TYPE } from '../../theme'
 import { isAddress } from '../../utils'
-import Card from '../Card'
+import Card, { BlueCard } from '../Card'
 import Column from '../Column'
 import ListLogo from '../ListLogo'
 import QuestionHelper from '../QuestionHelper'
@@ -168,9 +168,17 @@ export function CurrencySearch({
           <SortButton ascending={invertSearchOrder} toggleSortOrder={() => setInvertSearchOrder(iso => !iso)} />
         </RowBetween>
       </PaddedColumn>
-
       <Separator />
 
+      {filteredSortedTokens?.length === 0 && (
+        <PaddedColumn gap="14px">
+          <BlueCard padding="14px">
+            <TYPE.body color={theme.appInfoBoxTextColor} textAlign="center">
+              {t('noSearchResult')}
+            </TYPE.body>
+          </BlueCard>
+        </PaddedColumn>
+      )}
       <div style={{ flex: '1' }}>
         <AutoSizer disableWidth>
           {({ height }) => (

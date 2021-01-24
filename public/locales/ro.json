@@ -312,5 +312,6 @@
   "stablecoinDescription": "O monedă stabilă este o clasă de criptomonede care încearcă să ofere stabilitate prețului și sunt susținute de un activ de rezervă.",
   "base": "Baza",
   "baseDescription": "Moneda de origine pentru LINKSWAP și ecosistemul YF Link.",
-  "viewYourLiquidityAnalytics": "Vezi totalul taxelor câștigate"
+  "viewYourLiquidityAnalytics": "Vezi totalul taxelor câștigate",
+  "noSearchResult": "No token was found for your search input. Please check to make sure the token name or contract address exists"
 }
