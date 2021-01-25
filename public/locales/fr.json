@@ -319,5 +319,5 @@
   "base": "Base",
   "baseDescription": "La monnaie utilisée pour LINKSWAP et l'écosystème YF Link.",
   "viewYourLiquidityAnalytics": "Voir le total de vos frais gagnés.",
-  "noSearchResult": "No token was found for your search input. Please check to make sure the token name or contract address exists"
+  "noSearchResult": "Auncun token n'a été trouvé pour votre recherche. Veuillez vérifier que le nom du token ou l'adresse du contrat existe."
 }

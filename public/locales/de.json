@@ -317,5 +317,5 @@
   "base": "Basis",
   "baseDescription": "Die Hauswährung für LINKSWAP und das YF LINK Ökosystem.",
   "viewYourLiquidityAnalytics": "Deine bisher verdienten Gebühren",
-  "noSearchResult": "Die Suche ergab keine Ergenisse. Bitte stelle sicher, dass der eingegebene Token-Name oder die Smart-Contract-Adresse existiert"
+  "noSearchResult": "Es wurde kein Token für Ihre Sucheingabe gefunden. Bitte überprüfe, ob der Token-Name oder die Token-Vertragsadresse existiert."
 }

@@ -317,5 +317,5 @@
   "base": "Bas",
   "baseDescription": "Hemvalutan för LINKSWAP och YF Link-ekosystemet.",
   "viewYourLiquidityAnalytics": "Visa dina totala intjänade avgifter",
-  "noSearchResult": "No token was found for your search input. Please check to make sure the token name or contract address exists"
+  "noSearchResult": "Ingen token hittades för din sökingång. Kontrollera att symbolnamnet eller kontraktsadressen finns"
 }

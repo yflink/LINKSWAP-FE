@@ -319,5 +319,5 @@
   "base": "Basis",
   "baseDescription": "De eigen valuta voor LINKSWAP en het YF Link-ecosysteem.",
   "viewYourLiquidityAnalytics": "Bekijk uw totale verdiende vergoedingen.",
-  "noSearchResult": "No token was found for your search input. Please check to make sure the token name or contract address exists"
+  "noSearchResult": "Er werd geen token gevonden voor uw zoekopdracht. Controleer of de tokennaam of het contractadres bestaat."
 }
