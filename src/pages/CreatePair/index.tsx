@@ -316,8 +316,8 @@ export default function CreateNewPool({
   ) {
     if (!account || !library || !chainId) return
     const router = getContract(FACTORY_ADDRESS, Factory, library, account)
+    console.log(router)
     const estimate = router.estimateGas.createPair
-    const method: (...args: any) => Promise<TransactionResponse> = router.createPair
     const args: Array<string | number> = [
       newToken,
       newTokenAmount,
@@ -326,10 +326,9 @@ export default function CreateNewPool({
       LockupPeriod,
       listingFeeToken
     ]
-
-    const value: BigNumber | null = null
+    const method: (...args: any) => Promise<TransactionResponse> = router.createPair
     console.log(args)
-    await estimate(...args, value ? { value } : {})
+    await estimate(...args)
       .then(() =>
         method().then(response => {
           addTransaction(response, {
@@ -355,9 +354,9 @@ export default function CreateNewPool({
 
   const chainIdentifier = chainId ?? 1
   const newToken = currencyIdB ?? ''
-  const newTokenAmount = parsedAmounts[Field.CURRENCY_B]?.raw.toString() ?? ''
+  const newTokenAmount = parsedAmounts[Field.CURRENCY_B]?.raw.toString() ?? '0'
   const lockupToken = currencyIdA === 'ETH' ? WETH[chainIdentifier].address : currencyIdA ?? ''
-  const lockupTokenAmount = parsedAmounts[Field.CURRENCY_A]?.raw.toString() ?? ''
+  const lockupTokenAmount = parsedAmounts[Field.CURRENCY_A]?.raw.toString() ?? '0'
   const LockupPeriod = period.time
   const listingFeeToken = feeToken?.symbol === 'ETH' ? WETH[chainIdentifier].address : feeToken?.address ?? ''
 

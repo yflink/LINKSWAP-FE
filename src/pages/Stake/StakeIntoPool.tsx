@@ -145,7 +145,7 @@ export default function StakeIntoPool({
 
     const estimate = router.estimateGas.stake
     const method: (...args: any) => Promise<TransactionResponse> = router.stake
-    const args: Array<string | string[] | number> = [parsedAmountA.raw.toString()]
+    const args: Array<string> = [parsedAmountA.raw.toString()]
 
     const value: BigNumber | null = null
     await estimate(...args, value ? { value } : {})
