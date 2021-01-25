@@ -4,12 +4,12 @@ import { TransactionResponse } from '@ethersproject/providers'
 import { Currency, ETHER, TokenAmount } from '@uniswap/sdk'
 import React, { useCallback, useContext, useState } from 'react'
 import { Steps, Slider } from 'antd'
-import { Plus } from 'react-feather'
+import { AlertTriangle, Plus } from 'react-feather'
 import ReactGA from 'react-ga'
 import { RouteComponentProps } from 'react-router-dom'
 import { Text } from 'rebass'
 import styled, { ThemeContext } from 'styled-components'
-import { ButtonGray, ButtonPrimary, ButtonSecondary } from '../../components/Button'
+import { ButtonGray, ButtonPrimary } from '../../components/Button'
 import Card, { BlueCard, LightCard, OutlineCard } from '../../components/Card'
 import { AutoColumn, ColumnCenter } from '../../components/Column'
 import TransactionConfirmationModal, { ConfirmationModalContent } from '../../components/TransactionConfirmationModal'
@@ -23,13 +23,8 @@ import { LINK, ROUTER_ADDRESS, YFL } from '../../constants'
 import './slider.css'
 import './steps.css'
 import { RateSVG } from '../../components/SVG'
-
-// import { ROUTER_ADDRESS } from '../../constants'
-// import { PairState } from '../../data/Reserves'
 import { useActiveWeb3React } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
-// import { useApproveCallback } from '../../hooks/useApproveCallback'
-// import { useWalletModalToggle } from '../../state/application/hooks'
 import { Field } from '../../state/mint/actions'
 import { useDerivedMintInfo, useMintActionHandlers, useMintState } from '../../state/mint/hooks'
 
@@ -42,7 +37,6 @@ import { unwrappedToken, wrappedCurrency } from '../../utils/wrappedCurrency'
 import AppBody, { AppBodyDark } from '../AppBody'
 import { Wrapper } from '../Pool/styleds'
 import { currencyId } from '../../utils/currencyId'
-import { WrappedTokenInfo } from '../../state/lists/hooks'
 import { useTranslation } from 'react-i18next'
 import Toggle from '../../components/Toggle'
 import { numberToSignificant, numberToUsd } from '../../utils/numberUtils'
@@ -50,7 +44,7 @@ import { Dots } from '../../components/swap/styleds'
 import { useGetPriceBase } from '../../state/price/hooks'
 import { useCurrencyUsdPrice } from '../../hooks/useCurrencyUsdPrice'
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
-import { WETH } from '../../../forks/@uniswap/sdk'
+import { transparentize } from 'polished'
 
 const { Step } = Steps
 
@@ -117,6 +111,34 @@ const CurrencyButton = styled(ButtonPrimary)<{ active?: boolean }>`
   height: 54px;
 `
 
+const ErrorInner = styled.div`
+  background-color: ${({ theme }) => transparentize(0.9, theme.red1)};
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  font-size: 0.825rem;
+  width: 100%;
+  padding: 1rem;
+  margin-top: 18px;
+  color: ${({ theme }) => theme.red1};
+  p {
+    padding: 0;
+    margin: 0;
+    font-weight: 500;
+  }
+`
+
+const ErrorInnerAlertTriangle = styled.div`
+  background-color: ${({ theme }) => transparentize(0.9, theme.red1)};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-inline-end: 12px;
+  border-radius: 6px;
+  min-width: 48px;
+  height: 48px;
+`
+
 export default function CreateNewPool({
   match: {
     params: { currencyIdA, currencyIdB }
@@ -137,26 +159,11 @@ export default function CreateNewPool({
   const [feeCurrency, setFeeToken] = useState(YFLcurrency)
 
   const { independentField, typedValue, otherTypedValue } = useMintState()
-  const {
-    dependentField,
-    currencies,
-    currencyBalances,
-    parsedAmounts,
-    noLiquidity,
-    liquidityMinted
-  } = useDerivedMintInfo(currencyA ?? undefined, currencyB ?? undefined)
+  const { dependentField, currencies, currencyBalances, parsedAmounts, noLiquidity } = useDerivedMintInfo(
+    currencyA ?? undefined,
+    currencyB ?? undefined
+  )
   const { onFieldAInput, onFieldBInput } = useMintActionHandlers(noLiquidity)
-
-  // const isValid = !error
-
-  // modal and loading
-  const [showConfirm, setShowConfirm] = useState<boolean>(false)
-  const [attemptingTxn, setAttemptingTxn] = useState<boolean>(false) // clicked confirm
-
-  // txn values
-  const [deadline] = useUserDeadline() // custom from users settings
-  const [allowedSlippage] = useUserSlippageTolerance() // custom from users
-  const [txHash, setTxHash] = useState<string>('')
 
   // get formatted amounts
   const formattedAmounts = {
@@ -239,143 +246,6 @@ export default function CreateNewPool({
       feeToken = YFL
   }
 
-  async function onAdd() {
-    if (!chainId || !library || !account) return
-    const router = getRouterContract(chainId, library, account)
-
-    const { [Field.CURRENCY_A]: parsedAmountA, [Field.CURRENCY_B]: parsedAmountB } = parsedAmounts
-    if (!parsedAmountA || !parsedAmountB || !currencyA || !currencyB) {
-      return
-    }
-
-    const amountsMin = {
-      [Field.CURRENCY_A]: calculateSlippageAmount(parsedAmountA, noLiquidity ? 0 : allowedSlippage)[0],
-      [Field.CURRENCY_B]: calculateSlippageAmount(parsedAmountB, noLiquidity ? 0 : allowedSlippage)[0]
-    }
-
-    const deadlineFromNow = Math.ceil(Date.now() / 1000) + deadline
-
-    let estimate,
-      method: (...args: any) => Promise<TransactionResponse>,
-      args: Array<string | string[] | number>,
-      value: BigNumber | null
-    if (currencyA === ETHER || currencyB === ETHER) {
-      const tokenBIsETH = currencyB === ETHER
-      estimate = router.estimateGas.addLiquidityETH
-      method = router.addLiquidityETH
-      args = [
-        wrappedCurrency(tokenBIsETH ? currencyA : currencyB, chainId)?.address ?? '', // token
-        (tokenBIsETH ? parsedAmountA : parsedAmountB).raw.toString(), // token desired
-        amountsMin[tokenBIsETH ? Field.CURRENCY_A : Field.CURRENCY_B].toString(), // token min
-        amountsMin[tokenBIsETH ? Field.CURRENCY_B : Field.CURRENCY_A].toString(), // eth min
-        account,
-        deadlineFromNow
-      ]
-      value = BigNumber.from((tokenBIsETH ? parsedAmountB : parsedAmountA).raw.toString())
-    } else {
-      estimate = router.estimateGas.addLiquidity
-      method = router.addLiquidity
-      args = [
-        wrappedCurrency(currencyA, chainId)?.address ?? '',
-        wrappedCurrency(currencyB, chainId)?.address ?? '',
-        parsedAmountA.raw.toString(),
-        parsedAmountB.raw.toString(),
-        amountsMin[Field.CURRENCY_A].toString(),
-        amountsMin[Field.CURRENCY_B].toString(),
-        account,
-        deadlineFromNow
-      ]
-      value = null
-    }
-
-    setAttemptingTxn(true)
-    await estimate(...args, value ? { value } : {})
-      .then(estimatedGasLimit =>
-        method(...args, {
-          ...(value ? { value } : {}),
-          gasLimit: calculateGasMargin(estimatedGasLimit)
-        }).then(response => {
-          setAttemptingTxn(false)
-
-          addTransaction(response, {
-            summary:
-              'Add ' +
-              parsedAmounts[Field.CURRENCY_A]?.toSignificant(3) +
-              ' ' +
-              currencies[Field.CURRENCY_A]?.symbol +
-              ' and ' +
-              parsedAmounts[Field.CURRENCY_B]?.toSignificant(3) +
-              ' ' +
-              currencies[Field.CURRENCY_B]?.symbol
-          })
-
-          setTxHash(response.hash)
-
-          ReactGA.event({
-            category: 'Liquidity',
-            action: 'Add',
-            label: [currencies[Field.CURRENCY_A]?.symbol, currencies[Field.CURRENCY_B]?.symbol].join('/')
-          })
-        })
-      )
-      .catch(error => {
-        setAttemptingTxn(false)
-        // we only care if the error is something _other_ than the user rejected the tx
-        if (error?.code !== 4001) {
-          console.error(error)
-        }
-      })
-  }
-
-  const modalHeader = () => {
-    return noLiquidity ? (
-      <AutoColumn gap="20px">
-        <LightCard mt="20px" borderRadius="20px">
-          <RowFlat>
-            <Text fontSize="48px" fontWeight={500} lineHeight="42px" marginRight={10}>
-              {currencies[Field.CURRENCY_A]?.symbol + '/' + currencies[Field.CURRENCY_B]?.symbol}
-            </Text>
-            <DoubleCurrencyLogo
-              currency0={currencies[Field.CURRENCY_A]}
-              currency1={currencies[Field.CURRENCY_B]}
-              size={30}
-            />
-          </RowFlat>
-        </LightCard>
-      </AutoColumn>
-    ) : (
-      <AutoColumn gap="20px">
-        <RowFlat style={{ marginTop: '20px' }}>
-          <Text fontSize="48px" fontWeight={500} lineHeight="42px" marginRight={10}>
-            {liquidityMinted?.toSignificant(6)}
-          </Text>
-          <DoubleCurrencyLogo
-            currency0={currencies[Field.CURRENCY_A]}
-            currency1={currencies[Field.CURRENCY_B]}
-            size={30}
-          />
-        </RowFlat>
-        <Row>
-          <Text fontSize="24px">
-            {currencies[Field.CURRENCY_A]?.symbol + '/' + currencies[Field.CURRENCY_B]?.symbol + ' Pool Tokens'}
-          </Text>
-        </Row>
-        <TYPE.italic fontSize={12} textAlign="left" padding={'8px 0 0 0 '}>
-          {`Output is estimated. If the price changes by more than ${allowedSlippage /
-            100}% your transaction will revert.`}
-        </TYPE.italic>
-      </AutoColumn>
-    )
-  }
-
-  const modalBottom = () => {
-    return <div onClick={onAdd} />
-  }
-
-  const pendingText = `Supplying ${parsedAmounts[Field.CURRENCY_A]?.toSignificant(6)} ${
-    currencies[Field.CURRENCY_A]?.symbol
-  } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(6)} ${currencies[Field.CURRENCY_B]?.symbol}`
-
   const handleCurrencyASelect = useCallback(
     (currencyA: Currency) => {
       const newCurrencyIdA = currencyId(currencyA)
@@ -403,15 +273,6 @@ export default function CreateNewPool({
     [currencyIdA, history, currencyIdB]
   )
 
-  const handleDismissConfirmation = useCallback(() => {
-    setShowConfirm(false)
-    // if there was a tx hash, we want to clear the input
-    if (txHash) {
-      onFieldAInput('')
-    }
-    setTxHash('')
-  }, [onFieldAInput, txHash])
-
   const [rate, setRate] = useState('1')
 
   const [approvalA, approveACallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_A], ROUTER_ADDRESS)
@@ -421,6 +282,29 @@ export default function CreateNewPool({
       ? new TokenAmount(feeToken, BigInt(Math.ceil(feeCurrencyCount)))
       : undefined
   const [approvalC, approveCCallback] = useApproveCallback(approvalCParse, ROUTER_ADDRESS)
+
+  let error = false
+  if (Number(formattedAmounts[Field.CURRENCY_A]) > Number(maxAmounts[Field.CURRENCY_A]?.toExact()) && step === 2) {
+    error = t('insufficientCurrencyBalance', { inputCurrency: currencyA?.symbol })
+  }
+
+  if (
+    Number(formattedAmounts[Field.CURRENCY_B]) > Number(maxAmounts[Field.CURRENCY_B]?.toExact()) &&
+    !error &&
+    step === 2
+  ) {
+    error = t('insufficientCurrencyBalance', { inputCurrency: currencyB?.symbol })
+  }
+
+  if (isActive) {
+    const rugLockBarrier = 100000
+    const priceBase = currencyA?.symbol === 'LINK' ? priceObject['linkPriceBase'] : priceObject['ethPriceBase']
+    const rugLockTokenBarrier = Math.ceil(100000 / priceBase)
+    error =
+      Number(formattedAmounts[Field.CURRENCY_A]) < rugLockBarrier
+        ? t('insufficientLiquidityForRuglock', { currencySymbol: currencyA?.symbol, minimum: rugLockTokenBarrier })
+        : error
+  }
 
   useCurrencyUsdPrice()
   return (
@@ -442,21 +326,6 @@ export default function CreateNewPool({
         </div>
         {step === 0 ? (
           <Wrapper>
-            <TransactionConfirmationModal
-              isOpen={showConfirm}
-              onDismiss={handleDismissConfirmation}
-              attemptingTxn={attemptingTxn}
-              hash={txHash}
-              content={() => (
-                <ConfirmationModalContent
-                  title={noLiquidity ? t('youAreCreatingAPool') : t('youWillReceive')}
-                  onDismiss={handleDismissConfirmation}
-                  topContent={modalHeader}
-                  bottomContent={modalBottom}
-                />
-              )}
-              pendingText={pendingText}
-            />
             <AutoColumn gap="20px">
               {noLiquidity ? (
                 <ColumnCenter>
@@ -557,21 +426,6 @@ export default function CreateNewPool({
           </Wrapper>
         ) : step === 2 ? (
           <Wrapper>
-            <TransactionConfirmationModal
-              isOpen={showConfirm}
-              onDismiss={handleDismissConfirmation}
-              attemptingTxn={attemptingTxn}
-              hash={txHash}
-              content={() => (
-                <ConfirmationModalContent
-                  title={noLiquidity ? t('youAreCreatingAPool') : t('youWillReceive')}
-                  onDismiss={handleDismissConfirmation}
-                  topContent={modalHeader}
-                  bottomContent={modalBottom}
-                />
-              )}
-              pendingText={pendingText}
-            />
             <AutoColumn gap="20px">
               <CurrencyDoubleInputPanel
                 value={formattedAmounts[Field.CURRENCY_A]}
@@ -611,6 +465,14 @@ export default function CreateNewPool({
                 disableCurrencySelect
               />
             </AutoColumn>
+            {error && (
+              <ErrorInner>
+                <ErrorInnerAlertTriangle>
+                  <AlertTriangle size={24} />
+                </ErrorInnerAlertTriangle>
+                <p>{error}</p>
+              </ErrorInner>
+            )}
             <AutoColumn style={{ marginTop: '24px' }}>
               <OutlineCard>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -806,6 +668,7 @@ export default function CreateNewPool({
           ) : (
             <>
               {!noLiquidity ||
+              error ||
               (step === 0 && !currencyB) ||
               (step === 1 && !rate) ||
               (step === 2 && !formattedAmounts[Field.CURRENCY_A]) ? (

@@ -329,5 +329,6 @@
   "weekSingular": "1 Week",
   "weekPlural": "{{weeks}} Weeks",
   "monthSingular": "1 Month",
-  "monthPlural": "{{months}} Months"
+  "monthPlural": "{{months}} Months",
+  "insufficientLiquidityForRuglock": "In order to receive a RugLock Badge for the tokenlist, you need to add at least {{minimum}} {{currencySymbol}} as liquidity"
 }
