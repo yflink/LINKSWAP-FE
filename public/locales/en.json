@@ -325,6 +325,7 @@
   "pairCreationTokenAmount": "Amount of {{currency}}",
   "pairCreationFee": "Listing Fee",
   "pairCreationSelectFeeToken": "Select the Creation-Fee Currency",
+  "pairCreationApprovals": "Approvals needed for the Pair Creation",
   "weekSingular": "1 Week",
   "weekPlural": "{{weeks}} Weeks",
   "monthSingular": "1 Month",

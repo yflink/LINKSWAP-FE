@@ -19,7 +19,7 @@ import { SwapPoolTabs, CreateTabs } from '../../components/NavigationTabs'
 import Row, { RowBetween, RowFixed, RowFlat } from '../../components/Row'
 import CurrencyLogo from '../../components/CurrencyLogo'
 import { Input as NumericalInput } from '../../components/NumericalInput'
-import { LINK, YFL } from '../../constants'
+import { LINK, ROUTER_ADDRESS, YFL } from '../../constants'
 import './slider.css'
 import './steps.css'
 import { RateSVG } from '../../components/SVG'
@@ -38,7 +38,7 @@ import { useUserDeadline, useUserSlippageTolerance } from '../../state/user/hook
 import { TYPE } from '../../theme'
 import { calculateGasMargin, calculateSlippageAmount, getRouterContract } from '../../utils'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
-import { wrappedCurrency } from '../../utils/wrappedCurrency'
+import { unwrappedToken, wrappedCurrency } from '../../utils/wrappedCurrency'
 import AppBody, { AppBodyDark } from '../AppBody'
 import { Wrapper } from '../Pool/styleds'
 import { currencyId } from '../../utils/currencyId'
@@ -49,6 +49,8 @@ import { numberToSignificant, numberToUsd } from '../../utils/numberUtils'
 import { Dots } from '../../components/swap/styleds'
 import { useGetPriceBase } from '../../state/price/hooks'
 import { useCurrencyUsdPrice } from '../../hooks/useCurrencyUsdPrice'
+import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
+import { WETH } from '../../../forks/@uniswap/sdk'
 
 const { Step } = Steps
 
@@ -126,25 +128,22 @@ export default function CreateNewPool({
 
   const currencyA = useCurrency(currencyIdA)
   const currencyB = useCurrency(currencyIdB)
+  const LINKcurrency = unwrappedToken(LINK)
+  const YFLcurrency = unwrappedToken(YFL)
 
   const [isActive, setIsActive] = useState(false)
   const [period, setPeriod] = useState({ label: 'none', time: 0 })
   const [step, setStep] = useState(0)
-  const [feeToken, setFeeToken] = useState('YFL')
+  const [feeCurrency, setFeeToken] = useState(YFLcurrency)
 
   const { independentField, typedValue, otherTypedValue } = useMintState()
   const {
     dependentField,
     currencies,
-    // pair,
-    // pairState,
     currencyBalances,
     parsedAmounts,
-    // price,
     noLiquidity,
     liquidityMinted
-    // poolTokenPercentage,
-    // error
   } = useDerivedMintInfo(currencyA ?? undefined, currencyB ?? undefined)
   const { onFieldAInput, onFieldBInput } = useMintActionHandlers(noLiquidity)
 
@@ -186,10 +185,6 @@ export default function CreateNewPool({
     {}
   )
 
-  // check whether the user has approved the router on the tokens
-  // const [approvalA, approveACallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_A], ROUTER_ADDRESS)
-  // const [approvalB, approveBCallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_B], ROUTER_ADDRESS)
-
   const addTransaction = useTransactionAdder()
 
   const { t } = useTranslation()
@@ -223,21 +218,25 @@ export default function CreateNewPool({
 
   const priceObject = useGetPriceBase()
   let feeAmountUsd
-  let feeTokenCount
-  switch (feeToken) {
-    case 'ETH':
+  let feeCurrencyCount
+  let feeToken
+  switch (feeCurrency) {
+    case ETHER:
       feeAmountUsd = numberToUsd(3000)
-      feeTokenCount = numberToSignificant(3000 / priceObject['ethPriceBase'])
+      feeCurrencyCount = 3000 / priceObject['ethPriceBase']
+      feeToken = undefined
       break
 
-    case 'LINK':
+    case LINKcurrency:
       feeAmountUsd = numberToUsd(2500)
-      feeTokenCount = numberToSignificant(2500 / priceObject['linkPriceBase'])
+      feeCurrencyCount = 2500 / priceObject['linkPriceBase']
+      feeToken = LINK
       break
 
     default:
       feeAmountUsd = numberToUsd(2000)
-      feeTokenCount = numberToSignificant(2000 / priceObject['ethPriceBase'])
+      feeCurrencyCount = 2000 / priceObject['ethPriceBase']
+      feeToken = YFL
   }
 
   async function onAdd() {
@@ -415,6 +414,14 @@ export default function CreateNewPool({
 
   const [rate, setRate] = useState('1')
 
+  const [approvalA, approveACallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_A], ROUTER_ADDRESS)
+  const [approvalB, approveBCallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_B], ROUTER_ADDRESS)
+  const approvalCParse =
+    !!feeToken && feeCurrencyCount !== Infinity
+      ? new TokenAmount(feeToken, BigInt(Math.ceil(feeCurrencyCount)))
+      : undefined
+  const [approvalC, approveCCallback] = useApproveCallback(approvalCParse, ROUTER_ADDRESS)
+
   useCurrencyUsdPrice()
   return (
     <>
@@ -568,9 +575,13 @@ export default function CreateNewPool({
             <AutoColumn gap="20px">
               <CurrencyDoubleInputPanel
                 value={formattedAmounts[Field.CURRENCY_A]}
-                onUserInput={onFieldAInput}
+                onUserInput={val => {
+                  onFieldAInput(Number(val).toString())
+                  onFieldBInput((Number(val) * Number(rate)).toString())
+                }}
                 onMax={() => {
                   onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
+                  onFieldBInput((Number(maxAmounts[Field.CURRENCY_A]?.toExact()) * Number(rate)).toString() ?? '')
                 }}
                 onCurrencySelect={handleCurrencyASelect}
                 showMaxButton={!atMaxAmounts[Field.CURRENCY_A]}
@@ -584,10 +595,14 @@ export default function CreateNewPool({
               </ColumnCenter>
               <CurrencyInputPanel
                 value={(Number(formattedAmounts[Field.CURRENCY_A]) * Number(rate)).toString()}
-                onUserInput={val => onFieldAInput((Number(val) / Number(rate)).toString())}
+                onUserInput={val => {
+                  onFieldAInput((Number(val) / Number(rate)).toString())
+                  onFieldBInput(Number(val).toString())
+                }}
                 onCurrencySelect={handleCurrencyBSelect}
                 onMax={() => {
                   onFieldAInput((Number(maxAmounts[Field.CURRENCY_B]?.toExact()) / Number(rate)).toString() ?? '')
+                  onFieldBInput(maxAmounts[Field.CURRENCY_B]?.toExact() ?? '')
                 }}
                 showMaxButton={!atMaxAmounts[Field.CURRENCY_B]}
                 currency={currencies[Field.CURRENCY_B]}
@@ -669,27 +684,27 @@ export default function CreateNewPool({
               <ButtonRow>
                 <CurrencyButton
                   onClick={() => {
-                    setFeeToken('ETH')
+                    setFeeToken(ETHER)
                   }}
-                  active={feeToken === 'ETH'}
+                  active={feeCurrency === ETHER}
                 >
                   <CurrencyLogo currency={ETHER} size={'24px'} style={{ marginInlineEnd: '6px' }} position="button" />
                   ETH
                 </CurrencyButton>
                 <CurrencyButton
                   onClick={() => {
-                    setFeeToken('LINK')
+                    setFeeToken(LINKcurrency)
                   }}
-                  active={feeToken === 'LINK'}
+                  active={feeCurrency === LINKcurrency}
                 >
                   <CurrencyLogo currency={LINK} size={'24px'} style={{ marginInlineEnd: '6px' }} position="button" />
                   LINK
                 </CurrencyButton>
                 <CurrencyButton
                   onClick={() => {
-                    setFeeToken('YFL')
+                    setFeeToken(YFLcurrency)
                   }}
-                  active={feeToken === 'YFL'}
+                  active={feeCurrency === YFLcurrency}
                 >
                   <CurrencyLogo currency={YFL} size={'24px'} style={{ marginInlineEnd: '6px' }} position="button" /> YFL
                 </CurrencyButton>
@@ -725,14 +740,56 @@ export default function CreateNewPool({
                       )}
                     </RowBetween>
                     <RowBetween style={{ alignItems: 'flex-start' }}>
-                      <Text>{t('pairCreationFee', { currency: feeToken })}</Text>
+                      <Text>{t('pairCreationFee', { currency: feeCurrency })}</Text>
                       <Text>
-                        {feeTokenCount} {feeToken} ({feeAmountUsd})
+                        {numberToSignificant(feeCurrencyCount)} {feeCurrency.symbol} ({feeAmountUsd})
                       </Text>
                     </RowBetween>
                   </AutoColumn>
                 </CreationSummary>
-              )}{' '}
+              )}
+              {(approvalA !== ApprovalState.APPROVED ||
+                approvalB !== ApprovalState.APPROVED ||
+                (approvalC !== ApprovalState.APPROVED && feeCurrency !== ETHER)) && (
+                <AutoColumn gap="18px">
+                  <RowBetween style={{ marginTop: 18 }}>
+                    <Text>{t('pairCreationApprovals')}</Text>
+                  </RowBetween>
+                  {approvalA !== ApprovalState.APPROVED && (
+                    <RowBetween>
+                      <ButtonPrimary onClick={approveACallback} disabled={approvalA === ApprovalState.PENDING}>
+                        {approvalA === ApprovalState.PENDING ? (
+                          <Dots>{t('approvingCurrency', { inputCurrency: currencies[Field.CURRENCY_A]?.symbol })}</Dots>
+                        ) : (
+                          t('approveCurrency', { inputCurrency: currencies[Field.CURRENCY_A]?.symbol })
+                        )}
+                      </ButtonPrimary>
+                    </RowBetween>
+                  )}
+                  {approvalB !== ApprovalState.APPROVED && (
+                    <RowBetween>
+                      <ButtonPrimary onClick={approveBCallback} disabled={approvalB === ApprovalState.PENDING}>
+                        {approvalB === ApprovalState.PENDING ? (
+                          <Dots>{t('approvingCurrency', { inputCurrency: currencies[Field.CURRENCY_B]?.symbol })}</Dots>
+                        ) : (
+                          t('approveCurrency', { inputCurrency: currencies[Field.CURRENCY_B]?.symbol })
+                        )}
+                      </ButtonPrimary>
+                    </RowBetween>
+                  )}
+                  {approvalC !== ApprovalState.APPROVED && feeCurrency !== ETHER && (
+                    <RowBetween>
+                      <ButtonPrimary onClick={approveCCallback} disabled={approvalC === ApprovalState.PENDING}>
+                        {approvalC === ApprovalState.PENDING ? (
+                          <Dots>{t('approvingCurrency', { inputCurrency: feeCurrency.symbol })}</Dots>
+                        ) : (
+                          t('approveCurrency', { inputCurrency: feeCurrency.symbol })
+                        )}
+                      </ButtonPrimary>
+                    </RowBetween>
+                  )}
+                </AutoColumn>
+              )}
             </AutoColumn>
           </Wrapper>
         )}
