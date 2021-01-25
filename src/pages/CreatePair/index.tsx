@@ -356,7 +356,7 @@ export default function CreateNewPool({
   const lockupToken = currencyIdA === 'ETH' ? WETH[chainIdentifier].address : currencyIdA ?? ''
   const lockupTokenAmount = parsedAmounts[Field.CURRENCY_A]?.raw.toString() ?? '0'
   const LockupPeriod = period.time
-  const listingFeeToken = feeToken?.symbol === 'ETH' ? WETH[chainIdentifier].address : feeToken?.address ?? ''
+  const listingFeeToken = !feeToken ? WETH[chainIdentifier].address : feeToken?.address ?? ''
 
   return (
     <>
