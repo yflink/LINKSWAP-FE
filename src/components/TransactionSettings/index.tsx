@@ -43,8 +43,8 @@ const Option = styled(FancyButton)<{ active: boolean }>`
   :hover {
     cursor: pointer;
   }
-  background-color: ${({ active, theme }) => active && theme.modalInputBorder};
-  color: ${({ active, theme }) => (active ? theme.textPrimary : theme.textPrimary)};
+  background-color: ${({ active, theme }) => active && theme.modalInputBorderFocus};
+  color: ${({ active, theme }) => (active ? theme.modalButtonText : theme.textPrimary)};
 `
 
 const Input = styled.input`

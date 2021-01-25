@@ -9,22 +9,20 @@ import ReactGA from 'react-ga'
 import { RouteComponentProps } from 'react-router-dom'
 import { Text } from 'rebass'
 import styled, { ThemeContext } from 'styled-components'
-import { ButtonGray, ButtonPrimary } from '../../components/Button'
+import { ButtonGray, ButtonPrimary, ButtonSecondary } from '../../components/Button'
 import Card, { BlueCard, LightCard, OutlineCard } from '../../components/Card'
 import { AutoColumn, ColumnCenter } from '../../components/Column'
 import TransactionConfirmationModal, { ConfirmationModalContent } from '../../components/TransactionConfirmationModal'
 import CurrencyInputPanel, { CurrencyDoubleInputPanel } from '../../components/CurrencyInputPanel'
 import DoubleCurrencyLogo from '../../components/DoubleLogo'
 import { SwapPoolTabs, CreateTabs } from '../../components/NavigationTabs'
-// import { MinimalPositionCard } from '../../components/PositionCard'
-import Row, { RowFlat } from '../../components/Row'
-import ToggleSwitch from '../../components/ToggleSwitch'
+import Row, { RowBetween, RowFixed, RowFlat } from '../../components/Row'
 import CurrencyLogo from '../../components/CurrencyLogo'
 import { Input as NumericalInput } from '../../components/NumericalInput'
-
+import { LINK, YFL } from '../../constants'
 import './slider.css'
 import './steps.css'
-import rateIcon from '../../assets/svg/rate.svg'
+import { RateSVG } from '../../components/SVG'
 
 // import { ROUTER_ADDRESS } from '../../constants'
 // import { PairState } from '../../data/Reserves'
@@ -43,59 +41,21 @@ import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import { wrappedCurrency } from '../../utils/wrappedCurrency'
 import AppBody, { AppBodyDark } from '../AppBody'
 import { Wrapper } from '../Pool/styleds'
-// import { ConfirmAddModalBottom } from '../AddLiquidity/ConfirmAddModalBottom'
 import { currencyId } from '../../utils/currencyId'
-// import { PoolPriceBar } from './PoolPriceBar'
 import { WrappedTokenInfo } from '../../state/lists/hooks'
 import { useTranslation } from 'react-i18next'
+import Toggle from '../../components/Toggle'
+import { numberToSignificant, numberToUsd } from '../../utils/numberUtils'
+import { Dots } from '../../components/swap/styleds'
+import { useGetPriceBase } from '../../state/price/hooks'
+import { useCurrencyUsdPrice } from '../../hooks/useCurrencyUsdPrice'
 
 const { Step } = Steps
-
-const LINK = new WrappedTokenInfo(
-  {
-    address: '0x514910771af9ca656af840dff83e8264ecf986ca',
-    chainId: 1,
-    name: 'ChainLink',
-    symbol: 'LINK',
-    decimals: 18,
-    logoURI: 'https://logos.linkswap.app/0x514910771af9ca656af840dff83e8264ecf986ca.png'
-  },
-  []
-)
-
-const YFL = new WrappedTokenInfo(
-  {
-    address: '0x28cb7e841ee97947a86b06fa4090c8451f64c0be',
-    chainId: 1,
-    name: 'YFLink',
-    symbol: 'YFL',
-    decimals: 18,
-    logoURI: 'https://logos.linkswap.app/0x28cb7e841ee97947a86b06fa4090c8451f64c0be.png'
-  },
-  []
-)
-
-const marks = {
-  5: '1 Week',
-  33: '1 Month',
-  67: '3 Months',
-  95: {
-    style: {
-      whiteSpace: 'nowrap'
-    },
-    label: '6 Months'
-  }
-}
-
-const activeStyle = {
-  border: '1px solid transparent',
-  background: 'linear-gradient(284.91deg, rgba(66, 77, 103, 0.4) 16.83%, rgba(117, 133, 171, 0.4) 83.64%)'
-}
 
 const StepsContainer = styled.div`
   .ant-steps-item-active .ant-steps-item-icon {
     background-color: ${({ theme }) => theme.appCurrencyInputBGActive};
-    
+
     color: ${({ theme }) => theme.appCurrencyInputTextColorActive};
   }
 
@@ -108,6 +68,51 @@ const StepsContainer = styled.div`
     background-color: ${({ theme }) => theme.appInfoBoxBG};
     color: ${({ theme }) => theme.appInfoBoxTextColor};
   }
+`
+
+const SvgIcon = styled.div`
+  position: absolute;
+  right: 14px;
+  top: 10px;
+
+  > svg {
+    height: 14px;
+    width: auto;
+    fill: ${({ theme }) => theme.textPrimary};
+  }
+`
+const SliderWrapper = styled.div`
+  margin: 24px 0 0;
+
+  .ant-slider-track {
+    background-color: ${({ theme }) => theme.modalInputBorderFocus};
+  }
+
+  .ant-slider-handle {
+    background-color: ${({ theme }) => theme.textPrimary};
+    border-color: ${({ theme }) => theme.textPrimary};
+  }
+`
+const CreationSummary = styled(Card)`
+  font-size: 14px;
+  line-height: 18px;
+  background-color: ${({ theme }) => theme.appBoxBG};
+`
+
+const ButtonRow = styled.div`
+  display: flex;
+  flex: 0 0 100%;
+  justify-content: space-between;
+  margin: 0 0 18px;
+`
+
+const CurrencyButton = styled(ButtonPrimary)<{ active?: boolean }>`
+  width: 30%;
+  flex: 0 0 30%;
+  pointer-events: ${({ active }) => (active ? 'none' : 'auto')};
+  background-color: ${({ active, theme }) => (active ? theme.buttonBG : theme.buttonBGDisabled)};
+  padding: 0;
+  height: 54px;
 `
 
 export default function CreateNewPool({
@@ -123,19 +128,10 @@ export default function CreateNewPool({
   const currencyB = useCurrency(currencyIdB)
 
   const [isActive, setIsActive] = useState(false)
+  const [period, setPeriod] = useState({ label: 'none', time: 0 })
   const [step, setStep] = useState(0)
+  const [feeToken, setFeeToken] = useState('YFL')
 
-  // const oneCurrencyIsWETH = Boolean(
-  //   chainId &&
-  //     ((currencyA && currencyEquals(currencyA, WETH[chainId])) ||
-  //       (currencyB && currencyEquals(currencyB, WETH[chainId])))
-  // )
-
-  // const toggleWalletModal = useWalletModalToggle() // toggle wallet when disconnected
-
-  // const expertMode = useIsExpertMode()
-
-  // mint state
   const { independentField, typedValue, otherTypedValue } = useMintState()
   const {
     dependentField,
@@ -197,6 +193,52 @@ export default function CreateNewPool({
   const addTransaction = useTransactionAdder()
 
   const { t } = useTranslation()
+
+  const marks = {
+    0: {
+      style: {
+        whiteSpace: 'nowrap'
+      },
+      label: t('weekSingular')
+    },
+    33: {
+      style: {
+        whiteSpace: 'nowrap'
+      },
+      label: t('monthSingular')
+    },
+    67: {
+      style: {
+        whiteSpace: 'nowrap'
+      },
+      label: t('monthPlural', { months: 3 })
+    },
+    100: {
+      style: {
+        whiteSpace: 'nowrap'
+      },
+      label: t('monthPlural', { months: 6 })
+    }
+  }
+
+  const priceObject = useGetPriceBase()
+  let feeAmountUsd
+  let feeTokenCount
+  switch (feeToken) {
+    case 'ETH':
+      feeAmountUsd = numberToUsd(3000)
+      feeTokenCount = numberToSignificant(3000 / priceObject['ethPriceBase'])
+      break
+
+    case 'LINK':
+      feeAmountUsd = numberToUsd(2500)
+      feeTokenCount = numberToSignificant(2500 / priceObject['linkPriceBase'])
+      break
+
+    default:
+      feeAmountUsd = numberToUsd(2000)
+      feeTokenCount = numberToSignificant(2000 / priceObject['ethPriceBase'])
+  }
 
   async function onAdd() {
     if (!chainId || !library || !account) return
@@ -373,6 +415,7 @@ export default function CreateNewPool({
 
   const [rate, setRate] = useState('1')
 
+  useCurrencyUsdPrice()
   return (
     <>
       <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.appBGColor, marginBottom: '16px' }}>
@@ -485,18 +528,9 @@ export default function CreateNewPool({
               <div style={{ backgroundColor: theme.appBoxBG, padding: '12px', borderRadius: '6px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
                   <Text fontSize={12}>1 {currencies[Field.CURRENCY_A]!.symbol} =</Text>
-                  <img
-                    src={rateIcon}
-                    alt={t('rate')}
-                    style={{
-                      backgroundColor: theme.appBoxBG,
-                      borderRadius: 6,
-                      padding: 6,
-                      width: 36,
-                      height: 28,
-                      marginTop: -6
-                    }}
-                  />
+                  <SvgIcon>
+                    <RateSVG />
+                  </SvgIcon>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <NumericalInput
@@ -563,7 +597,7 @@ export default function CreateNewPool({
               />
             </AutoColumn>
             <AutoColumn style={{ marginTop: '24px' }}>
-              <OutlineCard style={isActive ? activeStyle : {}}>
+              <OutlineCard>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <div>
                     <Text fontWeight={700} fontSize={14} style={{ marginBottom: '6px' }}>
@@ -573,12 +607,51 @@ export default function CreateNewPool({
                       {t('rugLockTokens')}
                     </TYPE.black>
                   </div>
-                  <ToggleSwitch id="toggle-expert-mode-button" isActive={isActive} toggle={setIsActive} />
+                  <Toggle
+                    id="toggle-rucklog-button"
+                    isActive={isActive}
+                    toggle={() => {
+                      setIsActive(!isActive)
+                      if (!isActive) {
+                        setPeriod({ label: t('monthPlural', { months: 3 }), time: 15768000 })
+                      } else {
+                        setPeriod({ label: 'none', time: 0 })
+                      }
+                    }}
+                  />
                 </div>
                 {isActive && (
-                  <div style={{ marginTop: 24 }}>
-                    <Slider marks={marks} step={null} defaultValue={67} tooltipVisible={false} />
-                  </div>
+                  <SliderWrapper>
+                    <Slider
+                      marks={marks}
+                      step={null}
+                      defaultValue={67}
+                      tooltipVisible={false}
+                      onChange={(val: number) => {
+                        let label
+                        let time
+                        switch (val) {
+                          case 33:
+                            label = t('monthSingular')
+                            time = 2628000
+                            break
+                          case 67:
+                            label = t('monthPlural', { months: 3 })
+                            time = 7884000
+                            break
+                          case 100:
+                            label = t('monthPlural', { months: 6 })
+                            time = 15768000
+                            break
+
+                          default:
+                            label = t('weekSingular')
+                            time = 2628000
+                        }
+                        setPeriod({ label: label, time: time })
+                      }}
+                    />
+                  </SliderWrapper>
                 )}
               </OutlineCard>
             </AutoColumn>
@@ -586,82 +659,110 @@ export default function CreateNewPool({
         ) : (
           <Wrapper>
             <AutoColumn>
-              <Text style={{ marginBottom: '18px' }}>{t('payment')}</Text>
-              <div style={{ marginBottom: 16 }}>
-                <ButtonGray>
-                  <div
-                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <CurrencyLogo currency={ETHER} size={'24px'} style={{ marginInlineEnd: '6px' }} />
-                      {ETHER.symbol}
+              <Text style={{ marginBottom: 18 }}>{t('payment')}</Text>
+              <BlueCard style={{ padding: 14, marginBottom: 18 }}>
+                <TYPE.body color={theme.appInfoBoxTextColor} textAlign="center">
+                  {t('paymentDisclaimer')}
+                </TYPE.body>
+              </BlueCard>
+              <Text style={{ marginBottom: 18 }}>{t('pairCreationSelectFeeToken')}</Text>
+              <ButtonRow>
+                <CurrencyButton
+                  onClick={() => {
+                    setFeeToken('ETH')
+                  }}
+                  active={feeToken === 'ETH'}
+                >
+                  <CurrencyLogo currency={ETHER} size={'24px'} style={{ marginInlineEnd: '6px' }} position="button" />
+                  ETH
+                </CurrencyButton>
+                <CurrencyButton
+                  onClick={() => {
+                    setFeeToken('LINK')
+                  }}
+                  active={feeToken === 'LINK'}
+                >
+                  <CurrencyLogo currency={LINK} size={'24px'} style={{ marginInlineEnd: '6px' }} position="button" />
+                  LINK
+                </CurrencyButton>
+                <CurrencyButton
+                  onClick={() => {
+                    setFeeToken('YFL')
+                  }}
+                  active={feeToken === 'YFL'}
+                >
+                  <CurrencyLogo currency={YFL} size={'24px'} style={{ marginInlineEnd: '6px' }} position="button" /> YFL
+                </CurrencyButton>
+              </ButtonRow>
+              <Text style={{ marginBottom: 18 }}>{t('pairCreationSummary')}</Text>
+              {currencyA && currencyB && (
+                <CreationSummary>
+                  <RowFixed style={{ marginBottom: 10 }}>
+                    <DoubleCurrencyLogo currency0={currencyA} currency1={currencyB} margin={true} size={22} />
+                    <div style={{ display: 'flex', position: 'relative' }}>
+                      <p style={{ fontWeight: 500, fontSize: 18, margin: '0 4px' }}>{currencyA.symbol}</p>
+                      <p style={{ fontWeight: 100, fontSize: 18, margin: '0 4px' }}> | </p>
+                      <p style={{ fontWeight: 500, fontSize: 18, margin: '0 4px' }}>{currencyB.symbol}</p>
                     </div>
-                    <div style={{ textAlign: 'end' }}>
-                      <Text fontSize={16} fontWeight={600} style={{ color: 'white' }}>
-                        $3000 USD
+                  </RowFixed>
+                  <AutoColumn gap="8px">
+                    <RowBetween style={{ alignItems: 'flex-start' }}>
+                      <Text>{t('pairCreationTokenAmount', { currency: currencyA.symbol })}</Text>
+                      <Text>{numberToSignificant(formattedAmounts[Field.CURRENCY_A])}</Text>
+                    </RowBetween>
+                    <RowBetween style={{ alignItems: 'flex-start' }}>
+                      <Text>{t('pairCreationTokenAmount', { currency: currencyB.symbol })}</Text>
+                      <Text>{numberToSignificant(Number(formattedAmounts[Field.CURRENCY_A]) * Number(rate))}</Text>
+                    </RowBetween>
+                    <RowBetween style={{ alignItems: 'flex-start' }}>
+                      <Text>RugLock</Text>
+                      {isActive ? (
+                        <Text>
+                          {t('yes')} ({period.label})
+                        </Text>
+                      ) : (
+                        <Text>{t('no')}</Text>
+                      )}
+                    </RowBetween>
+                    <RowBetween style={{ alignItems: 'flex-start' }}>
+                      <Text>{t('pairCreationFee', { currency: feeToken })}</Text>
+                      <Text>
+                        {feeTokenCount} {feeToken} ({feeAmountUsd})
                       </Text>
-                    </div>
-                  </div>
-                </ButtonGray>
-              </div>
-              <div style={{ marginBottom: 16 }}>
-                <ButtonGray>
-                  <div
-                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <CurrencyLogo currency={LINK} size={'24px'} style={{ marginInlineEnd: '6px' }} />
-                      {LINK.symbol}
-                    </div>
-                    <div style={{ textAlign: 'end' }}>
-                      <Text fontSize={16} fontWeight={600} style={{ color: 'white' }}>
-                        $2500 USD
-                      </Text>
-                    </div>
-                  </div>
-                </ButtonGray>
-              </div>
-              <div style={{ marginBottom: 16 }}>
-                <ButtonGray>
-                  <div
-                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <CurrencyLogo currency={YFL} size={'24px'} style={{ marginInlineEnd: '6px' }} />
-                      {YFL.symbol}
-                    </div>
-                    <div style={{ textAlign: 'end' }}>
-                      <Text fontSize={16} fontWeight={600} style={{ color: 'white' }}>
-                        $2000 USD
-                      </Text>
-                    </div>
-                  </div>
-                </ButtonGray>
-              </div>
+                    </RowBetween>
+                  </AutoColumn>
+                </CreationSummary>
+              )}{' '}
             </AutoColumn>
           </Wrapper>
         )}
       </AppBody>
       <AppBodyDark>
-        {step === 3 ? (
-          <ButtonPrimary>{t('comingSoon')}</ButtonPrimary>
-        ) : (
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          {step !== 0 && (
             <ButtonGray style={{ marginInlineEnd: 8 }} onClick={() => setStep(Math.max(0, step - 1))}>
               {t('back')}
             </ButtonGray>
-            {!noLiquidity ||
-            (step === 0 && !currencyB) ||
-            (step === 1 && !rate) ||
-            (step === 2 && !formattedAmounts[Field.CURRENCY_A]) ? (
-              <ButtonGray style={{ marginInlineStart: 8 }}>{t('next')}</ButtonGray>
-            ) : (
-              <ButtonPrimary style={{ marginInlineStart: 8 }} onClick={() => setStep(Math.min(3, step + 1))}>
-                {t('next')}
-              </ButtonPrimary>
-            )}
-          </div>
-        )}
+          )}
+          {step === 3 ? (
+            <ButtonPrimary>{t('comingSoon')}</ButtonPrimary>
+          ) : (
+            <>
+              {!noLiquidity ||
+              (step === 0 && !currencyB) ||
+              (step === 1 && !rate) ||
+              (step === 2 && !formattedAmounts[Field.CURRENCY_A]) ? (
+                <ButtonGray style={{ marginInlineStart: 8 }} disabled={true}>
+                  {t('next')}
+                </ButtonGray>
+              ) : (
+                <ButtonPrimary style={{ marginInlineStart: 8 }} onClick={() => setStep(Math.min(3, step + 1))}>
+                  {t('next')}
+                </ButtonPrimary>
+              )}
+            </>
+          )}
+        </div>
       </AppBodyDark>
     </>
   )

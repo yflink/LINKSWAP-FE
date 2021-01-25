@@ -319,5 +319,14 @@
   "base": "Base",
   "baseDescription": "The home currency for LINKSWAP and the YF Link ecosystem.",
   "viewYourLiquidityAnalytics": "View your total earned fees",
-  "noSearchResult": "No token was found for your search input. Please check to make sure the token name or contract address exists"
+  "noSearchResult": "No token was found for your search input. Please check to make sure the token name or contract address exists",
+  "paymentDisclaimer": "To list a new Token-Pair on LINKSWAP, you need to pay a fee, which goes directly to the treasury. You can choose the token you pay this fee with and get a discount on specific tokens.",
+  "pairCreationSummary": "Pair Creation Summary",
+  "pairCreationTokenAmount": "Amount of {{currency}}",
+  "pairCreationFee": "Listing Fee",
+  "pairCreationSelectFeeToken": "Select the Creation-Fee Currency",
+  "weekSingular": "1 Week",
+  "weekPlural": "{{weeks}} Weeks",
+  "monthSingular": "1 Month",
+  "monthPlural": "{{months}} Months"
 }

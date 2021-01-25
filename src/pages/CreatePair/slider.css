@@ -153,43 +153,26 @@
   -webkit-box-shadow: 0;
   box-shadow: 0;
   cursor: pointer;
-  -webkit-transition: border-color 0.3s, -webkit-box-shadow 0.6s,
-    -webkit-transform 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
-  transition: border-color 0.3s, -webkit-box-shadow 0.6s, -webkit-transform 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
-  transition: border-color 0.3s, box-shadow 0.6s, transform 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
-  transition: border-color 0.3s, box-shadow 0.6s, transform 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28),
-    -webkit-box-shadow 0.6s, -webkit-transform 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+.ant-slider-handle:focus {
+  outline: none;
 }
 .ant-slider-handle-dragging.ant-slider-handle-dragging.ant-slider-handle-dragging {
   border-color: #295bdb;
-  -webkit-box-shadow: 0 0 0 5px rgba(24, 144, 255, 0.12);
-  box-shadow: 0 0 0 5px rgba(24, 144, 255, 0.12);
-}
-.ant-slider-handle:focus {
-  border-color: #295bdb;
-  outline: none;
-  -webkit-box-shadow: 0 0 0 5px rgba(24, 144, 255, 0.12);
-  box-shadow: 0 0 0 5px rgba(24, 144, 255, 0.12);
+  -webkit-box-shadow: none;
+  box-shadow: none;
 }
 .ant-slider-handle.ant-tooltip-open {
-  border-color: #295bdb;
-}
-.ant-slider:hover .ant-slider-rail {
-  background-color: #e1e1e1;
-}
-.ant-slider:hover .ant-slider-track {
-  background-color: #295bdb;
-}
-.ant-slider:hover .ant-slider-handle:not(.ant-tooltip-open) {
   border-color: #295bdb;
 }
 .ant-slider-mark {
   position: absolute;
   top: 14px;
-  left: 0;
-  width: 100%;
+  left: 2%;
+  width: 96%;
   font-size: 14px;
 }
+
 .ant-slider-mark-text {
   position: absolute;
   display: inline-block;
@@ -227,9 +210,6 @@
 }
 .ant-slider-dot:last-child {
   margin-inline-start: -4px;
-}
-.ant-slider-dot-active {
-  border-color: #295bdb;
 }
 .ant-slider-disabled {
   cursor: not-allowed;

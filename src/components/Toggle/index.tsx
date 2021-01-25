@@ -9,7 +9,7 @@ const ToggleElement = styled.span<{ isActive?: boolean; isOnSwitch?: boolean }>`
   padding: 0.25rem 0.5rem;
   border-radius: 6px;
   background: ${({ theme, isActive, isOnSwitch }) =>
-    isActive ? (isOnSwitch ? theme.modalInputBorder : theme.textDisabled) : 'none'};
+    isActive ? (isOnSwitch ? theme.modalInputBorderFocus : theme.textDisabled) : 'none'};
   color: ${({ theme, isActive, isOnSwitch }) =>
     isActive ? (isOnSwitch ? theme.textPrimary : theme.textSecondary) : theme.textTertiary};
   font-size: 0.825rem;
@@ -18,7 +18,7 @@ const ToggleElement = styled.span<{ isActive?: boolean; isOnSwitch?: boolean }>`
 
 const StyledToggle = styled.button<{ isActive?: boolean; activeElement?: boolean }>`
   border-radius: 6px;
-  border: 1px solid ${({ theme, isActive }) => (isActive ? theme.modalInputBorder : theme.textDisabled)};
+  border: 1px solid ${({ theme, isActive }) => (isActive ? theme.modalInputBorderFocus : theme.textDisabled)};
   display: flex;
   width: fit-content;
   cursor: pointer;
