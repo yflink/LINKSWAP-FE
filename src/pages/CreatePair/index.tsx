@@ -656,9 +656,13 @@ export default function CreateNewPool({
                     </RowBetween>
                     <RowBetween style={{ alignItems: 'flex-start' }}>
                       <Text>{t('pairCreationFee', { currency: feeCurrency })}</Text>
-                      <Text>
-                        {numberToSignificant(feeCurrencyCount)} {feeCurrency.symbol} ({feeAmountUsd})
-                      </Text>
+                      {isActive ? (
+                        <Text>{t('freeRuglockListing')}</Text>
+                      ) : (
+                        <Text>
+                          {numberToSignificant(feeCurrencyCount)} {feeCurrency.symbol} ({feeAmountUsd})
+                        </Text>
+                      )}
                     </RowBetween>
                   </AutoColumn>
                 </CreationSummary>

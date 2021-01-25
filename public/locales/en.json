@@ -331,5 +331,6 @@
   "monthSingular": "1 Month",
   "monthPlural": "{{months}} Months",
   "insufficientLiquidityForRuglock": "In order to receive a RugLock Badge for the tokenlist, you need to add at least {{minimum}} {{currencySymbol}} as liquidity",
-  "createNewPair": "Create Pair {{currencyASymbol}} | {{currencyBSymbol}}"
+  "createNewPair": "Create Pair {{currencyASymbol}} | {{currencyBSymbol}}",
+  "freeRuglockListing": "RugLock listings are free"
 }
