@@ -317,5 +317,17 @@
   "base": "Basis",
   "baseDescription": "Die Hauswährung für LINKSWAP und das YF LINK Ökosystem.",
   "viewYourLiquidityAnalytics": "Deine bisher verdienten Gebühren",
-  "noSearchResult": "Es wurde kein Token für Ihre Sucheingabe gefunden. Bitte überprüfe, ob der Token-Name oder die Token-Vertragsadresse existiert."
+  "noSearchResult": "Es wurde kein Token für Ihre Sucheingabe gefunden. Bitte überprüfe, ob der Token-Name oder die Token-Vertragsadresse existiert.",
+  "pairCreationSummary": "Pair Creation Summary",
+  "pairCreationTokenAmount": "Amount of {{currency}}",
+  "pairCreationFee": "Listing Fee",
+  "pairCreationSelectFeeToken": "Select the Creation-Fee Currency",
+  "pairCreationApprovals": "Approvals needed for the Pair Creation",
+  "weekSingular": "1 Week",
+  "weekPlural": "{{weeks}} Weeks",
+  "monthSingular": "1 Month",
+  "monthPlural": "{{months}} Months",
+  "insufficientLiquidityForRuglock": "In order to receive a RugLock Badge for the tokenlist, you need to add at least {{minimum}} {{currencySymbol}} as liquidity",
+  "createNewPair": "Create Pair {{currencyASymbol}} | {{currencyBSymbol}}",
+  "freeRuglockListing": "RugLock listings are free"
 }
