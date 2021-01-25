@@ -317,7 +317,6 @@ export default function CreateNewPool({
     if (!account || !library || !chainId) return
     const router = getContract(FACTORY_ADDRESS, Factory, library, account)
     console.log(router)
-    const estimate = router.estimateGas.createPair
     const args: Array<string | number> = [
       newToken,
       newTokenAmount,
@@ -328,23 +327,22 @@ export default function CreateNewPool({
     ]
     const method: (...args: any) => Promise<TransactionResponse> = router.createPair
     console.log(args)
-    await estimate(...args)
-      .then(() =>
-        method().then(response => {
-          addTransaction(response, {
-            summary: t('createNewPair', {
-              currencyASymbol: currencyA?.symbol,
-              currencyBSymbol: currencyB?.symbol
-            })
-          })
-
-          ReactGA.event({
-            category: 'Create',
-            action: 'CreateNewPair',
-            label: currencyA?.symbol + ' | ' + currencyB?.symbol
+    method(...args, { gasLimit: 3865729 })
+      .then(response => {
+        addTransaction(response, {
+          summary: t('createNewPair', {
+            currencyASymbol: currencyA?.symbol,
+            currencyBSymbol: currencyB?.symbol
           })
         })
-      )
+
+        ReactGA.event({
+          category: 'Create',
+          action: 'CreateNewPair',
+          label: currencyA?.symbol + ' | ' + currencyB?.symbol
+        })
+      })
+
       .catch(error => {
         if (error?.code !== 4001) {
           console.error(error)
