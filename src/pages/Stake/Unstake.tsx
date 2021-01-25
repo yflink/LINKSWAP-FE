@@ -17,7 +17,7 @@ import { useActiveWeb3React } from '../../hooks'
 import { useCurrency, useToken } from '../../hooks/Tokens'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { Field } from '../../state/mint/actions'
-import { StakingRewards } from './stakingAbi'
+import { StakingRewards } from '../../components/ABI'
 import { useDerivedMintInfo, useMintActionHandlers, useMintState } from '../../state/mint/hooks'
 import { toV2LiquidityToken } from '../../state/user/hooks'
 import { calculateGasMargin, getContract } from '../../utils'
@@ -126,7 +126,7 @@ export default function Unstake({
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, liquidityToken ?? undefined)
   let buttonString = parsedAmountA ? t('unstake') : t('enterAmount')
 
-  async function onAdd(contractAddress: string) {
+  async function onUnstake(contractAddress: string) {
     if (rewardsContractAddress === fakeContract || !chainId || !library || !account) return
     const router = getContract(contractAddress, StakingRewards, library, account)
 
@@ -138,7 +138,7 @@ export default function Unstake({
 
     const estimate = router.estimateGas.unstakeAndClaimRewards
     const method: (...args: any) => Promise<TransactionResponse> = router.unstakeAndClaimRewards
-    const args: Array<string | string[] | number> = [parsedAmountA.raw.toString()]
+    const args: Array<string> = [parsedAmountA.raw.toString()]
 
     const value: BigNumber | null = null
     await estimate(...args, value ? { value } : {})
@@ -264,7 +264,7 @@ export default function Unstake({
               <ButtonPrimary
                 style={{ fontSize: '20px' }}
                 onClick={() => {
-                  onAdd(rewardsContractAddress)
+                  onUnstake(rewardsContractAddress)
                 }}
                 disabled={hasError || !parsedAmountA}
               >

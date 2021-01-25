@@ -318,5 +318,6 @@
   "stablecoinDescription": "Lo stablecoin è una classe di criptovalute che tenta di offrire stabilità dei prezzi e sono supportate da un'attività di riserva.",
   "base": "Base",
   "baseDescription": "La valuta domestica di LINKSWAP e dell'ecosistema YF Link.",
-  "viewYourLiquidityAnalytics": "Visualizza le tue commissioni totali guadagnate"
+  "viewYourLiquidityAnalytics": "Visualizza le tue commissioni totali guadagnate",
+  "noSearchResult": "No token was found for your search input. Please check to make sure the token name or contract address exists"
 }

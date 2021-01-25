@@ -21,7 +21,13 @@ const CurrencySelectWrapper = styled.div`
   align-items: space-between;
 `
 
-const CurrencySelect = styled.button<{ selected: boolean; primary?: boolean; left?: boolean; right?: boolean }>`
+const CurrencySelect = styled.button<{
+  selected: boolean
+  primary?: boolean
+  left?: boolean
+  right?: boolean
+  disabled?: boolean
+}>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -48,6 +54,7 @@ const CurrencySelect = styled.button<{ selected: boolean; primary?: boolean; lef
   user-select: none;
   border: none;
   padding: 0 0.5rem;
+  pointer-events: ${({ disabled }) => (disabled ? 'none' : 'auto')};
   [dir='rtl'] & {
     border-radius: ${({ left, right }) => (left ? '0px 6px 6px 0px' : right ? '6px 0px 0px 6px' : '6px')};
   }
@@ -199,6 +206,7 @@ export default function CurrencyInputPanel({
           style={{ marginBottom: '12px', width: '100%' }}
           selected={!!currency}
           className="open-currency-select-button"
+          disabled={disableCurrencySelect}
           onClick={() => {
             if (!disableCurrencySelect) {
               setModalOpen(true)
@@ -363,6 +371,7 @@ export function CurrencyDoubleInputPanel({
           selected={ethSelected}
           primary
           left
+          disabled={disableCurrencySelect}
           className="open-currency-select-button"
           onClick={() => {
             if (!disableCurrencySelect) {
@@ -400,6 +409,7 @@ export function CurrencyDoubleInputPanel({
           selected={!ethSelected}
           primary
           right
+          disabled={disableCurrencySelect}
           className="open-currency-select-button"
           onClick={() => {
             if (!disableCurrencySelect) {
@@ -474,35 +484,6 @@ export function CurrencyDoubleInputPanel({
                   )}
                 </>
               )}
-              {/* <CurrencySelect
-            selected={!!currency}
-            className="open-currency-select-button"
-            onClick={() => {
-              if (!disableCurrencySelect) {
-                setModalOpen(true)
-              }
-            }}
-          >
-              {pair ? (
-                <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={24} margin={true} />
-              ) : currency ? (
-                <CurrencyLogo currency={currency} size={'24px'} />
-              ) : null}
-              {pair ? (
-                <StyledTokenName className="pair-name-container">
-                  {pair?.token0.symbol}:{pair?.token1.symbol}
-                </StyledTokenName>
-              ) : (
-                <StyledTokenName className="token-symbol-container" active={Boolean(currency && currency.symbol)}>
-                  {(currency && currency.symbol && currency.symbol.length > 20
-                    ? currency.symbol.slice(0, 4) +
-                      '...' +
-                      currency.symbol.slice(currency.symbol.length - 5, currency.symbol.length)
-                    : currency?.symbol) || t('selectToken')}
-                </StyledTokenName>
-              )}
-              {!disableCurrencySelect && <StyledDropDown selected={!!currency} />}
-          </CurrencySelect> */}
             </InputRow>
           </Container>
           {!disableCurrencySelect && onCurrencySelect && (

@@ -7,13 +7,22 @@ import Logo from '../Logo'
 import useHttpLocations from '../../hooks/useHttpLocations'
 import { WrappedTokenInfo } from '../../state/lists/hooks'
 
-import eth from '../../assets/svg/eth.svg'
-import link from '../../assets/svg/link.svg'
-import yfl from '../../assets/svg/yfl.svg'
+import { ETHSVG, LINKSVG, YFLSVG } from '../SVG'
 
 const getTokenLogoURL = (address: string) => `https://logos.linkswap.app/${address.toLowerCase()}.png`
 
 const ethLogoURL = 'https://logos.linkswap.app/eth.png'
+
+const StyledSVGLogo = styled.div<{ size: string }>`
+  width: ${({ size }) => size};
+  height: ${({ size }) => size};
+
+  > * {
+    width: auto;
+    height: ${({ size }) => size};
+    fill: ${({ theme }) => theme.textPrimary};
+  }
+`
 
 const StyledEthereumLogo = styled.img<{ size: string }>`
   width: ${({ size }) => size};
@@ -33,7 +42,7 @@ export default function CurrencyLogo({
 }: {
   currency?: Currency
   size?: string
-  style?: React.CSSProperties,
+  style?: React.CSSProperties
   position?: string
 }) {
   const uriLocations = useHttpLocations(currency instanceof WrappedTokenInfo ? currency.logoURI : undefined)
@@ -52,15 +61,27 @@ export default function CurrencyLogo({
   }, [currency, uriLocations])
 
   if (currency === ETHER && position === 'button') {
-    return <StyledEthereumLogo src={eth} size={size} style={style} />
+    return (
+      <StyledSVGLogo size={size} style={style}>
+        <ETHSVG />
+      </StyledSVGLogo>
+    )
   }
 
   if (currency?.symbol === 'LINK' && position === 'button') {
-    return <StyledEthereumLogo src={link} size={size} style={style} />
+    return (
+      <StyledSVGLogo size={size} style={style}>
+        <LINKSVG />
+      </StyledSVGLogo>
+    )
   }
 
   if (currency?.symbol === 'YFL' && position === 'button') {
-    return <StyledEthereumLogo src={yfl} size={size} style={style} />
+    return (
+      <StyledSVGLogo size={size} style={style}>
+        <YFLSVG />
+      </StyledSVGLogo>
+    )
   }
 
   if (currency === ETHER) {
@@ -71,9 +92,17 @@ export default function CurrencyLogo({
 }
 
 export function EthLogo({ size = '24px', style }: { size?: string; style?: React.CSSProperties }) {
-  return <StyledEthereumLogo src={eth} size={size} style={style} />
+  return (
+    <StyledSVGLogo size={size} style={style}>
+      <ETHSVG />
+    </StyledSVGLogo>
+  )
 }
 
 export function LinkLogo({ size = '24px', style }: { size?: string; style?: React.CSSProperties }) {
-  return <StyledEthereumLogo src={link} size={size} style={style} />
+  return (
+    <StyledSVGLogo size={size} style={style}>
+      <LINKSVG />
+    </StyledSVGLogo>
+  )
 }

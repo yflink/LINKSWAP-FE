@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import i18next from 'i18next'
+import ReactGA from 'react-ga'
 
 export const LanguageOptionBody = styled.div`
   padding: 0.5rem;
@@ -37,7 +38,11 @@ const LanguageShortCode = styled.span`
 
 function setLang(lang?: string | 'en') {
   i18next.changeLanguage(lang!, () => {
-    //console.log('changed language to', lang)
+    ReactGA.event({
+      category: 'Language',
+      action: 'Change language',
+      label: lang
+    })
   })
   document.body.dir = i18next.dir(lang!)
 }

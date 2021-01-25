@@ -97,16 +97,16 @@ export const ButtonGray = styled(Base)`
   color: ${({ theme }) => theme.buttonNavigationTextColor};
   font-size: 16px;
   font-weight: 500;
+  pointer-events: ${({ disabled }) => (disabled ? 'none' : 'auto')};
+
   &:focus {
-    box-shadow: 0 0 0 1pt ${({ theme, disabled }) => !disabled && darken(0.05, theme.buttonNavigationBGHover)};
-    background-color: ${({ theme, disabled }) => !disabled && darken(0.05, theme.buttonNavigationBGHover)};
+    background-color: ${({ theme, disabled }) => !disabled && theme.buttonNavigationBGHover};
   }
   &:hover {
-    background-color: ${({ theme, disabled }) => !disabled && darken(0.05, theme.buttonNavigationBGHover)};
+    background-color: ${({ theme, disabled }) => !disabled && theme.buttonNavigationBGHover};
   }
   &:active {
-    box-shadow: 0 0 0 1pt ${({ theme, disabled }) => !disabled && darken(0.1, theme.buttonNavigationBG)};
-    background-color: ${({ theme, disabled }) => !disabled && darken(0.1, theme.buttonNavigationBG)};
+    background-color: ${({ theme, disabled }) => !disabled && theme.buttonNavigationBGHover};
   }
 `
 

@@ -316,5 +316,6 @@
   "stablecoinDescription": "Ein Stablecoin (Stabiler Token) ist eine Gattung von Kryptowährungen, die versucht, einen stabilen Preis beizubehalten. Stablecoins sind durch reale Reserve-Vermögenswerte gedeckt.",
   "base": "Basis",
   "baseDescription": "Die Hauswährung für LINKSWAP und das YF LINK Ökosystem.",
-  "viewYourLiquidityAnalytics": "Deine bisher verdienten Gebühren"
+  "viewYourLiquidityAnalytics": "Deine bisher verdienten Gebühren",
+  "noSearchResult": "Es wurde kein Token für Ihre Sucheingabe gefunden. Bitte überprüfe, ob der Token-Name oder die Token-Vertragsadresse existiert."
 }

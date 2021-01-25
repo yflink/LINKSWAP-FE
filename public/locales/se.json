@@ -316,5 +316,6 @@
   "stablecoinDescription": "En stablecoin är en klass av kryptovalutor som försöker erbjuda prisstabilitet och stöds av en reservtillgång.",
   "base": "Bas",
   "baseDescription": "Hemvalutan för LINKSWAP och YF Link-ekosystemet.",
-  "viewYourLiquidityAnalytics": "Visa dina totala intjänade avgifter"
+  "viewYourLiquidityAnalytics": "Visa dina totala intjänade avgifter",
+  "noSearchResult": "Ingen token hittades för din sökingång. Kontrollera att symbolnamnet eller kontraktsadressen finns"
 }

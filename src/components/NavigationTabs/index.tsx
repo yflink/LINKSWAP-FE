@@ -6,7 +6,7 @@ import { ArrowLeft } from 'react-feather'
 import { RowBetween } from '../Row'
 import QuestionHelper from '../QuestionHelper'
 
-import { SwapSVG, PoolSVG, StakeSVG, BuySVG } from '../SVG'
+import { SwapSVG, PoolSVG, StakeSVG, BuySVG, CreateSVG } from '../SVG'
 import { useTranslation } from 'react-i18next'
 
 const Tabs = styled.div`
@@ -14,8 +14,9 @@ const Tabs = styled.div`
   align-items: center;
   border-radius: 6px;
   justify-content: space-evenly;
-  margin-inline-start: 16px;
-  margin-inline-end: 16px;
+  flex: 0 0 100%;
+  display: flex;
+  width: 100%;
 `
 
 const activeClassName = 'ACTIVE'
@@ -24,7 +25,7 @@ const StyledNavLink = styled(NavLink).attrs({
   activeClassName
 })`
   ${({ theme }) => theme.flexRowNoWrap}
-  width: 25%;
+  flex: 1;
   align-items: center;
   justify-content: center;
   height: 3rem;
@@ -37,7 +38,7 @@ const StyledNavLink = styled(NavLink).attrs({
   }
   background-color: ${({ theme }) => theme.navigationTabBG};
   font-size: 20px;
-  padding: 30px;
+  padding: 30px 0;
   &.${activeClassName} {
     background-color: ${({ theme }) => theme.navigationTabBGActive};
     * {
@@ -95,6 +96,11 @@ export function SwapPoolTabs({ active }: { active: 'swap' | 'pool' | 'stake' | '
           <StakeSVG />
         </Icon>
       </StyledNavLink>
+      <StyledNavLink id={`stake-nav-link`} to={'/create'} isActive={() => active === 'create'}>
+        <Icon>
+          <CreateSVG />
+        </Icon>
+      </StyledNavLink>
       <StyledNavLink id={`buy-nav-link`} to={'/buy'} isActive={() => active === 'buy'}>
         <Icon>
           <BuySVG />
@@ -141,10 +147,8 @@ export function CreateTabs() {
 
   return (
     <Tabs>
-      <RowBetween style={{ padding: '1rem 0' }}>
-        <div style={{ width: 32 }}></div>
+      <RowBetween style={{ padding: '1rem 0', justifyContent: 'center' }}>
         <ActiveText>{t('createPair')}</ActiveText>
-        <QuestionHelper text={t('creatingAPair')} />
       </RowBetween>
     </Tabs>
   )

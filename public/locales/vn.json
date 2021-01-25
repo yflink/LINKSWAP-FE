@@ -318,5 +318,6 @@
   "stablecoinDescription": "Stablecoin là một loại tiền điện thử có mức giá cố định, giá trị thị trường của Stablecoin thường được quy đổi bằng với giá của một tài sản cố định (như USD)",
   "base": "Base",
   "baseDescription": "Đơn vị tiền điện tử chung được dùng cho LINKSWAP và Hệ sinh thái YF Link.",
-  "viewYourLiquidityAnalytics": "Xem tổng cộng phí được hưởng của bạn"
+  "viewYourLiquidityAnalytics": "Xem tổng cộng phí được hưởng của bạn",
+  "noSearchResult": "No token was found for your search input. Please check to make sure the token name or contract address exists"
 }
