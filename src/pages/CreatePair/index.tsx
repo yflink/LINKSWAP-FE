@@ -1,7 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
 
-import { Currency, ETHER, TokenAmount } from '@uniswap/sdk'
+import { Currency, ETHER, FACTORY_ADDRESS, TokenAmount, WETH } from '@uniswap/sdk'
 import React, { useCallback, useContext, useState } from 'react'
 import { Steps, Slider } from 'antd'
 import { AlertTriangle, Plus } from 'react-feather'
@@ -10,13 +10,12 @@ import { RouteComponentProps } from 'react-router-dom'
 import { Text } from 'rebass'
 import styled, { ThemeContext } from 'styled-components'
 import { ButtonGray, ButtonPrimary } from '../../components/Button'
-import Card, { BlueCard, LightCard, OutlineCard } from '../../components/Card'
+import Card, { BlueCard, OutlineCard } from '../../components/Card'
 import { AutoColumn, ColumnCenter } from '../../components/Column'
-import TransactionConfirmationModal, { ConfirmationModalContent } from '../../components/TransactionConfirmationModal'
 import CurrencyInputPanel, { CurrencyDoubleInputPanel } from '../../components/CurrencyInputPanel'
 import DoubleCurrencyLogo from '../../components/DoubleLogo'
 import { SwapPoolTabs, CreateTabs } from '../../components/NavigationTabs'
-import Row, { RowBetween, RowFixed, RowFlat } from '../../components/Row'
+import { RowBetween, RowFixed } from '../../components/Row'
 import CurrencyLogo from '../../components/CurrencyLogo'
 import { Input as NumericalInput } from '../../components/NumericalInput'
 import { LINK, ROUTER_ADDRESS, YFL } from '../../constants'
@@ -27,13 +26,11 @@ import { useActiveWeb3React } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
 import { Field } from '../../state/mint/actions'
 import { useDerivedMintInfo, useMintActionHandlers, useMintState } from '../../state/mint/hooks'
-
 import { useTransactionAdder } from '../../state/transactions/hooks'
-import { useUserDeadline, useUserSlippageTolerance } from '../../state/user/hooks'
 import { TYPE } from '../../theme'
-import { calculateGasMargin, calculateSlippageAmount, getRouterContract } from '../../utils'
+import { getContract } from '../../utils'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
-import { unwrappedToken, wrappedCurrency } from '../../utils/wrappedCurrency'
+import { unwrappedToken } from '../../utils/wrappedCurrency'
 import AppBody, { AppBodyDark } from '../AppBody'
 import { Wrapper } from '../Pool/styleds'
 import { currencyId } from '../../utils/currencyId'
@@ -45,6 +42,7 @@ import { useGetPriceBase } from '../../state/price/hooks'
 import { useCurrencyUsdPrice } from '../../hooks/useCurrencyUsdPrice'
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
 import { transparentize } from 'polished'
+import { Factory } from '../../components/ABI'
 
 const { Step } = Steps
 
@@ -296,7 +294,7 @@ export default function CreateNewPool({
     error = t('insufficientCurrencyBalance', { inputCurrency: currencyB?.symbol })
   }
 
-  if (isActive) {
+  if (isActive && step === 2) {
     const rugLockBarrier = 100000
     const priceBase = currencyA?.symbol === 'LINK' ? priceObject['linkPriceBase'] : priceObject['ethPriceBase']
     const rugLockTokenBarrier = Math.ceil(100000 / priceBase)
@@ -307,6 +305,62 @@ export default function CreateNewPool({
   }
 
   useCurrencyUsdPrice()
+
+  async function createPair(
+    newToken: string,
+    newTokenAmount: string,
+    lockupToken: string,
+    lockupTokenAmount: string,
+    LockupPeriod: number,
+    listingFeeToken: string
+  ) {
+    if (!account || !library || !chainId) return
+    const router = getContract(FACTORY_ADDRESS, Factory, library, account)
+    const estimate = router.estimateGas.createPair
+    const method: (...args: any) => Promise<TransactionResponse> = router.createPair
+    const args: Array<string | number> = [
+      newToken,
+      newTokenAmount,
+      lockupToken,
+      lockupTokenAmount,
+      LockupPeriod,
+      listingFeeToken
+    ]
+
+    const value: BigNumber | null = null
+    console.log(args)
+    await estimate(...args, value ? { value } : {})
+      .then(() =>
+        method().then(response => {
+          addTransaction(response, {
+            summary: t('createNewPair', {
+              currencyASymbol: currencyA?.symbol,
+              currencyBSymbol: currencyB?.symbol
+            })
+          })
+
+          ReactGA.event({
+            category: 'Create',
+            action: 'CreateNewPair',
+            label: currencyA?.symbol + ' | ' + currencyB?.symbol
+          })
+        })
+      )
+      .catch(error => {
+        if (error?.code !== 4001) {
+          console.error(error)
+        }
+      })
+  }
+
+  const chainIdentifier = chainId ?? 1
+  const newToken = currencyIdB ?? ''
+  const newTokenAmount = parsedAmounts[Field.CURRENCY_B]?.raw.toString() ?? ''
+  const lockupToken = currencyIdA === 'ETH' ? WETH[chainIdentifier].address : currencyIdA ?? ''
+  const lockupTokenAmount = parsedAmounts[Field.CURRENCY_A]?.raw.toString() ?? ''
+  const LockupPeriod = period.time
+  const listingFeeToken = feeToken?.symbol === 'ETH' ? WETH[chainIdentifier].address : feeToken?.address ?? ''
+
   return (
     <>
       <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.appBGColor, marginBottom: '16px' }}>
@@ -523,7 +577,7 @@ export default function CreateNewPool({
 
                           default:
                             label = t('weekSingular')
-                            time = 2628000
+                            time = 604800
                         }
                         setPeriod({ label: label, time: time })
                       }}
@@ -664,7 +718,21 @@ export default function CreateNewPool({
             </ButtonGray>
           )}
           {step === 3 ? (
-            <ButtonPrimary>{t('comingSoon')}</ButtonPrimary>
+            <>
+              {approvalA === ApprovalState.APPROVED &&
+              approvalB === ApprovalState.APPROVED &&
+              (approvalC === ApprovalState.APPROVED || feeCurrency === ETHER) ? (
+                <ButtonPrimary
+                  onClick={() => {
+                    createPair(newToken, newTokenAmount, lockupToken, lockupTokenAmount, LockupPeriod, listingFeeToken)
+                  }}
+                >
+                  {t('createPair')}
+                </ButtonPrimary>
+              ) : (
+                <ButtonGray disabled={true}>{t('createPair')}</ButtonGray>
+              )}
+            </>
           ) : (
             <>
               {!noLiquidity ||

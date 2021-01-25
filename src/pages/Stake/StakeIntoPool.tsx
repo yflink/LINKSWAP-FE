@@ -18,7 +18,7 @@ import { useCurrency, useToken } from '../../hooks/Tokens'
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { Field } from '../../state/mint/actions'
-import { StakingRewards } from './stakingAbi'
+import { StakingRewards } from '../../components/ABI'
 import { useDerivedMintInfo, useMintActionHandlers, useMintState } from '../../state/mint/hooks'
 import { toV2LiquidityToken } from '../../state/user/hooks'
 import { calculateGasMargin, getContract } from '../../utils'
@@ -133,7 +133,7 @@ export default function StakeIntoPool({
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, liquidityToken ?? undefined)
   let buttonString = parsedAmountA ? t('stake') : t('enterAmount')
 
-  async function onAdd(contractAddress: string) {
+  async function onStake(contractAddress: string) {
     if (rewardsContractAddress === fakeContract || !chainId || !library || !account) return
     const router = getContract(contractAddress, StakingRewards, library, account)
 
@@ -275,7 +275,7 @@ export default function StakeIntoPool({
               <ButtonPrimary
                 style={{ fontSize: '20px' }}
                 onClick={() => {
-                  onAdd(rewardsContractAddress)
+                  onStake(rewardsContractAddress)
                 }}
                 disabled={approvalA !== ApprovalState.APPROVED || hasError}
               >
