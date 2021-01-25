@@ -319,5 +319,5 @@
   "base": "Base",
   "baseDescription": "La moneda local para LINKSWAP y el ecosistema de YF Link.",
   "viewYourLiquidityAnalytics": "Ver sus tarifas totales obtenidas",
-  "noSearchResult": "No token was found for your search input. Please check to make sure the token name or contract address exists"
+  "noSearchResult": "No se encontró ningún token para su input de búsqueda. Verifique que exista el nombre del token o la dirección del contrato"
 }

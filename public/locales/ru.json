@@ -313,5 +313,5 @@
   "base": "База",
   "baseDescription": "Основная валюта для LINKSWAP и экосистемы YF Link.",
   "viewYourLiquidityAnalytics": "Смотреть общий заработок комиссий",
-  "noSearchResult": "No token was found for your search input. Please check to make sure the token name or contract address exists"
+  "noSearchResult": "Ни один токен не был найдет по вашему поисковому запросу. Убедитесь, что имя токена или адрес контракта существует."
 }
