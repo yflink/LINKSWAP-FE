@@ -26,7 +26,7 @@ export default function CreatedPair({
     params: { currencyIdA, currencyIdB }
   }
 }: RouteComponentProps<{ currencyIdA?: string; currencyIdB?: string }>) {
-  const { account, chainId, library } = useActiveWeb3React()
+  const { account, chainId } = useActiveWeb3React()
   const theme = useContext(ThemeContext)
   const toggleWalletModal = useWalletModalToggle()
   let currencyA = useCurrency(currencyIdA)
