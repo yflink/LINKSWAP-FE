@@ -28,7 +28,11 @@ import RemoveLiquidity from './RemoveLiquidity'
 import { RedirectOldRemoveLiquidityPathStructure } from './RemoveLiquidity/redirects'
 
 import CreatePair from './CreatePair'
-import { CreatePairRedirectOldPathStructure, CreatePairRedirectDuplicateTokenIds } from './CreatePair/redirects'
+import {
+  CreatePairRedirectOldPathStructure,
+  CreatePairRedirectDuplicateTokenIds,
+  CreatedPairRedirect
+} from './CreatePair/redirects'
 
 import PreviewListing from './PreviewListing'
 
@@ -149,6 +153,7 @@ export default function App() {
                 <Route exact strict path="/unstake/:currencyIdA/:currencyIdB" component={RedirectToUnstake} />
                 <Route exact path="/create/:currencyIdA" component={CreatePairRedirectOldPathStructure} />
                 <Route exact path="/create/:currencyIdA/:currencyIdB" component={CreatePairRedirectDuplicateTokenIds} />
+                <Route exact path="/created/:currencyIdA/:currencyIdB" component={CreatedPairRedirect} />
                 <Route exact strict path="/previewlisting" component={PreviewListing} />{' '}
                 <Route exact strict path="/analyze" component={Analyze} />
                 <Route component={RedirectPathToSwapOnly} />

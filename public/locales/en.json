@@ -331,6 +331,10 @@
   "monthSingular": "1 Month",
   "monthPlural": "{{months}} Months",
   "insufficientLiquidityForRuglock": "In order to receive a RugLock Badge for the tokenlist, you need to add at least {{minimum}} {{currencySymbol}} as liquidity",
+  "insufficientLiquidityForPairCreation": "To create a new Pair, you need to add at least {{minimum}} {{currencySymbol}} as liquidity",
   "createNewPair": "Create Pair {{currencyASymbol}} | {{currencyBSymbol}}",
-  "freeRuglockListing": "RugLock listings are free"
+  "freeRuglockListing": "RugLock listings are free",
+  "pairCreation": "New Pair: {{currencyA}} | {{currencyB}}",
+  "pairCreationDisclaimer": "Your transaction was succesfully sent to our Pair-Factory. It can take some time till your pool shows up. But as soon as the Pool is created, you'll see your liquidity position here. Please check your transaction on Etherscan, if the liqudity doesn't show up.",
+  "insufficientTokenBalanceForFee": "Your {{currencySymbol}} balance is to low to pay for the listing fees. Please select a different Creation-Fee Currency"
 }

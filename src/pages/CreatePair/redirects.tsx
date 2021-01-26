@@ -2,6 +2,7 @@ import React from 'react'
 import { Redirect, RouteComponentProps } from 'react-router-dom'
 
 import CreatePair from './index'
+import CreatedPair from './created'
 
 export function RedirectToCreatePair() {
   return <Redirect to="/add/" />
@@ -34,4 +35,16 @@ export function CreatePairRedirectDuplicateTokenIds(
     return <Redirect to={`/create/${currencyIdA}`} />
   }
   return <CreatePair {...props} />
+}
+
+export function CreatedPairRedirect(props: RouteComponentProps<{ currencyIdA: string; currencyIdB: string }>) {
+  const {
+    match: {
+      params: { currencyIdA, currencyIdB }
+    }
+  } = props
+  if (currencyIdA.toLowerCase() === currencyIdB.toLowerCase()) {
+    return <Redirect to={`/create/${currencyIdA}`} />
+  }
+  return <CreatedPair {...props} />
 }

@@ -18,7 +18,7 @@ import { SwapPoolTabs, CreateTabs } from '../../components/NavigationTabs'
 import { RowBetween, RowFixed } from '../../components/Row'
 import CurrencyLogo from '../../components/CurrencyLogo'
 import { Input as NumericalInput } from '../../components/NumericalInput'
-import { LINK, ROUTER_ADDRESS, YFL } from '../../constants'
+import { LINK, ROUTER_ADDRESS, WETHER, YFL } from '../../constants'
 import './slider.css'
 import './steps.css'
 import { RateSVG } from '../../components/SVG'
@@ -43,6 +43,7 @@ import { useCurrencyUsdPrice } from '../../hooks/useCurrencyUsdPrice'
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
 import { transparentize } from 'polished'
 import { Factory } from '../../components/ABI'
+import { useETHBalances, useTokenBalance } from '../../state/wallet/hooks'
 
 const { Step } = Steps
 
@@ -297,15 +298,61 @@ export default function CreateNewPool({
   if (isActive && step === 2) {
     const rugLockBarrier = 100000
     const priceBase = currencyA?.symbol === 'LINK' ? priceObject['linkPriceBase'] : priceObject['ethPriceBase']
-    const rugLockTokenBarrier = Math.ceil(100000 / priceBase)
+    const rugLockTokenBarrier = numberToSignificant(rugLockBarrier / priceBase, 2)
     error =
-      Number(formattedAmounts[Field.CURRENCY_A]) < rugLockBarrier
+      Number(formattedAmounts[Field.CURRENCY_A]) < rugLockTokenBarrier
         ? t('insufficientLiquidityForRuglock', { currencySymbol: currencyA?.symbol, minimum: rugLockTokenBarrier })
         : error
   }
 
+  if (!isActive && step === 2) {
+    const minimalLiquidityBarrier = 1000
+    const priceBase = currencyA?.symbol === 'LINK' ? priceObject['linkPriceBase'] : priceObject['ethPriceBase']
+    const tokenBarrier = numberToSignificant(minimalLiquidityBarrier / priceBase, 2)
+    error =
+      Number(formattedAmounts[Field.CURRENCY_A]) < tokenBarrier
+        ? t('insufficientLiquidityForPairCreation', { currencySymbol: currencyA?.symbol, minimum: tokenBarrier })
+        : error
+  }
+
+  const userLinkBalance = useTokenBalance(account ?? undefined, LINK)
+  const userYflBalance = useTokenBalance(account ?? undefined, YFL)
+  const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']
+  if (step === 3) {
+    if (currencyA?.symbol === 'LINK' && feeToken === LINK) {
+      if (Number(formattedAmounts[Field.CURRENCY_A]) + feeCurrencyCount > Number(userLinkBalance?.toExact())) {
+        error = t('insufficientTokenBalanceForFee', { currencySymbol: currencyA?.symbol })
+      }
+    }
+
+    if (currencyA?.symbol !== 'LINK' && !feeToken) {
+      if (Number(formattedAmounts[Field.CURRENCY_A]) + feeCurrencyCount > Number(userEthBalance?.toExact())) {
+        error = t('insufficientTokenBalanceForFee', { currencySymbol: 'ETH' })
+      }
+    }
+
+    if (feeToken === YFL) {
+      if (feeCurrencyCount > Number(userYflBalance?.toExact())) {
+        error = t('insufficientTokenBalanceForFee', { currencySymbol: 'YFL' })
+      }
+    }
+
+    if (feeToken === LINK) {
+      if (feeCurrencyCount > Number(userLinkBalance?.toExact())) {
+        error = t('insufficientTokenBalanceForFee', { currencySymbol: 'YFL' })
+      }
+    }
+
+    if (!feeToken) {
+      if (feeCurrencyCount > Number(userEthBalance?.toExact())) {
+        error = t('insufficientTokenBalanceForFee', { currencySymbol: 'YFL' })
+      }
+    }
+  }
+
   useCurrencyUsdPrice()
 
+  const redirectUrl = `/created/${currencyIdA}/${currencyIdB}`
   async function createPair(
     newToken: string,
     newTokenAmount: string,
@@ -316,7 +363,6 @@ export default function CreateNewPool({
   ) {
     if (!account || !library || !chainId) return
     const router = getContract(FACTORY_ADDRESS, Factory, library, account)
-    console.log(router)
     const args: Array<string | number> = [
       newToken,
       newTokenAmount,
@@ -326,7 +372,6 @@ export default function CreateNewPool({
       listingFeeToken
     ]
     const method: (...args: any) => Promise<TransactionResponse> = router.createPair
-    console.log(args)
     method(...args, { gasLimit: 3865729 })
       .then(response => {
         addTransaction(response, {
@@ -341,6 +386,7 @@ export default function CreateNewPool({
           action: 'CreateNewPair',
           label: currencyA?.symbol + ' | ' + currencyB?.symbol
         })
+        window.open(redirectUrl, '_self')
       })
 
       .catch(error => {
@@ -622,6 +668,14 @@ export default function CreateNewPool({
                   <CurrencyLogo currency={YFL} size={'24px'} style={{ marginInlineEnd: '6px' }} position="button" /> YFL
                 </CurrencyButton>
               </ButtonRow>
+              {error && (
+                <ErrorInner style={{ margin: '0 0 18px' }}>
+                  <ErrorInnerAlertTriangle>
+                    <AlertTriangle size={24} />
+                  </ErrorInnerAlertTriangle>
+                  <p>{error}</p>
+                </ErrorInner>
+              )}
               <Text style={{ marginBottom: 18 }}>{t('pairCreationSummary')}</Text>
               {currencyA && currencyB && (
                 <CreationSummary>
@@ -722,7 +776,8 @@ export default function CreateNewPool({
             <>
               {approvalA === ApprovalState.APPROVED &&
               approvalB === ApprovalState.APPROVED &&
-              (approvalC === ApprovalState.APPROVED || feeCurrency === ETHER) ? (
+              (approvalC === ApprovalState.APPROVED || feeCurrency === ETHER) &&
+              !error ? (
                 <ButtonPrimary
                   onClick={() => {
                     createPair(newToken, newTokenAmount, lockupToken, lockupTokenAmount, LockupPeriod, listingFeeToken)
