@@ -282,6 +282,25 @@ export default function CreateNewPool({
       : undefined
   const [approvalC, approveCCallback] = useApproveCallback(approvalCParse, ROUTER_ADDRESS)
 
+  const handleTypeCurrencyA = useCallback(
+    (value: string) => {
+      const inputValue = Number(value) ?? 0
+      const inputValueB = inputValue * Number(rate)
+      onFieldAInput(inputValue.toString())
+      onFieldBInput(inputValueB.toString())
+    },
+    [onFieldAInput, onFieldBInput, rate]
+  )
+  const handleTypeCurrencyB = useCallback(
+    (value: string) => {
+      const inputValue = Number(value) ?? 0
+      const inputValueA = inputValue / Number(rate)
+      onFieldAInput(inputValueA.toString())
+      onFieldBInput(inputValue.toString())
+    },
+    [onFieldAInput, onFieldBInput, rate]
+  )
+
   let error = false
   if (Number(formattedAmounts[Field.CURRENCY_A]) > Number(maxAmounts[Field.CURRENCY_A]?.toExact()) && step === 2) {
     error = t('insufficientCurrencyBalance', { inputCurrency: currencyA?.symbol })
@@ -526,10 +545,7 @@ export default function CreateNewPool({
             <AutoColumn gap="20px">
               <CurrencyDoubleInputPanel
                 value={formattedAmounts[Field.CURRENCY_A]}
-                onUserInput={val => {
-                  onFieldAInput(Number(val).toString())
-                  onFieldBInput((Number(val) * Number(rate)).toString())
-                }}
+                onUserInput={handleTypeCurrencyA}
                 onMax={() => {
                   onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
                   onFieldBInput((Number(maxAmounts[Field.CURRENCY_A]?.toExact()) * Number(rate)).toString() ?? '')
@@ -545,11 +561,8 @@ export default function CreateNewPool({
                 <Plus size="16" color={theme.textSecondary} />
               </ColumnCenter>
               <CurrencyInputPanel
-                value={(Number(formattedAmounts[Field.CURRENCY_A]) * Number(rate)).toString()}
-                onUserInput={val => {
-                  onFieldAInput((Number(val) / Number(rate)).toString())
-                  onFieldBInput(Number(val).toString())
-                }}
+                value={formattedAmounts[Field.CURRENCY_B]}
+                onUserInput={handleTypeCurrencyB}
                 onCurrencySelect={handleCurrencyBSelect}
                 onMax={() => {
                   onFieldAInput((Number(maxAmounts[Field.CURRENCY_B]?.toExact()) / Number(rate)).toString() ?? '')
