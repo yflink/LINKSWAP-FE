@@ -369,7 +369,7 @@ export default function CreateNewPool({
 
   useCurrencyUsdPrice()
 
-  const redirectUrl = `/created/${currencyIdA}/${currencyIdB}`
+  const redirectUrl = `/#/created/${currencyIdA}/${currencyIdB}`
   async function createPair(
     newToken: string,
     newTokenAmount: string,
