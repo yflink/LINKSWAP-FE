@@ -335,6 +335,7 @@
   "createNewPair": "Create Pair {{currencyASymbol}} | {{currencyBSymbol}}",
   "freeRuglockListing": "RugLock listings are free",
   "pairCreation": "New Pair: {{currencyA}} | {{currencyB}}",
-  "pairCreationDisclaimer": "Your transaction was succesfully sent to our Pair-Factory. It can take some time till your pool shows up. But as soon as the Pool is created, you'll see your liquidity position here. Please check your transaction on Etherscan, if the liqudity doesn't show up.",
-  "insufficientTokenBalanceForFee": "Your {{currencySymbol}} balance is to low to pay for the listing fees. Please select a different Creation-Fee Currency"
+  "pairCreationDisclaimer": "Your transaction was succesfully sent to our Pair-Factory. It can take some time till your pool shows up. But as soon as the Pool is created you'll see a confirmation here. Please check your transaction on Etherscan, if the confirmation doesn't show up.",
+  "insufficientTokenBalanceForFee": "Your {{currencySymbol}} balance is to low to pay for the listing fees. Please select a different Creation-Fee Currency",
+  "pairCreationSuccess": "Your Pair was successfully created! You can see the Pair statistic by clicking the link below. Please be aware, that your Liquidity is locked for at least a week and won't show inside your wallet until the lockup period ended. If you used the RugLock option, the listed Token will receive a special Badge next to it (based on your selected lockup period), once it's listed in the Token list."
 }
