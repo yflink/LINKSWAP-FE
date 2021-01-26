@@ -16,7 +16,7 @@ import { SwapPoolTabs, CreateTabs } from '../../components/NavigationTabs'
 import { RowBetween, RowFixed } from '../../components/Row'
 import CurrencyLogo from '../../components/CurrencyLogo'
 import { Input as NumericalInput } from '../../components/NumericalInput'
-import { LINK, ROUTER_ADDRESS, YFL } from '../../constants'
+import { LINK, YFL } from '../../constants'
 import './slider.css'
 import './steps.css'
 import { RateSVG } from '../../components/SVG'
@@ -338,7 +338,7 @@ export default function CreateNewPool({
   if (step === 3) {
     if (currencyA?.symbol === 'LINK' && feeToken === LINK) {
       if (Number(formattedAmounts[Field.CURRENCY_A]) + feeCurrencyCount > Number(userLinkBalance?.toExact())) {
-        error = t('insufficientTokenBalanceForFee', { currencySymbol: currencyA?.symbol })
+        error = t('insufficientTokenBalanceForFee', { currencySymbol: 'LINK' })
       }
     }
 
@@ -356,13 +356,13 @@ export default function CreateNewPool({
 
     if (feeToken === LINK) {
       if (feeCurrencyCount > Number(userLinkBalance?.toExact())) {
-        error = t('insufficientTokenBalanceForFee', { currencySymbol: 'YFL' })
+        error = t('insufficientTokenBalanceForFee', { currencySymbol: 'LINK' })
       }
     }
 
     if (!feeToken) {
       if (feeCurrencyCount > Number(userEthBalance?.toExact())) {
-        error = t('insufficientTokenBalanceForFee', { currencySymbol: 'YFL' })
+        error = t('insufficientTokenBalanceForFee', { currencySymbol: 'ETH' })
       }
     }
   }
@@ -759,7 +759,7 @@ export default function CreateNewPool({
                       </ButtonPrimary>
                     </RowBetween>
                   )}
-                  {approvalC !== ApprovalState.APPROVED && feeCurrency !== ETHER && (
+                  {approvalC !== ApprovalState.APPROVED && feeCurrency !== ETHER && listingFeeToken !== lockupToken && (
                     <RowBetween>
                       <ButtonPrimary onClick={approveCCallback} disabled={approvalC === ApprovalState.PENDING}>
                         {approvalC === ApprovalState.PENDING ? (
