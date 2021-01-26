@@ -313,5 +313,5 @@
   "base": "Baza",
   "baseDescription": "Moneda de origine pentru LINKSWAP și ecosistemul YF Link.",
   "viewYourLiquidityAnalytics": "Vezi totalul taxelor câștigate",
-  "noSearchResult": "No token was found for your search input. Please check to make sure the token name or contract address exists"
+  "noSearchResult": "Nu a fost găsit niciun token. Vă rugăm să vă asigurați că numele tokenului sau adresa contractului există"
 }

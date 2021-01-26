@@ -319,5 +319,5 @@
   "base": "Base",
   "baseDescription": "Đơn vị tiền điện tử chung được dùng cho LINKSWAP và Hệ sinh thái YF Link.",
   "viewYourLiquidityAnalytics": "Xem tổng cộng phí được hưởng của bạn",
-  "noSearchResult": "No token was found for your search input. Please check to make sure the token name or contract address exists"
+  "noSearchResult": "Không tìm thấy token. Vui lòng kiểm tra lại tên hoặc địa chỉ token"
 }
