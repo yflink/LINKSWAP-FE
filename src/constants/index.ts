@@ -119,6 +119,7 @@ export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } 
     [DPI, LINK],
     [CEL, LINK],
     [MASQ, WETHER],
+    [MASQ, LINK],
     [LINK, YAX],
     [WBTC, LINK],
     [LINK, GSWAP],
