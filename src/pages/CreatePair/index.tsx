@@ -151,7 +151,7 @@ export default function CreateNewPool({
   const YFLcurrency = unwrappedToken(YFL)
 
   const [isActive, setIsActive] = useState(false)
-  const [period, setPeriod] = useState({ label: 'none', time: 0 })
+  const [period, setPeriod] = useState({ label: 'none', time: 604800 })
   const [step, setStep] = useState(0)
   const [feeCurrency, setFeeToken] = useState(YFLcurrency)
 
@@ -272,13 +272,13 @@ export default function CreateNewPool({
 
   const [rate, setRate] = useState('1')
 
-  const [approvalA, approveACallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_A], ROUTER_ADDRESS)
-  const [approvalB, approveBCallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_B], ROUTER_ADDRESS)
+  const [approvalA, approveACallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_A], FACTORY_ADDRESS)
+  const [approvalB, approveBCallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_B], FACTORY_ADDRESS)
   const approvalCParse =
     !!feeToken && feeCurrencyCount !== Infinity
       ? new TokenAmount(feeToken, BigInt(Math.ceil(feeCurrencyCount)))
       : undefined
-  const [approvalC, approveCCallback] = useApproveCallback(approvalCParse, ROUTER_ADDRESS)
+  const [approvalC, approveCCallback] = useApproveCallback(approvalCParse, FACTORY_ADDRESS)
 
   const handleTypeCurrencyA = useCallback(
     (value: string) => {
@@ -600,7 +600,7 @@ export default function CreateNewPool({
                       if (!isActive) {
                         setPeriod({ label: t('monthPlural', { months: 3 }), time: 15768000 })
                       } else {
-                        setPeriod({ label: 'none', time: 0 })
+                        setPeriod({ label: 'none', time: 604800 })
                       }
                     }}
                   />
