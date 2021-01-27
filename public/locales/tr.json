@@ -319,6 +319,26 @@
   "base": "Base",
   "baseDescription": "The home currency for LINKSWAP and the YF Link ecosystem.",
   "viewYourLiquidityAnalytics": "View your total earned fees",
-  "noSearchResult": "Arama kriterinize uygun token bulunamadı. Lütfen token adının veya sözleşme adresinin mevcut olduğundan emin olun."
+  "noSearchResult": "Arama kriterinize uygun token bulunamadı. Lütfen token adının veya sözleşme adresinin mevcut olduğundan emin olun.",
+  "paymentDisclaimer": "Listing new token pairs on LINKSWAP is subject to a listing fee, which goes directly to the treasury. Listing fees can be paid in ETH (eq. $3000), LINK (eq. $2500) or YFL (eq. $2000)",
+  "pairCreationSummary": "Pair Creation Summary",
+  "pairCreationTokenAmount": "Amount of {{currency}}",
+  "pairCreationFee": "Listing Fee",
+  "pairCreationSelectFeeToken": "Select the Creation-Fee Currency",
+  "pairCreationApprovals": "Approvals needed for the Pair Creation",
+  "weekSingular": "1 Week",
+  "weekPlural": "{{weeks}} Weeks",
+  "monthSingular": "1 Month",
+  "monthPlural": "{{months}} Months",
+  "insufficientLiquidityForRuglock": "In order to receive a RugLock badge for the new token pair, a minimum liquidity of {{minimum}} {{currencySymbol}} has to be added",
+  "insufficientLiquidityForPairCreation": "To create a new pair, a minimum liquidity of {{minimum}} {{currencySymbol}} is required",
+  "createNewPair": "Create Pair {{currencyASymbol}} | {{currencyBSymbol}}",
+  "freeRuglockListing": "RugLock listings are free",
+  "pairCreation": "New Pair: {{currencyA}} | {{currencyB}}",
+  "pairCreationDisclaimer": "Transaction successful and sent to LINKSWAP Pair-Factory. Please allow for some time for the new pool to show. A confirmation will be shown here when the pool is live. Please check transaction on Etherscan if confirmation does not appear",
+  "insufficientTokenBalanceForFee": "Your {{currencySymbol}} balance is too low to pay for the listing fees. Please select a different Creation-Fee Currency",
+  "pairCreationSuccess": "New Pair successfully created! Visit Pair statistics by clicking the link below. Please note that Liquidity is locked for at least a week and will not show inside your wallet until the lockup period ended. If the RugLock option was selected, the listed Token will receive a badge (based on selected lockup period), once it's listed in the Token list.",
+  "copyCurrentSelection": "Copy url to current selection",
+  "copied": "Copied current selection to clipboard!"
 }
 

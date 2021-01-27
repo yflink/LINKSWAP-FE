@@ -1,6 +1,6 @@
 import { transparentize } from 'polished'
 import React from 'react'
-import { AlertTriangle } from 'react-feather'
+import { AlertTriangle, Check, Copy } from 'react-feather'
 import styled, { css } from 'styled-components'
 import { Text } from 'rebass'
 import { AutoColumn } from '../Column'
@@ -144,4 +144,42 @@ export const SwapShowAcceptChanges = styled(AutoColumn)`
   padding: 0.5rem;
   border-radius: 6px;
   margin-top: 8px;
+`
+
+export const CopyToClipboard = styled.div`
+  color: ${({ theme }) => theme.textHighlight};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
+`
+
+export const CopiedToClipboard = styled.div`
+  color: ${({ theme }) => theme.textPrimary};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: default;
+`
+export const CheckIcon = styled(Check)`
+  height: 1rem;
+  margin-inline-end: 0.25rem;
+  display: inline-block;
+
+  > * {
+    stroke: ${({ theme }) => theme.textPrimary};
+  }
+`
+
+export const CopyIcon = styled(Copy)`
+  height: 1rem;
+  margin-inline-end: 0.25rem;
+  display: inline-block;
+  > * {
+    stroke: ${({ theme }) => theme.textHighlight};
+  }
 `
