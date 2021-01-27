@@ -41,7 +41,7 @@ const ExternalLinkIcon = styled(ExternalLink)`
   width: 14px;
   height: 14px;
   margin-bottom: -2px;
-  numberToPercent > * {
+  > * {
     stroke: ${({ theme }) => theme.textPrimary};
   }
 `

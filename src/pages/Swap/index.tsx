@@ -14,7 +14,16 @@ import { SwapPoolTabs } from '../../components/NavigationTabs'
 import { AutoRow, RowBetween } from '../../components/Row'
 import AdvancedSwapDetailsDropdown from '../../components/swap/AdvancedSwapDetailsDropdown'
 import confirmPriceImpactWithoutFee from '../../components/swap/confirmPriceImpactWithoutFee'
-import { ArrowWrapper, BottomGrouping, SwapCallbackError, Wrapper } from '../../components/swap/styleds'
+import {
+  ArrowWrapper,
+  BottomGrouping,
+  SwapCallbackError,
+  Wrapper,
+  CopyToClipboard,
+  CheckIcon,
+  CopyIcon,
+  CopiedToClipboard
+} from '../../components/swap/styleds'
 import TradePrice from '../../components/swap/TradePrice'
 import TokenWarningModal from '../../components/TokenWarningModal'
 import ProgressSteps from '../../components/ProgressSteps'
@@ -35,7 +44,7 @@ import {
   useSwapActionHandlers,
   useSwapState
 } from '../../state/swap/hooks'
-import { useExpertModeManager, useUserDeadline, useUserSlippageTolerance } from '../../state/user/hooks'
+import { useExpertModeManager, useGetTheme, useUserDeadline, useUserSlippageTolerance } from '../../state/user/hooks'
 import { LinkStyledButton, StyledInternalLink, TYPE } from '../../theme'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import { computeTradePriceBreakdown, warningSeverity } from '../../utils/prices'
@@ -46,6 +55,7 @@ import { useTranslation } from 'react-i18next'
 import { useTokenList } from '../../state/lists/hooks'
 import { useCurrencyUsdPrice } from '../../hooks/useCurrencyUsdPrice'
 import QuestionHelper from '../../components/QuestionHelper'
+import { wrappedCurrency } from '../../utils/wrappedCurrency'
 
 function containsKey(json: any, value: string) {
   let contains = false
@@ -60,6 +70,7 @@ export default function Swap() {
   const loadedUrlParams = useDefaultsFromURLSearch()
 
   const [inversed, setInversed] = useState(false)
+  const [copied, setCopied] = useState('')
 
   // token warning stuff
   const [loadedInputCurrency, loadedOutputCurrency] = [
@@ -81,7 +92,7 @@ export default function Swap() {
     setDismissTokenWarning(true)
   }, [])
 
-  const { account } = useActiveWeb3React()
+  const { account, chainId } = useActiveWeb3React()
   const theme = useContext(ThemeContext)
 
   // toggle wallet when disconnected
@@ -283,6 +294,39 @@ export default function Swap() {
   const { t } = useTranslation()
 
   useCurrencyUsdPrice()
+
+  const currentInput =
+    currencies[Field.INPUT]?.symbol === 'ETH' ? 'ETH' : wrappedCurrency(currencies[Field.INPUT], chainId)?.address
+  const currentOutput =
+    currencies[Field.OUTPUT]?.symbol === 'ETH' ? 'ETH' : wrappedCurrency(currencies[Field.OUTPUT], chainId)?.address
+  const currentTheme = useGetTheme()
+
+  let currentURL =
+    currentInput !== 'ETH'
+      ? `https://linkswap.app/#/swap/?inputCurrency=${currentInput}`
+      : 'https://linkswap.app/#/swap'
+
+  if (currentOutput) {
+    currentURL += currentInput !== 'ETH' ? `&outputCurrency=${currentOutput}` : `?outputCurrency=${currentOutput}`
+  }
+
+  if (currentTheme !== 'default') {
+    currentURL += currentInput !== 'ETH' || currentOutput ? `&theme=${currentTheme}` : `?theme=${currentTheme}`
+  }
+
+  function copyInputMessage(val: string) {
+    const selBox = document.createElement('textarea')
+    selBox.style.position = 'fixed'
+    selBox.style.left = '0'
+    selBox.style.top = '0'
+    selBox.style.opacity = '0'
+    selBox.value = val
+    document.body.appendChild(selBox)
+    selBox.focus()
+    selBox.select()
+    document.execCommand('copy')
+    document.body.removeChild(selBox)
+  }
 
   return (
     <>
@@ -538,6 +582,24 @@ export default function Swap() {
                 <StyledInternalLink id="import-pool-link" to={'create'}>
                   {t('createNewPool')}
                 </StyledInternalLink>
+              </Text>
+            </div>
+            <div style={{ marginTop: 12 }}>
+              <Text textAlign="center" fontSize={14} style={{ padding: '.5rem 0 .5rem 0' }}>
+                {copied === currentURL ? (
+                  <CopiedToClipboard>
+                    <CheckIcon /> {t('copied')}
+                  </CopiedToClipboard>
+                ) : (
+                  <CopyToClipboard
+                    onClick={() => {
+                      copyInputMessage(currentURL)
+                      setCopied(currentURL)
+                    }}
+                  >
+                    <CopyIcon /> {t('copyCurrentSelection')}
+                  </CopyToClipboard>
+                )}
               </Text>
             </div>
             {/* {betterTradeLinkVersion && <BetterTradeLink version={betterTradeLinkVersion} />} */}
