@@ -18,15 +18,16 @@ import { useWalletModalToggle } from '../../state/application/hooks'
 import { Text } from 'rebass'
 import { TYPE } from '../../theme'
 import { Dots } from '../../components/swap/styleds'
-import { RowBetween } from '../../components/Row'
 
 const AnalyticsWrapper = styled.div`
   width: 100%;
   display: flex;
+  flex: 0 0 100%;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   position: relative;
-  margin: 8px 0 0;
+  margin: 8px 0 16px;
   padding: 0.5rem;
   border-radius: 6px;
   font-size: 14px;
@@ -56,12 +57,16 @@ export default function CreatedPair({
   let currencyB = useCurrency(currencyIdB)
   let newCurrencyA = currencyA
   let newCurrencyB = currencyB
+  let currencyAAddress = currencyIdA
+  let currencyBAddress = currencyIdB
 
   switch (currencyB?.symbol) {
     case 'LINK':
       if (currencyA?.symbol !== 'ETH') {
         newCurrencyA = currencyB
         newCurrencyB = currencyA
+        currencyAAddress = currencyIdB
+        currencyBAddress = currencyIdA
       }
       break
 
@@ -69,6 +74,8 @@ export default function CreatedPair({
       if (currencyA?.symbol !== 'LINK') {
         newCurrencyA = currencyB
         newCurrencyB = currencyA
+        currencyAAddress = currencyIdB
+        currencyBAddress = currencyIdA
       }
       break
   }
@@ -80,6 +87,8 @@ export default function CreatedPair({
   // get formatted amounts
   const { t } = useTranslation()
   const tokenPairAddress = pair ? 'https://info.linkswap.app/pair/' + pair?.liquidityToken.address : false
+  const swapURL =
+    'https://linkswap.app/#/swap/?inputCurrency=' + currencyAAddress + '&outputCurrency=' + currencyBAddress
 
   useTokenUsdPrices()
   useLPTokenUsdPrices()
@@ -106,13 +115,18 @@ export default function CreatedPair({
                   </TYPE.body>
                 </BlueCard>
                 {tokenPairAddress && (
-                  <RowBetween>
+                  <>
+                    <AnalyticsWrapper>
+                      <a target="_self" href={swapURL}>
+                        {t('openSwapUrl')}
+                      </a>
+                    </AnalyticsWrapper>
                     <AnalyticsWrapper>
                       <a target="_blank" rel="noopener noreferrer" href={tokenPairAddress}>
                         {t('viewPairAnalytics')} <ExternalLinkIcon />
                       </a>
                     </AnalyticsWrapper>
-                  </RowBetween>
+                  </>
                 )}
               </Wrapper>
             ) : (

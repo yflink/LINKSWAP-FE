@@ -240,7 +240,7 @@
   "connectToFindPools": "Connect to a wallet to find pools.",
   "selectATokenToFindLiquidity": "Select a token to find your liquidity.",
   "interfaceTheme": "Select a Theme",
-  "viewPairAnalytics": "view pair analytics",
+  "viewPairAnalytics": "View pair analytics",
   "priceDescription": "Current live price as of last block.",
   "removeLiquidityCurrencies": "Remove {{currencyAAmount}} {{currencyASymbol}} and {{currencyBAmount}} {{currencyBSymbol}}",
   "approve": "Approve",
@@ -339,5 +339,6 @@
   "insufficientTokenBalanceForFee": "Your {{currencySymbol}} balance is too low to pay for the listing fees. Please select a different Creation-Fee Currency",
   "pairCreationSuccess": "New Pair successfully created! Visit Pair statistics by clicking the link below. Please note that Liquidity is locked for at least a week and will not show inside your wallet until the lockup period ended. If the RugLock option was selected, the listed Token will receive a badge (based on selected lockup period), once it's listed in the Token list.",
   "copyCurrentSelection": "Copy url to current selection",
-  "copied": "Copied current selection to clipboard!"
+  "copied": "Copied current selection to clipboard!",
+  "openSwapUrl": "Trade"
 }
