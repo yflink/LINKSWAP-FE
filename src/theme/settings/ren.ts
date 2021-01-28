@@ -2,7 +2,7 @@ export function renTheme() {
   const white = '#FFF'
   const black = '#000'
   const grey50 = '#fafafa'
-  const grey100 = '#f5f5f5'
+  //const grey100 = '#f5f5f5'
   const grey200 = '#eeeeee'
   const grey300 = '#e0e0e0'
   const grey400 = '#bdbdbd'

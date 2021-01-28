@@ -139,7 +139,7 @@ export default function Ren() {
   const [submitting, setSubmitting] = React.useState(false)
   const toggleWalletModal = useWalletModalToggle()
   const { t } = useTranslation()
-  const renJS = useMemo(() => new RenJS(RenNetwork.Mainnet, {}), [RenNetwork])
+  const renJS = useMemo(() => new RenJS(RenNetwork.Mainnet, {}), [])
   const balance = useTokenBalances(account ?? undefined, [renDOGE])
   const userBalance = balance[renDOGE.address]
   const web3 = new Web3(Web3.givenProvider)
@@ -173,7 +173,7 @@ export default function Ren() {
       }
       return userBalance
     },
-    [userBalance, defaultAsset]
+    [userBalance]
   )
 
   const { deposits, addDeposit, addBurn, updateTransaction } = useTransactionStorage(updateBalance)
@@ -216,12 +216,12 @@ export default function Ren() {
       return
     }
     if (!formattedAmounts[Field.CURRENCY_A]) {
-      setErrorMessage('Please enter a valid amount.')
+      setErrorMessage(t('needValidAmount'))
       setSubmitting(false)
       return
     }
     if (new BigNumber(formattedAmounts[Field.CURRENCY_A]).lte(0.00005)) {
-      setErrorMessage('Amount must be greater than 0.00005')
+      setErrorMessage(t('needMinimumAmount'))
       setSubmitting(false)
       return
     }
@@ -379,7 +379,29 @@ export default function Ren() {
             )}
           </>
         )}
-        {deposits && (
+        {deposits && action === 'mint' && (
+          <>
+            {Array.from(deposits.keys())
+              .map(txHash => {
+                const depositDetails = deposits.get(txHash)!
+                if (depositDetails.type === 'BURN') {
+                  return <></>
+                }
+                const { deposit, status } = depositDetails
+                return (
+                  <DepositObject
+                    key={txHash}
+                    txHash={txHash}
+                    deposit={deposit}
+                    status={status}
+                    updateTransaction={updateTransaction}
+                  />
+                )
+              })
+              .reverse()}
+          </>
+        )}
+        {deposits && action === 'burn' && (
           <>
             {Array.from(deposits.keys())
               .map(txHash => {
@@ -399,16 +421,7 @@ export default function Ren() {
                     />
                   )
                 }
-                const { deposit, status } = depositDetails
-                return (
-                  <DepositObject
-                    key={txHash}
-                    txHash={txHash}
-                    deposit={deposit}
-                    status={status}
-                    updateTransaction={updateTransaction}
-                  />
-                )
+                return <></>
               })
               .reverse()}
           </>

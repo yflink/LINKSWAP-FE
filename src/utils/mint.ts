@@ -3,7 +3,7 @@ import { Bitcoin, Dogecoin } from '@renproject/chains-bitcoin'
 import { LockChain, LogLevel, MintChain, SimpleLogger, TxStatus } from '@renproject/interfaces'
 import RenJS from '@renproject/ren'
 import { LockAndMintDeposit } from '@renproject/ren/build/main/lockAndMint'
-import { Ox, sleep } from '@renproject/utils'
+import { sleep } from '@renproject/utils'
 import { BurnAndRelease } from '@renproject/ren/build/main/burnAndRelease'
 import BigNumber from 'bignumber.js'
 
@@ -24,8 +24,6 @@ export const getMintChainObject = (
   recipientAddress?: string,
   amount?: string
 ): MintChain => {
-  const b = Buffer.from([])
-
   switch (mintChain) {
     case Chain.Ethereum:
       let eth = Ethereum(mintChainProvider, NETWORK)
