@@ -135,7 +135,8 @@ export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } 
     [LINK, CFI],
     [LINK, AZUKI],
     [DRC, WETHER],
-    [BONK, WETHER]
+    [BONK, WETHER],
+    [renDOGE, WETHER]
   ]
 }
 

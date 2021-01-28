@@ -44,6 +44,7 @@ export function useGetTheme(): string {
 
   switch (currentTheme) {
     case 'cyberfi':
+    case 'doge':
     case 'dokidoki':
     case 'drc':
     case 'light':

@@ -95,7 +95,7 @@ const activeStyle = {
 const StepsContainer = styled.div`
   .ant-steps-item-active .ant-steps-item-icon {
     background-color: ${({ theme }) => theme.appCurrencyInputBGActive};
-    
+
     color: ${({ theme }) => theme.appCurrencyInputTextColorActive};
   }
 
@@ -500,7 +500,6 @@ export default function CreateNewPool({
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <NumericalInput
-                    style={{ backgroundColor: theme.appBoxBG }}
                     className="token-amount-input"
                     value={rate}
                     onUserInput={val => {

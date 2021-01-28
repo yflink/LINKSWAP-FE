@@ -10,7 +10,7 @@ import { AutoColumn } from '../Column'
 import { RowBetween } from '../Row'
 import { useTranslation } from 'react-i18next'
 import styled, { ThemeContext } from 'styled-components'
-import { ButtonPrimary, ButtonSecondary } from '../Button'
+import { ButtonPrimary } from '../Button'
 
 const Loader = styled(Loading)`
   display: inline-block;
@@ -50,8 +50,6 @@ export const DepositObject: React.FC<Props> = ({ txHash, deposit, status, update
   const { amount } = deposit.depositDetails
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
-  const [showingFullError, setShowingFullError] = useState(false)
-  const showFullError = useCallback(() => setShowingFullError(true), [setShowingFullError])
 
   const [amountReadable, setAmountReadable] = useState<string | null>(null)
 

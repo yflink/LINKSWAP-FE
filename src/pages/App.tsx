@@ -46,7 +46,7 @@ const AppWrapper = styled.div`
   flex-flow: column;
   align-items: flex-start;
   height: 100%;
-  min-height: 100vh;
+  min-height: calc(100vh - 190px);
   padding-bottom: 40px;
   background: ${({ theme }) => theme.layerBG};
   ${({ theme }) => theme.mediaWidth.upToMedium`
@@ -64,7 +64,7 @@ const HeaderWrapper = styled.div`
 `
 
 const BodyWrapper = styled.div`
-  min-height: 100vh;
+  min-height: calc(100vh - 190px);
   display: flex;
   flex-direction: column;
   width: 100%;
