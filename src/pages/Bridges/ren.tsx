@@ -216,12 +216,12 @@ export default function Ren() {
       return
     }
     if (!formattedAmounts[Field.CURRENCY_A]) {
-      setErrorMessage('Please enter a valid amount.')
+      setErrorMessage(t('needValidAmount'))
       setSubmitting(false)
       return
     }
     if (new BigNumber(formattedAmounts[Field.CURRENCY_A]).lte(0.00005)) {
-      setErrorMessage('Amount must be greater than 0.00005')
+      setErrorMessage(t('needMinimumAmount'))
       setSubmitting(false)
       return
     }
