@@ -379,7 +379,29 @@ export default function Ren() {
             )}
           </>
         )}
-        {deposits && (
+        {deposits && action === 'mint' && (
+          <>
+            {Array.from(deposits.keys())
+              .map(txHash => {
+                const depositDetails = deposits.get(txHash)!
+                if (depositDetails.type === 'BURN') {
+                  return <></>
+                }
+                const { deposit, status } = depositDetails
+                return (
+                  <DepositObject
+                    key={txHash}
+                    txHash={txHash}
+                    deposit={deposit}
+                    status={status}
+                    updateTransaction={updateTransaction}
+                  />
+                )
+              })
+              .reverse()}
+          </>
+        )}
+        {deposits && action === 'burn' && (
           <>
             {Array.from(deposits.keys())
               .map(txHash => {
@@ -399,16 +421,7 @@ export default function Ren() {
                     />
                   )
                 }
-                const { deposit, status } = depositDetails
-                return (
-                  <DepositObject
-                    key={txHash}
-                    txHash={txHash}
-                    deposit={deposit}
-                    status={status}
-                    updateTransaction={updateTransaction}
-                  />
-                )
+                return <></>
               })
               .reverse()}
           </>
