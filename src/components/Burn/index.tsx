@@ -5,7 +5,7 @@ import BigNumber from 'bignumber.js'
 import { Loading } from '@renproject/react-components'
 import { TxStatus } from '@renproject/interfaces'
 
-import { BurnStatus, DepositStatus } from '../../utils/mint'
+import { BurnStatus } from '../../utils/mint'
 import { BurnDetails, DepositDetails } from '../../utils/useTransactionStorage'
 import { AutoColumn } from '../Column'
 import { RowBetween } from '../Row'
@@ -50,23 +50,13 @@ interface Props {
   updateTransaction: (txHash: string, transaction: Partial<BurnDetails> | Partial<DepositDetails>) => void
 }
 
-export const BurnObject: React.FC<Props> = ({
-  txHash,
-  burn,
-  status,
-  confirmations,
-  targetConfs,
-  renVMStatus,
-  updateTransaction
-}) => {
+export const BurnObject: React.FC<Props> = ({ txHash, burn, status, confirmations, targetConfs, renVMStatus }) => {
   const {
     params: { asset, from },
     burnDetails
   } = burn
 
   const [errorMessage] = React.useState<string | null>(null)
-  const [showingFullError, setShowingFullError] = React.useState(false)
-  const showFullError = React.useCallback(() => setShowingFullError(true), [setShowingFullError])
 
   const [amountReadable, setAmountReadable] = React.useState<string | null>(null)
 

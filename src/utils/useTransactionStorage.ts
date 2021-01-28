@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { OrderedMap } from 'immutable'
 import { LockAndMintDeposit } from '@renproject/ren/build/main/lockAndMint'
 import { BurnAndRelease } from '@renproject/ren/build/main/burnAndRelease'

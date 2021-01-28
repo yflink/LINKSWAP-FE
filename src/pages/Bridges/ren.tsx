@@ -139,7 +139,7 @@ export default function Ren() {
   const [submitting, setSubmitting] = React.useState(false)
   const toggleWalletModal = useWalletModalToggle()
   const { t } = useTranslation()
-  const renJS = useMemo(() => new RenJS(RenNetwork.Mainnet, {}), [RenNetwork])
+  const renJS = useMemo(() => new RenJS(RenNetwork.Mainnet, {}), [])
   const balance = useTokenBalances(account ?? undefined, [renDOGE])
   const userBalance = balance[renDOGE.address]
   const web3 = new Web3(Web3.givenProvider)
@@ -173,7 +173,7 @@ export default function Ren() {
       }
       return userBalance
     },
-    [userBalance, defaultAsset]
+    [userBalance]
   )
 
   const { deposits, addDeposit, addBurn, updateTransaction } = useTransactionStorage(updateBalance)
