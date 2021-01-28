@@ -223,11 +223,19 @@
       "decimals": 18,
       "tags": ["linkcheck"],
       "logoURI": "https://logos.linkswap.app/0x9ceb84f92a0561fa3cc4132ab9c0b76a59787544.png"
+    },
+    {
+      "address": "0x3832d2f059e55934220881f831be501d180671a7",
+      "chainId": 1,
+      "name": "Wrapped Dogecoin",
+      "symbol": "renDOGE",
+      "decimals": 8,
+      "logoURI": "https://logos.linkswap.app/0x3832d2f059e55934220881f831be501d180671a7.png"
     }
   ],
   "version": {
     "major": 4,
-    "minor": 0,
+    "minor": 1,
     "patch": 0
   }
 }

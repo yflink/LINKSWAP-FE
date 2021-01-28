@@ -40,17 +40,20 @@ const Base = styled(RebassButton)<{
 
 export const ButtonPrimary = styled(Base)`
   background-color: ${({ theme }) => theme.buttonBG};
-  color: white;
+  color: ${({ theme }) => theme.buttonTextColor};
   &:focus {
     box-shadow: 0 0 0 1pt ${({ theme }) => theme.buttonBGHover};
     background-color: ${({ theme }) => theme.buttonBGHover};
+    color: ${({ theme }) => theme.buttonTextColorHover};
   }
   &:hover {
     background-color: ${({ theme }) => theme.buttonBGHover};
+    color: ${({ theme }) => theme.buttonTextColorHover};
   }
   &:active {
-    box-shadow: 0 0 0 1pt ${({ theme }) => theme.buttonBGHover};
-    background-color: ${({ theme }) => theme.buttonBGHover};
+    box-shadow: 0 0 0 1pt ${({ theme }) => theme.buttonBGActive};
+    background-color: ${({ theme }) => theme.buttonBGActive};
+    color: ${({ theme }) => theme.buttonTextColorActive};
   }
   &:disabled {
     background-color: ${({ theme, altDisabledStyle }) => (altDisabledStyle ? theme.buttonBG : theme.buttonBGDisabled)};

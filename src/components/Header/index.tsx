@@ -185,6 +185,9 @@ export default function Header() {
               <Title style={{ marginInlineStart: 24 }} target="_blank" href="https://info.linkswap.app">
                 <MenuText>Charts</MenuText>
               </Title>
+              <Title style={{ marginInlineStart: 24 }} href="/#/ren">
+                <MenuText>renDOGE</MenuText>
+              </Title>
             </HeaderElementMobile>
           )}
         </HeaderElement>

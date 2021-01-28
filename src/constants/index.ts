@@ -72,6 +72,13 @@ export const AZUKI = new Token(
 )
 export const DRC = new Token(ChainId.MAINNET, '0xb78b3320493a4efaa1028130c5ba26f0b6085ef8', 18, 'DRC', 'Dracula Token')
 export const BONK = new Token(ChainId.MAINNET, '0x6d6506e6f438ede269877a0a720026559110b7d5', 18, 'BONK', 'BONKTOKEN')
+export const renDOGE = new Token(
+  ChainId.MAINNET,
+  '0x3832d2f059e55934220881f831be501d180671a7',
+  8,
+  'renDOGE',
+  'Wrapped Dogecoin'
+)
 
 const WETH_ONLY: ChainTokenList = {
   [ChainId.MAINNET]: [WETH[ChainId.MAINNET]],
@@ -128,7 +135,8 @@ export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } 
     [LINK, CFI],
     [LINK, AZUKI],
     [DRC, WETHER],
-    [BONK, WETHER]
+    [BONK, WETHER],
+    [renDOGE, WETHER]
   ]
 }
 

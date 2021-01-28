@@ -272,7 +272,7 @@ export default function Buy() {
                     <InputRow>
                       <>
                         <NumericalInput
-                          style={{ backgroundColor: theme.appBoxBG, padding: '16px' }}
+                          style={{ padding: '16px' }}
                           className="token-amount-input"
                           placeholder="0.00"
                           value={amount}

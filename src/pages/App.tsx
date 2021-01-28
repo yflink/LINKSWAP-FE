@@ -24,6 +24,8 @@ import Buy from './Buy'
 import Pool from './Pool'
 import PoolFinder from './PoolFinder'
 
+import Ren from './Bridges/ren'
+
 import RemoveLiquidity from './RemoveLiquidity'
 import { RedirectOldRemoveLiquidityPathStructure } from './RemoveLiquidity/redirects'
 
@@ -48,7 +50,7 @@ const AppWrapper = styled.div`
   flex-flow: column;
   align-items: flex-start;
   height: 100%;
-  min-height: 100vh;
+  min-height: calc(100vh - 190px);
   padding-bottom: 40px;
   background: ${({ theme }) => theme.layerBG};
   ${({ theme }) => theme.mediaWidth.upToMedium`
@@ -66,7 +68,7 @@ const HeaderWrapper = styled.div`
 `
 
 const BodyWrapper = styled.div`
-  min-height: 100vh;
+  min-height: calc(100vh - 190px);
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -156,6 +158,7 @@ export default function App() {
                 <Route exact path="/created/:currencyIdA/:currencyIdB" component={CreatedPairRedirect} />
                 <Route exact strict path="/previewlisting" component={PreviewListing} />{' '}
                 <Route exact strict path="/analyze" component={Analyze} />
+                <Route exact strict path="/ren" component={Ren} />
                 <Route component={RedirectPathToSwapOnly} />
               </Switch>
             </Web3ReactManager>
