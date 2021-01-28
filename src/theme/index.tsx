@@ -16,6 +16,7 @@ import { dokiDokiTheme } from './settings/doki'
 import { drcTheme } from './settings/drc'
 import { lightTheme } from './settings/light'
 import { masqTheme } from './settings/masq'
+import { renTheme } from './settings/ren'
 
 export * from './components'
 
@@ -54,6 +55,9 @@ export function colors(theme: string): Colors {
 
     case 'masq':
       return masqTheme()
+
+    case 'ren':
+      return renTheme()
 
     default:
       return defaultTheme()

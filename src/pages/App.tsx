@@ -24,6 +24,8 @@ import Buy from './Buy'
 import Pool from './Pool'
 import PoolFinder from './PoolFinder'
 
+import Ren from './Bridges/ren'
+
 import RemoveLiquidity from './RemoveLiquidity'
 import { RedirectOldRemoveLiquidityPathStructure } from './RemoveLiquidity/redirects'
 
@@ -151,6 +153,7 @@ export default function App() {
                 <Route exact path="/create/:currencyIdA/:currencyIdB" component={CreatePairRedirectDuplicateTokenIds} />
                 <Route exact strict path="/previewlisting" component={PreviewListing} />{' '}
                 <Route exact strict path="/analyze" component={Analyze} />
+                <Route exact strict path="/ren" component={Ren} />
                 <Route component={RedirectPathToSwapOnly} />
               </Switch>
             </Web3ReactManager>

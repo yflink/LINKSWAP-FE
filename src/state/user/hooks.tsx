@@ -48,6 +48,7 @@ export function useGetTheme(): string {
     case 'drc':
     case 'light':
     case 'masq':
+    case 'ren':
       return currentTheme
 
     default:

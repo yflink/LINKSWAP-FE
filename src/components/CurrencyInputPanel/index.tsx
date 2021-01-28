@@ -256,7 +256,6 @@ export default function CurrencyInputPanel({
               {!hideInput && (
                 <>
                   <NumericalInput
-                    style={{ backgroundColor: theme.appBoxBG }}
                     className="token-amount-input"
                     value={value}
                     onUserInput={val => {
@@ -462,7 +461,6 @@ export function CurrencyDoubleInputPanel({
               {!hideInput && (
                 <>
                   <NumericalInput
-                    style={{ backgroundColor: theme.appBoxBG }}
                     className="token-amount-input"
                     value={value}
                     onUserInput={val => {

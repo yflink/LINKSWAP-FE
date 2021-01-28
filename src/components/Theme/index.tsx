@@ -100,6 +100,7 @@ export default function ThemeTab() {
             <ThemeOption themeName="CyberFi" themeString="cyberfi" />
             <ThemeOption themeName="DOKI DOKI" themeString="dokidoki" />
             <ThemeOption themeName="MASQ" themeString="masq" />
+            <ThemeOption themeName="ren" themeString="ren" />
           </ThemeContainer>
         </MenuFlyout>
       )}
