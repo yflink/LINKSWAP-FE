@@ -1,8 +1,8 @@
 {
-  "name": "LINKSWAP Launch List",
+  "name": "LINKSWAP Token List",
   "logoURI": "https://logos.linkswap.app/0x28cb7e841ee97947a86b06fa4090c8451f64c0be.png",
   "keywords": ["linkswap", "link", "swap"],
-  "timestamp": "2020-15-12T00:00:00+00:00",
+  "timestamp": "2021-01-21T00:00:00+00:00",
   "tags":{
     "base":{"name":"base","description":"baseDescription"},
     "stablecoin":{"name":"stablecoin","description":"stablecoinDescription"},
@@ -234,8 +234,8 @@
     }
   ],
   "version": {
-    "major": 4,
-    "minor": 1,
+    "major": 1,
+    "minor": 0,
     "patch": 0
   }
 }
