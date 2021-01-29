@@ -3,11 +3,23 @@ import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, AppState } from '../index'
 import { updatePriceBase, updateTokenPrices, updateLPTokenPrices, updateWyreObject } from './actions'
 
-export function usePriceBaseManager(): (ethPriceBase: number, linkPriceBase: number) => void {
+export function usePriceBaseManager(): (
+  ethPriceBase: number,
+  linkPriceBase: number,
+  yflPriceBase: number,
+  yflusdPriceBase: number
+) => void {
   const dispatch = useDispatch<AppDispatch>()
   return useCallback(
-    (ethPriceBase: number, linkPriceBase: number) => {
-      dispatch(updatePriceBase({ ethPriceBase: ethPriceBase, linkPriceBase: linkPriceBase }))
+    (ethPriceBase: number, linkPriceBase: number, yflPriceBase: number, yflusdPriceBase: number) => {
+      dispatch(
+        updatePriceBase({
+          ethPriceBase: ethPriceBase,
+          linkPriceBase: linkPriceBase,
+          yflPriceBase: yflPriceBase,
+          yflusdPriceBase: yflusdPriceBase
+        })
+      )
     },
     [dispatch]
   )
@@ -17,6 +29,8 @@ export function useGetPriceBase(): any {
   return {
     ethPriceBase: useSelector<AppState, AppState['price']['ethPriceBase']>(state => state.price.ethPriceBase),
     linkPriceBase: useSelector<AppState, AppState['price']['linkPriceBase']>(state => state.price.linkPriceBase),
+    yflPriceBase: useSelector<AppState, AppState['price']['yflPriceBase']>(state => state.price.yflPriceBase),
+    yflusdPriceBase: useSelector<AppState, AppState['price']['yflusdPriceBase']>(state => state.price.yflusdPriceBase),
     timestamp: useSelector<AppState, AppState['price']['timestamp']>(state => state.price.timestamp)
   }
 }

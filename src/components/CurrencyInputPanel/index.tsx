@@ -174,7 +174,6 @@ export default function CurrencyInputPanel({
   currency,
   disableCurrencySelect = false,
   hideBalance = false,
-  pair = null,
   hideInput = false,
   hideSelect = false,
   hideCurrencySelect = false,
@@ -329,7 +328,11 @@ export function CurrencyDoubleInputPanel({
   } else {
     initialCurrency = inputCurrency
     if (initialCurrency !== ETHER) {
-      initialSelected = 1
+      if (initialCurrency !== currency2) {
+        initialSelected = 2
+      } else {
+        initialSelected = 1
+      }
     } else {
       initialSelected = 0
     }
@@ -350,15 +353,8 @@ export function CurrencyDoubleInputPanel({
 
   const ethSelected = (!interaction && initialSelected === 0) || (interaction && selected === 0)
   const yflusdSelected = (!interaction && initialSelected === 2) || (interaction && selected === 2)
-
-  const linkSelected =
-    (!interaction && initialSelected === 1) || (interaction && selected === 1) || (!ethSelected && !yflusdSelected)
-  const selectedCurrency =
-    (!interaction && initialSelected === 0) || (interaction && selected === 0)
-      ? currency1
-      : (!interaction && initialSelected === 1) || (interaction && selected === 1)
-      ? currency2
-      : currency3
+  const linkSelected = !ethSelected && !yflusdSelected
+  const selectedCurrency = ethSelected ? currency1 : linkSelected ? currency2 : currency3
   const handleCurrency = useCallback(() => {
     if (selectedCurrency.symbol !== currency.symbol) {
       setCurrency(selectedCurrency)
