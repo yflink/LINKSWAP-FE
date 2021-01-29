@@ -15,6 +15,20 @@ type ChainTokenList = {
 
 export const LINK = new Token(ChainId.MAINNET, '0x514910771af9ca656af840dff83e8264ecf986ca', 18, 'LINK', 'ChainLink')
 export const YFL = new Token(ChainId.MAINNET, '0x28cb7e841ee97947a86b06fa4090c8451f64c0be', 18, 'YFL', 'YFLink')
+export const YFLUSD = new Token(
+  ChainId.MAINNET,
+  '0x7b760d06e401f85545f3b50c44bf5b05308b7b62',
+  18,
+  'YFLUSD',
+  'YFLink USD'
+)
+export const sYFL = new Token(
+  ChainId.MAINNET,
+  '0x8282df223ac402d04b2097d16f758af4f70e7db0',
+  18,
+  'sYFL',
+  'YFLink Synthetic'
+)
 export const WETHER = new Token(
   ChainId.MAINNET,
   '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
@@ -118,6 +132,10 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
 
 export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } = {
   [ChainId.MAINNET]: [
+    [YFLUSD, WETHER],
+    [YFLUSD, LINK],
+    [sYFL, WETHER],
+    [sYFL, LINK],
     [YFL, WETHER],
     [LINK, YFL],
     [LINK, USDC],
