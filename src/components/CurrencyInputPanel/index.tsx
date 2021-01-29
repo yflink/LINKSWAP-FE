@@ -4,17 +4,13 @@ import { useTranslation } from 'react-i18next'
 import { Currency, Pair, ETHER } from '@uniswap/sdk'
 import CurrencySearchModal from '../SearchModal/CurrencySearchModal'
 import CurrencyLogo from '../CurrencyLogo'
-import DoubleCurrencyLogo from '../DoubleLogo'
 import { RowBetween } from '../Row'
 import { Input as NumericalInput } from '../NumericalInput'
-
 import { TYPE } from '../../theme'
 import { WrappedTokenInfo } from '../../state/lists/hooks'
 import { useCurrencyBalance } from '../../state/wallet/hooks'
 import { useActiveWeb3React } from '../../hooks'
 import { numberToSignificant } from '../../utils/numberUtils'
-
-// import { ReactComponent as DropDown } from '../../assets/images/dropdown.svg'
 
 const CurrencySelectWrapper = styled.div`
   display: flex;
