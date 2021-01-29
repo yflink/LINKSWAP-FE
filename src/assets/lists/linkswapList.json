@@ -2,7 +2,7 @@
   "name": "LINKSWAP Token List",
   "logoURI": "https://logos.linkswap.app/0x28cb7e841ee97947a86b06fa4090c8451f64c0be.png",
   "keywords": ["linkswap", "link", "swap"],
-  "timestamp": "2021-01-21T00:00:00+00:00",
+  "timestamp": "2020-01-31T00:00:00+00:00",
   "tags":{
     "base":{"name":"base","description":"baseDescription"},
     "stablecoin":{"name":"stablecoin","description":"stablecoinDescription"},
@@ -133,6 +133,7 @@
       "name": "MASQ",
       "symbol": "MASQ",
       "decimals": 18,
+      "tags": ["linkcheck"],
       "logoURI": "https://logos.linkswap.app/0x06f3c323f0238c72bf35011071f2b5b7f43a054c.png"
     },
     {
@@ -231,6 +232,23 @@
       "symbol": "renDOGE",
       "decimals": 8,
       "logoURI": "https://logos.linkswap.app/0x3832d2f059e55934220881f831be501d180671a7.png"
+    },
+    {
+      "address": "0x7b760d06e401f85545f3b50c44bf5b05308b7b62",
+      "chainId": 1,
+      "name": "YFLink USD",
+      "symbol": "YFLUSD",
+      "decimals": 18,
+      "tags": ["stablecoin"],
+      "logoURI": "https://logos.linkswap.app/0x7b760d06e401f85545f3b50c44bf5b05308b7b62.png"
+    },
+    {
+      "address": "0x8282df223ac402d04b2097d16f758af4f70e7db0",
+      "chainId": 1,
+      "name": "YFLink Synthetics",
+      "symbol": "sYFL",
+      "decimals": 18,
+      "logoURI": "https://logos.linkswap.app/0x8282df223ac402d04b2097d16f758af4f70e7db0.png"
     }
   ],
   "version": {

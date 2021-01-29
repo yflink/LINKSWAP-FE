@@ -2,7 +2,7 @@
   "name": "LINKSWAP Linkcheck Verified",
   "logoURI": "https://logos.linkswap.app/linkcheck.png",
   "keywords": ["linkswap", "link", "swap"],
-  "timestamp": "2021-01-21T00:00:00+00:00",
+  "timestamp": "2020-01-31T00:00:00+00:00",
   "tags":{
     "base":{"name":"base","description":"baseDescription"},
     "stablecoin":{"name":"stablecoin","description":"stablecoinDescription"},
@@ -34,6 +34,15 @@
       "decimals": 18,
       "tags": ["linkcheck"],
       "logoURI": "https://logos.linkswap.app/0x9ceb84f92a0561fa3cc4132ab9c0b76a59787544.png"
+    },
+    {
+      "address": "0x06f3c323f0238c72bf35011071f2b5b7f43a054c",
+      "chainId": 1,
+      "name": "MASQ",
+      "symbol": "MASQ",
+      "decimals": 18,
+      "tags": ["linkcheck"],
+      "logoURI": "https://logos.linkswap.app/0x06f3c323f0238c72bf35011071f2b5b7f43a054c.png"
     }
   ],
   "version": {
