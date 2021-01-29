@@ -10,13 +10,14 @@ import { WrappedTokenInfo } from '../../state/lists/hooks'
 import eth from '../../assets/svg/eth.svg'
 import link from '../../assets/svg/link.svg'
 import yfl from '../../assets/svg/yfl.svg'
+import yflusd from '../../assets/svg/yflusd.svg'
 
 const getTokenLogoURL = (address: string) => `https://logos.linkswap.app/${address.toLowerCase()}.png`
 
 const ethLogoURL = 'https://logos.linkswap.app/eth.png'
 
 const StyledEthereumLogo = styled.img<{ size: string }>`
-  width: ${({ size }) => size};
+  width: auto;
   height: ${({ size }) => size};
 `
 
@@ -33,7 +34,7 @@ export default function CurrencyLogo({
 }: {
   currency?: Currency
   size?: string
-  style?: React.CSSProperties,
+  style?: React.CSSProperties
   position?: string
 }) {
   const uriLocations = useHttpLocations(currency instanceof WrappedTokenInfo ? currency.logoURI : undefined)
@@ -61,6 +62,10 @@ export default function CurrencyLogo({
 
   if (currency?.symbol === 'YFL' && position === 'button') {
     return <StyledEthereumLogo src={yfl} size={size} style={style} />
+  }
+
+  if (currency?.symbol === 'YFLUSD' && position === 'button') {
+    return <StyledEthereumLogo src={yflusd} size={size} style={style} />
   }
 
   if (currency === ETHER) {

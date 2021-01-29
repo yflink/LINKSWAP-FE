@@ -21,11 +21,18 @@ const CurrencySelectWrapper = styled.div`
   align-items: space-between;
 `
 
-const CurrencySelect = styled.button<{ selected: boolean; primary?: boolean; left?: boolean; right?: boolean }>`
+const CurrencySelect = styled.button<{
+  selected: boolean
+  primary?: boolean
+  left?: boolean
+  right?: boolean
+  middle?: boolean
+}>`
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  height: 48px;
+  height: 52px;
   font-size: 20px;
   font-weight: 500;
   background-color: ${({ selected, primary, theme }) => {
@@ -41,15 +48,17 @@ const CurrencySelect = styled.button<{ selected: boolean; primary?: boolean; lef
   }};
   color: ${({ selected, theme }) =>
     selected ? theme.appCurrencyInputTextColorActive : theme.appCurrencyInputTextColor};
-  border-radius: ${({ left, right }) => (left ? '6px 0px 0px 6px' : right ? '0px 6px 6px 0px' : '6px')};
+  border-radius: ${({ left, right, middle }) =>
+    left ? '6px 0px 0px 6px' : right ? '0px 6px 6px 0px' : middle ? '0px' : '6px'};
   box-shadow: ${({ selected }) => (selected ? 'none' : '0px 6px 10px rgba(0, 0, 0, 0.075)')};
   outline: none;
   cursor: pointer;
   user-select: none;
   border: none;
-  padding: 0 0.5rem;
+  padding: 5px 0.5rem;
   [dir='rtl'] & {
-    border-radius: ${({ left, right }) => (left ? '0px 6px 6px 0px' : right ? '6px 0px 0px 6px' : '6px')};
+    border-radius: ${({ left, right, middle }) =>
+      left ? '0px 6px 6px 0px' : right ? '6px 0px 0px 6px' : middle ? '0px' : '6px'};
   }
   :focus,
   :hover {
@@ -79,15 +88,6 @@ const LabelRow = styled.div`
   }
 `
 
-// const StyledDropDown = styled(DropDown)<{ selected: boolean }>`
-//   margin: 0 0.25rem 0 0.5rem;
-//   height: 35%;
-//   path {
-//     stroke: ${({ selected, theme }) => (selected ? theme.textPrimary : theme.textPrimary)};
-//     stroke-width: 1.5px;
-//   }
-// `
-
 const InputRow = styled.div<{ selected: boolean }>`
   ${({ theme }) => theme.flexRowNoWrap}
   align-items: center;
@@ -108,9 +108,12 @@ const Container = styled.div<{ hideInput: boolean }>`
   background-color: ${({ theme }) => theme.appCurrencyInputBG};
 `
 
-const StyledTokenName = styled.div<{ active?: boolean }>`
-  ${({ active }) => (active ? '  margin: 0 0.25rem 0 0.75rem;' : '  margin: 0 0.25rem 0 0.25rem;')}
-  font-size:  ${({ active }) => (active ? '20px' : '20px')};
+const StyledTokenName = styled.div<{ inline?: boolean }>`
+  font-size: ${({ inline }) => (inline ? '20px' : '12px')};
+  margin-inline-start: ${({ inline }) => (inline ? '0.4rem' : 0)};
+  width: ${({ inline }) => (inline ? 'auto' : '100%')};
+  display: ${({ inline }) => (inline ? 'inline-block' : 'block')};
+  text-align: ${({ inline }) => (inline ? 'left' : 'center')};
 `
 
 const StyledBalanceMax = styled.button`
@@ -205,24 +208,14 @@ export default function CurrencyInputPanel({
             }
           }}
         >
-          {pair ? (
-            <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} margin={true} />
-          ) : currency ? (
-            <CurrencyLogo currency={currency} position="button" />
-          ) : null}
-          {pair ? (
-            <StyledTokenName className="pair-name-container">
-              {pair?.token0.symbol}:{pair?.token1.symbol}
-            </StyledTokenName>
-          ) : (
-            <StyledTokenName className="token-symbol-container" active={Boolean(currency && currency.symbol)}>
-              {(currency && currency.symbol && currency.symbol.length > 20
-                ? currency.symbol.slice(0, 4) +
-                  '...' +
-                  currency.symbol.slice(currency.symbol.length - 5, currency.symbol.length)
-                : currency?.symbol) || t('selectToken')}
-            </StyledTokenName>
-          )}
+          {currency ? <CurrencyLogo currency={currency} position="button" /> : null}
+          <StyledTokenName className="token-symbol-container" inline={true}>
+            {(currency && currency.symbol && currency.symbol.length > 20
+              ? currency.symbol.slice(0, 4) +
+                '...' +
+                currency.symbol.slice(currency.symbol.length - 5, currency.symbol.length)
+              : currency?.symbol) || t('selectToken')}
+          </StyledTokenName>
         </CurrencySelect>
       )}
       {!hideSelect && (
@@ -296,7 +289,6 @@ export function CurrencyDoubleInputPanel({
   currency: inputCurrency,
   disableCurrencySelect = false,
   hideBalance = false,
-  pair = null, // used for double token logo
   hideInput = false,
   hideSelect = false,
   otherCurrency,
@@ -314,6 +306,17 @@ export function CurrencyDoubleInputPanel({
       symbol: 'LINK',
       decimals: 18,
       logoURI: 'https://logos.linkswap.app/0x514910771af9ca656af840dff83e8264ecf986ca.png'
+    },
+    []
+  )
+  const currency3 = new WrappedTokenInfo(
+    {
+      address: '0x7b760d06e401f85545f3b50c44bf5b05308b7b62',
+      chainId: 1,
+      name: 'YFLink USD',
+      symbol: 'YFLUSD',
+      decimals: 18,
+      logoURI: 'https://logos.linkswap.app/0x7b760d06e401f85545f3b50c44bf5b05308b7b62.png'
     },
     []
   )
@@ -346,8 +349,16 @@ export function CurrencyDoubleInputPanel({
   }, [setModalOpen])
 
   const ethSelected = (!interaction && initialSelected === 0) || (interaction && selected === 0)
+  const yflusdSelected = (!interaction && initialSelected === 2) || (interaction && selected === 2)
+
+  const linkSelected =
+    (!interaction && initialSelected === 1) || (interaction && selected === 1) || (!ethSelected && !yflusdSelected)
   const selectedCurrency =
-    (!interaction && initialSelected === 0) || (interaction && selected === 0) ? currency1 : currency2
+    (!interaction && initialSelected === 0) || (interaction && selected === 0)
+      ? currency1
+      : (!interaction && initialSelected === 1) || (interaction && selected === 1)
+      ? currency2
+      : currency3
   const handleCurrency = useCallback(() => {
     if (selectedCurrency.symbol !== currency.symbol) {
       setCurrency(selectedCurrency)
@@ -374,31 +385,20 @@ export function CurrencyDoubleInputPanel({
             }
           }}
         >
-          {pair ? (
-            <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={24} margin={true} />
-          ) : currency1 ? (
-            <CurrencyLogo currency={currency1} size={'24px'} position="button" />
-          ) : null}
-          {pair ? (
-            <StyledTokenName className="pair-name-container">
-              {pair?.token0.symbol}:{pair?.token1.symbol}
-            </StyledTokenName>
-          ) : (
-            <StyledTokenName className="token-symbol-container" active={Boolean(currency1 && currency1.symbol)}>
-              {(currency1 && currency1.symbol && currency1.symbol.length > 20
-                ? currency1.symbol.slice(0, 4) +
-                  '...' +
-                  currency1.symbol.slice(currency1.symbol.length - 5, currency1.symbol.length)
-                : currency1?.symbol) || t('selectToken')}
-            </StyledTokenName>
-          )}
-          {/* {!disableCurrencySelect && <StyledDropDown selected={!!currency} />} */}
+          {currency1 ? <CurrencyLogo currency={currency1} size={'24px'} position="button" /> : null}
+          <StyledTokenName className="token-symbol-container">
+            {(currency1 && currency1.symbol && currency1.symbol.length > 20
+              ? currency1.symbol.slice(0, 4) +
+                '...' +
+                currency1.symbol.slice(currency1.symbol.length - 5, currency1.symbol.length)
+              : currency1?.symbol) || t('selectToken')}
+          </StyledTokenName>
         </CurrencySelect>
         <CurrencySelect
           style={{ marginBottom: '12px', width: '100%' }}
-          selected={!ethSelected}
+          selected={!ethSelected && !yflusdSelected}
           primary
-          right
+          middle
           className="open-currency-select-button"
           onClick={() => {
             if (!disableCurrencySelect) {
@@ -411,25 +411,40 @@ export function CurrencyDoubleInputPanel({
             }
           }}
         >
-          {pair ? (
-            <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={24} margin={true} />
-          ) : currency2 ? (
-            <CurrencyLogo currency={currency2} size={'24px'} position="button" />
-          ) : null}
-          {pair ? (
-            <StyledTokenName className="pair-name-container">
-              {pair?.token0.symbol}:{pair?.token1.symbol}
-            </StyledTokenName>
-          ) : (
-            <StyledTokenName className="token-symbol-container" active={Boolean(currency2 && currency2.symbol)}>
-              {(currency2 && currency2.symbol && currency2.symbol.length > 20
-                ? currency2.symbol.slice(0, 4) +
-                  '...' +
-                  currency2.symbol.slice(currency2.symbol.length - 5, currency2.symbol.length)
-                : currency2?.symbol) || t('selectToken')}
-            </StyledTokenName>
-          )}
-          {/* {!disableCurrencySelect && <StyledDropDown selected={!!currency} />} */}
+          {currency2 ? <CurrencyLogo currency={currency2} size={'24px'} position="button" /> : null}
+          <StyledTokenName className="token-symbol-container">
+            {(currency2 && currency2.symbol && currency2.symbol.length > 20
+              ? currency2.symbol.slice(0, 4) +
+                '...' +
+                currency2.symbol.slice(currency2.symbol.length - 5, currency2.symbol.length)
+              : currency2?.symbol) || t('selectToken')}
+          </StyledTokenName>
+        </CurrencySelect>
+        <CurrencySelect
+          style={{ marginBottom: '12px', width: '100%' }}
+          selected={!ethSelected && !linkSelected}
+          primary
+          right
+          className="open-currency-select-button"
+          onClick={() => {
+            if (!disableCurrencySelect) {
+              setCurrency(currency3)
+              setSelected(2)
+              setInteraction(true)
+              if (onCurrencySelect) {
+                onCurrencySelect(currency3)
+              }
+            }
+          }}
+        >
+          {currency3 ? <CurrencyLogo currency={currency3} size={'24px'} position="button" /> : null}
+          <StyledTokenName className="token-symbol-container">
+            {(currency3 && currency3.symbol && currency3.symbol.length > 20
+              ? currency3.symbol.slice(0, 4) +
+                '...' +
+                currency3.symbol.slice(currency3.symbol.length - 5, currency3.symbol.length)
+              : currency3?.symbol) || t('selectToken')}
+          </StyledTokenName>
         </CurrencySelect>
       </CurrencySelectWrapper>
       {!hideSelect && (
@@ -472,35 +487,6 @@ export function CurrencyDoubleInputPanel({
                   )}
                 </>
               )}
-              {/* <CurrencySelect
-            selected={!!currency}
-            className="open-currency-select-button"
-            onClick={() => {
-              if (!disableCurrencySelect) {
-                setModalOpen(true)
-              }
-            }}
-          >
-              {pair ? (
-                <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={24} margin={true} />
-              ) : currency ? (
-                <CurrencyLogo currency={currency} size={'24px'} />
-              ) : null}
-              {pair ? (
-                <StyledTokenName className="pair-name-container">
-                  {pair?.token0.symbol}:{pair?.token1.symbol}
-                </StyledTokenName>
-              ) : (
-                <StyledTokenName className="token-symbol-container" active={Boolean(currency && currency.symbol)}>
-                  {(currency && currency.symbol && currency.symbol.length > 20
-                    ? currency.symbol.slice(0, 4) +
-                      '...' +
-                      currency.symbol.slice(currency.symbol.length - 5, currency.symbol.length)
-                    : currency?.symbol) || t('selectToken')}
-                </StyledTokenName>
-              )}
-              {!disableCurrencySelect && <StyledDropDown selected={!!currency} />}
-          </CurrencySelect> */}
             </InputRow>
           </Container>
           {!disableCurrencySelect && onCurrencySelect && (
