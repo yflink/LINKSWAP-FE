@@ -5,7 +5,8 @@ import { useOnClickOutside } from '../../hooks/useOnClickOutside'
 import {
   useUserSlippageTolerance,
   useExpertModeManager,
-  useUserDeadline
+  useUserDeadline,
+  useRouteManager
 } from '../../state/user/hooks'
 import TransactionSettings from '../TransactionSettings'
 import { RowFixed, RowBetween } from '../Row'
@@ -153,7 +154,7 @@ export default function SettingsTab() {
   const [deadline, setDeadline] = useUserDeadline()
 
   const [expertMode, toggleExpertMode] = useExpertModeManager()
-
+  const [route, toggleRoute] = useRouteManager()
   // show confirmation view before turning on
   const [showConfirmation, setShowConfirmation] = useState(false)
 
@@ -248,6 +249,15 @@ export default function SettingsTab() {
                       }
                 }
               />
+            </RowBetween>
+            <RowBetween>
+              <RowFixed>
+                <TYPE.black fontWeight={400} fontSize={14} color={theme.textSecondary}>
+                  {t('routeToggle')}
+                </TYPE.black>
+                <QuestionHelper text={t('routeAbout')} />
+              </RowFixed>
+              <Toggle id="toggle-route-button" isActive={route} toggle={() => toggleRoute()} />
             </RowBetween>
           </AutoColumn>
         </MenuFlyout>

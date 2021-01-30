@@ -2,7 +2,7 @@ import { Trade, TradeType } from '@uniswap/sdk'
 import React, { useContext } from 'react'
 import styled, { ThemeContext } from 'styled-components'
 import { Field } from '../../state/swap/actions'
-import { useUserSlippageTolerance } from '../../state/user/hooks'
+import { useIsRoute, useRouteManager, useUserSlippageTolerance } from '../../state/user/hooks'
 import { TYPE } from '../../theme'
 import { computeSlippageAdjustedAmounts, computeTradePriceBreakdown } from '../../utils/prices'
 import { AutoColumn } from '../Column'
@@ -123,9 +123,8 @@ export interface AdvancedSwapDetailsProps {
 export function AdvancedSwapDetails({ trade }: AdvancedSwapDetailsProps) {
   const theme = useContext(ThemeContext)
   const [allowedSlippage] = useUserSlippageTolerance()
-  const showRoute = Boolean(trade && trade.route.path.length > 2)
+  const showRoute = useIsRoute()
   const { t } = useTranslation()
-
   return (
     <AutoColumn gap="md">
       {trade && (
