@@ -337,7 +337,7 @@
   "pairCreation": "New Pair: {{currencyA}} | {{currencyB}}",
   "pairCreationDisclaimer": "Transaction successful and sent to LINKSWAP Pair-Factory. Please allow for some time for the new pool to show. A confirmation will be shown here when the pool is live. Please check transaction on Etherscan if confirmation does not appear",
   "insufficientTokenBalanceForFee": "Your {{currencySymbol}} balance is too low to pay for the listing fees. Please select a different Creation-Fee Currency",
-  "pairCreationSuccess": "New Pair successfully created! Visit Pair statistics by clicking the link below. Please note that Liquidity is locked for at least a week and will not show inside your wallet until the lockup period ended. If the RugLock option was selected, the listed Token will receive a badge (based on selected lockup period), once it's listed in the Token list.",
+  "pairCreationSuccess": "New Pair successfully created! Start Trading or visit the pair statistics by clicking the link below. If the RugLock option was selected, the listed Token will receive a badge (based on selected lockup period), once it's listed in the Token list.",
   "copyCurrentSelection": "Copy url to current selection",
   "copied": "Copied current selection to clipboard!",
   "openSwapUrl": "Trade",

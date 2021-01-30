@@ -2,7 +2,7 @@
   "name": "LINKSWAP Launch List",
   "logoURI": "https://logos.linkswap.app/0x28cb7e841ee97947a86b06fa4090c8451f64c0be.png",
   "keywords": ["linkswap", "link", "swap"],
-  "timestamp": "2020-15-12T00:00:00+00:00",
+  "timestamp": "2020-01-29T00:00:00+00:00",
   "tags":{
     "base":{"name":"base","description":"baseDescription"},
     "stablecoin":{"name":"stablecoin","description":"stablecoinDescription"},
@@ -133,6 +133,7 @@
       "name": "MASQ",
       "symbol": "MASQ",
       "decimals": 18,
+      "tags": ["linkcheck"],
       "logoURI": "https://logos.linkswap.app/0x06f3c323f0238c72bf35011071f2b5b7f43a054c.png"
     },
     {
@@ -234,7 +235,7 @@
     }
   ],
   "version": {
-    "major": 4,
+    "major": 5,
     "minor": 1,
     "patch": 0
   }
