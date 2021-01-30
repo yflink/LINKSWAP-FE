@@ -340,10 +340,11 @@
   "mint": "Mint",
   "walletConnectDisclaimerBridge": "To mint and burn Tokens, you need to connect a Web3 wallet such as Metamask, Trust Wallet or Coinbase Wallet.",
   "yourRenDogeBalance": "Your {{currency}} balance: {{balance}} {{currency}}",
-  "mintDescription": "You can mint {{outputCurrency}} by sending {{inputCurrency}} to an automatically generated Contract Address. Click 'Mint' to see the address associated with your wallet.",
+  "mintDescription": "You can mint {{outputCurrency}} by sending {{inputCurrency}} to an automatically generated Gateway Address. These addresses are only valid for 24 hours! Click 'Mint' to generate a Gateway Address associated with your wallet.",
   "depositAtLeast": "Deposit at least",
   "minimumAmount": "{{minimumAmount}} {{currency}}",
   "sendCurrencyTo": "Send {{currency}} to this address",
+  "onlyDepositOnce": "Gateway Addresses should only be used to deposit funds one-time. If you send multiple deposits to this Gateway Address the funds can be lost.",
   "burnDescription": "You can burn your {{inputCurrency}} by sending {{inputCurrency}} to the burn Contract Address. Select the amount of {{inputCurrency}} you want to burn and the corresponding {{outputCurrency}} will be sent to the {{outputCurrency}} Wallet Address you entered.",
   "walletAddress": "Recipient ({{currency}} address)",
   "received": "Received",
@@ -361,5 +362,9 @@
   "needMinimumAmount": "Amount must be greater than 0.00005.",
   "needValidAmount": "Please enter a valid amount.",
   "routeToggle": "Show Routes",
-  "routeAbout": "Show the swap routes for all of your transactions"
+  "routeAbout": "Show the swap routes for all of your transactions",
+  "bridgeWarning": "Please read carefully before you proceed",
+  "bridgeDisclaimer": "It should be clear that if you make a mistake while using the renBridge (sending funds to the wrong address, depositing multiple TXs, etc.) that your funds are permanently lost (as with any other blockchain mistake). RenVM is a new technology and security audits don't completely eliminate risks. Please don’t supply assets you can’t afford to lose.",
+  "bridgeAbout": "If you closed or reloaded the minting interface, before sending the minted tokens to your ERC-20 Wallet. Just click on the 'Mint' button again to see your transaction and the button that sends the minted funds to your wallet.",
+  "brideConclusion": "Please be patient! The minting process can take up to 1 hour because RenVM needs to wait for a safe amount of blockchain confirmations (to prevent double spend, etc)."
 }
