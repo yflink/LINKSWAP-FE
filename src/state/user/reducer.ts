@@ -10,6 +10,7 @@ import {
   SerializedToken,
   updateUserTheme,
   updateUserExpertMode,
+  updateUserRoute,
   updateUserSlippageTolerance,
   updateUserDeadline
 } from './actions'
@@ -25,6 +26,8 @@ export interface UserState {
   priceBase: number | 0 // the price base
 
   userExpertMode: boolean
+
+  userRoute: boolean
 
   // user defined slippage tolerance in bips, used in all txns
   userSlippageTolerance: number
@@ -56,6 +59,7 @@ export const initialState: UserState = {
   userTheme: 'default',
   priceBase: 0,
   userExpertMode: false,
+  userRoute: false,
   userSlippageTolerance: INITIAL_ALLOWED_SLIPPAGE,
   userDeadline: DEFAULT_DEADLINE_FROM_NOW,
   tokens: {},
@@ -86,6 +90,10 @@ export default createReducer(initialState, builder =>
     })
     .addCase(updateUserExpertMode, (state, action) => {
       state.userExpertMode = action.payload.userExpertMode
+      state.timestamp = currentTimestamp()
+    })
+    .addCase(updateUserRoute, (state, action) => {
+      state.userRoute = action.payload.userRoute
       state.timestamp = currentTimestamp()
     })
     .addCase(updateUserSlippageTolerance, (state, action) => {

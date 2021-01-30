@@ -16,7 +16,8 @@ import {
   updateUserTheme,
   updateUserDeadline,
   updateUserExpertMode,
-  updateUserSlippageTolerance
+  updateUserSlippageTolerance,
+  updateUserRoute
 } from './actions'
 
 function serializeToken(token: Token): SerializedToken {
@@ -61,6 +62,10 @@ export function useIsExpertMode(): boolean {
   return useSelector<AppState, AppState['user']['userExpertMode']>(state => state.user.userExpertMode)
 }
 
+export function useIsRoute(): boolean {
+  return useSelector<AppState, AppState['user']['userRoute']>(state => state.user.userRoute)
+}
+
 export function useThemeManager(): (newTheme: string) => void {
   const dispatch = useDispatch<AppDispatch>()
 
@@ -81,6 +86,17 @@ export function useExpertModeManager(): [boolean, () => void] {
   }, [expertMode, dispatch])
 
   return [expertMode, toggleSetExpertMode]
+}
+
+export function useRouteManager(): [boolean, () => void] {
+  const dispatch = useDispatch<AppDispatch>()
+  const route = useIsRoute()
+
+  const toggleSetRoute = useCallback(() => {
+    dispatch(updateUserRoute({ userRoute: !route }))
+  }, [route, dispatch])
+
+  return [route, toggleSetRoute]
 }
 
 export function useUserSlippageTolerance(): [number, (slippage: number) => void] {

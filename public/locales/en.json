@@ -366,5 +366,7 @@
   "watchingForDeposits": "Watching for deposits...",
   "noStakePools": "No active LP Reward Pools found",
   "needMinimumAmount": "Amount must be greater than 0.00005.",
-  "needValidAmount": "Please enter a valid amount."
+  "needValidAmount": "Please enter a valid amount.",
+  "routeToggle": "Show Routes",
+  "routeAbout": "Show the swap routes for all of your transactions"
 }
