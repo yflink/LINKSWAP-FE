@@ -79,8 +79,10 @@
     "react-use-gesture": "^6.0.14",
     "react-virtualized-auto-sizer": "^1.0.3",
     "react-window": "^1.8.6",
+    "replace-in-file": "^6.1.0",
     "rebass": "^4.0.7",
     "redux-localstorage-simple": "^2.3.1",
+    "scrypt": "^6.0.3",
     "serve": "^11.3.0",
     "start-server-and-test": "^1.11.7",
     "styled-components": "^4.2.0",
@@ -97,7 +99,7 @@
     "eject": "react-scripts eject",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
     "integration-test": "start-server-and-test 'serve build -l 3000' http://localhost:3000  'cypress run'",
-    "postinstall": "rm -rf ./node_modules/@uniswap; cp -r ./forks/@uniswap ./node_modules/@uniswap"
+    "postinstall": "rm -rf ./node_modules/@uniswap; cp -r ./forks/@uniswap ./node_modules/@uniswap && node ./patch-scrypt.js"
   },
   "eslintConfig": {
     "extends": "react-app"
