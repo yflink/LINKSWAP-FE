@@ -15,6 +15,7 @@ export interface SerializedPair {
 
 export const updateUserTheme = createAction<{ userTheme: string }>('user/updateUserTheme')
 export const updateUserExpertMode = createAction<{ userExpertMode: boolean }>('user/updateUserExpertMode')
+export const updateUserRoute = createAction<{ userRoute: boolean }>('user/updateUserRoute')
 export const updateUserSlippageTolerance = createAction<{ userSlippageTolerance: number }>(
   'user/updateUserSlippageTolerance'
 )

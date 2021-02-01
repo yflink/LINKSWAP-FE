@@ -13,6 +13,7 @@ import { useWalletModalToggle } from '../../state/application/hooks'
 import { useTranslation } from 'react-i18next'
 import { AutoColumn } from '../../components/Column'
 import { RowBetween } from '../../components/Row'
+import BridgeWarningModal from '../../components/Bridges/warning-modal'
 import Question from '../../components/QuestionHelper'
 import { Asset, defaultAsset, defaultMintChain } from '../../utils/assets'
 import { useTokenBalances } from '../../state/wallet/hooks'
@@ -128,6 +129,10 @@ const Loader = styled(Loading)`
 export default function Ren() {
   const { account } = useWeb3React()
   const theme = useContext(ThemeContext)
+  const [dismissBridgeWarning, setDismissBridgeWarning] = useState<boolean>(false)
+  const handleConfirmBridgeWarning = useCallback(() => {
+    setDismissBridgeWarning(true)
+  }, [])
   const [action, setAction] = useState('mint')
   const [generatingAddress, setGeneratingAddress] = useState(false)
   const [depositAddress, setDepositAddress] = useState<
@@ -249,6 +254,7 @@ export default function Ren() {
   }
   return (
     <>
+      <BridgeWarningModal isOpen={!dismissBridgeWarning} onConfirm={handleConfirmBridgeWarning} />
       <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.appBGColor, marginBottom: '16px' }}>
         <SwapPoolTabs active={'none'} />
       </Card>
@@ -295,8 +301,11 @@ export default function Ren() {
                     <Text textAlign="center">{t('sendCurrencyTo', { currency: defaultAsset })}:</Text>
                     <BlueCard>
                       <TYPE.link textAlign="center" fontWeight={400}>
-                        {depositAddress}
+                        <strong>{depositAddress}</strong>
                       </TYPE.link>
+                      <Text textAlign="center" padding="1.5rem 0 0" fontSize="12px">
+                        {t('onlyDepositOnce')}
+                      </Text>
                     </BlueCard>
                     <Text textAlign="center">{t('watchingForDeposits')}</Text>
                     <Text textAlign="center">
