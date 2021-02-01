@@ -83,7 +83,7 @@ export function useSelectedListUrl(): string | undefined {
 }
 
 export function useMainTokenList(): TokenAddressMap {
-  return useTokenList('https://linkswap.app/lists/linkswapTokenList.json')
+  return useTokenList('https://linkswap.app/lists/linkswapList.json')
 }
 
 export function useSelectedTokenList(): TokenAddressMap {

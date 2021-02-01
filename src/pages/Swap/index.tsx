@@ -78,7 +78,7 @@ export default function Swap() {
     useCurrency(loadedUrlParams?.outputCurrencyId)
   ]
 
-  const currentList = useTokenList('https://linkswap.app/lists/linkswapTokenList.json')
+  const currentList = useTokenList('https://linkswap.app/lists/linkswapList.json')
 
   const [dismissTokenWarning, setDismissTokenWarning] = useState<boolean>(false)
   const urlLoadedTokens: Token[] = useMemo(

@@ -1,8 +1,8 @@
 {
-  "name": "LINKCHECK Verified",
+  "name": "LINKSWAP Linkcheck Verified",
   "logoURI": "https://logos.linkswap.app/linkcheck.png",
   "keywords": ["linkswap", "link", "swap"],
-  "timestamp": "2020-01-29T00:00:00+00:00",
+  "timestamp": "2020-01-31T00:00:00+00:00",
   "tags":{
     "base":{"name":"base","description":"baseDescription"},
     "stablecoin":{"name":"stablecoin","description":"stablecoinDescription"},
@@ -46,7 +46,7 @@
     }
   ],
   "version": {
-    "major": 5,
+    "major": 1,
     "minor": 0,
     "patch": 0
   }

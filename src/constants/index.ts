@@ -5,8 +5,6 @@ import { injected, walletconnect, walletlink } from '../connectors'
 
 // LINKSWAP
 export const ROUTER_ADDRESS = '0xA7eCe0911FE8C60bff9e99f8fAFcDBE56e07afF1'
-// UNISWAP
-// export const ROUTER_ADDRESS = '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D'
 
 // a list of tokens by chain
 type ChainTokenList = {
@@ -15,6 +13,20 @@ type ChainTokenList = {
 
 export const LINK = new Token(ChainId.MAINNET, '0x514910771af9ca656af840dff83e8264ecf986ca', 18, 'LINK', 'ChainLink')
 export const YFL = new Token(ChainId.MAINNET, '0x28cb7e841ee97947a86b06fa4090c8451f64c0be', 18, 'YFL', 'YFLink')
+export const YFLUSD = new Token(
+  ChainId.MAINNET,
+  '0x7b760d06e401f85545f3b50c44bf5b05308b7b62',
+  18,
+  'YFLUSD',
+  'YFLink USD'
+)
+export const sYFL = new Token(
+  ChainId.MAINNET,
+  '0x8282df223ac402d04b2097d16f758af4f70e7db0',
+  18,
+  'sYFL',
+  'YFLink Synthetic'
+)
 export const WETHER = new Token(
   ChainId.MAINNET,
   '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
@@ -91,7 +103,7 @@ const WETH_ONLY: ChainTokenList = {
 // used to construct intermediary pairs for trading
 export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   ...WETH_ONLY,
-  [ChainId.MAINNET]: [...WETH_ONLY[ChainId.MAINNET], DAI, USDC, USDT, COMP, MKR]
+  [ChainId.MAINNET]: [YFLUSD, DAI, USDC, USDT, COMP, MKR]
 }
 
 /**
@@ -107,17 +119,21 @@ export const CUSTOM_BASES: { [chainId in ChainId]?: { [tokenAddress: string]: To
 // used for display in the default list when adding liquidity
 export const SUGGESTED_BASES: ChainTokenList = {
   ...WETH_ONLY,
-  [ChainId.MAINNET]: [...WETH_ONLY[ChainId.MAINNET], LINK]
+  [ChainId.MAINNET]: [LINK, YFLUSD]
 }
 
 // used to construct the list of all pairs we consider by default in the frontend
 export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   ...WETH_ONLY,
-  [ChainId.MAINNET]: [...WETH_ONLY[ChainId.MAINNET], DAI, USDC, USDT]
+  [ChainId.MAINNET]: [YFLUSD, DAI, USDC, USDT]
 }
 
 export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } = {
   [ChainId.MAINNET]: [
+    [YFLUSD, WETHER],
+    [YFLUSD, LINK],
+    [sYFL, WETHER],
+    [sYFL, LINK],
     [YFL, WETHER],
     [LINK, YFL],
     [LINK, USDC],
