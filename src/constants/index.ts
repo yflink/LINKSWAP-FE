@@ -5,8 +5,6 @@ import { injected, walletconnect, walletlink } from '../connectors'
 
 // LINKSWAP
 export const ROUTER_ADDRESS = '0xA7eCe0911FE8C60bff9e99f8fAFcDBE56e07afF1'
-// UNISWAP
-// export const ROUTER_ADDRESS = '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D'
 
 // a list of tokens by chain
 type ChainTokenList = {
