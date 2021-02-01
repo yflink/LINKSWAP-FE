@@ -20,14 +20,23 @@ export function useCurrencyUsdPrice(): any {
               Accept: 'application/json',
               'Content-Type': 'application/json'
             },
-            body: '{"query":"{ bundles { ethPrice linkPrice yflPrice }}"}',
+            body:
+              '{"query":"{ tokenDayDatas(orderBy: date, orderDirection: desc) { token { id symbol decimals } priceUSD  }}","variables":null}',
             method: 'POST'
           })
 
           if (response.ok) {
             const content = await response.json()
             setFetching(false)
-            return content['data']['bundles'][0]
+            const tokenData = content.data.tokenDayDatas
+            const tokenPrices: Record<string, any> = {}
+            tokenData.forEach((token: any) => {
+              const tokenObject = {
+                price: token.priceUSD
+              }
+              tokenPrices[token.token.symbol.toLowerCase()] = tokenObject
+            })
+            return tokenPrices
           } else {
             setFetching(false)
             return false
@@ -43,7 +52,12 @@ export function useCurrencyUsdPrice(): any {
     }
     getPrice({ fetching: fetching }).then(priceBase => {
       if (priceBase) {
-        newPriceBase(priceBase['ethPrice'], priceBase['linkPrice'], priceBase['yflPrice'])
+        newPriceBase(
+          priceBase['weth'].price,
+          priceBase['link'].price,
+          priceBase['yfl'].price,
+          priceBase['yflusd'].price
+        )
       }
     })
   } else {

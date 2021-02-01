@@ -7,25 +7,17 @@ import Logo from '../Logo'
 import useHttpLocations from '../../hooks/useHttpLocations'
 import { WrappedTokenInfo } from '../../state/lists/hooks'
 
-import { ETHSVG, LINKSVG, YFLSVG } from '../SVG'
+import eth from '../../assets/svg/eth.svg'
+import link from '../../assets/svg/link.svg'
+import yfl from '../../assets/svg/yfl.svg'
+import yflusd from '../../assets/svg/yflusd.svg'
 
 const getTokenLogoURL = (address: string) => `https://logos.linkswap.app/${address.toLowerCase()}.png`
 
 const ethLogoURL = 'https://logos.linkswap.app/eth.png'
 
-const StyledSVGLogo = styled.div<{ size: string }>`
-  width: ${({ size }) => size};
-  height: ${({ size }) => size};
-
-  > * {
-    width: auto;
-    height: ${({ size }) => size};
-    fill: ${({ theme }) => theme.textPrimary};
-  }
-`
-
 const StyledEthereumLogo = styled.img<{ size: string }>`
-  width: ${({ size }) => size};
+  width: auto;
   height: ${({ size }) => size};
 `
 
@@ -61,27 +53,19 @@ export default function CurrencyLogo({
   }, [currency, uriLocations])
 
   if (currency === ETHER && position === 'button') {
-    return (
-      <StyledSVGLogo size={size} style={style}>
-        <ETHSVG />
-      </StyledSVGLogo>
-    )
+    return <StyledEthereumLogo src={eth} size={size} style={style} />
   }
 
   if (currency?.symbol === 'LINK' && position === 'button') {
-    return (
-      <StyledSVGLogo size={size} style={style}>
-        <LINKSVG />
-      </StyledSVGLogo>
-    )
+    return <StyledEthereumLogo src={link} size={size} style={style} />
   }
 
   if (currency?.symbol === 'YFL' && position === 'button') {
-    return (
-      <StyledSVGLogo size={size} style={style}>
-        <YFLSVG />
-      </StyledSVGLogo>
-    )
+    return <StyledEthereumLogo src={yfl} size={size} style={style} />
+  }
+
+  if (currency?.symbol === 'YFLUSD' && position === 'button') {
+    return <StyledEthereumLogo src={yflusd} size={size} style={style} />
   }
 
   if (currency === ETHER) {
@@ -92,17 +76,9 @@ export default function CurrencyLogo({
 }
 
 export function EthLogo({ size = '24px', style }: { size?: string; style?: React.CSSProperties }) {
-  return (
-    <StyledSVGLogo size={size} style={style}>
-      <ETHSVG />
-    </StyledSVGLogo>
-  )
+  return <StyledEthereumLogo src={eth} size={size} style={style} />
 }
 
 export function LinkLogo({ size = '24px', style }: { size?: string; style?: React.CSSProperties }) {
-  return (
-    <StyledSVGLogo size={size} style={style}>
-      <LINKSVG />
-    </StyledSVGLogo>
-  )
+  return <StyledEthereumLogo src={link} size={size} style={style} />
 }

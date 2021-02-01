@@ -8,6 +8,7 @@ export interface PriceState {
   ethPriceBase: number | 0 // the ETH price base
   linkPriceBase: number | 0 // the LINK price base
   yflPriceBase: number | 0 // the YFL price base
+  yflusdPriceBase: number | 0 // the YFLUSD price base
   priceResponse: any | false // wyre response
   tokenPrices: any | false // token prices
   lpTokenPrices: any | false // token prices
@@ -18,6 +19,7 @@ export const initialState: PriceState = {
   ethPriceBase: 0,
   linkPriceBase: 0,
   yflPriceBase: 0,
+  yflusdPriceBase: 0,
   priceResponse: false,
   tokenPrices: false,
   lpTokenPrices: false,
@@ -30,6 +32,7 @@ export default createReducer(initialState, builder =>
       state.ethPriceBase = action.payload.ethPriceBase
       state.linkPriceBase = action.payload.linkPriceBase
       state.yflPriceBase = action.payload.yflPriceBase
+      state.yflusdPriceBase = action.payload.yflusdPriceBase
       state.timestamp = currentTimestamp()
     })
     .addCase(updateWyreObject, (state, action) => {

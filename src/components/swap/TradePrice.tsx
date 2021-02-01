@@ -22,8 +22,15 @@ export default function TradePrice({ price, showInverted, priceImpactSeverity }:
   ) {
     baseCurrency = 'LINK'
   }
-
-  const priceBase = baseCurrency === 'ETH' ? priceObject['ethPriceBase'] : priceObject['linkPriceBase']
+  if (price?.baseCurrency?.symbol !== 'LINK' && price?.baseCurrency?.symbol !== 'ETH') {
+    baseCurrency = 'YFLUSD'
+  }
+  const priceBase =
+    baseCurrency === 'ETH'
+      ? priceObject['ethPriceBase']
+      : baseCurrency === 'LINK'
+      ? priceObject['linkPriceBase']
+      : priceObject['yflusdPriceBase']
   const hasPriceBase = priceBase > 0 && priceImpactSeverity < 2
   const formattedPrice = showInverted ? price?.toSignificant(4) : price?.invert()?.toSignificant(4)
   const tokenPrice = Number(formattedPrice) || 1
@@ -34,8 +41,7 @@ export default function TradePrice({ price, showInverted, priceImpactSeverity }:
   }
 
   const formatedUsdPrice = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(usdPrice)
-
-  const show = Boolean(price?.baseCurrency && price?.quoteCurrency) && priceImpactSeverity < 2
+  const show = Boolean(price?.baseCurrency && price?.quoteCurrency) && priceImpactSeverity < 3
   const label = showInverted
     ? `1 ${price?.baseCurrency?.symbol} = ${formattedPrice} ${price?.quoteCurrency?.symbol}`
     : `1 ${price?.quoteCurrency?.symbol} = ${formattedPrice} ${price?.baseCurrency?.symbol}`
@@ -47,16 +53,12 @@ export default function TradePrice({ price, showInverted, priceImpactSeverity }:
       color={theme.textSecondary}
       style={{ justifyContent: 'center', alignItems: 'center', display: 'flex' }}
     >
-      {show && (
+      {hasPriceBase && show ? (
         <>
-          {hasPriceBase ? (
-            <>
-              {label} ({formatedUsdPrice})
-            </>
-          ) : (
-            <>{label}</>
-          )}
+          {label} ({formatedUsdPrice})
         </>
+      ) : (
+        <>{label}</>
       )}
     </Text>
   )
