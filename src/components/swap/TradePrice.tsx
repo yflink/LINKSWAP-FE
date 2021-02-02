@@ -14,11 +14,19 @@ interface TradePriceProps {
 export default function TradePrice({ price, showInverted, priceImpactSeverity }: TradePriceProps) {
   const theme = useContext(ThemeContext)
   const priceObject = useGetPriceBase()
-  let baseCurrency = 'ETH'
-  if (price?.baseCurrency?.symbol === 'LINK') {
+  let baseCurrency = price?.baseCurrency?.symbol
+  if (
+    (price?.baseCurrency?.symbol === 'LINK' || price?.quoteCurrency?.symbol === 'LINK') &&
+    price?.baseCurrency?.symbol !== 'ETH' &&
+    price?.baseCurrency?.symbol !== 'YFLUSD'
+  ) {
     baseCurrency = 'LINK'
   }
-  if (price?.baseCurrency?.symbol === 'YFLUSD') {
+  if (
+    (price?.baseCurrency?.symbol === 'YFLUSD' || price?.quoteCurrency?.symbol === 'YFLUSD') &&
+    price?.baseCurrency?.symbol !== 'ETH' &&
+    price?.baseCurrency?.symbol !== 'LINK'
+  ) {
     baseCurrency = 'YFLUSD'
   }
   const priceBase =
