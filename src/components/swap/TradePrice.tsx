@@ -15,10 +15,18 @@ export default function TradePrice({ price, showInverted, priceImpactSeverity }:
   const theme = useContext(ThemeContext)
   const priceObject = useGetPriceBase()
   let baseCurrency = 'ETH'
-  if (price?.baseCurrency?.symbol === 'LINK' && price?.quoteCurrency?.symbol !== 'ETH') {
+  if (
+    (price?.baseCurrency?.symbol === 'LINK' || price?.quoteCurrency?.symbol === 'LINK') &&
+    price?.baseCurrency?.symbol !== 'ETH' &&
+    price?.baseCurrency?.symbol !== 'YFLUSD'
+  ) {
     baseCurrency = 'LINK'
   }
-  if (price?.baseCurrency?.symbol === 'YFLUSD' && price?.quoteCurrency?.symbol !== 'ETH') {
+  if (
+    (price?.baseCurrency?.symbol === 'YFLUSD' || price?.quoteCurrency?.symbol === 'YFLUSD') &&
+    price?.baseCurrency?.symbol !== 'ETH' &&
+    price?.baseCurrency?.symbol !== 'LINK'
+  ) {
     baseCurrency = 'YFLUSD'
   }
   const priceBase =
@@ -32,7 +40,11 @@ export default function TradePrice({ price, showInverted, priceImpactSeverity }:
   const tokenPrice = Number(formattedPrice) || 1
 
   let usdPrice = showInverted ? priceBase : tokenPrice * priceBase
-  if (price?.baseCurrency?.symbol !== 'ETH' && price?.baseCurrency?.symbol !== 'LINK') {
+  if (
+    price?.baseCurrency?.symbol !== 'ETH' &&
+    price?.baseCurrency?.symbol !== 'LINK' &&
+    price?.baseCurrency?.symbol !== 'YFLUSD'
+  ) {
     usdPrice = showInverted ? tokenPrice * priceBase : priceBase
   }
 
