@@ -20,28 +20,20 @@ export function useCurrencyUsdPrice(): any {
               Accept: 'application/json',
               'Content-Type': 'application/json'
             },
-            body:
-              '{"query":"{ tokenDayDatas(orderBy: date, orderDirection: desc) { token { id symbol decimals } priceUSD  }}","variables":null}',
+            body: '{"query":"{ bundles { ethPrice linkPrice syflPrice yflusdPrice }}"}',
             method: 'POST'
           })
 
           if (response.ok) {
             const content = await response.json()
             setFetching(false)
-            const tokenData = content.data.tokenDayDatas
-            const tokenPrices: Record<string, any> = {}
-            tokenData.forEach((token: any) => {
-              const tokenObject = {
-                price: token.priceUSD
-              }
-              tokenPrices[token.token.symbol.toLowerCase()] = tokenObject
-            })
-            return tokenPrices
+            const priceBase: Record<string, any> = content['data']['bundles'][0]
+            return priceBase
           } else {
-            setFetching(false)
             return false
           }
         } catch (e) {
+          setFetching(false)
           return false
         } finally {
           //console.log('fetched price')
@@ -53,10 +45,10 @@ export function useCurrencyUsdPrice(): any {
     getPrice({ fetching: fetching }).then(priceBase => {
       if (priceBase) {
         newPriceBase(
-          priceBase['weth'].price,
-          priceBase['link'].price,
-          priceBase['yfl'].price,
-          priceBase['yflusd'].price
+          priceBase['ethPrice'],
+          priceBase['linkPrice'],
+          priceBase['syflPrice'],
+          priceBase['yflusdPriceBase']
         )
       }
     })

@@ -291,7 +291,6 @@ export function CurrencyDoubleInputPanel({
   showCommonBases
 }: CurrencyInputPanelProps) {
   const { t } = useTranslation()
-
   const currency1 = ETHER
   const currency2 = new WrappedTokenInfo(
     {
@@ -317,60 +316,45 @@ export function CurrencyDoubleInputPanel({
   )
 
   let initialCurrency
-  let initialSelected
   if (!inputCurrency) {
     initialCurrency = ETHER
-    initialSelected = 0
   } else {
     initialCurrency = inputCurrency
-    if (initialCurrency !== ETHER) {
-      if (initialCurrency !== currency2) {
-        initialSelected = 2
+
+    if (initialCurrency?.symbol !== 'ETH') {
+      if (initialCurrency?.symbol !== currency2.symbol) {
+        initialCurrency = currency3
       } else {
-        initialSelected = 1
+        initialCurrency = currency2
       }
     } else {
-      initialSelected = 0
+      initialCurrency = ETHER
     }
   }
 
   const [currency, setCurrency] = useState(initialCurrency)
-  const [interaction, setInteraction] = useState(false)
-  const [selected, setSelected] = useState(initialSelected)
-
   const [modalOpen, setModalOpen] = useState(false)
   const { account } = useActiveWeb3React()
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
   const theme = useContext(ThemeContext)
 
+  console.log(currency)
+
   const handleDismissSearch = useCallback(() => {
     setModalOpen(false)
   }, [setModalOpen])
-
-  const ethSelected = (!interaction && initialSelected === 0) || (interaction && selected === 0)
-  const yflusdSelected = (!interaction && initialSelected === 2) || (interaction && selected === 2)
-  const linkSelected = !ethSelected && !yflusdSelected
-  const selectedCurrency = ethSelected ? currency1 : linkSelected ? currency2 : currency3
-  const handleCurrency = useCallback(() => {
-    if (selectedCurrency.symbol !== currency.symbol) {
-      setCurrency(selectedCurrency)
-    }
-  }, [setCurrency, selectedCurrency, currency])
-  handleCurrency()
   return (
     <div>
       <CurrencySelectWrapper>
         <CurrencySelect
           style={{ marginBottom: '12px', width: '100%' }}
-          selected={ethSelected}
+          selected={currency.symbol === 'ETH'}
           primary
           left
           className="open-currency-select-button"
           onClick={() => {
             if (!disableCurrencySelect) {
               setCurrency(currency1)
-              setSelected(0)
-              setInteraction(true)
               if (onCurrencySelect) {
                 onCurrencySelect(currency1)
               }
@@ -388,15 +372,13 @@ export function CurrencyDoubleInputPanel({
         </CurrencySelect>
         <CurrencySelect
           style={{ marginBottom: '12px', width: '100%' }}
-          selected={!ethSelected && !yflusdSelected}
+          selected={currency.symbol === 'LINK'}
           primary
           middle
           className="open-currency-select-button"
           onClick={() => {
             if (!disableCurrencySelect) {
               setCurrency(currency2)
-              setSelected(1)
-              setInteraction(true)
               if (onCurrencySelect) {
                 onCurrencySelect(currency2)
               }
@@ -414,15 +396,13 @@ export function CurrencyDoubleInputPanel({
         </CurrencySelect>
         <CurrencySelect
           style={{ marginBottom: '12px', width: '100%' }}
-          selected={!ethSelected && !linkSelected}
+          selected={currency.symbol === 'YFLUSD'}
           primary
           right
           className="open-currency-select-button"
           onClick={() => {
             if (!disableCurrencySelect) {
               setCurrency(currency3)
-              setSelected(2)
-              setInteraction(true)
               if (onCurrencySelect) {
                 onCurrencySelect(currency3)
               }
