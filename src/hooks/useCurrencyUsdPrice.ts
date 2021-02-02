@@ -20,7 +20,7 @@ export function useCurrencyUsdPrice(): any {
               Accept: 'application/json',
               'Content-Type': 'application/json'
             },
-            body: '{"query":"{ bundles { ethPrice linkPrice syflPrice yflusdPrice }}"}',
+            body: '{"query":"{ bundles { ethPrice linkPrice yflPrice yflusdPrice }}"}',
             method: 'POST'
           })
 
@@ -44,12 +44,7 @@ export function useCurrencyUsdPrice(): any {
     }
     getPrice({ fetching: fetching }).then(priceBase => {
       if (priceBase) {
-        newPriceBase(
-          priceBase['ethPrice'],
-          priceBase['linkPrice'],
-          priceBase['syflPrice'],
-          priceBase['yflusdPriceBase']
-        )
+        newPriceBase(priceBase['ethPrice'], priceBase['linkPrice'], priceBase['yflPrice'], priceBase['yflusdPrice'])
       }
     })
   } else {
