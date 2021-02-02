@@ -15,10 +15,10 @@ export default function TradePrice({ price, showInverted, priceImpactSeverity }:
   const theme = useContext(ThemeContext)
   const priceObject = useGetPriceBase()
   let baseCurrency = 'ETH'
-  if (price?.baseCurrency?.symbol === 'LINK' && price?.quoteCurrency?.symbol !== 'ETH') {
+  if (price?.baseCurrency?.symbol === 'LINK') {
     baseCurrency = 'LINK'
   }
-  if (price?.baseCurrency?.symbol === 'YFLUSD' && price?.quoteCurrency?.symbol !== 'ETH') {
+  if (price?.baseCurrency?.symbol === 'YFLUSD') {
     baseCurrency = 'YFLUSD'
   }
   const priceBase =
