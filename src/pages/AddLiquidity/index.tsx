@@ -17,8 +17,6 @@ import { SwapPoolTabs, AddRemoveTabs } from '../../components/NavigationTabs'
 import { MinimalPositionCard } from '../../components/PositionCard'
 import Row, { RowBetween, RowFlat } from '../../components/Row'
 import { useTranslation } from 'react-i18next'
-// import Toggle from '../../components/Toggle'
-
 import { ROUTER_ADDRESS } from '../../constants'
 import { PairState } from '../../data/Reserves'
 import { useActiveWeb3React } from '../../hooks'
@@ -51,8 +49,17 @@ export default function AddLiquidity({
   const { account, chainId, library } = useActiveWeb3React()
   const theme = useContext(ThemeContext)
 
-  let currencyA = useCurrency(currencyIdA)
-  let currencyB = useCurrency(currencyIdB)
+  const curIdA =
+    currencyIdA !== 'ETH' &&
+    currencyIdA?.toLowerCase() !== '0x514910771af9ca656af840dff83e8264ecf986ca' &&
+    currencyIdA?.toLowerCase() !== '0x7b760d06e401f85545f3b50c44bf5b05308b7b62'
+      ? 'ETH'
+      : currencyIdA
+
+  const curIdB = curIdA === currencyIdB ? 'undefined' : currencyIdB
+
+  let currencyA = useCurrency(curIdA)
+  let currencyB = useCurrency(curIdB)
 
   const oneCurrencyIsWETH = Boolean(
     chainId &&
@@ -60,22 +67,56 @@ export default function AddLiquidity({
         (currencyB && currencyEquals(currencyB, WETH[chainId])))
   )
 
-  let newCurrencyA = currencyA
+  let newCurrencyA = currencyA ?? ETHER
   let newCurrencyB = currencyB
-  switch (currencyB?.symbol) {
-    case 'LINK':
-      if (currencyA?.symbol !== 'ETH') {
-        newCurrencyA = currencyB
-        newCurrencyB = currencyA
-      }
-      break
 
-    case 'ETH':
-      if (currencyA?.symbol !== 'LINK') {
-        newCurrencyA = currencyB
-        newCurrencyB = currencyA
+  if (currencyA?.symbol && currencyB?.symbol) {
+    switch (currencyB?.symbol) {
+      case 'LINK':
+        if (currencyA?.symbol !== 'ETH' && currencyA?.symbol !== 'YFLUSD') {
+          newCurrencyA = currencyB
+          newCurrencyB = currencyA
+        }
+        if (currencyA?.symbol === currencyB?.symbol) {
+          newCurrencyA = ETHER
+          newCurrencyB = currencyA
+        }
+        break
+
+      case 'ETH':
+        if (currencyA?.symbol !== 'LINK' && currencyA?.symbol !== 'YFLUSD') {
+          newCurrencyA = ETHER
+          newCurrencyB = currencyA
+        }
+        if (currencyA?.symbol === currencyB?.symbol) {
+          newCurrencyA = ETHER
+          newCurrencyB = undefined
+        }
+        break
+
+      case 'YFLUSD':
+        if (currencyA?.symbol !== 'ETH' && currencyA?.symbol !== 'LINK') {
+          newCurrencyA = currencyB
+          newCurrencyB = currencyA
+        }
+        if (currencyA?.symbol === currencyB?.symbol) {
+          newCurrencyA = ETHER
+          newCurrencyB = currencyA
+        }
+        break
+    }
+    if (newCurrencyA.symbol === newCurrencyB?.symbol) {
+      if (newCurrencyA.symbol !== 'ETH' && newCurrencyB !== null) {
+        const newCurrencyBId = currencyId(newCurrencyB ?? ETHER)
+        if (newCurrencyBId !== 'ETH') {
+          history.push(`/add/ETH/${newCurrencyBId}`)
+        }
+        newCurrencyA = ETHER
+      } else {
+        history.push(`/add/ETH`)
+        newCurrencyB = undefined
       }
-      break
+    }
   }
 
   currencyA = newCurrencyA
@@ -112,7 +153,7 @@ export default function AddLiquidity({
   const [deadline] = useUserDeadline() // custom from users settings
   const [allowedSlippage] = useUserSlippageTolerance() // custom from users
   const [txHash, setTxHash] = useState<string>('')
-
+  const [update, setUpdate] = useState(false)
   // get formatted amounts
   const formattedAmounts = {
     [independentField]: typedValue,
@@ -302,30 +343,28 @@ export default function AddLiquidity({
   })
 
   const handleCurrencyASelect = useCallback(
-    (currencyA: Currency) => {
-      const newCurrencyIdA = currencyId(currencyA)
+    (selectedCurrencyA: Currency) => {
+      const newCurrencyIdA = currencyId(selectedCurrencyA)
       if (newCurrencyIdA === currencyIdB) {
-        history.push(`/add/${currencyIdB}/${currencyIdA}`)
+        history.push(`/add/${currencyIdB}`)
       } else {
         history.push(`/add/${newCurrencyIdA}/${currencyIdB}`)
       }
+      setUpdate(!update)
     },
-    [currencyIdB, history, currencyIdA]
+    [currencyIdB, history, update]
   )
   const handleCurrencyBSelect = useCallback(
-    (currencyB: Currency) => {
-      const newCurrencyIdB = currencyId(currencyB)
+    (selectedCurrencyB: Currency) => {
+      const newCurrencyIdB = currencyId(selectedCurrencyB)
       if (currencyIdA === newCurrencyIdB) {
-        if (currencyIdB) {
-          history.push(`/add/${currencyIdB}/${newCurrencyIdB}`)
-        } else {
-          history.push(`/add/${newCurrencyIdB}`)
-        }
+        history.push(`/add/${newCurrencyIdB}`)
       } else {
         history.push(`/add/${currencyIdA ? currencyIdA : 'ETH'}/${newCurrencyIdB}`)
       }
+      setUpdate(!update)
     },
-    [currencyIdA, history, currencyIdB]
+    [currencyIdA, history, update]
   )
 
   const handleDismissConfirmation = useCallback(() => {
@@ -339,6 +378,8 @@ export default function AddLiquidity({
 
   useTokenUsdPrices()
   useLPTokenUsdPrices()
+
+  console.log('UPDATE')
   return (
     <>
       <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.appBGColor, marginBottom: '16px' }}>
@@ -388,7 +429,7 @@ export default function AddLiquidity({
               }}
               onCurrencySelect={handleCurrencyASelect}
               showMaxButton={!atMaxAmounts[Field.CURRENCY_A]}
-              currency={currencies[Field.CURRENCY_A]}
+              currency={currencyA}
               id="add-liquidity-input-tokena"
               showCommonBases
             />
@@ -403,7 +444,7 @@ export default function AddLiquidity({
                 onFieldBInput(maxAmounts[Field.CURRENCY_B]?.toExact() ?? '')
               }}
               showMaxButton={!atMaxAmounts[Field.CURRENCY_B]}
-              currency={currencies[Field.CURRENCY_B]}
+              currency={currencyB}
               id="add-liquidity-input-tokenb"
               showCommonBases
             />
