@@ -378,8 +378,6 @@ export default function AddLiquidity({
 
   useTokenUsdPrices()
   useLPTokenUsdPrices()
-
-  console.log('UPDATE')
   return (
     <>
       <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.appBGColor, marginBottom: '16px' }}>

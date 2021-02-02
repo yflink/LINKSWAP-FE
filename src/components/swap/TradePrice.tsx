@@ -32,7 +32,11 @@ export default function TradePrice({ price, showInverted, priceImpactSeverity }:
   const tokenPrice = Number(formattedPrice) || 1
 
   let usdPrice = showInverted ? priceBase : tokenPrice * priceBase
-  if (price?.baseCurrency?.symbol !== 'ETH' && price?.baseCurrency?.symbol !== 'LINK') {
+  if (
+    price?.baseCurrency?.symbol !== 'ETH' &&
+    price?.baseCurrency?.symbol !== 'LINK' &&
+    price?.baseCurrency?.symbol !== 'YFLUSD'
+  ) {
     usdPrice = showInverted ? tokenPrice * priceBase : priceBase
   }
 
