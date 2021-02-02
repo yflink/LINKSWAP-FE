@@ -14,7 +14,7 @@ interface TradePriceProps {
 export default function TradePrice({ price, showInverted, priceImpactSeverity }: TradePriceProps) {
   const theme = useContext(ThemeContext)
   const priceObject = useGetPriceBase()
-  let baseCurrency = price?.baseCurrency?.symbol
+  let baseCurrency = 'ETH'
   if (
     (price?.baseCurrency?.symbol === 'LINK' || price?.quoteCurrency?.symbol === 'LINK') &&
     price?.baseCurrency?.symbol !== 'ETH' &&
