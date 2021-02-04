@@ -144,6 +144,7 @@ export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } 
     [MASQ, WETHER],
     [MASQ, LINK],
     [LINK, YAX],
+    [YAX, WETHER],
     [WBTC, LINK],
     [LINK, GSWAP],
     [LINK, DOKI],
@@ -258,6 +259,10 @@ export const ACTIVE_REWARD_POOLS = [
   {
     address: '0xbe755C548D585dbc4e3Fe4bcD712a32Fd81e5Ba0',
     rewardsAddress: '0x795BD26b99082E59478cfe8d9Cd207bb196808E4'
+  },
+  {
+    address: '0x21dee38170F1e1F26baFf2C30C0fc8F8362b6961',
+    rewardsAddress: '0xBfe0D843D3DA0953EcEf08Fc231033D4B140a085'
   }
 ]
 
