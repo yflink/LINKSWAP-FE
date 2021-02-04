@@ -262,7 +262,7 @@ export const ACTIVE_REWARD_POOLS = [
   },
   {
     address: '0x21dee38170F1e1F26baFf2C30C0fc8F8362b6961',
-    rewardsAddress: '0x3bE07ed0239d46ca8435D4fb0bE96E43cD1c1796'
+    rewardsAddress: '0xBfe0D843D3DA0953EcEf08Fc231033D4B140a085'
   }
 ]
 
