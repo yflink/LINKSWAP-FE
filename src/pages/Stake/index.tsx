@@ -98,7 +98,6 @@ export default function StakeOverview() {
     }
   }
 
-  console.log('---------', tokenPairsWithLiquidityTokens)
   const { t } = useTranslation()
   useTokenUsdPrices()
   useLPTokenUsdPrices()
