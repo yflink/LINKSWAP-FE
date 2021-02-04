@@ -210,7 +210,7 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
 export const ACTIVE_REWARD_POOLS = [
   {
     address: '0x7e5A536F3d79791E283940ec379CEE10C9C40e86',
-    rewardsAddress: '0x72368fB97dab2B94A5664EbeEbF504EF482fF149'
+    rewardsAddress: '0x3bE07ed0239d46ca8435D4fb0bE96E43cD1c1796'
   },
   {
     address: '0x189A730921550314934019d184EC05726881D481',
