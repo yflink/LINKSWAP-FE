@@ -147,20 +147,20 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
   let currencyB = currency1
   switch (currency1?.symbol) {
     case 'LINK':
-      if (currency0?.symbol !== 'ETH' && currency0?.symbol !== 'YFL') {
+      if (currency0?.symbol !== 'ETH' && currency0?.symbol !== 'YFLUSD') {
         currencyA = currency1
         currencyB = currency0
       }
       break
 
     case 'ETH':
-      if (currency0?.symbol !== 'LINK' && currency0?.symbol !== 'YFL') {
+      if (currency0?.symbol !== 'LINK' && currency0?.symbol !== 'YFLUSD') {
         currencyA = currency1
         currencyB = currency0
       }
       break
 
-    case 'YFL':
+    case 'YFLUSD':
       if (currency0?.symbol !== 'LINK' && currency0?.symbol !== 'ETH') {
         currencyA = currency1
         currencyB = currency0
@@ -312,20 +312,20 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
   })
   switch (currency1?.symbol) {
     case 'LINK':
-      if (currency0?.symbol !== 'ETH' && currency0?.symbol !== 'YFL') {
+      if (currency0?.symbol !== 'ETH' && currency0?.symbol !== 'YFLUSD') {
         currencyA = currency1
         currencyB = currency0
       }
       break
 
     case 'ETH':
-      if (currency0?.symbol !== 'LINK' && currency0?.symbol !== 'YFL') {
+      if (currency0?.symbol !== 'LINK' && currency0?.symbol !== 'YFLUSD') {
         currencyA = currency1
         currencyB = currency0
       }
       break
 
-    case 'YFL':
+    case 'YFLUSD':
       if (currency0?.symbol !== 'LINK' && currency0?.symbol !== 'ETH') {
         currencyA = currency1
         currencyB = currency0
@@ -439,16 +439,16 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
             </FixedHeightRow>
 
             <RowBetween marginTop="10px">
-              <ButtonSecondary as={Link} to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`} width="48%">
+              <ButtonSecondary as={Link} to={`/add/${currencyId(currencyA)}/${currencyId(currencyB)}`} width="48%">
                 {t('add')}
               </ButtonSecondary>
-              <ButtonSecondary as={Link} width="48%" to={`/remove/${currencyId(currency0)}/${currencyId(currency1)}`}>
+              <ButtonSecondary as={Link} width="48%" to={`/remove/${currencyId(currencyA)}/${currencyId(currencyB)}`}>
                 {t('remove')}
               </ButtonSecondary>
             </RowBetween>
             {rewards && (
               <RowBetween marginTop="10px">
-                <ButtonSecondary as={Link} width="100%" to={`/stake/${currencyId(currency0)}/${currencyId(currency1)}`}>
+                <ButtonSecondary as={Link} width="100%" to={`/stake/${currencyId(currencyA)}/${currencyId(currencyB)}`}>
                   {t('stake')}
                 </ButtonSecondary>
               </RowBetween>
@@ -809,20 +809,20 @@ export function FullStakingCard({
 
   switch (currency1?.symbol) {
     case 'LINK':
-      if (currency0?.symbol !== 'ETH' && currency0?.symbol !== 'YFL') {
+      if (currency0?.symbol !== 'ETH' && currency0?.symbol !== 'YFLUSD') {
         currencyA = currency1
         currencyB = currency0
       }
       break
 
     case 'ETH':
-      if (currency0?.symbol !== 'LINK' && currency0?.symbol !== 'YFL') {
+      if (currency0?.symbol !== 'LINK' && currency0?.symbol !== 'YFLUSD') {
         currencyA = currency1
         currencyB = currency0
       }
       break
 
-    case 'YFL':
+    case 'YFLUSD':
       if (currency0?.symbol !== 'LINK' && currency0?.symbol !== 'ETH') {
         currencyA = currency1
         currencyB = currency0
@@ -1018,7 +1018,7 @@ export function FullStakingCard({
                   ) : (
                     <ButtonSecondary
                       as={Link}
-                      to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}
+                      to={`/add/${currencyId(currencyA)}/${currencyId(currencyB)}`}
                       width="100%"
                     >
                       {t('addLiquidity')}
