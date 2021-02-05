@@ -16,7 +16,7 @@ import AppBody, { BodyWrapper } from '../AppBody'
 import { Dots } from '../../components/swap/styleds'
 import { useTranslation } from 'react-i18next'
 import { StakePools } from '../../components/Stake'
-import { ACTIVE_REWARD_POOLS } from '../../constants'
+import { ACTIVE_REWARD_POOLS, INACTIVE_REWARD_POOLS } from '../../constants'
 import { useTokenUsdPrices } from '../../hooks/useTokenUsdPrice'
 import { useLPTokenUsdPrices } from '../../hooks/useLPTokenUsdPrice'
 import Toggle from '../../components/Toggle'
@@ -41,6 +41,10 @@ export default function StakeOverview() {
   const liquidityTokens = useMemo(() => tokenPairsWithLiquidityTokens.map(tpwlt => tpwlt.liquidityToken), [
     tokenPairsWithLiquidityTokens
   ])
+  const inactiveTokenPairsWithLiquidityTokens = useMemo(
+    () => trackedTokenPairs.map(tokens => ({ liquidityToken: toV2LiquidityToken(tokens), tokens })),
+    [trackedTokenPairs]
+  )
   const [v2PairsBalances, fetchingV2PairBalances] = useTokenBalancesWithLoadingIndicator(
     account ?? undefined,
     liquidityTokens
@@ -84,6 +88,40 @@ export default function StakeOverview() {
       ACTIVE_REWARD_POOLS.forEach(poolObject => {
         let returnValue: any = false
         tokenPairsWithLiquidityTokens.forEach((pool: any) => {
+          if (pool.liquidityToken.address === poolObject.address) {
+            pool.rewardsAddress = poolObject.rewardsAddress
+            returnValue = pool
+            return
+          }
+        })
+        if (returnValue) {
+          allStakePools.push(returnValue)
+          setAllRewardPools(allStakePools)
+        }
+      })
+    }
+  }
+
+  if (allRewardPools.length === 0) {
+    const allStakePools: any[] = []
+    if (Boolean(allRewardPools)) {
+      ACTIVE_REWARD_POOLS.forEach(poolObject => {
+        let returnValue: any = false
+        tokenPairsWithLiquidityTokens.forEach((pool: any) => {
+          if (pool.liquidityToken.address === poolObject.address) {
+            pool.rewardsAddress = poolObject.rewardsAddress
+            returnValue = pool
+            return
+          }
+        })
+        if (returnValue) {
+          allStakePools.push(returnValue)
+          setAllRewardPools(allStakePools)
+        }
+      })
+      INACTIVE_REWARD_POOLS.forEach(poolObject => {
+        let returnValue: any = false
+        inactiveTokenPairsWithLiquidityTokens.forEach((pool: any) => {
           if (pool.liquidityToken.address === poolObject.address) {
             pool.rewardsAddress = poolObject.rewardsAddress
             returnValue = pool
