@@ -266,6 +266,12 @@ export const ACTIVE_REWARD_POOLS = [
   }
 ]
 
+export const INACTIVE_REWARD_POOLS = [
+  {
+    address: '0x7e5A536F3d79791E283940ec379CEE10C9C40e86',
+    rewardsAddress: '0x72368fB97dab2B94A5664EbeEbF504EF482fF149'
+  }
+]
 export const NetworkContextName = 'NETWORK'
 
 // default allowed slippage, in bips
