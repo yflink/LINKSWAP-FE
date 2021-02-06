@@ -270,6 +270,10 @@ export const INACTIVE_REWARD_POOLS = [
   {
     address: '0x7e5A536F3d79791E283940ec379CEE10C9C40e86',
     rewardsAddress: '0x72368fB97dab2B94A5664EbeEbF504EF482fF149'
+  },
+  {
+    address: '0x37CeE65899dA4B1738412814155540C98DFd752C',
+    rewardsAddress: '0x1B62ac658Ca7D037777D24aa629613633221eFfc'
   }
 ]
 export const NetworkContextName = 'NETWORK'
