@@ -12,6 +12,7 @@ import burn from './burn/reducer'
 import multicall from './multicall/reducer'
 import price from './price/reducer'
 import gas from './gas/reducer'
+import navigation from './navigation/reducer'
 
 const PERSISTED_KEYS: string[] = ['user', 'transactions', 'lists']
 
@@ -26,7 +27,8 @@ const store = configureStore({
     multicall,
     lists,
     price,
-    gas
+    gas,
+    navigation
   },
   middleware: [...getDefaultMiddleware({ thunk: false }), save({ states: PERSISTED_KEYS })],
   preloadedState: load({ states: PERSISTED_KEYS })

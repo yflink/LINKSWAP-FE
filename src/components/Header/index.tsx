@@ -176,23 +176,6 @@ export default function Header() {
             </Title>{' '}
             {hasSublogo && <SubLogo src={theme.logo}></SubLogo>}
           </LogoWrapper>
-
-          {!isMobile && (
-            <HeaderElementMobile>
-              <Title style={{ marginInlineStart: 24 }} target="_blank" href="https://yflink.io/#/stake">
-                <MenuText>Stake & Vote</MenuText>
-              </Title>
-              <Title style={{ marginInlineStart: 24 }} target="_blank" href="https://info.linkswap.app">
-                <MenuText>Charts</MenuText>
-              </Title>
-              <Title style={{ marginInlineStart: 24 }} target="_blank" href="https://yflusd.linkswap.app">
-                <MenuText>YFLUSD</MenuText>
-              </Title>
-              <Title style={{ marginInlineStart: 24 }} href="/#/ren">
-                <MenuText>renDOGE</MenuText>
-              </Title>
-            </HeaderElementMobile>
-          )}
         </HeaderElement>
         <HeaderControls style={{ flex: '0' }}>
           <HeaderElementWrap>

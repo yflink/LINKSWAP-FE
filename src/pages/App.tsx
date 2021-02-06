@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 import GoogleAnalyticsReporter from '../components/analytics/GoogleAnalyticsReporter'
 import Header from '../components/Header'
-// import Popups from '../components/Popups'
+
 import Web3ReactManager from '../components/Web3ReactManager'
 import ThemeQueryParamReader from '../theme/ThemeQueryParamReader'
 
@@ -40,6 +40,7 @@ import StakeOverview from './Stake'
 import { RedirectToStake, RedirectToUnstake } from './Stake/redirects'
 
 import { ExternalLink } from 'react-feather'
+import Navigation from '../components/Navigation'
 
 const AppWrapper = styled.div`
   display: flex;
@@ -76,6 +77,24 @@ const BodyWrapper = styled.div`
   ${({ theme }) => theme.mediaWidth.upToSmall`
     padding: 0 0 16px;
   `};-
+`
+
+const NavigationWrapper = styled.div`
+  height: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 15rem;
+  display: flex;
+  flex: 0 0 15rem;
+  flex-direction: column;
+  flex-wrap: wrap;
+  background-color: ${({ theme }) => theme.modalBG};
+  border-left: 1px solid ${({ theme }) => theme.modalBorder};
+  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.01), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04),
+    0px 24px 32px rgba(0, 0, 0, 0.01);
+  overflow-x: hidden;
+  overflow-y: auto;
 `
 
 const FooterWrapper = styled.div`
@@ -125,37 +144,46 @@ export default function App() {
           <BodyWrapper>
             {/* <Popups /> */}
             <Web3ReactManager>
-              <Switch>
-                <Route exact strict path="/buy" component={Buy} />
-                <Route exact strict path="/swap" component={Swap} />
-                <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap} />
-                <Route exact strict path="/swap/:theme/:outputCurrency" component={RedirectThemeOutputToSwap} />
-                <Route
-                  exact
-                  strict
-                  path="/swap/:theme/:inputCurrency/:outputCurrency"
-                  component={RedirectThemeInputOutputToSwap}
-                />
-                <Route exact strict path="/send" component={RedirectPathToSwapOnly} />
-                <Route exact strict path="/find" component={PoolFinder} />
-                <Route exact strict path="/pool" component={Pool} />
-                <Route exact path="/add" component={AddLiquidity} />
-                <Route exact path="/add/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
-                <Route exact path="/add/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
-                <Route exact strict path="/remove/:tokens" component={RedirectOldRemoveLiquidityPathStructure} />
-                <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
-                <Route exact strict path="/create" component={CreatePair} />
-                <Route exact strict path="/stake" component={StakeOverview} />
-                <Route exact strict path="/unstake" component={StakeOverview} />
-                <Route exact strict path="/stake/:currencyIdA/:currencyIdB" component={RedirectToStake} />
-                <Route exact strict path="/unstake/:currencyIdA/:currencyIdB" component={RedirectToUnstake} />
-                <Route exact path="/create/:currencyIdA" component={CreatePairRedirectOldPathStructure} />
-                <Route exact path="/create/:currencyIdA/:currencyIdB" component={CreatePairRedirectDuplicateTokenIds} />
-                <Route exact strict path="/previewlisting" component={PreviewListing} />{' '}
-                <Route exact strict path="/analyze" component={Analyze} />
-                <Route exact strict path="/ren" component={Ren} />
-                <Route component={RedirectPathToSwapOnly} />
-              </Switch>
+              <>
+                <Switch>
+                  <Route exact strict path="/buy" component={Buy} />
+                  <Route exact strict path="/swap" component={Swap} />
+                  <Route exact strict path="/swap/:inputCurrency" component={RedirectToSwap} />
+                  <Route exact strict path="/swap/:theme/:outputCurrency" component={RedirectThemeOutputToSwap} />
+                  <Route
+                    exact
+                    strict
+                    path="/swap/:theme/:inputCurrency/:outputCurrency"
+                    component={RedirectThemeInputOutputToSwap}
+                  />
+                  <Route exact strict path="/send" component={RedirectPathToSwapOnly} />
+                  <Route exact strict path="/find" component={PoolFinder} />
+                  <Route exact strict path="/pool" component={Pool} />
+                  <Route exact path="/add" component={AddLiquidity} />
+                  <Route exact path="/add/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
+                  <Route exact path="/add/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
+                  <Route exact strict path="/remove/:tokens" component={RedirectOldRemoveLiquidityPathStructure} />
+                  <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
+                  <Route exact strict path="/create" component={CreatePair} />
+                  <Route exact strict path="/stake" component={StakeOverview} />
+                  <Route exact strict path="/unstake" component={StakeOverview} />
+                  <Route exact strict path="/stake/:currencyIdA/:currencyIdB" component={RedirectToStake} />
+                  <Route exact strict path="/unstake/:currencyIdA/:currencyIdB" component={RedirectToUnstake} />
+                  <Route exact path="/create/:currencyIdA" component={CreatePairRedirectOldPathStructure} />
+                  <Route
+                    exact
+                    path="/create/:currencyIdA/:currencyIdB"
+                    component={CreatePairRedirectDuplicateTokenIds}
+                  />
+                  <Route exact strict path="/previewlisting" component={PreviewListing} />{' '}
+                  <Route exact strict path="/analyze" component={Analyze} />
+                  <Route exact strict path="/ren" component={Ren} />
+                  <Route component={RedirectPathToSwapOnly} />
+                </Switch>
+                <NavigationWrapper>
+                  <Navigation />
+                </NavigationWrapper>
+              </>
             </Web3ReactManager>
           </BodyWrapper>
           <FooterWrapper>
