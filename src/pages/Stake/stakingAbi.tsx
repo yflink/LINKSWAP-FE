@@ -968,7 +968,7 @@ export const ERC20 = [
     type: 'function'
   }
 ]
-export const RewardsPool = [
+export const syflPool = [
   {
     inputs: [
       { internalType: 'address', name: 'syfl_', type: 'address' },
