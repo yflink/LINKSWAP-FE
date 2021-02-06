@@ -17,7 +17,7 @@ import { useActiveWeb3React } from '../../hooks'
 import { useCurrency, useToken } from '../../hooks/Tokens'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { Field } from '../../state/mint/actions'
-import { StakingRewards } from './stakingAbi'
+import { StakingRewards, syflPool } from './stakingAbi'
 import { useDerivedMintInfo, useMintActionHandlers, useMintState } from '../../state/mint/hooks'
 import { toV2LiquidityToken } from '../../state/user/hooks'
 import { calculateGasMargin, getContract } from '../../utils'
@@ -60,6 +60,7 @@ export default function Unstake({
   const currencyB = useCurrency(currencyIdB)
   const fakeContract = '0x0000000000000000000000000000000000000000'
   const [rewardsContractAddress, setRewardsContractAddress] = useState(fakeContract)
+  const [abi, setAbi] = useState<any[]>(StakingRewards)
   let liquidityToken: any
   let wrappedLiquidityToken
   let hasError
@@ -82,6 +83,8 @@ export default function Unstake({
       ACTIVE_REWARD_POOLS.forEach((pool: any) => {
         if (pool.address === liquidityTokenAddress) {
           setRewardsContractAddress(pool.rewardsAddress)
+          const abi = pool.abi !== 'StakingRewards' ? syflPool : StakingRewards
+          setAbi(abi)
         }
       })
     }
@@ -128,7 +131,7 @@ export default function Unstake({
 
   async function onAdd(contractAddress: string) {
     if (rewardsContractAddress === fakeContract || !chainId || !library || !account) return
-    const router = getContract(contractAddress, StakingRewards, library, account)
+    const router = getContract(contractAddress, abi, library, account)
 
     const { [Field.CURRENCY_A]: parsedAmountA } = parsedAmounts
 
@@ -136,8 +139,9 @@ export default function Unstake({
       return
     }
 
-    const estimate = router.estimateGas.unstakeAndClaimRewards
-    const method: (...args: any) => Promise<TransactionResponse> = router.unstakeAndClaimRewards
+    const estimate = abi === StakingRewards ? router.estimateGas.unstakeAndClaimRewards : router.estimateGas.withdraw
+    const method: (...args: any) => Promise<TransactionResponse> =
+      abi === StakingRewards ? router.unstakeAndClaimRewards : router.withdraw
     const args: Array<string | string[] | number> = [parsedAmountA.raw.toString()]
 
     const value: BigNumber | null = null
