@@ -209,6 +209,22 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
 
 export const ACTIVE_REWARD_POOLS = [
   {
+    address: '0x195734d862DFb5380eeDa0ACD8acf697eA95D370',
+    rewardsAddress: '0x6DddCc7F963C65b18FdDD842e6553528f014aDeA'
+  },
+  {
+    address: '0x6cD7817e6f3f52123df529E1eDF5830240Ce48c1',
+    rewardsAddress: '0x61401c19200B2420f93Bb2EECF4BAA2C193d76e1'
+  },
+  {
+    address: '0x3315351F0B20595777a28054EF3d514bdC37463d',
+    rewardsAddress: '0x81C76925E7F41f0306E1147c4659784d4402bD51'
+  },
+  {
+    address: '0x74C89f297b1dC87F927d9432a4eeea697E6f89a5',
+    rewardsAddress: '0x1b650B522b864f6BF61705A05cc89b2b0e23f9C6'
+  },
+  {
     address: '0x7e5A536F3d79791E283940ec379CEE10C9C40e86',
     rewardsAddress: '0x3bE07ed0239d46ca8435D4fb0bE96E43cD1c1796'
   },
