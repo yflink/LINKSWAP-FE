@@ -12,7 +12,7 @@ import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import { SwapPoolTabs } from '../../components/NavigationTabs'
 import { RowBetween } from '../../components/Row'
 import { useTranslation } from 'react-i18next'
-import { ACTIVE_REWARD_POOLS, UNI_POOLS } from '../../constants'
+import { ACTIVE_REWARD_POOLS, UNI_POOLS, WETHER } from '../../constants'
 import { useActiveWeb3React } from '../../hooks'
 import { useCurrency, useToken } from '../../hooks/Tokens'
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
@@ -109,7 +109,14 @@ export default function StakeIntoPool({
   let tokenA = useToken(currencyIdA)
   let tokenB = useToken(currencyIdB)
   const isUni = currencyIdA === 'UNI'
-  let uniEntry = { address: '', liquidityToken: '', rewardsAddress: '', tokens: [], balance: 0, liquidityUrl: '' }
+  let uniEntry = {
+    address: '',
+    liquidityToken: '',
+    rewardsAddress: '',
+    tokens: [WETHER, WETHER],
+    balance: 0,
+    liquidityUrl: ''
+  }
 
   if (!tokenA) {
     tokenA = chainId ? WETH[chainId] : WETH['1']
@@ -202,6 +209,9 @@ export default function StakeIntoPool({
     }
   }, {})
 
+  const currencyAsymbol = isUni ? uniEntry.tokens[0]?.symbol ?? 'ETH' : currencyA?.symbol ?? 'ETH'
+  const currencyBsymbol = isUni ? uniEntry.tokens[1]?.symbol ?? 'ETH' : currencyB?.symbol ?? 'ETH'
+
   const addTransaction = useTransactionAdder()
   const [approvalA, approveACallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_A], rewardsContractAddress)
   const { t } = useTranslation()
@@ -212,11 +222,10 @@ export default function StakeIntoPool({
 
   async function onAdd(contractAddress: string) {
     if (rewardsContractAddress === fakeContract || !chainId || !library || !account) return
+
     const router = getContract(contractAddress, abi, library, account)
 
-    const { [Field.CURRENCY_A]: parsedAmountA } = parsedAmounts
-
-    if (!parsedAmountA || !currencyA) {
+    if (!parsedAmountA) {
       return
     }
 
@@ -235,8 +244,8 @@ export default function StakeIntoPool({
           setBalance(Number(selectedCurrencyBalance?.toSignificant(6)))
           addTransaction(response, {
             summary: t('stakeLPTokenAmount', {
-              currencyASymbol: currencyA?.symbol,
-              currencyBSymbol: currencyB?.symbol,
+              currencyASymbol: currencyAsymbol,
+              currencyBSymbol: currencyBsymbol,
               amount: parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)
             })
           })

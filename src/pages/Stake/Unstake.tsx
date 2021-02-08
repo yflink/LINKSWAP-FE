@@ -12,7 +12,7 @@ import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import { SwapPoolTabs } from '../../components/NavigationTabs'
 import { RowBetween } from '../../components/Row'
 import { useTranslation } from 'react-i18next'
-import { ACTIVE_REWARD_POOLS, UNI_POOLS } from '../../constants'
+import { ACTIVE_REWARD_POOLS, UNI_POOLS, WETHER } from '../../constants'
 import { useActiveWeb3React } from '../../hooks'
 import { useCurrency, useToken } from '../../hooks/Tokens'
 import { useWalletModalToggle } from '../../state/application/hooks'
@@ -109,7 +109,14 @@ export default function Unstake({
   let tokenA = useToken(currencyIdA)
   let tokenB = useToken(currencyIdB)
   const isUni = currencyIdA === 'UNI'
-  let uniEntry = { address: '', liquidityToken: '', rewardsAddress: '', tokens: [], balance: 0, liquidityUrl: '' }
+  let uniEntry = {
+    address: '',
+    liquidityToken: '',
+    rewardsAddress: '',
+    tokens: [WETHER, WETHER],
+    balance: 0,
+    liquidityUrl: ''
+  }
 
   if (!tokenA) {
     tokenA = chainId ? WETH[chainId] : WETH['1']
@@ -197,6 +204,9 @@ export default function Unstake({
     }
   }, {})
 
+  const currencyAsymbol = isUni ? uniEntry.tokens[0]?.symbol ?? 'ETH' : currencyA?.symbol ?? 'ETH'
+  const currencyBsymbol = isUni ? uniEntry.tokens[1]?.symbol ?? 'ETH' : currencyB?.symbol ?? 'ETH'
+
   const addTransaction = useTransactionAdder()
   const { t } = useTranslation()
 
@@ -204,20 +214,15 @@ export default function Unstake({
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, liquidityToken ?? undefined)
   let buttonString = parsedAmountA ? t('unstake') : t('enterAmount')
 
-  async function onAdd(contractAddress: string) {
-    if (rewardsContractAddress === fakeContract || !chainId || !library || !account) return
-    const router = getContract(contractAddress, abi, library, account)
-
-    const { [Field.CURRENCY_A]: parsedAmountA } = parsedAmounts
-
-    if (!parsedAmountA || !currencyA) {
-      return
-    }
-
-    const estimate = abi === StakingRewards ? router.estimateGas.unstakeAndClaimRewards : router.estimateGas.withdraw
-    const method: (...args: any) => Promise<TransactionResponse> =
-      abi === StakingRewards ? router.unstakeAndClaimRewards : router.withdraw
-    const args: Array<string | string[] | number> = [parsedAmountA.raw.toString()]
+  async function unstakeAndClaimRewards(rewardsContractAddress: string) {
+    if (!chainId || !library || !account || !parsedAmountA) return
+    const router = getContract(rewardsContractAddress, abi, library, account)
+    const isDefault = abi === StakingRewards
+    const estimate = isDefault ? router.estimateGas.unstakeAndClaimRewards : router.estimateGas.exit
+    const method: (...args: any) => Promise<TransactionResponse> = isDefault
+      ? router.unstakeAndClaimRewards
+      : router.exit
+    const args: Array<string> = isDefault ? [parsedAmountA.raw.toString()] : []
 
     const value: BigNumber | null = null
     await estimate(...args, value ? { value } : {})
@@ -226,24 +231,21 @@ export default function Unstake({
           ...(value ? { value } : {}),
           gasLimit: calculateGasMargin(estimatedGasLimit)
         }).then(response => {
-          setUnstaking(true)
-          setBalance(userBalance)
           addTransaction(response, {
-            summary: t('unStakeLPTokenAmount', {
-              currencyASymbol: currencyA?.symbol,
-              currencyBSymbol: currencyB?.symbol,
-              amount: parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)
+            summary: t('unstakeAndClaimRewardsOnPool', {
+              currencyASymbol: currencyAsymbol,
+              currencyBSymbol: currencyBsymbol
             })
           })
+
           ReactGA.event({
             category: 'Staking',
-            action: 'Unstake',
-            label: currencies[Field.CURRENCY_A]?.symbol
+            action: 'UnstkeAndClaimRewards',
+            label: currencyAsymbol + ' | ' + currencyBsymbol
           })
         })
       )
       .catch(error => {
-        setUnstaking(false)
         if (error?.code !== 4001) {
           console.error(error)
         }
@@ -349,7 +351,7 @@ export default function Unstake({
               <ButtonPrimary
                 style={{ fontSize: '20px' }}
                 onClick={() => {
-                  onAdd(rewardsContractAddress)
+                  unstakeAndClaimRewards(rewardsContractAddress)
                 }}
                 disabled={hasError || !parsedAmountA}
               >

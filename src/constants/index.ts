@@ -331,9 +331,9 @@ export const MFGWETH_POOL = new Token(
 export const UNI_POOLS = {
   MFGWETH: {
     liquidityToken: MFGWETH_POOL,
-    rewardsAddress: '0x3bE07ed0239d46ca8435D4fb0bE96E43cD1c1796',
+    rewardsAddress: '0xecAFcbe4Be14718890707133A4F928EB2871796D',
     tokens: [MFG, WETHER],
-    balance: '0',
+    balance: 0,
     liquidityUrl: 'https://app.uniswap.org/#/add/ETH/0x6710c63432A2De02954fc0f851db07146a6c0312',
     abi: 'StakingRewards'
   }
