@@ -16,7 +16,7 @@ import AppBody, { BodyWrapper } from '../AppBody'
 import { Dots } from '../../components/swap/styleds'
 import { useTranslation } from 'react-i18next'
 import { StakePools } from '../../components/Stake'
-import { ACTIVE_REWARD_POOLS, INACTIVE_REWARD_POOLS } from '../../constants'
+import { ACTIVE_REWARD_POOLS, INACTIVE_REWARD_POOLS, UNI_POOLS } from '../../constants'
 import { useTokenUsdPrices } from '../../hooks/useTokenUsdPrice'
 import { useLPTokenUsdPrices } from '../../hooks/useLPTokenUsdPrice'
 import Toggle from '../../components/Toggle'
@@ -30,6 +30,8 @@ export default function StakeOverview() {
   const { account } = useActiveWeb3React()
   const [myRewardPools, setMyRewardPools] = useState<any | null>([])
   const [allRewardPools, setAllRewardPools] = useState<any | null>([])
+  const [uniPoolsAdded, setUniPoolsAdded] = useState(false)
+  const [myUniPoolsAdded, setMyUniPoolsAdded] = useState(false)
   const [showOwn, setShowOwn] = useState(false)
   const [showExpired, setShowExpired] = useState(false)
   // fetch the user's balances of all tracked V2 LP tokens
@@ -80,26 +82,14 @@ export default function StakeOverview() {
         setMyRewardPools(myStakePools)
       }
     })
-  }
-
-  if (allRewardPools.length === 0) {
-    if (Boolean(allRewardPools)) {
-      const allStakePools: any[] = []
-      ACTIVE_REWARD_POOLS.forEach(poolObject => {
-        let returnValue: any = false
-        tokenPairsWithLiquidityTokens.forEach((pool: any) => {
-          if (pool.liquidityToken.address === poolObject.address) {
-            pool.rewardsAddress = poolObject.rewardsAddress
-            pool.abi = poolObject.abi
-            returnValue = pool
-            return
-          }
-        })
-        if (returnValue) {
-          allStakePools.push(returnValue)
-          setAllRewardPools(allStakePools)
-        }
-      })
+    if (!myUniPoolsAdded) {
+      const mfg = UNI_POOLS.MFGWETH
+      mfg.balance = v2PairsBalances[mfg.liquidityToken.address]?.toSignificant(6) || '0'
+      if (Number(mfg.balance) > 0) {
+        myStakePools.push(mfg)
+        setMyRewardPools(myStakePools)
+      }
+      setMyUniPoolsAdded(true)
     }
   }
 
@@ -136,6 +126,11 @@ export default function StakeOverview() {
           setAllRewardPools(allStakePools)
         }
       })
+      if (!uniPoolsAdded) {
+        allStakePools.push(UNI_POOLS.MFGWETH)
+        setAllRewardPools(allStakePools)
+        setUniPoolsAdded(true)
+      }
     }
   }
 

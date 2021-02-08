@@ -105,6 +105,32 @@ const StakingCard = styled(Card)<{ highlight?: boolean; show?: boolean }>`
   }
 `
 
+export const ExternalButton = styled.a`
+  background-color: ${({ theme }) => theme.buttonSecondaryBG};
+  color: ${({ theme }) => theme.buttonSecondaryTextColor};
+  font-size: 16px;
+  border-radius: 6px;
+  padding: 10px;
+  width: 100%;
+  text-decoration: none;
+  text-align: center;
+
+  &:focus {
+    box-shadow: 0 0 0 1pt ${({ theme }) => theme.buttonSecondaryBorderHover};
+    background-color: ${({ theme }) => theme.buttonSecondaryBGHover};
+    color: ${({ theme }) => theme.buttonSecondaryTextColorHover};
+  }
+  &:hover {
+    background-color: ${({ theme }) => theme.buttonSecondaryBGHover};
+    color: ${({ theme }) => theme.buttonSecondaryTextColorHover};
+  }
+  &:active {
+    box-shadow: 0 0 0 1pt ${({ theme }) => theme.buttonSecondaryBorderActive};
+    background-color: ${({ theme }) => theme.buttonSecondaryBGActive};
+    color: ${({ theme }) => theme.buttonSecondaryTextColorActive};
+  }
+`
+
 interface PositionCardProps {
   pair: Pair
   token?: any
@@ -294,7 +320,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
     }
   }
 
-  const stakePoolTotalLiq = lpTokenPrices ? lpTokenPrices[id].totalLiq : 0
+  const stakePoolTotalLiq = lpTokenPrices ? (lpTokenPrices[id] ? lpTokenPrices[id].totalLiq : 0) : 0
   const lpTokenPrice = stakePoolTotalLiq && totalLPSupply > 0 ? stakePoolTotalLiq / totalLPSupply : 0
   const userShareFactor = lpTokenPrice && poolTokenPercentage ? Number(poolTokenPercentage.toFixed(10)) / 100 : 0
   const userShareUsd = userShareFactor > 0 && stakePoolTotalLiq > 0 ? stakePoolTotalLiq * userShareFactor : 0
@@ -525,6 +551,8 @@ export function FullStakingCard({
   const { t } = useTranslation()
   const currency0 = unwrappedToken(values.tokens[0])
   const currency1 = unwrappedToken(values.tokens[1])
+  const [poolReserves, setPoolReserves] = useState<number[]>([0, 0])
+  const [poolTokenPrices, setPoolTokenPrices] = useState<number[]>([0, 0])
   const [rawUserBalance, setRawUserBalance] = useState<string>('0x00')
   const [userBalance, setUserBalance] = useState(0)
   const [userRewards, setUserRewards] = useState<string[]>(['', ''])
@@ -568,6 +596,7 @@ export function FullStakingCard({
   let apy = 0
   let currencyA = currency0
   let currencyB = currency1
+  let isUni = false
   const isDefault = values.abi === 'StakingRewards'
   const isYFLUSD =
     values.liquidityToken.address === '0x195734d862DFb5380eeDa0ACD8acf697eA95D370' ||
@@ -579,8 +608,8 @@ export function FullStakingCard({
       : getContract(values.rewardsAddress, abi, library, account)
   const lpContract =
     !chainId || !library || !account
-      ? getContract(values.liquidityToken.address, abi, fakeLibrary, fakeAccount)
-      : getContract(values.liquidityToken.address, abi, library, account)
+      ? getContract(values.liquidityToken.address, LINKSWAPLPToken, fakeLibrary, fakeAccount)
+      : getContract(values.liquidityToken.address, LINKSWAPLPToken, library, account)
 
   async function getUserBalance(account: string) {
     const method: (...args: any) => Promise<BigNumber> = rewardsContract.balanceOf
@@ -650,6 +679,58 @@ export function FullStakingCard({
     })
   }
 
+  async function getTokenPriceFromCoingecko(tokenAddress: string) {
+    const url = `https://api.coingecko.com/api/v3/simple/token_price/ethereum?contract_addresses=${tokenAddress}&vs_currencies=usd`
+    try {
+      const response = await fetch(url, {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        },
+        method: 'GET'
+      })
+
+      if (response.ok) {
+        const content = await response.json()
+        return content[tokenAddress].usd
+      } else {
+        return false
+      }
+    } catch (e) {
+      return false
+    } finally {
+      //console.log('fetched price')
+    }
+  }
+
+  async function getUniswapPoolLiquidity() {
+    const method: (...args: any) => Promise<any> = lpContract.getReserves
+    method().then(response => {
+      setPoolReserves([
+        hexStringToNumber(response[0]?.toString(), currency0.decimals),
+        hexStringToNumber(response[1]?.toString(), currency1.decimals)
+      ])
+      return 0
+    })
+  }
+
+  async function getUniswapPoolTokenPrices() {
+    if (tokenPrices) {
+      const tokenAddress0 = values.tokens[0].address.toLowerCase()
+      const tokenAddress1 = values.tokens[1].address.toLowerCase()
+      const tokenPrice0 = tokenPrices[tokenAddress0]
+        ? Number(tokenPrices[tokenAddress0].price)
+        : await getTokenPriceFromCoingecko(tokenAddress0)
+      const tokenPrice1 = tokenPrices[tokenAddress1]
+        ? Number(tokenPrices[tokenAddress1].price)
+        : await getTokenPriceFromCoingecko(tokenAddress1)
+      setPoolTokenPrices([tokenPrice0, tokenPrice1])
+    } else {
+      return
+    }
+  }
+
   if (rewardsContract) {
     if (account) {
       if (userBalance === 0) {
@@ -687,6 +768,18 @@ export function FullStakingCard({
     if (totalLPSupply === 0) {
       getTotalLPSupply()
     }
+
+    if (liquidityToken.symbol !== 'LSLP') {
+      if (poolReserves[0] === 0 && poolReserves[1] === 0) {
+        getUniswapPoolLiquidity()
+      }
+
+      if (poolTokenPrices[0] === 0 && poolTokenPrices[1] === 0) {
+        getUniswapPoolTokenPrices()
+      }
+
+      isUni = true
+    }
   }
 
   if (rewardTokens[0] !== '' && rewardTokens[1] !== '' && tokenPrices) {
@@ -701,6 +794,21 @@ export function FullStakingCard({
       if (rewardTokenRates[0]) {
         rewardInfo[0].rate = hexStringToNumber(rewardTokenRates[0], rewardInfo[0].decimals, 2, true)
       }
+    } else {
+      if (token0Address !== fakeAccount) {
+        if (values.tokens[0].address.toLowerCase() === token0Address && poolTokenPrices[0] !== 0) {
+          rewardInfo[0].address = token0Address
+          rewardInfo[0].decimals = currency0.decimals
+          rewardInfo[0].symbol = currency0.symbol
+          rewardInfo[0].price = poolTokenPrices[0]
+        }
+        if (values.tokens[1].address.toLowerCase() === token0Address && poolTokenPrices[1] !== 0) {
+          rewardInfo[0].address = token0Address
+          rewardInfo[0].decimals = currency0.decimals
+          rewardInfo[0].symbol = currency0.symbol
+          rewardInfo[0].price = poolTokenPrices[1]
+        }
+      }
     }
 
     if (tokenPrices[token1Address]) {
@@ -712,6 +820,21 @@ export function FullStakingCard({
       if (rewardTokenRates[1]) {
         rewardInfo[1].rate = hexStringToNumber(rewardTokenRates[1], rewardInfo[1].decimals, 2, true)
       }
+    } else {
+      if (token1Address !== fakeAccount) {
+        if (values.tokens[0].address.toLowerCase() === token1Address && poolTokenPrices[0] !== 0) {
+          rewardInfo[0].address = token1Address
+          rewardInfo[0].decimals = currency1.decimals
+          rewardInfo[0].symbol = currency1.symbol
+          rewardInfo[0].price = poolTokenPrices[0]
+        }
+        if (values.tokens[1].address.toLowerCase() === token1Address && poolTokenPrices[1] !== 0) {
+          rewardInfo[0].address = token1Address
+          rewardInfo[0].decimals = currency1.decimals
+          rewardInfo[0].symbol = currency1.symbol
+          rewardInfo[0].price = poolTokenPrices[1]
+        }
+      }
     }
   }
 
@@ -720,7 +843,18 @@ export function FullStakingCard({
     rewardInfo[1].userReward = hexStringToNumber(userRewards[1], rewardInfo[1].decimals)
   }
 
-  const stakePoolTotalLiq = lpTokenPrices ? lpTokenPrices[id].totalLiq : 0
+  let stakePoolTotalLiq = 0
+  if (isUni) {
+    if (poolTokenPrices[0] !== 0 && poolTokenPrices[1] !== 0 && poolReserves[0] !== 0 && poolReserves[1] !== 0) {
+      stakePoolTotalLiq = poolReserves[0] * poolTokenPrices[0] + poolReserves[1] * poolTokenPrices[1]
+    }
+  } else {
+    if (lpTokenPrices) {
+      if (lpTokenPrices[id]) {
+        stakePoolTotalLiq = lpTokenPrices[id].totalLiq
+      }
+    }
+  }
   const userShare = totalSupply > 0 && userBalance > 0 ? userBalance / (totalSupply / 100) : 0
   const lpTokenPrice = stakePoolTotalLiq && totalLPSupply > 0 ? stakePoolTotalLiq / totalLPSupply : 0
   const stakePoolTotalDeposited = lpTokenPrice ? totalSupply * lpTokenPrice : 0
@@ -933,13 +1067,25 @@ export function FullStakingCard({
               )}
               {my && !show && (
                 <RowBetween marginTop="10px">
-                  <ButtonSecondary
-                    as={Link}
-                    width="100%"
-                    to={`/stake/${currencyId(currency0)}/${currencyId(currency1)}`}
-                  >
-                    {t('stake')}
-                  </ButtonSecondary>
+                  <>
+                    {isUni ? (
+                      <ButtonSecondary
+                        as={Link}
+                        width="100%"
+                        to={`/stake/UNI/${values.tokens[0].symbol}${values.tokens[1].symbol}`}
+                      >
+                        {t('stake')}
+                      </ButtonSecondary>
+                    ) : (
+                      <ButtonSecondary
+                        as={Link}
+                        width="100%"
+                        to={`/stake/${currencyId(currency0)}/${currencyId(currency1)}`}
+                      >
+                        {t('stake')}
+                      </ButtonSecondary>
+                    )}
+                  </>
                 </RowBetween>
               )}
               <RowBetween>
@@ -1000,14 +1146,26 @@ export function FullStakingCard({
                   >
                     {t('claimRewards')}
                   </ButtonSecondary>
-                  <ButtonSecondary
-                    as={Link}
-                    width="48%"
-                    style={{ marginInlineStart: '1%' }}
-                    to={`/unstake/${currencyId(currency0)}/${currencyId(currency1)}`}
-                  >
-                    {t('unstake')}
-                  </ButtonSecondary>
+                  <>
+                    {isUni ? (
+                      <ButtonSecondary
+                        as={Link}
+                        width="48%"
+                        to={`/unstake/UNI/${values.tokens[0].symbol}${values.tokens[1].symbol}`}
+                      >
+                        {t('unstake')}
+                      </ButtonSecondary>
+                    ) : (
+                      <ButtonSecondary
+                        as={Link}
+                        width="48%"
+                        style={{ marginInlineStart: '1%' }}
+                        to={`/unstake/${currencyId(currency0)}/${currencyId(currency1)}`}
+                      >
+                        {t('unstake')}
+                      </ButtonSecondary>
+                    )}
+                  </>
                 </RowBetween>
               )}
               {userBalance > 0 && !my && (
@@ -1028,13 +1186,21 @@ export function FullStakingCard({
                   {!account ? (
                     <ButtonLight onClick={toggleWalletModal}>{t('connectWallet')}</ButtonLight>
                   ) : (
-                    <ButtonSecondary
-                      as={Link}
-                      to={`/add/${currencyId(currencyA)}/${currencyId(currencyB)}`}
-                      width="100%"
-                    >
-                      {t('addLiquidity')}
-                    </ButtonSecondary>
+                    <>
+                      {isUni ? (
+                        <ExternalButton target="_blank" href={values.liquidityUrl}>
+                          {t('addLiquidity')}
+                        </ExternalButton>
+                      ) : (
+                        <ButtonSecondary
+                          as={Link}
+                          to={`/add/${currencyId(currencyA)}/${currencyId(currencyB)}`}
+                          width="100%"
+                        >
+                          {t('addLiquidity')}
+                        </ButtonSecondary>
+                      )}
+                    </>
                   )}
                 </RowBetween>
               )}
