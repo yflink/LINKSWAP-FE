@@ -20,6 +20,10 @@ import { ACTIVE_REWARD_POOLS, INACTIVE_REWARD_POOLS, UNI_POOLS } from '../../con
 import { useTokenUsdPrices } from '../../hooks/useTokenUsdPrice'
 import { useLPTokenUsdPrices } from '../../hooks/useLPTokenUsdPrice'
 import Toggle from '../../components/Toggle'
+import { BigNumber } from '@ethersproject/bignumber'
+import hexStringToNumber from '../../utils/hexStringToNumber'
+import { getContract } from '../../utils'
+import { LINKSWAPLPToken } from './stakingAbi'
 
 export const MyStakePools = styled(BodyWrapper)`
   margin: 0 0 24px;
@@ -27,14 +31,14 @@ export const MyStakePools = styled(BodyWrapper)`
 
 export default function StakeOverview() {
   const theme = useContext(ThemeContext)
-  const { account } = useActiveWeb3React()
+  const { account, library } = useActiveWeb3React()
   const [myRewardPools, setMyRewardPools] = useState<any | null>([])
   const [allRewardPools, setAllRewardPools] = useState<any | null>([])
   const [uniPoolsAdded, setUniPoolsAdded] = useState(false)
   const [myUniPoolsAdded, setMyUniPoolsAdded] = useState(false)
   const [showOwn, setShowOwn] = useState(false)
   const [showExpired, setShowExpired] = useState(false)
-  // fetch the user's balances of all tracked V2 LP tokens
+  const [mfgBalance, setMfgBalance] = useState(0)
   const trackedTokenPairs = useTrackedTokenPairs()
   const tokenPairsWithLiquidityTokens = useMemo(
     () => trackedTokenPairs.map(tokens => ({ liquidityToken: toV2LiquidityToken(tokens), tokens })),
@@ -65,6 +69,18 @@ export default function StakeOverview() {
   const v2IsLoading =
     fetchingV2PairBalances || v2Pairs?.length < liquidityTokensWithBalances.length || v2Pairs?.some(V2Pair => !V2Pair)
 
+  async function getUserBalance(rewardsAddress: string) {
+    if (!account || !library) return
+    const rewardsContract = getContract(rewardsAddress, LINKSWAPLPToken, library, account)
+    const method: (...args: any) => Promise<BigNumber> = rewardsContract.balanceOf
+    const args: Array<string> = [account]
+    method(...args).then(response => {
+      setMfgBalance(hexStringToNumber(response.toHexString(), 18, 6))
+      setMyUniPoolsAdded(false)
+    })
+    return true
+  }
+
   if (myRewardPools.length === 0) {
     const myStakePools: any[] = []
     ACTIVE_REWARD_POOLS.forEach(poolObject => {
@@ -84,7 +100,10 @@ export default function StakeOverview() {
     })
     if (!myUniPoolsAdded) {
       const mfg = UNI_POOLS.MFGWETH
-      mfg.balance = v2PairsBalances[mfg.liquidityToken.address]?.toSignificant(6) || '0'
+      if (mfgBalance === 0) {
+        getUserBalance(mfg.liquidityToken.address)
+      }
+      mfg.balance = mfgBalance
       if (Number(mfg.balance) > 0) {
         myStakePools.push(mfg)
         setMyRewardPools(myStakePools)

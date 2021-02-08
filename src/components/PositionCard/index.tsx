@@ -561,6 +561,7 @@ export function FullStakingCard({
   const [rewardTokenRates, setRewardTokenRates] = useState<string[]>(['', ''])
   const [totalSupply, setTotalSupply] = useState(0)
   const [totalLPSupply, setTotalLPSupply] = useState(0)
+  const [fetching, setFetching] = useState(false)
   const isHighlighted = userBalance > 0 && !my
   const liquidityToken = unwrappedToken(values.liquidityToken)
   const rewardInfo: any[] = [
@@ -680,6 +681,11 @@ export function FullStakingCard({
   }
 
   async function getTokenPriceFromCoingecko(tokenAddress: string) {
+    if (!fetching) {
+      setFetching(true)
+    } else {
+      return false
+    }
     const url = `https://api.coingecko.com/api/v3/simple/token_price/ethereum?contract_addresses=${tokenAddress}&vs_currencies=usd`
     try {
       const response = await fetch(url, {
@@ -790,25 +796,25 @@ export function FullStakingCard({
       rewardInfo[0].decimals = tokenPrices[token0Address].decimals
       rewardInfo[0].symbol = tokenPrices[token0Address].symbol
       rewardInfo[0].price = tokenPrices[token0Address].price
-
-      if (rewardTokenRates[0]) {
-        rewardInfo[0].rate = hexStringToNumber(rewardTokenRates[0], rewardInfo[0].decimals, 2, true)
-      }
     } else {
       if (token0Address !== fakeAccount) {
         if (values.tokens[0].address.toLowerCase() === token0Address && poolTokenPrices[0] !== 0) {
-          rewardInfo[0].address = token0Address
-          rewardInfo[0].decimals = currency0.decimals
-          rewardInfo[0].symbol = currency0.symbol
+          rewardInfo[0].address = values.tokens[0].address
+          rewardInfo[0].decimals = values.tokens[0].decimals
+          rewardInfo[0].symbol = values.tokens[0].symbol
           rewardInfo[0].price = poolTokenPrices[0]
         }
         if (values.tokens[1].address.toLowerCase() === token0Address && poolTokenPrices[1] !== 0) {
-          rewardInfo[0].address = token0Address
-          rewardInfo[0].decimals = currency0.decimals
-          rewardInfo[0].symbol = currency0.symbol
+          rewardInfo[0].address = values.tokens[1].address
+          rewardInfo[0].decimals = values.tokens[1].decimals
+          rewardInfo[0].symbol = values.tokens[1].symbol
           rewardInfo[0].price = poolTokenPrices[1]
         }
       }
+    }
+
+    if (rewardTokenRates[0] && rewardInfo[0].decimals) {
+      rewardInfo[0].rate = hexStringToNumber(rewardTokenRates[0], rewardInfo[0].decimals, 2, true)
     }
 
     if (tokenPrices[token1Address]) {
@@ -816,25 +822,25 @@ export function FullStakingCard({
       rewardInfo[1].decimals = tokenPrices[token1Address].decimals
       rewardInfo[1].symbol = tokenPrices[token1Address].symbol
       rewardInfo[1].price = tokenPrices[token1Address].price
-
-      if (rewardTokenRates[1]) {
-        rewardInfo[1].rate = hexStringToNumber(rewardTokenRates[1], rewardInfo[1].decimals, 2, true)
-      }
     } else {
       if (token1Address !== fakeAccount) {
         if (values.tokens[0].address.toLowerCase() === token1Address && poolTokenPrices[0] !== 0) {
-          rewardInfo[0].address = token1Address
-          rewardInfo[0].decimals = currency1.decimals
-          rewardInfo[0].symbol = currency1.symbol
-          rewardInfo[0].price = poolTokenPrices[0]
+          rewardInfo[1].address = values.tokens[0].address
+          rewardInfo[1].decimals = values.tokens[0].decimals
+          rewardInfo[1].symbol = values.tokens[0].symbol
+          rewardInfo[1].price = poolTokenPrices[0]
         }
         if (values.tokens[1].address.toLowerCase() === token1Address && poolTokenPrices[1] !== 0) {
-          rewardInfo[0].address = token1Address
-          rewardInfo[0].decimals = currency1.decimals
-          rewardInfo[0].symbol = currency1.symbol
-          rewardInfo[0].price = poolTokenPrices[1]
+          rewardInfo[1].address = values.tokens[1].address
+          rewardInfo[1].decimals = values.tokens[1].decimals
+          rewardInfo[1].symbol = values.tokens[1].symbol
+          rewardInfo[1].price = poolTokenPrices[1]
         }
       }
+    }
+
+    if (rewardTokenRates[1] && rewardInfo[1].decimals) {
+      rewardInfo[1].rate = hexStringToNumber(rewardTokenRates[1], rewardInfo[1].decimals, 2, true)
     }
   }
 
