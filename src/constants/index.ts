@@ -312,6 +312,16 @@ export const INACTIVE_REWARD_POOLS = [
     abi: 'StakingRewards'
   }
 ]
+
+export const UNI_REWARD_POOLS = [
+  {
+    address: '0x527d5f10d70ca41e1e0eee8d30b553bb5271ee48',
+    rewardsAddress: '0xbe0ab3ae4f4be9746388685a7dd2b4411c611143',
+    liquidityUrl: 'https://app.uniswap.org/#/add/ETH/0x6710c63432A2De02954fc0f851db07146a6c0312',
+    abi: 'StakingRewards'
+  }
+]
+
 export const NetworkContextName = 'NETWORK'
 
 // default allowed slippage, in bips
