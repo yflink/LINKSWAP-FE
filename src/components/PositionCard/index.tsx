@@ -94,11 +94,12 @@ export const HoverCard = styled(Card)`
   }
 `
 
-const StakingCard = styled(Card)<{ highlight?: boolean; show?: boolean }>`
+const StakingCard = styled(Card)<{ highlight?: boolean; show?: boolean; uniswap?: boolean }>`
   font-size: 14px;
   line-height: 18px;
   background-color: ${({ theme }) => theme.appBoxBG};
-  border: 1px solid ${({ theme, highlight }) => (highlight ? theme.textHighlight : theme.appBoxBG)};
+  border: 1px solid
+    ${({ theme, highlight, uniswap }) => (uniswap ? '#ff007b' : highlight ? theme.textHighlight : theme.appBoxBG)};
   :hover {
     border: 1px solid
       ${({ theme, highlight, show }) => (highlight ? theme.textHighlight : show ? theme.appBoxBG : theme.textTertiary)};
@@ -982,7 +983,7 @@ export function FullStakingCard({
     return <></>
   } else {
     return (
-      <StakingCard highlight={isHighlighted} show={show}>
+      <StakingCard highlight={isHighlighted} show={show} uniswap={isUni}>
         <AutoColumn gap="12px">
           <FixedHeightRow
             onClick={() => {
