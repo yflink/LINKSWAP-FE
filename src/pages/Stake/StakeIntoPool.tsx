@@ -47,6 +47,48 @@ const ActiveText = styled.div`
   font-size: 20px;
 `
 
+export const ExternalButton = styled.a`
+  padding: 18px;
+  font-weight: 500;
+  text-align: center;
+  border-radius: 6px;
+  outline: none;
+  border: 1px solid transparent;
+  color: white;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  flex-wrap: nowrap;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+  font-size: 20px;
+  z-index: 1;
+  &:disabled {
+    cursor: auto;
+  }
+  background-color: ${({ theme }) => theme.buttonBG};
+  color: ${({ theme }) => theme.buttonTextColor};
+  &:focus {
+    box-shadow: 0 0 0 1pt ${({ theme }) => theme.buttonBGHover};
+    background-color: ${({ theme }) => theme.buttonBGHover};
+    color: ${({ theme }) => theme.buttonTextColorHover};
+  }
+  &:hover {
+    background-color: ${({ theme }) => theme.buttonBGHover};
+    color: ${({ theme }) => theme.buttonTextColorHover};
+  }
+  &:active {
+    box-shadow: 0 0 0 1pt ${({ theme }) => theme.buttonBGActive};
+    background-color: ${({ theme }) => theme.buttonBGActive};
+    color: ${({ theme }) => theme.buttonTextColorActive};
+  }
+
+  > * {
+    user-select: none;
+  }
+`
+
 export default function StakeIntoPool({
   match: {
     params: { currencyIdA, currencyIdB }
@@ -67,6 +109,7 @@ export default function StakeIntoPool({
   let tokenA = useToken(currencyIdA)
   let tokenB = useToken(currencyIdB)
   const isUni = currencyIdA === 'UNI'
+  let uniEntry = { address: '', liquidityToken: '', rewardsAddress: '', tokens: [], balance: 0, liquidityUrl: '' }
 
   if (!tokenA) {
     tokenA = chainId ? WETH[chainId] : WETH['1']
@@ -78,15 +121,18 @@ export default function StakeIntoPool({
 
   if (tokenA && tokenB) {
     let liquidityTokenAddress = ''
-    if (isUni && rewardsContractAddress === fakeContract) {
+    if (isUni) {
       liquidityToken = UNI_POOLS.MFGWETH.liquidityToken
       liquidityTokenAddress = liquidityToken.address
       Object.entries(UNI_POOLS).forEach((entry: any) => {
         if (entry[0] === currencyIdB) {
+          uniEntry = entry[1]
           liquidityToken = entry[1].liquidityToken
           liquidityTokenAddress = liquidityToken.address
-          setRewardsContractAddress(entry[1].rewardsAddress)
-          setAbi(entry[1].abi !== 'StakingRewards' ? syflPool : StakingRewards)
+          if (rewardsContractAddress === fakeContract) {
+            setRewardsContractAddress(entry[1].rewardsAddress)
+            setAbi(entry[1].abi !== 'StakingRewards' ? syflPool : StakingRewards)
+          }
         }
       })
 
@@ -102,14 +148,16 @@ export default function StakeIntoPool({
         []
       )
     }
-    if (!isUni && rewardsContractAddress === fakeContract) {
+    if (!isUni) {
       liquidityToken = toV2LiquidityToken([tokenA, tokenB])
       liquidityTokenAddress = liquidityToken.address
       if (rewardsContractAddress === fakeContract) {
         ACTIVE_REWARD_POOLS.forEach((pool: any) => {
           if (pool.address === liquidityTokenAddress) {
-            setRewardsContractAddress(pool.rewardsAddress)
-            setAbi(pool.abi !== 'StakingRewards' ? syflPool : StakingRewards)
+            if (rewardsContractAddress === fakeContract) {
+              setRewardsContractAddress(pool.rewardsAddress)
+              setAbi(pool.abi !== 'StakingRewards' ? syflPool : StakingRewards)
+            }
           }
         })
       }
@@ -209,6 +257,9 @@ export default function StakeIntoPool({
   }
 
   const currentBalance = Number(maxAmounts[Field.CURRENCY_A]?.toExact())
+  if (isUni) {
+    uniEntry.balance = currentBalance
+  }
 
   if (
     (parsedAmountA &&
@@ -224,13 +275,15 @@ export default function StakeIntoPool({
   const passedCurrencyA = currencyIdA === 'ETH' ? (chainId ? WETH[chainId] : WETH['1']) : currencyA
   const passedCurrencyB = currencyIdB === 'ETH' ? (chainId ? WETH[chainId] : WETH['1']) : currencyB
 
-  const stakingValues = {
-    address: liquidityToken?.address,
-    liquidityToken: wrappedLiquidityToken,
-    rewardsAddress: rewardsContractAddress,
-    tokens: [passedCurrencyA, passedCurrencyB],
-    balance: currentBalance || 0
-  }
+  const stakingValues = isUni
+    ? uniEntry
+    : {
+        address: liquidityToken?.address,
+        liquidityToken: wrappedLiquidityToken,
+        rewardsAddress: rewardsContractAddress,
+        tokens: [passedCurrencyA, passedCurrencyB],
+        balance: currentBalance || 0
+      }
 
   useMemo(() => {
     if (balance !== currentBalance) {
@@ -314,14 +367,22 @@ export default function StakeIntoPool({
               </ButtonPrimary>
             )}
             {hasError && (
-              <ButtonPrimary
-                style={{ fontSize: '20px' }}
-                as={Link}
-                to={`/add/${currencyIdA}/${currencyIdB}`}
-                width="100%"
-              >
-                {t('addLiquidity')}
-              </ButtonPrimary>
+              <>
+                {isUni ? (
+                  <ExternalButton target="_blank" href={uniEntry.liquidityUrl}>
+                    {t('addLiquidity')}
+                  </ExternalButton>
+                ) : (
+                  <ButtonPrimary
+                    style={{ fontSize: '20px' }}
+                    as={Link}
+                    to={`/add/${currencyIdA}/${currencyIdB}`}
+                    width="100%"
+                  >
+                    {t('addLiquidity')}
+                  </ButtonPrimary>
+                )}
+              </>
             )}
           </AutoColumn>
         )}
