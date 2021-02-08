@@ -12,7 +12,7 @@ import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import { SwapPoolTabs } from '../../components/NavigationTabs'
 import { RowBetween } from '../../components/Row'
 import { useTranslation } from 'react-i18next'
-import { ACTIVE_REWARD_POOLS } from '../../constants'
+import { ACTIVE_REWARD_POOLS, UNI_POOLS } from '../../constants'
 import { useActiveWeb3React } from '../../hooks'
 import { useCurrency, useToken } from '../../hooks/Tokens'
 import { useWalletModalToggle } from '../../state/application/hooks'
@@ -66,6 +66,7 @@ export default function Unstake({
   let hasError
   let tokenA = useToken(currencyIdA)
   let tokenB = useToken(currencyIdB)
+  const isUni = currencyIdA === 'UNI'
 
   if (!tokenA) {
     tokenA = chainId ? WETH[chainId] : WETH['1']
@@ -76,31 +77,57 @@ export default function Unstake({
   }
 
   if (tokenA && tokenB) {
-    liquidityToken = toV2LiquidityToken([tokenA, tokenB])
-
-    const liquidityTokenAddress = liquidityToken.address
-    if (rewardsContractAddress === fakeContract) {
-      ACTIVE_REWARD_POOLS.forEach((pool: any) => {
-        if (pool.address === liquidityTokenAddress) {
-          setRewardsContractAddress(pool.rewardsAddress)
-          const abi = pool.abi !== 'StakingRewards' ? syflPool : StakingRewards
-          setAbi(abi)
+    let liquidityTokenAddress = ''
+    if (isUni && rewardsContractAddress === fakeContract) {
+      liquidityToken = UNI_POOLS.MFGWETH.liquidityToken
+      liquidityTokenAddress = liquidityToken.address
+      Object.entries(UNI_POOLS).forEach((entry: any) => {
+        if (entry[0] === currencyIdB) {
+          liquidityToken = entry[1].liquidityToken
+          liquidityTokenAddress = liquidityToken.address
+          setRewardsContractAddress(entry[1].rewardsAddress)
+          setAbi(entry[1].abi !== 'StakingRewards' ? syflPool : StakingRewards)
         }
       })
-    }
 
-    wrappedLiquidityToken = new WrappedTokenInfo(
-      {
-        address: liquidityTokenAddress,
-        chainId: Number(liquidityToken.chainId),
-        name: String(liquidityToken.name),
-        symbol: String(liquidityToken.symbol),
-        decimals: Number(liquidityToken.decimals),
-        logoURI: 'https://logos.linkswap.app/lslp.png'
-      },
-      []
-    )
+      wrappedLiquidityToken = new WrappedTokenInfo(
+        {
+          address: liquidityTokenAddress,
+          chainId: Number(liquidityToken.chainId),
+          name: String(liquidityToken.name),
+          symbol: String(liquidityToken.symbol),
+          decimals: Number(liquidityToken.decimals),
+          logoURI: 'https://logos.linkswap.app/lslp.png'
+        },
+        []
+      )
+    }
+    if (!isUni && rewardsContractAddress === fakeContract) {
+      liquidityToken = toV2LiquidityToken([tokenA, tokenB])
+      liquidityTokenAddress = liquidityToken.address
+      if (rewardsContractAddress === fakeContract) {
+        ACTIVE_REWARD_POOLS.forEach((pool: any) => {
+          if (pool.address === liquidityTokenAddress) {
+            setRewardsContractAddress(pool.rewardsAddress)
+            setAbi(pool.abi !== 'StakingRewards' ? syflPool : StakingRewards)
+          }
+        })
+      }
+
+      wrappedLiquidityToken = new WrappedTokenInfo(
+        {
+          address: liquidityTokenAddress,
+          chainId: Number(liquidityToken.chainId),
+          name: String(liquidityToken.name),
+          symbol: String(liquidityToken.symbol),
+          decimals: Number(liquidityToken.decimals),
+          logoURI: 'https://logos.linkswap.app/lslp.png'
+        },
+        []
+      )
+    }
   }
+
   const toggleWalletModal = useWalletModalToggle()
   const { independentField, typedValue } = useMintState()
   const { dependentField, currencies, parsedAmounts, noLiquidity } = useDerivedMintInfo(
@@ -194,7 +221,7 @@ export default function Unstake({
   }
 
   useMemo(() => {
-    if (rewardsContractAddress === fakeContract || !chainId || !library || !account) return
+    if (rewardsContractAddress === fakeContract || !chainId || !library || !account || !liquidityToken) return
     const rewardsContract = getContract(rewardsContractAddress, StakingRewards, library, account)
     const method: (...args: any) => Promise<BigNumber> = rewardsContract.balanceOf
     const args: Array<string | string[] | number> = [account]
