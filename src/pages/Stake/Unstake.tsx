@@ -231,10 +231,13 @@ export default function Unstake({
           ...(value ? { value } : {}),
           gasLimit: calculateGasMargin(estimatedGasLimit)
         }).then(response => {
+          setUnstaking(true)
+          setBalance(userBalance)
           addTransaction(response, {
             summary: t('unstakeAndClaimRewardsOnPool', {
               currencyASymbol: currencyAsymbol,
-              currencyBSymbol: currencyBsymbol
+              currencyBSymbol: currencyBsymbol,
+              amount: parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)
             })
           })
 
@@ -246,6 +249,7 @@ export default function Unstake({
         })
       )
       .catch(error => {
+        setUnstaking(false)
         if (error?.code !== 4001) {
           console.error(error)
         }
