@@ -90,6 +90,7 @@ export default function StakeOverview() {
         tokenPairsWithLiquidityTokens.forEach((pool: any) => {
           if (pool.liquidityToken.address === poolObject.address) {
             pool.rewardsAddress = poolObject.rewardsAddress
+            pool.abi = poolObject.abi
             returnValue = pool
             return
           }
@@ -110,6 +111,7 @@ export default function StakeOverview() {
         tokenPairsWithLiquidityTokens.forEach((pool: any) => {
           if (pool.liquidityToken.address === poolObject.address) {
             pool.rewardsAddress = poolObject.rewardsAddress
+            pool.abi = poolObject.abi
             returnValue = pool
             return
           }
@@ -124,6 +126,7 @@ export default function StakeOverview() {
         inactiveTokenPairsWithLiquidityTokens.forEach((pool: any) => {
           if (pool.liquidityToken.address === poolObject.address) {
             pool.rewardsAddress = poolObject.rewardsAddress
+            pool.abi = poolObject.abi
             returnValue = pool
             return
           }

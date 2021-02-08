@@ -371,5 +371,6 @@
   "bridgeWarning": "Läs noga innan du fortsätter",
   "bridgeDisclaimer": "Det bör vara tydligt att om du gör ett misstag när du använder renBridge (skicka pengar till fel adress, deponera flera sändningar etc.) att dina pengar förloras permanent (som med alla andra blockchain-misstag). RenVM är en ny teknik och säkerhetsrevisioner eliminerar inte helt risker. Vänligen leverera inte tillgångar som du inte har råd att förlora.",
   "bridgeAbout": "Om du stängde eller laddade om präglingsgränssnittet innan du skickade de präglade tokens till din ERC-20 plånbok. Klicka bara på 'Mint' -knappen igen för att se din transaktion och knappen som skickar de präglade medlen till din plånbok.",
-  "brideConclusion": "Var tålmodig! Minteringsprocessen kan ta upp till en timme eftersom RenVM måste vänta på en säker mängd blockchain-bekräftelser (för att förhindra dubbla utgifter osv.)."
+  "brideConclusion": "Var tålmodig! Minteringsprocessen kan ta upp till en timme eftersom RenVM måste vänta på en säker mängd blockchain-bekräftelser (för att förhindra dubbla utgifter osv.).",
+  "emissionDropIn": "Emission Drop (-25%) in {{time}}"
 }

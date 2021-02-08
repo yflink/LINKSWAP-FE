@@ -209,69 +209,119 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
 
 export const ACTIVE_REWARD_POOLS = [
   {
+    address: '0x195734d862DFb5380eeDa0ACD8acf697eA95D370',
+    rewardsAddress: '0x6DddCc7F963C65b18FdDD842e6553528f014aDeA',
+    abi: 'syflPool'
+  },
+  {
+    address: '0x6cD7817e6f3f52123df529E1eDF5830240Ce48c1',
+    rewardsAddress: '0x61401c19200B2420f93Bb2EECF4BAA2C193d76e1',
+    abi: 'syflPool'
+  },
+  {
+    address: '0x3315351F0B20595777a28054EF3d514bdC37463d',
+    rewardsAddress: '0x81C76925E7F41f0306E1147c4659784d4402bD51',
+    abi: 'syflPool'
+  },
+  {
+    address: '0x74C89f297b1dC87F927d9432a4eeea697E6f89a5',
+    rewardsAddress: '0x1b650B522b864f6BF61705A05cc89b2b0e23f9C6',
+    abi: 'syflPool'
+  },
+  {
     address: '0x7e5A536F3d79791E283940ec379CEE10C9C40e86',
-    rewardsAddress: '0x3bE07ed0239d46ca8435D4fb0bE96E43cD1c1796'
+    rewardsAddress: '0x3bE07ed0239d46ca8435D4fb0bE96E43cD1c1796',
+    abi: 'StakingRewards'
   },
   {
     address: '0x189A730921550314934019d184EC05726881D481',
-    rewardsAddress: '0x35FC734948B36370c15387342F048aC87210bC22'
+    rewardsAddress: '0x35FC734948B36370c15387342F048aC87210bC22',
+    abi: 'StakingRewards'
   },
   {
     address: '0x9d996bDD1F65C835EE92Cd0b94E15d886EF14D63',
-    rewardsAddress: '0x0D03Cff17367478c3349a579e50259D8A793BBc8'
+    rewardsAddress: '0x0D03Cff17367478c3349a579e50259D8A793BBc8',
+    abi: 'StakingRewards'
   },
   {
     address: '0xf36c9fc3c2aBE4132019444AfF914Fc8DC9785a9',
-    rewardsAddress: '0x603065B7e2F69c897F154Ca429a2B96Cf4703f56'
+    rewardsAddress: '0x603065B7e2F69c897F154Ca429a2B96Cf4703f56',
+    abi: 'StakingRewards'
   },
   {
     address: '0x639916bB4B29859FADF7A272185a3212157F8CE1',
-    rewardsAddress: '0xfa9712cCc86c6BD52187125dCA4c2B9C7bAa3Ef8'
+    rewardsAddress: '0xfa9712cCc86c6BD52187125dCA4c2B9C7bAa3Ef8',
+    abi: 'StakingRewards'
   },
   {
     address: '0x626B88542495d2e341d285969F8678B99cd91DA7',
-    rewardsAddress: '0xf4C17025B623665AAcAb958FC0fa454b1265A219'
+    rewardsAddress: '0xf4C17025B623665AAcAb958FC0fa454b1265A219',
+    abi: 'StakingRewards'
   },
   {
     address: '0xdef0CEF53E0D4c6A5E568c53EdCf45CeB33DBE46',
-    rewardsAddress: '0x4e33D27CBCCe9Fe1c4a21A0f7C8b31C9CF5c0B75'
+    rewardsAddress: '0x4e33D27CBCCe9Fe1c4a21A0f7C8b31C9CF5c0B75',
+    abi: 'StakingRewards'
   },
   {
     address: '0x37CeE65899dA4B1738412814155540C98DFd752C',
-    rewardsAddress: '0x790aDfE75706cf70191b2bD729048e42d8Ed9f60'
+    rewardsAddress: '0x790aDfE75706cf70191b2bD729048e42d8Ed9f60',
+    abi: 'StakingRewards'
   },
   {
     address: '0xFe04c284a9725c141CF6de85D7E8452af1B48ab7',
-    rewardsAddress: '0x017FAD4b7a54C1ACe95Ca614954e4D0d12CDb27E'
+    rewardsAddress: '0x017FAD4b7a54C1ACe95Ca614954e4D0d12CDb27E',
+    abi: 'StakingRewards'
   },
   {
     address: '0x983c9a1BCf0eB980a232D1b17bFfd6Bbf68Fe4Ce',
-    rewardsAddress: '0x997d4BAbf8290A19EcDCbD10058fC438EB6F30DE'
+    rewardsAddress: '0x997d4BAbf8290A19EcDCbD10058fC438EB6F30DE',
+    abi: 'StakingRewards'
   },
   {
     address: '0xf68c01198cDdEaFB9d2EA43368FC9fA509A339Fa',
-    rewardsAddress: '0x9667947B67199C91c109Be912807190cc490A2A3'
+    rewardsAddress: '0x9667947B67199C91c109Be912807190cc490A2A3',
+    abi: 'StakingRewards'
   },
   {
     address: '0xB7Cd446a2a80d4770C6bECde661B659cFC55acf5',
-    rewardsAddress: '0xa74Ef3faB9E94578c79e0077f6Bd572C9efc8733'
+    rewardsAddress: '0xa74Ef3faB9E94578c79e0077f6Bd572C9efc8733',
+    abi: 'StakingRewards'
   },
   {
     address: '0xbe755C548D585dbc4e3Fe4bcD712a32Fd81e5Ba0',
-    rewardsAddress: '0x795BD26b99082E59478cfe8d9Cd207bb196808E4'
+    rewardsAddress: '0x795BD26b99082E59478cfe8d9Cd207bb196808E4',
+    abi: 'StakingRewards'
   },
   {
     address: '0x21dee38170F1e1F26baFf2C30C0fc8F8362b6961',
-    rewardsAddress: '0xBfe0D843D3DA0953EcEf08Fc231033D4B140a085'
+    rewardsAddress: '0xBfe0D843D3DA0953EcEf08Fc231033D4B140a085',
+    abi: 'StakingRewards'
   }
 ]
 
 export const INACTIVE_REWARD_POOLS = [
   {
     address: '0x7e5A536F3d79791E283940ec379CEE10C9C40e86',
-    rewardsAddress: '0x72368fB97dab2B94A5664EbeEbF504EF482fF149'
+    rewardsAddress: '0x72368fB97dab2B94A5664EbeEbF504EF482fF149',
+    abi: 'StakingRewards'
+  },
+  {
+    address: '0x37CeE65899dA4B1738412814155540C98DFd752C',
+    rewardsAddress: '0x1B62ac658Ca7D037777D24aa629613633221eFfc',
+    abi: 'StakingRewards'
   }
 ]
+
+export const UNI_REWARD_POOLS = [
+  {
+    address: '0x527d5f10d70ca41e1e0eee8d30b553bb5271ee48',
+    rewardsAddress: '0xbe0ab3ae4f4be9746388685a7dd2b4411c611143',
+    liquidityUrl: 'https://app.uniswap.org/#/add/ETH/0x6710c63432A2De02954fc0f851db07146a6c0312',
+    abi: 'StakingRewards'
+  }
+]
+
 export const NetworkContextName = 'NETWORK'
 
 // default allowed slippage, in bips

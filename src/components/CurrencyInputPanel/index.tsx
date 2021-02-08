@@ -320,7 +320,6 @@ export function CurrencyDoubleInputPanel({
     initialCurrency = ETHER
   } else {
     initialCurrency = inputCurrency
-
     if (initialCurrency?.symbol !== 'ETH') {
       if (initialCurrency?.symbol !== currency2.symbol) {
         initialCurrency = currency3
@@ -332,11 +331,14 @@ export function CurrencyDoubleInputPanel({
     }
   }
 
+  const [interaction, setInteraction] = useState(false)
   const [currency, setCurrency] = useState(initialCurrency)
   const [modalOpen, setModalOpen] = useState(false)
   const { account } = useActiveWeb3React()
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
   const theme = useContext(ThemeContext)
+
+  const selectedCurrency = !interaction ? initialCurrency : currency
 
   const handleDismissSearch = useCallback(() => {
     setModalOpen(false)
@@ -346,12 +348,13 @@ export function CurrencyDoubleInputPanel({
       <CurrencySelectWrapper>
         <CurrencySelect
           style={{ marginBottom: '12px', width: '100%' }}
-          selected={currency.symbol === 'ETH'}
+          selected={selectedCurrency.symbol === 'ETH'}
           primary
           left
           className="open-currency-select-button"
           onClick={() => {
             if (!disableCurrencySelect) {
+              setInteraction(true)
               setCurrency(currency1)
               if (onCurrencySelect) {
                 onCurrencySelect(currency1)
@@ -370,12 +373,13 @@ export function CurrencyDoubleInputPanel({
         </CurrencySelect>
         <CurrencySelect
           style={{ marginBottom: '12px', width: '100%' }}
-          selected={currency.symbol === 'LINK'}
+          selected={selectedCurrency.symbol === currency2.symbol}
           primary
           middle
           className="open-currency-select-button"
           onClick={() => {
             if (!disableCurrencySelect) {
+              setInteraction(true)
               setCurrency(currency2)
               if (onCurrencySelect) {
                 onCurrencySelect(currency2)
@@ -394,12 +398,13 @@ export function CurrencyDoubleInputPanel({
         </CurrencySelect>
         <CurrencySelect
           style={{ marginBottom: '12px', width: '100%' }}
-          selected={currency.symbol === 'YFLUSD'}
+          selected={selectedCurrency.symbol === currency3.symbol}
           primary
           right
           className="open-currency-select-button"
           onClick={() => {
             if (!disableCurrencySelect) {
+              setInteraction(true)
               setCurrency(currency3)
               if (onCurrencySelect) {
                 onCurrencySelect(currency3)
