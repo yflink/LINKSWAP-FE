@@ -20,10 +20,10 @@ import { RowBetween, RowFixed } from '../Row'
 import Countdown from '../Countdown'
 import { Dots } from '../swap/styleds'
 import { useTranslation } from 'react-i18next'
-import { ACTIVE_REWARD_POOLS } from '../../constants'
+import { ACTIVE_REWARD_POOLS, sYFL } from '../../constants'
 import { StakeSVG } from '../SVG'
 import { calculateGasMargin, getContract } from '../../utils'
-import { LINKSWAPLPToken, StakingRewards } from '../ABI'
+import { LINKSWAPLPToken, StakingRewards, syflPool } from '../ABI'
 import { BigNumber } from '@ethersproject/bignumber'
 import hexStringToNumber from '../../utils/hexStringToNumber'
 import { useGetLPTokenPrices, useGetTokenPrices } from '../../state/price/hooks'
@@ -147,21 +147,19 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
   let currencyB = currency1
   switch (currency1?.symbol) {
     case 'LINK':
-      if (currency0?.symbol !== 'ETH' && currency0?.symbol !== 'YFL') {
-        currencyA = currency1
-        currencyB = currency0
-      }
+      currencyA = currency1
+      currencyB = currency0
       break
 
     case 'ETH':
-      if (currency0?.symbol !== 'LINK' && currency0?.symbol !== 'YFL') {
+      if (currencyA?.symbol !== 'LINK') {
         currencyA = currency1
         currencyB = currency0
       }
       break
 
-    case 'YFL':
-      if (currency0?.symbol !== 'LINK' && currency0?.symbol !== 'ETH') {
+    case 'YFLUSD':
+      if (currencyA?.symbol !== 'LINK' && currencyA?.symbol !== 'ETH') {
         currencyA = currency1
         currencyB = currency0
       }
@@ -312,21 +310,19 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
   })
   switch (currency1?.symbol) {
     case 'LINK':
-      if (currency0?.symbol !== 'ETH' && currency0?.symbol !== 'YFL') {
-        currencyA = currency1
-        currencyB = currency0
-      }
+      currencyA = currency1
+      currencyB = currency0
       break
 
     case 'ETH':
-      if (currency0?.symbol !== 'LINK' && currency0?.symbol !== 'YFL') {
+      if (currencyA?.symbol !== 'LINK') {
         currencyA = currency1
         currencyB = currency0
       }
       break
 
-    case 'YFL':
-      if (currency0?.symbol !== 'LINK' && currency0?.symbol !== 'ETH') {
+    case 'YFLUSD':
+      if (currencyA?.symbol !== 'LINK' && currencyA?.symbol !== 'ETH') {
         currencyA = currency1
         currencyB = currency0
       }
@@ -439,16 +435,16 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
             </FixedHeightRow>
 
             <RowBetween marginTop="10px">
-              <ButtonSecondary as={Link} to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`} width="48%">
+              <ButtonSecondary as={Link} to={`/add/${currencyId(currencyA)}/${currencyId(currencyB)}`} width="48%">
                 {t('add')}
               </ButtonSecondary>
-              <ButtonSecondary as={Link} width="48%" to={`/remove/${currencyId(currency0)}/${currencyId(currency1)}`}>
+              <ButtonSecondary as={Link} width="48%" to={`/remove/${currencyId(currencyA)}/${currencyId(currencyB)}`}>
                 {t('remove')}
               </ButtonSecondary>
             </RowBetween>
             {rewards && (
               <RowBetween marginTop="10px">
-                <ButtonSecondary as={Link} width="100%" to={`/stake/${currencyId(currency0)}/${currencyId(currency1)}`}>
+                <ButtonSecondary as={Link} width="100%" to={`/stake/${currencyId(currencyA)}/${currencyId(currencyB)}`}>
                   {t('stake')}
                 </ButtonSecondary>
               </RowBetween>
@@ -572,14 +568,19 @@ export function FullStakingCard({
   let apy = 0
   let currencyA = currency0
   let currencyB = currency1
+  const isDefault = values.abi === 'StakingRewards'
+  const isYFLUSD =
+    values.liquidityToken.address === '0x195734d862DFb5380eeDa0ACD8acf697eA95D370' ||
+    values.liquidityToken.address === '0x6cD7817e6f3f52123df529E1eDF5830240Ce48c1'
+  const abi = values.abi !== 'StakingRewards' ? syflPool : StakingRewards
   const rewardsContract =
     !chainId || !library || !account
-      ? getContract(values.rewardsAddress, StakingRewards, fakeLibrary, fakeAccount)
-      : getContract(values.rewardsAddress, StakingRewards, library, account)
+      ? getContract(values.rewardsAddress, abi, fakeLibrary, fakeAccount)
+      : getContract(values.rewardsAddress, abi, library, account)
   const lpContract =
     !chainId || !library || !account
-      ? getContract(values.liquidityToken.address, LINKSWAPLPToken, fakeLibrary, fakeAccount)
-      : getContract(values.liquidityToken.address, LINKSWAPLPToken, library, account)
+      ? getContract(values.liquidityToken.address, abi, fakeLibrary, fakeAccount)
+      : getContract(values.liquidityToken.address, abi, library, account)
 
   async function getUserBalance(account: string) {
     const method: (...args: any) => Promise<BigNumber> = rewardsContract.balanceOf
@@ -594,10 +595,10 @@ export function FullStakingCard({
 
   async function getUserRewards(account: string, index: number, indexString: string) {
     const method: (...args: any) => Promise<any> = rewardsContract.earned
-    const args: Array<string | number> = [account, indexString]
+    const args: Array<string | number> = isDefault ? [account, indexString] : [account]
     const userRewardArray = userRewards
     method(...args).then(response => {
-      userRewardArray[index] = response.toHexString()
+      userRewardArray[index] = !isDefault && index === 1 ? '0' : response.toHexString()
       setUserRewards(userRewardArray)
     })
   }
@@ -624,20 +625,27 @@ export function FullStakingCard({
   }
 
   async function getRewardTokens(index: number) {
-    const method: (...args: any) => Promise<string> = rewardsContract.rewardTokens
-    const args = index
-    const rewardTokensArray = rewardTokens
-    method(args).then(response => {
-      rewardTokensArray[index] = response
+    if (isDefault) {
+      const method: (...args: any) => Promise<string> = rewardsContract.rewardTokens
+      const args = index
+      const rewardTokensArray = rewardTokens
+      method(args).then(response => {
+        rewardTokensArray[index] = response
+        setRewardTokens(rewardTokensArray)
+      })
+    } else {
+      const rewardTokensArray = rewardTokens
+      rewardTokensArray[0] = sYFL.address
+      rewardTokensArray[1] = fakeAccount
       setRewardTokens(rewardTokensArray)
-    })
+    }
   }
   async function getRewardTokenRates(index: number) {
     const method: (...args: any) => Promise<BigNumber> = rewardsContract.rewardRate
-    const args = index
+    const args = isDefault ? index : []
     const rewardTokenRatesArray = rewardTokenRates
     method(args).then(response => {
-      rewardTokenRatesArray[index] = response.toHexString()
+      rewardTokenRatesArray[index] = !isDefault && index === 1 ? '0' : response.toHexString()
       setRewardTokenRates(rewardTokenRatesArray)
     })
   }
@@ -743,9 +751,9 @@ export function FullStakingCard({
 
   async function claimRewards(rewardsContractAddress: string) {
     if (!chainId || !library || !account) return
-    const router = getContract(rewardsContractAddress, StakingRewards, library, account)
-    const estimate = router.estimateGas.claimRewards
-    const method: () => Promise<TransactionResponse> = router.claimRewards
+    const router = getContract(rewardsContractAddress, abi, library, account)
+    const estimate = isDefault ? router.estimateGas.claimRewards : router.estimateGas.getReward
+    const method: () => Promise<TransactionResponse> = isDefault ? router.claimRewards : router.getReward
 
     const value: BigNumber | null = null
     await estimate(value ? { value } : {})
@@ -774,10 +782,12 @@ export function FullStakingCard({
 
   async function unstakeAndClaimRewards(rewardsContractAddress: string) {
     if (!chainId || !library || !account || !rawUserBalance) return
-    const router = getContract(rewardsContractAddress, StakingRewards, library, account)
-    const estimate = router.estimateGas.unstakeAndClaimRewards
-    const method: (...args: any) => Promise<TransactionResponse> = router.unstakeAndClaimRewards
-    const args: Array<string> = [rawUserBalance]
+    const router = getContract(rewardsContractAddress, abi, library, account)
+    const estimate = isDefault ? router.estimateGas.unstakeAndClaimRewards : router.estimateGas.exit
+    const method: (...args: any) => Promise<TransactionResponse> = isDefault
+      ? router.unstakeAndClaimRewards
+      : router.exit
+    const args: Array<string> = isDefault ? [rawUserBalance] : []
 
     const value: BigNumber | null = null
     await estimate(...args, value ? { value } : {})
@@ -809,21 +819,19 @@ export function FullStakingCard({
 
   switch (currency1?.symbol) {
     case 'LINK':
-      if (currency0?.symbol !== 'ETH' && currency0?.symbol !== 'YFL') {
-        currencyA = currency1
-        currencyB = currency0
-      }
+      currencyA = currency1
+      currencyB = currency0
       break
 
     case 'ETH':
-      if (currency0?.symbol !== 'LINK' && currency0?.symbol !== 'YFL') {
+      if (currencyA?.symbol !== 'LINK') {
         currencyA = currency1
         currencyB = currency0
       }
       break
 
-    case 'YFL':
-      if (currency0?.symbol !== 'LINK' && currency0?.symbol !== 'ETH') {
+    case 'YFLUSD':
+      if (currencyA?.symbol !== 'LINK' && currencyA?.symbol !== 'ETH') {
         currencyA = currency1
         currencyB = currency0
       }
@@ -975,7 +983,11 @@ export function FullStakingCard({
               )}
               <RowBetween>
                 <Text>{t('timeRemaining')}</Text>
-                <Countdown ends={periodFinish} format="DD[d] HH[h] mm[m] ss[s]" />
+                {!isDefault && isYFLUSD ? (
+                  <Countdown ends={periodFinish} format="DD[d] HH[h] mm[m] ss[s]" string="emissionDropIn" />
+                ) : (
+                  <Countdown ends={periodFinish} format="DD[d] HH[h] mm[m] ss[s]" string="endsIn" />
+                )}
               </RowBetween>
               {userBalance > 0 && !my && !isInactive && (
                 <RowBetween marginTop="10px">
@@ -1018,7 +1030,7 @@ export function FullStakingCard({
                   ) : (
                     <ButtonSecondary
                       as={Link}
-                      to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}
+                      to={`/add/${currencyId(currencyA)}/${currencyId(currencyB)}`}
                       width="100%"
                     >
                       {t('addLiquidity')}
