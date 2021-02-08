@@ -17,7 +17,7 @@ import { useActiveWeb3React } from '../../hooks'
 import { useCurrency, useToken } from '../../hooks/Tokens'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { Field } from '../../state/mint/actions'
-import { StakingRewards } from '../../components/ABI'
+import { StakingRewards, syflPool } from '../../ABI'
 import { useDerivedMintInfo, useMintActionHandlers, useMintState } from '../../state/mint/hooks'
 import { toV2LiquidityToken } from '../../state/user/hooks'
 import { calculateGasMargin, getContract } from '../../utils'
@@ -46,6 +46,48 @@ const ActiveText = styled.div`
   font-size: 20px;
 `
 
+export const ExternalButton = styled.a`
+  padding: 18px;
+  font-weight: 500;
+  text-align: center;
+  border-radius: 6px;
+  outline: none;
+  border: 1px solid transparent;
+  color: white;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  flex-wrap: nowrap;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+  font-size: 20px;
+  z-index: 1;
+  &:disabled {
+    cursor: auto;
+  }
+  background-color: ${({ theme }) => theme.buttonBG};
+  color: ${({ theme }) => theme.buttonTextColor};
+  &:focus {
+    box-shadow: 0 0 0 1pt ${({ theme }) => theme.buttonBGHover};
+    background-color: ${({ theme }) => theme.buttonBGHover};
+    color: ${({ theme }) => theme.buttonTextColorHover};
+  }
+  &:hover {
+    background-color: ${({ theme }) => theme.buttonBGHover};
+    color: ${({ theme }) => theme.buttonTextColorHover};
+  }
+  &:active {
+    box-shadow: 0 0 0 1pt ${({ theme }) => theme.buttonBGActive};
+    background-color: ${({ theme }) => theme.buttonBGActive};
+    color: ${({ theme }) => theme.buttonTextColorActive};
+  }
+
+  > * {
+    user-select: none;
+  }
+`
+
 export default function Unstake({
   match: {
     params: { currencyIdA, currencyIdB }
@@ -60,12 +102,14 @@ export default function Unstake({
   const currencyB = useCurrency(currencyIdB)
   const fakeContract = '0x0000000000000000000000000000000000000000'
   const [rewardsContractAddress, setRewardsContractAddress] = useState(fakeContract)
+  const [abi, setAbi] = useState<any[]>(StakingRewards)
   let liquidityToken: any
   let wrappedLiquidityToken
   let hasError
   let tokenA = useToken(currencyIdA)
   let tokenB = useToken(currencyIdB)
   const isUni = currencyIdA === 'UNI'
+  let uniEntry = { address: '', liquidityToken: '', rewardsAddress: '', tokens: [], balance: 0, liquidityUrl: '' }
 
   if (!tokenA) {
     tokenA = chainId ? WETH[chainId] : WETH['1']
@@ -77,14 +121,18 @@ export default function Unstake({
 
   if (tokenA && tokenB) {
     let liquidityTokenAddress = ''
-    if (isUni && rewardsContractAddress === fakeContract) {
+    if (isUni) {
       liquidityToken = UNI_POOLS.MFGWETH.liquidityToken
       liquidityTokenAddress = liquidityToken.address
       Object.entries(UNI_POOLS).forEach((entry: any) => {
         if (entry[0] === currencyIdB) {
+          uniEntry = entry[1]
           liquidityToken = entry[1].liquidityToken
           liquidityTokenAddress = liquidityToken.address
-          setRewardsContractAddress(entry[1].rewardsAddress)
+          if (rewardsContractAddress === fakeContract) {
+            setRewardsContractAddress(entry[1].rewardsAddress)
+            setAbi(entry[1].abi !== 'StakingRewards' ? syflPool : StakingRewards)
+          }
         }
       })
 
@@ -100,13 +148,16 @@ export default function Unstake({
         []
       )
     }
-    if (!isUni && rewardsContractAddress === fakeContract) {
+    if (!isUni) {
       liquidityToken = toV2LiquidityToken([tokenA, tokenB])
       liquidityTokenAddress = liquidityToken.address
       if (rewardsContractAddress === fakeContract) {
         ACTIVE_REWARD_POOLS.forEach((pool: any) => {
           if (pool.address === liquidityTokenAddress) {
-            setRewardsContractAddress(pool.rewardsAddress)
+            if (rewardsContractAddress === fakeContract) {
+              setRewardsContractAddress(pool.rewardsAddress)
+              setAbi(pool.abi !== 'StakingRewards' ? syflPool : StakingRewards)
+            }
           }
         })
       }
@@ -124,6 +175,7 @@ export default function Unstake({
       )
     }
   }
+
   const toggleWalletModal = useWalletModalToggle()
   const { independentField, typedValue } = useMintState()
   const { dependentField, currencies, parsedAmounts, noLiquidity } = useDerivedMintInfo(
@@ -152,9 +204,9 @@ export default function Unstake({
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, liquidityToken ?? undefined)
   let buttonString = parsedAmountA ? t('unstake') : t('enterAmount')
 
-  async function onUnstake(contractAddress: string) {
+  async function onAdd(contractAddress: string) {
     if (rewardsContractAddress === fakeContract || !chainId || !library || !account) return
-    const router = getContract(contractAddress, StakingRewards, library, account)
+    const router = getContract(contractAddress, abi, library, account)
 
     const { [Field.CURRENCY_A]: parsedAmountA } = parsedAmounts
 
@@ -162,9 +214,10 @@ export default function Unstake({
       return
     }
 
-    const estimate = router.estimateGas.unstakeAndClaimRewards
-    const method: (...args: any) => Promise<TransactionResponse> = router.unstakeAndClaimRewards
-    const args: Array<string> = [parsedAmountA.raw.toString()]
+    const estimate = abi === StakingRewards ? router.estimateGas.unstakeAndClaimRewards : router.estimateGas.withdraw
+    const method: (...args: any) => Promise<TransactionResponse> =
+      abi === StakingRewards ? router.unstakeAndClaimRewards : router.withdraw
+    const args: Array<string | string[] | number> = [parsedAmountA.raw.toString()]
 
     const value: BigNumber | null = null
     await estimate(...args, value ? { value } : {})
@@ -207,13 +260,19 @@ export default function Unstake({
   const passedCurrencyA = currencyIdA === 'ETH' ? WETH['1'] : currencyA
   const passedCurrencyB = currencyIdB === 'ETH' ? WETH['1'] : currencyB
 
-  const stakingValues = {
-    address: liquidityToken?.address,
-    liquidityToken: wrappedLiquidityToken,
-    rewardsAddress: rewardsContractAddress,
-    tokens: [passedCurrencyA, passedCurrencyB],
-    balance: Number(selectedCurrencyBalance?.toSignificant(6)) || 0
+  if (isUni) {
+    uniEntry.balance = Number(selectedCurrencyBalance?.toSignificant(6)) || 0
   }
+
+  const stakingValues = isUni
+    ? uniEntry
+    : {
+        address: liquidityToken?.address,
+        liquidityToken: wrappedLiquidityToken,
+        rewardsAddress: rewardsContractAddress,
+        tokens: [passedCurrencyA, passedCurrencyB],
+        balance: Number(selectedCurrencyBalance?.toSignificant(6)) || 0
+      }
 
   useMemo(() => {
     if (rewardsContractAddress === fakeContract || !chainId || !library || !account || !liquidityToken) return
@@ -290,7 +349,7 @@ export default function Unstake({
               <ButtonPrimary
                 style={{ fontSize: '20px' }}
                 onClick={() => {
-                  onUnstake(rewardsContractAddress)
+                  onAdd(rewardsContractAddress)
                 }}
                 disabled={hasError || !parsedAmountA}
               >
