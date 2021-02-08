@@ -968,85 +968,12 @@ export const ERC20 = [
     type: 'function'
   }
 ]
-
-export const Factory = [
+export const syflPool = [
   {
     inputs: [
-      {
-        internalType: 'address',
-        name: '_governance',
-        type: 'address'
-      },
-      {
-        internalType: 'address',
-        name: '_treasury',
-        type: 'address'
-      },
-      {
-        internalType: 'address',
-        name: '_priceOracle',
-        type: 'address'
-      },
-      {
-        internalType: 'uint256',
-        name: '_linkListingFeeInUsd',
-        type: 'uint256'
-      },
-      {
-        internalType: 'uint256',
-        name: '_wethListingFeeInUsd',
-        type: 'uint256'
-      },
-      {
-        internalType: 'uint256',
-        name: '_yflListingFeeInUsd',
-        type: 'uint256'
-      },
-      {
-        internalType: 'uint256',
-        name: '_treasuryListingFeeShare',
-        type: 'uint256'
-      },
-      {
-        internalType: 'uint256',
-        name: '_minListingLockupAmountInUsd',
-        type: 'uint256'
-      },
-      {
-        internalType: 'uint256',
-        name: '_targetListingLockupAmountInUsd',
-        type: 'uint256'
-      },
-      {
-        internalType: 'uint256',
-        name: '_minListingLockupPeriod',
-        type: 'uint256'
-      },
-      {
-        internalType: 'uint256',
-        name: '_targetListingLockupPeriod',
-        type: 'uint256'
-      },
-      {
-        internalType: 'uint256',
-        name: '_lockupAmountListingFeeDiscountShare',
-        type: 'uint256'
-      },
-      {
-        internalType: 'address',
-        name: '_linkToken',
-        type: 'address'
-      },
-      {
-        internalType: 'address',
-        name: '_WETH',
-        type: 'address'
-      },
-      {
-        internalType: 'address',
-        name: '_yflToken',
-        type: 'address'
-      }
+      { internalType: 'address', name: 'syfl_', type: 'address' },
+      { internalType: 'address', name: 'lptoken_', type: 'address' },
+      { internalType: 'uint256', name: 'starttime_', type: 'uint256' }
     ],
     stateMutability: 'nonpayable',
     type: 'constructor'
@@ -1054,681 +981,225 @@ export const Factory = [
   {
     anonymous: false,
     inputs: [
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'token0',
-        type: 'address'
-      },
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'token1',
-        type: 'address'
-      },
-      {
-        indexed: false,
-        internalType: 'address',
-        name: 'pair',
-        type: 'address'
-      },
-      {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'pairNum',
-        type: 'uint256'
-      }
+      { indexed: true, internalType: 'address', name: 'previousOwner', type: 'address' },
+      { indexed: true, internalType: 'address', name: 'newOwner', type: 'address' }
     ],
-    name: 'PairCreated',
+    name: 'OwnershipTransferred',
+    type: 'event'
+  },
+  {
+    anonymous: false,
+    inputs: [{ indexed: false, internalType: 'uint256', name: 'reward', type: 'uint256' }],
+    name: 'RewardAdded',
+    type: 'event'
+  },
+  {
+    anonymous: false,
+    inputs: [
+      { indexed: true, internalType: 'address', name: 'user', type: 'address' },
+      { indexed: false, internalType: 'uint256', name: 'reward', type: 'uint256' }
+    ],
+    name: 'RewardPaid',
+    type: 'event'
+  },
+  {
+    anonymous: false,
+    inputs: [
+      { indexed: true, internalType: 'address', name: 'user', type: 'address' },
+      { indexed: false, internalType: 'uint256', name: 'amount', type: 'uint256' }
+    ],
+    name: 'Staked',
+    type: 'event'
+  },
+  {
+    anonymous: false,
+    inputs: [
+      { indexed: true, internalType: 'address', name: 'user', type: 'address' },
+      { indexed: false, internalType: 'uint256', name: 'amount', type: 'uint256' }
+    ],
+    name: 'Withdrawn',
     type: 'event'
   },
   {
     inputs: [],
-    name: 'LINK',
-    outputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address'
-      }
-    ],
+    name: 'DURATION',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
-    type: 'function'
+    type: 'function',
+    constant: true
+  },
+  {
+    inputs: [{ internalType: 'address', name: 'account', type: 'address' }],
+    name: 'balanceOf',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+    constant: true
   },
   {
     inputs: [],
-    name: 'WETH',
-    outputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address'
-      }
-    ],
+    name: 'initreward',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
-    type: 'function'
+    type: 'function',
+    constant: true
   },
   {
     inputs: [],
-    name: 'YFL',
-    outputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address'
-      }
-    ],
+    name: 'lastUpdateTime',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
-    type: 'function'
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256'
-      }
-    ],
-    name: 'allPairs',
-    outputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address'
-      }
-    ],
-    stateMutability: 'view',
-    type: 'function'
+    type: 'function',
+    constant: true
   },
   {
     inputs: [],
-    name: 'allPairsLength',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256'
-      }
-    ],
+    name: 'lpt',
+    outputs: [{ internalType: 'contract IERC20', name: '', type: 'address' }],
     stateMutability: 'view',
-    type: 'function'
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'tokenA',
-        type: 'address'
-      },
-      {
-        internalType: 'address',
-        name: 'tokenB',
-        type: 'address'
-      }
-    ],
-    name: 'approvePairViaGovernance',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function'
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address'
-      },
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address'
-      }
-    ],
-    name: 'approvedPair',
-    outputs: [
-      {
-        internalType: 'bool',
-        name: '',
-        type: 'bool'
-      }
-    ],
-    stateMutability: 'view',
-    type: 'function'
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'newToken',
-        type: 'address'
-      },
-      {
-        internalType: 'uint256',
-        name: 'newTokenAmount',
-        type: 'uint256'
-      },
-      {
-        internalType: 'address',
-        name: 'lockupToken',
-        type: 'address'
-      },
-      {
-        internalType: 'uint256',
-        name: 'lockupTokenAmount',
-        type: 'uint256'
-      },
-      {
-        internalType: 'uint256',
-        name: 'lockupPeriod',
-        type: 'uint256'
-      },
-      {
-        internalType: 'address',
-        name: 'listingFeeToken',
-        type: 'address'
-      }
-    ],
-    name: 'createPair',
-    outputs: [
-      {
-        internalType: 'address',
-        name: 'pair',
-        type: 'address'
-      }
-    ],
-    stateMutability: 'nonpayable',
-    type: 'function'
+    type: 'function',
+    constant: true
   },
   {
     inputs: [],
-    name: 'defaultLinkTradingFeePercent',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256'
-      }
-    ],
+    name: 'owner',
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
     stateMutability: 'view',
-    type: 'function'
+    type: 'function',
+    constant: true
   },
   {
     inputs: [],
-    name: 'defaultNonLinkTradingFeePercent',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256'
-      }
-    ],
+    name: 'periodFinish',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
-    type: 'function'
+    type: 'function',
+    constant: true
   },
+  { inputs: [], name: 'renounceOwnership', outputs: [], stateMutability: 'nonpayable', type: 'function' },
   {
-    inputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address'
-      },
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address'
-      }
-    ],
-    name: 'getPair',
-    outputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address'
-      }
-    ],
+    inputs: [],
+    name: 'rewardDistribution',
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
     stateMutability: 'view',
-    type: 'function'
+    type: 'function',
+    constant: true
   },
   {
     inputs: [],
-    name: 'governance',
-    outputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address'
-      }
-    ],
+    name: 'rewardPerTokenStored',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
-    type: 'function'
+    type: 'function',
+    constant: true
   },
   {
     inputs: [],
-    name: 'linkListingFeeInUsd',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256'
-      }
-    ],
+    name: 'rewardRate',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
-    type: 'function'
+    type: 'function',
+    constant: true
   },
   {
-    inputs: [],
-    name: 'lockupAmountListingFeeDiscountShare',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256'
-      }
-    ],
+    inputs: [{ internalType: 'address', name: '', type: 'address' }],
+    name: 'rewards',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
-    type: 'function'
+    type: 'function',
+    constant: true
   },
   {
-    inputs: [],
-    name: 'maxSlippageBlocks',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256'
-      }
-    ],
-    stateMutability: 'view',
-    type: 'function'
-  },
-  {
-    inputs: [],
-    name: 'maxSlippagePercent',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256'
-      }
-    ],
-    stateMutability: 'view',
-    type: 'function'
-  },
-  {
-    inputs: [],
-    name: 'minListingLockupAmountInUsd',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256'
-      }
-    ],
-    stateMutability: 'view',
-    type: 'function'
-  },
-  {
-    inputs: [],
-    name: 'minListingLockupPeriod',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256'
-      }
-    ],
-    stateMutability: 'view',
-    type: 'function'
-  },
-  {
-    inputs: [],
-    name: 'priceOracle',
-    outputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address'
-      }
-    ],
-    stateMutability: 'view',
-    type: 'function'
-  },
-  {
-    inputs: [],
-    name: 'protocolFeeFractionInverse',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256'
-      }
-    ],
-    stateMutability: 'view',
-    type: 'function'
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: '_defaultLinkTradingFeePercent',
-        type: 'uint256'
-      }
-    ],
-    name: 'setDefaultLinkTradingFeePercent',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function'
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: '_defaultNonLinkTradingFeePercent',
-        type: 'uint256'
-      }
-    ],
-    name: 'setDefaultNonLinkTradingFeePercent',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function'
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: '_governance',
-        type: 'address'
-      }
-    ],
-    name: 'setGovernance',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function'
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: '_linkListingFeeInUsd',
-        type: 'uint256'
-      }
-    ],
-    name: 'setLinkListingFeeInUsd',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function'
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: '_lockupAmountListingFeeDiscountShare',
-        type: 'uint256'
-      }
-    ],
-    name: 'setLockupAmountListingFeeDiscountShare',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function'
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: '_maxSlippageBlocks',
-        type: 'uint256'
-      }
-    ],
-    name: 'setMaxSlippageBlocks',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function'
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: '_maxSlippagePercent',
-        type: 'uint256'
-      }
-    ],
-    name: 'setMaxSlippagePercent',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function'
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: '_minListingLockupAmountInUsd',
-        type: 'uint256'
-      }
-    ],
-    name: 'setMinListingLockupAmountInUsd',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function'
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: '_minListingLockupPeriod',
-        type: 'uint256'
-      }
-    ],
-    name: 'setMinListingLockupPeriod',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function'
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: '_priceOracle',
-        type: 'address'
-      }
-    ],
-    name: 'setPriceOracle',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function'
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: '_protocolFeeFractionInverse',
-        type: 'uint256'
-      }
-    ],
-    name: 'setProtocolFeeFractionInverse',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function'
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: '_targetListingLockupAmountInUsd',
-        type: 'uint256'
-      }
-    ],
-    name: 'setTargetListingLockupAmountInUsd',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function'
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: '_targetListingLockupPeriod',
-        type: 'uint256'
-      }
-    ],
-    name: 'setTargetListingLockupPeriod',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function'
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: '_treasury',
-        type: 'address'
-      }
-    ],
-    name: 'setTreasury',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function'
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: '_treasuryListingFeeShare',
-        type: 'uint256'
-      }
-    ],
-    name: 'setTreasuryListingFeeShare',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function'
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: '_treasuryProtocolFeeShare',
-        type: 'uint256'
-      }
-    ],
-    name: 'setTreasuryProtocolFeeShare',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function'
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: '_wethListingFeeInUsd',
-        type: 'uint256'
-      }
-    ],
-    name: 'setWethListingFeeInUsd',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function'
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: '_yflListingFeeInUsd',
-        type: 'uint256'
-      }
-    ],
-    name: 'setYflListingFeeInUsd',
+    inputs: [{ internalType: 'address', name: '_rewardDistribution', type: 'address' }],
+    name: 'setRewardDistribution',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function'
   },
   {
     inputs: [],
-    name: 'targetListingLockupAmountInUsd',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256'
-      }
-    ],
+    name: 'starttime',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
-    type: 'function'
+    type: 'function',
+    constant: true
   },
   {
     inputs: [],
-    name: 'targetListingLockupPeriod',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256'
-      }
-    ],
+    name: 'syfl',
+    outputs: [{ internalType: 'contract IERC20', name: '', type: 'address' }],
     stateMutability: 'view',
-    type: 'function'
+    type: 'function',
+    constant: true
   },
   {
     inputs: [],
-    name: 'treasury',
-    outputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address'
-      }
-    ],
+    name: 'totalSupply',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
+    type: 'function',
+    constant: true
+  },
+  {
+    inputs: [{ internalType: 'address', name: 'newOwner', type: 'address' }],
+    name: 'transferOwnership',
+    outputs: [],
+    stateMutability: 'nonpayable',
     type: 'function'
   },
   {
-    inputs: [],
-    name: 'treasuryListingFeeShare',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256'
-      }
-    ],
+    inputs: [{ internalType: 'address', name: '', type: 'address' }],
+    name: 'userRewardPerTokenPaid',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
-    type: 'function'
+    type: 'function',
+    constant: true
   },
   {
     inputs: [],
-    name: 'treasuryProtocolFeeShare',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256'
-      }
-    ],
+    name: 'lastTimeRewardApplicable',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
-    type: 'function'
+    type: 'function',
+    constant: true
   },
   {
     inputs: [],
-    name: 'wethListingFeeInUsd',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256'
-      }
-    ],
+    name: 'rewardPerToken',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
+    type: 'function',
+    constant: true
+  },
+  {
+    inputs: [{ internalType: 'address', name: 'account', type: 'address' }],
+    name: 'earned',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+    constant: true
+  },
+  {
+    inputs: [{ internalType: 'uint256', name: 'amount', type: 'uint256' }],
+    name: 'stake',
+    outputs: [],
+    stateMutability: 'nonpayable',
     type: 'function'
   },
   {
-    inputs: [],
-    name: 'yflListingFeeInUsd',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256'
-      }
-    ],
-    stateMutability: 'view',
+    inputs: [{ internalType: 'uint256', name: 'amount', type: 'uint256' }],
+    name: 'withdraw',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  { inputs: [], name: 'exit', outputs: [], stateMutability: 'nonpayable', type: 'function' },
+  { inputs: [], name: 'getReward', outputs: [], stateMutability: 'nonpayable', type: 'function' },
+  {
+    inputs: [{ internalType: 'uint256', name: 'reward', type: 'uint256' }],
+    name: 'notifyRewardAmount',
+    outputs: [],
+    stateMutability: 'nonpayable',
     type: 'function'
   }
 ]
