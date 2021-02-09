@@ -97,6 +97,7 @@ export default function ThemeTab() {
           </AutoColumn>
           <Separator />
           <ThemeContainer>
+            <ThemeOption themeName="88mph" themeString="88mph" />
             <ThemeOption themeName="CyberFi" themeString="cyberfi" />
             <ThemeOption themeName="DOGE" themeString="doge" />
             <ThemeOption themeName="DOKI DOKI" themeString="dokidoki" />

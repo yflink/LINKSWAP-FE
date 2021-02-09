@@ -10,6 +10,7 @@ import { Text, TextProps } from 'rebass'
 import { Colors } from './styled'
 
 // Themes
+import { mphTheme } from './settings/88mph'
 import { cyberFiTheme } from './settings/cyberfi'
 import { defaultTheme } from './settings/default'
 import { dogeTheme } from './settings/doge'
@@ -42,6 +43,9 @@ const mediaWidthTemplates: { [width in keyof typeof MEDIA_WIDTHS]: typeof css } 
 
 export function colors(theme: string): Colors {
   switch (theme) {
+    case '88mph':
+      return mphTheme()
+
     case 'cyberfi':
       return cyberFiTheme()
 

@@ -44,6 +44,7 @@ export function useGetTheme(): string {
   const currentTheme = useSelector<AppState, AppState['user']['userTheme']>(state => state.user.userTheme)
 
   switch (currentTheme) {
+    case '88mph':
     case 'cyberfi':
     case 'doge':
     case 'dokidoki':

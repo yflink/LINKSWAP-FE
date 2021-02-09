@@ -70,7 +70,7 @@ export default function Pool() {
   useLPTokenUsdPrices()
   return (
     <>
-      <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.appBGColor, marginBottom: '16px' }}>
+      <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.navigationBG, marginBottom: '16px' }}>
         <SwapPoolTabs active={'pool'} />
       </Card>
       <AppBody>
