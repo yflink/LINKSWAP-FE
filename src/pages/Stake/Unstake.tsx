@@ -46,48 +46,6 @@ const ActiveText = styled.div`
   font-size: 20px;
 `
 
-export const ExternalButton = styled.a`
-  padding: 18px;
-  font-weight: 500;
-  text-align: center;
-  border-radius: 6px;
-  outline: none;
-  border: 1px solid transparent;
-  color: white;
-  text-decoration: none;
-  display: flex;
-  justify-content: center;
-  flex-wrap: nowrap;
-  align-items: center;
-  cursor: pointer;
-  position: relative;
-  font-size: 20px;
-  z-index: 1;
-  &:disabled {
-    cursor: auto;
-  }
-  background-color: ${({ theme }) => theme.buttonBG};
-  color: ${({ theme }) => theme.buttonTextColor};
-  &:focus {
-    box-shadow: 0 0 0 1pt ${({ theme }) => theme.buttonBGHover};
-    background-color: ${({ theme }) => theme.buttonBGHover};
-    color: ${({ theme }) => theme.buttonTextColorHover};
-  }
-  &:hover {
-    background-color: ${({ theme }) => theme.buttonBGHover};
-    color: ${({ theme }) => theme.buttonTextColorHover};
-  }
-  &:active {
-    box-shadow: 0 0 0 1pt ${({ theme }) => theme.buttonBGActive};
-    background-color: ${({ theme }) => theme.buttonBGActive};
-    color: ${({ theme }) => theme.buttonTextColorActive};
-  }
-
-  > * {
-    user-select: none;
-  }
-`
-
 export default function Unstake({
   match: {
     params: { currencyIdA, currencyIdB }
