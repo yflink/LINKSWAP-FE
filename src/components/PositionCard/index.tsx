@@ -548,8 +548,8 @@ export function FullStakingCard({
   showExpired?: boolean | true
 }) {
   const { account, chainId, library } = useActiveWeb3React()
-  const tokenPrices = useGetTokenPrices()
-  const lpTokenPrices = useGetLPTokenPrices()
+  const { tokenPrices } = useGetTokenPrices()
+  const { lpTokenPrices } = useGetLPTokenPrices()
   const [showMore, setShowMore] = useState(show)
   const [fetching, setFetching] = useState(false)
   const { t } = useTranslation()
@@ -566,7 +566,7 @@ export function FullStakingCard({
     values.liquidityToken.address === '0x6cD7817e6f3f52123df529E1eDF5830240Ce48c1'
   const [information, setInformation] = useState<any>(false)
   if (!fetching || !account || !tokenPrices || !lpTokenPrices) {
-    positionInformation(values, account, chainId, library, tokenPrices, lpTokenPrices).then(function(result) {
+    positionInformation(values, account, chainId, library, tokenPrices, lpTokenPrices).then(result => {
       setInformation(result)
       console.log(result)
     })

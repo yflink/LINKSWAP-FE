@@ -10,7 +10,7 @@ import { Currency, Token } from '@uniswap/sdk'
 import { sYFL } from '../../constants'
 import moment from 'moment'
 
-const getUserBalance = async (account: string, rewardsContract: Contract): Promise<any> => {
+async function getUserBalance(account: string, rewardsContract: Contract): Promise<any> {
   const method: (...args: any) => Promise<BigNumber> = rewardsContract.balanceOf
   const args: Array<string> = [account]
   method(...args).then(response => {
@@ -37,13 +37,6 @@ async function getPeriodFinish(rewardsContract: Contract): Promise<any> {
   const method: (...args: any) => Promise<BigNumber> = rewardsContract.periodFinish
   method().then(response => {
     return hexStringToNumber(response.toHexString(), 0)
-  })
-}
-
-async function getTotalSupply(rewardsContract: Contract, liquidityToken: Currency): Promise<any> {
-  const method: (...args: any) => Promise<BigNumber> = rewardsContract.totalSupply
-  method().then(response => {
-    return hexStringToNumber(response.toHexString(), liquidityToken.decimals)
   })
 }
 
@@ -196,7 +189,10 @@ export default async function positionInformation(
   }
 
   try {
-    positionOutput.totalSupply = await getTotalSupply(rewardsContract, liquidityToken)
+    const getTotalSupplyMethod: (...args: any) => Promise<BigNumber> = rewardsContract.totalSupply
+    getTotalSupplyMethod().then(response => {
+      positionOutput.totalSupply = hexStringToNumber(response.toHexString(), liquidityToken.decimals)
+    })
   } catch (e) {
     console.log(e)
   }
@@ -309,9 +305,11 @@ export default async function positionInformation(
       position.tokens[1]
     )
 
-    positionOutput.stakePoolTotalLiq =
-      positionOutput.poolReserves[0] * positionOutput.poolTokenPrices[0] +
-      positionOutput.poolReserves[1] * positionOutput.poolTokenPrices[1]
+    if (typeof positionOutput.poolReserves !== 'undefined' && typeof positionOutput.poolTokenPrices !== 'undefined') {
+      positionOutput.stakePoolTotalLiq =
+        positionOutput.poolReserves[0] * positionOutput.poolTokenPrices[0] +
+        positionOutput.poolReserves[1] * positionOutput.poolTokenPrices[1]
+    }
   } else {
     if (lpTokenPrices) {
       if (lpTokenPrices[position.liquidityToken.address.toLowerCase()]) {
