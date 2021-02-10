@@ -47,7 +47,7 @@ const Navigation = styled.button<{ selected: boolean; primary?: boolean; left?: 
   height: 48px;
   font-size: 20px;
   font-weight: 500;
-  background-color: ${({ selected, primary, theme }) => {
+  background: ${({ selected, primary, theme }) => {
     if (selected) {
       return theme.appCurrencyInputBGActive
     } else {
@@ -72,7 +72,7 @@ const Navigation = styled.button<{ selected: boolean; primary?: boolean; left?: 
   }
   :focus,
   :hover {
-    background-color: ${({ selected, primary, theme }) => {
+    background: ${({ selected, primary, theme }) => {
       if (selected) {
         return theme.appCurrencyInputBGActive
       } else {
@@ -93,7 +93,7 @@ const Input = styled.input<{ error?: boolean }>`
   width: 0;
   padding: 1rem;
   border-radius: 8px;
-  background-color: ${({ theme }) => theme.appCurrencyInputBG};
+  background: ${({ theme }) => theme.appCurrencyInputBG};
   transition: color 300ms ${({ error }) => (error ? 'step-end' : 'step-start')};
   color: ${({ error, theme }) => (error ? theme.red1 : theme.textPrimary)};
   overflow: hidden;

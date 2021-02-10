@@ -24,7 +24,7 @@ const StyledToggle = styled.button<{ isActive?: boolean; activeElement?: boolean
   cursor: pointer;
   outline: none;
   padding: 0;
-  background-color: transparent;
+  background: transparent;
 `
 
 export interface ToggleProps {

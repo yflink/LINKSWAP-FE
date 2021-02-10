@@ -14,8 +14,8 @@ export function mphTheme() {
   const buttonSecondaryBG = '#2a244f'
   const modalBG = '#2a244f'
   const infoText = '#fff'
-  const highLights = '#FFF'
-  const disabledBG = '#2f2f39'
+  const highLights = '#080817'
+  const disabledBG = '#747474'
 
   return {
     //App
@@ -41,7 +41,7 @@ export function mphTheme() {
     appCurrencyInputTextColorActiveHover: mainTextColor,
 
     //Buttons
-    buttonBG: mainColor,
+    buttonBG: mainButtonColor,
     buttonTextColor: mainTextColor,
     buttonBGHover: mainColorHover,
     buttonTextColorHover: mainTextColorHover,
@@ -82,7 +82,7 @@ export function mphTheme() {
     footerTextColor: mainTextColor,
 
     //Global
-    bodyBG: '#4932eb url("../images/themes/88mph/background_large.png") center center / cover no-repeat',
+    bodyBG: '#4932eb url("../images/themes/88mph/background_large.jpg") center center / cover no-repeat',
     bodyBGTablet: '#4932eb url("../images/themes/88mph/background_tablet.png") center center / cover no-repeat',
     bodyBGMobile: '#4932eb url("../images/themes/88mph/background_mobile.png") center center / cover no-repeat',
     layerBG: transparent,
@@ -96,10 +96,10 @@ export function mphTheme() {
 
     //Header
     headerBG: transparent,
-    headerTextColor: highLights,
+    headerTextColor: mainTextColor,
     headerButtonBG: inputBGColor,
     headerButtonBGHover: appBG,
-    headerButtonIconColor: highLights,
+    headerButtonIconColor: mainTextColor,
     headerModalTextColor: mainTextColor,
     headerModalTextHighlight: mainColor,
 
@@ -107,7 +107,7 @@ export function mphTheme() {
     modalBG: inputBGColor,
     modalBorder: modalBG,
     modalSecondaryBG: modalBG,
-    modalLines: highLights,
+    modalLines: mainTextColor,
     modalButtonBG: mainButtonColor,
     modalButtonText: mainTextColor,
     modalShadow: 'rgba(0,0,0,.425)',
@@ -119,8 +119,8 @@ export function mphTheme() {
     //Navigation
     navigationBG: appBG,
     navigationTabBG: transparent,
-    navigationTabIconColor: highLights,
-    navigationTabBGHover: inputBGColor,
+    navigationTabIconColor: mainTextColor,
+    navigationTabBGHover: mainColorHover,
     navigationTabIconColorHover: mainTextColor,
     navigationTabBGActive: mainButtonColor,
     navigationTabIconColorActive: mainTextColor,
@@ -131,9 +131,9 @@ export function mphTheme() {
     //Text
     textHighlight: highLights,
     textPrimary: mainTextColor,
-    textSecondary: highLights,
+    textSecondary: mainTextColor,
     textTertiary: '#e8e3de',
-    textDisabled: '#AAA',
+    textDisabled: '#747474',
 
     //States
     red1: '#FF6871',

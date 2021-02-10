@@ -19,7 +19,7 @@ const StyledRangeInput = styled.input<{ size: number }>`
     -webkit-appearance: none;
     height: ${({ size }) => size}px;
     width: ${({ size }) => size}px;
-    background-color: #565a69;
+    background: #565a69;
     border-radius: 100%;
     border: none;
     transform: translateY(-50%);
@@ -35,7 +35,7 @@ const StyledRangeInput = styled.input<{ size: number }>`
   &::-moz-range-thumb {
     height: ${({ size }) => size}px;
     width: ${({ size }) => size}px;
-    background-color: #565a69;
+    background: #565a69;
     border-radius: 100%;
     border: none;
     color: ${({ theme }) => theme.modalBG};
@@ -50,7 +50,7 @@ const StyledRangeInput = styled.input<{ size: number }>`
   &::-ms-thumb {
     height: ${({ size }) => size}px;
     width: ${({ size }) => size}px;
-    background-color: #565a69;
+    background: #565a69;
     border-radius: 100%;
     color: ${({ theme }) => theme.modalBG};
 
@@ -109,7 +109,7 @@ export default function Slider({ value, onChange, min = 0, step = 1, max = 100, 
       size={size}
       type="range"
       value={value}
-      style={{ width: '90%',marginInlineStart: 15,marginInlineEnd: 15, padding: '15px 0' }}
+      style={{ width: '90%', marginInlineStart: 15, marginInlineEnd: 15, padding: '15px 0' }}
       onChange={changeCallback}
       aria-labelledby="input slider"
       step={step}

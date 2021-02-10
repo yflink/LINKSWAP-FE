@@ -27,7 +27,7 @@ const HeaderFrame = styled.div`
   top: 0;
   position: relative;
   z-index: 2;
-  background-color: ${({ theme }) => theme.headerBG};
+  background: ${({ theme }) => theme.headerBG};
   color: ${({ theme }) => theme.headerTextColor};
 `
 
@@ -108,7 +108,7 @@ const AccountElement = styled.div<{ active: boolean }>`
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: ${({ theme, active }) => (!active ? theme.modalBG : theme.headerButtonBG)};
+  background: ${({ theme, active }) => (!active ? theme.modalBG : theme.headerButtonBG)};
   border-radius: 6px;
   white-space: nowrap;
   width: 100%;

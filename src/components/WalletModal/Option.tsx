@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { ExternalLink } from '../../theme'
 
 const InfoCard = styled.button<{ active?: boolean }>`
-  background-color: ${({ theme, active }) => (active ? theme.buttonBG : theme.modalSecondaryBG)};
+  background: ${({ theme, active }) => (active ? theme.buttonBG : theme.modalSecondaryBG)};
   padding: 1rem;
   outline: none;
   border: 1px solid;
@@ -48,7 +48,7 @@ const GreenCircle = styled.div`
     height: 8px;
     width: 8px;
     margin-inline-end: 8px;
-    background-color: ${({ theme }) => theme.green1};
+    background: ${({ theme }) => theme.green1};
     border-radius: 50%;
   }
 `

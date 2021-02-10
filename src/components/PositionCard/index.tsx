@@ -87,7 +87,7 @@ const AnalyticsWrapper = styled.div`
 `
 
 export const HoverCard = styled(Card)`
-  background-color: ${({ theme }) => theme.appBoxBG};
+  background: ${({ theme }) => theme.appBoxBG};
   border: 1px solid ${({ theme }) => theme.appBoxBG};
   :hover {
     border: 1px solid ${({ theme }) => darken(0.06, theme.textTertiary)};
@@ -97,7 +97,7 @@ export const HoverCard = styled(Card)`
 const StakingCard = styled(Card)<{ highlight?: boolean; show?: boolean; uniswap?: boolean }>`
   font-size: 14px;
   line-height: 18px;
-  background-color: ${({ theme }) => theme.appBoxBG};
+  background: ${({ theme }) => theme.appBoxBG};
   border: 1px solid
     ${({ theme, highlight, uniswap }) => (uniswap ? '#ff007b' : highlight ? theme.textHighlight : theme.appBoxBG)};
   :hover {
@@ -107,7 +107,7 @@ const StakingCard = styled(Card)<{ highlight?: boolean; show?: boolean; uniswap?
 `
 
 export const ExternalButton = styled.a`
-  background-color: ${({ theme }) => theme.buttonSecondaryBG};
+  background: ${({ theme }) => theme.buttonSecondaryBG};
   color: ${({ theme }) => theme.buttonSecondaryTextColor};
   font-size: 16px;
   border-radius: 6px;
@@ -118,16 +118,16 @@ export const ExternalButton = styled.a`
 
   &:focus {
     box-shadow: 0 0 0 1pt ${({ theme }) => theme.buttonSecondaryBorderHover};
-    background-color: ${({ theme }) => theme.buttonSecondaryBGHover};
+    background: ${({ theme }) => theme.buttonSecondaryBGHover};
     color: ${({ theme }) => theme.buttonSecondaryTextColorHover};
   }
   &:hover {
-    background-color: ${({ theme }) => theme.buttonSecondaryBGHover};
+    background: ${({ theme }) => theme.buttonSecondaryBGHover};
     color: ${({ theme }) => theme.buttonSecondaryTextColorHover};
   }
   &:active {
     box-shadow: 0 0 0 1pt ${({ theme }) => theme.buttonSecondaryBorderActive};
-    background-color: ${({ theme }) => theme.buttonSecondaryBGActive};
+    background: ${({ theme }) => theme.buttonSecondaryBGActive};
     color: ${({ theme }) => theme.buttonSecondaryTextColorActive};
   }
 `

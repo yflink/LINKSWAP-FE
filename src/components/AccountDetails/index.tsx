@@ -77,7 +77,7 @@ const AccountGroupingRow = styled.div`
 `
 
 const AccountSection = styled.div`
-  background-color: ${({ theme }) => theme.modalBG};
+  background: ${({ theme }) => theme.modalBG};
   padding: 0rem 1rem;
   ${({ theme }) => theme.mediaWidth.upToMedium`padding: 0rem 1rem 1.5rem 1rem;`};
 `
@@ -99,7 +99,7 @@ const LowerSection = styled.div`
   padding: 1.5rem;
   flex-grow: 1;
   overflow: auto;
-  background-color: ${({ theme }) => theme.modalSecondaryBG};
+  background: ${({ theme }) => theme.modalSecondaryBG};
   border-bottom-left-radius: 25px;
   border-bottom-right-radius: 20px;
 
@@ -203,7 +203,6 @@ const WalletAction = styled(ButtonSecondary)`
 const MainWalletAction = styled(WalletAction)`
   color: ${({ theme }) => theme.textHighlight};
 `
-
 
 function renderTransactions(transactions: string[]) {
   return (
@@ -311,7 +310,7 @@ export default function AccountDetails({
                 <div>
                   {connector !== injected && connector !== walletlink && (
                     <WalletAction
-                      style={{ fontSize: '.825rem', fontWeight: 400,marginInlineEnd: '8px' }}
+                      style={{ fontSize: '.825rem', fontWeight: 400, marginInlineEnd: '8px' }}
                       onClick={() => {
                         ;(connector as any).close()
                       }}
@@ -355,7 +354,7 @@ export default function AccountDetails({
                       <div>
                         {account && (
                           <Copy toCopy={account}>
-                            <span style={{marginInlineStart: '4px' }}></span>
+                            <span style={{ marginInlineStart: '4px' }}></span>
                           </Copy>
                         )}
                         {chainId && account && (
@@ -365,7 +364,7 @@ export default function AccountDetails({
                             href={chainId && getEtherscanLink(chainId, ENSName, 'address')}
                           >
                             <LinkIcon size={16} />
-                            <span style={{marginInlineStart: '4px' }}>{t('viewOnEtherscan')}</span>
+                            <span style={{ marginInlineStart: '4px' }}>{t('viewOnEtherscan')}</span>
                           </AddressLink>
                         )}
                       </div>
@@ -377,7 +376,7 @@ export default function AccountDetails({
                       <div>
                         {account && (
                           <Copy toCopy={account}>
-                            <span style={{marginInlineStart: '4px' }}>{t('copyAddress')}</span>
+                            <span style={{ marginInlineStart: '4px' }}>{t('copyAddress')}</span>
                           </Copy>
                         )}
                         {chainId && account && (
@@ -387,7 +386,7 @@ export default function AccountDetails({
                             href={getEtherscanLink(chainId, account, 'address')}
                           >
                             <LinkIcon size={16} />
-                            <span style={{marginInlineStart: '4px' }}>{t('viewOnEtherscan')}</span>
+                            <span style={{ marginInlineStart: '4px' }}>{t('viewOnEtherscan')}</span>
                           </AddressLink>
                         )}
                       </div>

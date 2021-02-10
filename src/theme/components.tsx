@@ -14,21 +14,21 @@ export const Button = styled.button.attrs<{ warning: boolean }, { backgroundColo
   font-size: 1rem;
   border: none;
   outline: none;
-  background-color: ${({ backgroundColor }) => backgroundColor};
+  background: ${({ backgroundColor }) => backgroundColor};
   color: ${({ theme }) => theme.buttonTextColor};
   width: 100%;
 
   :hover,
   :focus {
-    background-color: ${({ theme }) => theme.buttonBGHover};
+    background: ${({ theme }) => theme.buttonBGHover};
   }
 
   :active {
-    background-color: ${({ theme }) => theme.buttonBGHover};
+    background: ${({ theme }) => theme.buttonBGHover};
   }
 
   :disabled {
-    background-color: ${({ theme }) => theme.modalBG};
+    background: ${({ theme }) => theme.modalBG};
     color: ${({ theme }) => theme.textDisabled};
     cursor: auto;
   }

@@ -67,20 +67,20 @@ export const ExternalButton = styled.a`
   &:disabled {
     cursor: auto;
   }
-  background-color: ${({ theme }) => theme.buttonBG};
+  background: ${({ theme }) => theme.buttonBG};
   color: ${({ theme }) => theme.buttonTextColor};
   &:focus {
     box-shadow: 0 0 0 1pt ${({ theme }) => theme.buttonBGHover};
-    background-color: ${({ theme }) => theme.buttonBGHover};
+    background: ${({ theme }) => theme.buttonBGHover};
     color: ${({ theme }) => theme.buttonTextColorHover};
   }
   &:hover {
-    background-color: ${({ theme }) => theme.buttonBGHover};
+    background: ${({ theme }) => theme.buttonBGHover};
     color: ${({ theme }) => theme.buttonTextColorHover};
   }
   &:active {
     box-shadow: 0 0 0 1pt ${({ theme }) => theme.buttonBGActive};
-    background-color: ${({ theme }) => theme.buttonBGActive};
+    background: ${({ theme }) => theme.buttonBGActive};
     color: ${({ theme }) => theme.buttonTextColorActive};
   }
 
