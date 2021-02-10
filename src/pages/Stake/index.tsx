@@ -32,10 +32,8 @@ export const MyStakePools = styled(BodyWrapper)`
 export default function StakeOverview() {
   const theme = useContext(ThemeContext)
   const { account, library } = useActiveWeb3React()
-  const [myRewardPools, setMyRewardPools] = useState<any | null>([])
-  const [allRewardPools, setAllRewardPools] = useState<any | null>([])
-  const [uniPoolsAdded, setUniPoolsAdded] = useState(false)
-  const [myUniPoolsAdded, setMyUniPoolsAdded] = useState(false)
+  const myRewardPools = []
+  const allRewardPools = []
   const [showOwn, setShowOwn] = useState(false)
   const [showExpired, setShowExpired] = useState(false)
   const [mfgBalance, setMfgBalance] = useState(0)
@@ -76,13 +74,11 @@ export default function StakeOverview() {
     const args: Array<string> = [account]
     method(...args).then(response => {
       setMfgBalance(hexStringToNumber(response.toHexString(), 18, 6))
-      setMyUniPoolsAdded(false)
     })
     return true
   }
 
   if (myRewardPools.length === 0) {
-    const myStakePools: any[] = []
     ACTIVE_REWARD_POOLS.forEach(poolObject => {
       let returnValue: any = false
       liquidityTokensWithBalances.forEach((pool: any) => {
@@ -94,63 +90,49 @@ export default function StakeOverview() {
         }
       })
       if (returnValue) {
-        myStakePools.push(returnValue)
-        setMyRewardPools(myStakePools)
+        myRewardPools.push(returnValue)
       }
     })
-    if (!myUniPoolsAdded) {
-      const mfg = UNI_POOLS.MFGWETH
-      if (mfgBalance === 0) {
-        getUserBalance(mfg.liquidityToken.address)
-      }
-      mfg.balance = mfgBalance
-      if (Number(mfg.balance) > 0) {
-        myStakePools.push(mfg)
-        setMyRewardPools(myStakePools)
-      }
-      setMyUniPoolsAdded(true)
+    const mfg = UNI_POOLS.MFGWETH
+    if (mfgBalance === 0) {
+      getUserBalance(mfg.liquidityToken.address)
+    }
+    mfg.balance = mfgBalance
+    if (Number(mfg.balance) > 0) {
+      myRewardPools.push(mfg)
     }
   }
 
   if (allRewardPools.length === 0) {
-    const allStakePools: any[] = []
-    if (Boolean(allRewardPools)) {
-      ACTIVE_REWARD_POOLS.forEach(poolObject => {
-        let returnValue: any = false
-        tokenPairsWithLiquidityTokens.forEach((pool: any) => {
-          if (pool.liquidityToken.address === poolObject.address) {
-            pool.rewardsAddress = poolObject.rewardsAddress
-            pool.abi = poolObject.abi
-            returnValue = pool
-            return
-          }
-        })
-        if (returnValue) {
-          allStakePools.push(returnValue)
-          setAllRewardPools(allStakePools)
+    ACTIVE_REWARD_POOLS.forEach(poolObject => {
+      let returnValue: any = false
+      tokenPairsWithLiquidityTokens.forEach((pool: any) => {
+        if (pool.liquidityToken.address === poolObject.address) {
+          pool.rewardsAddress = poolObject.rewardsAddress
+          pool.abi = poolObject.abi
+          returnValue = pool
+          return
         }
       })
-      INACTIVE_REWARD_POOLS.forEach(poolObject => {
-        let returnValue: any = false
-        inactiveTokenPairsWithLiquidityTokens.forEach((pool: any) => {
-          if (pool.liquidityToken.address === poolObject.address) {
-            pool.rewardsAddress = poolObject.rewardsAddress
-            pool.abi = poolObject.abi
-            returnValue = pool
-            return
-          }
-        })
-        if (returnValue) {
-          allStakePools.push(returnValue)
-          setAllRewardPools(allStakePools)
-        }
-      })
-      if (!uniPoolsAdded) {
-        allStakePools.push(UNI_POOLS.MFGWETH)
-        setAllRewardPools(allStakePools)
-        setUniPoolsAdded(true)
+      if (returnValue) {
+        allRewardPools.push(returnValue)
       }
-    }
+    })
+    INACTIVE_REWARD_POOLS.forEach(poolObject => {
+      let returnValue: any = false
+      inactiveTokenPairsWithLiquidityTokens.forEach((pool: any) => {
+        if (pool.liquidityToken.address === poolObject.address) {
+          pool.rewardsAddress = poolObject.rewardsAddress
+          pool.abi = poolObject.abi
+          returnValue = pool
+          return
+        }
+      })
+      if (returnValue) {
+        allRewardPools.push(returnValue)
+      }
+    })
+    allRewardPools.push(UNI_POOLS.MFGWETH)
   }
 
   const { t } = useTranslation()

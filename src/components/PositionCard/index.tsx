@@ -30,10 +30,10 @@ import { useGetLPTokenPrices, useGetTokenPrices } from '../../state/price/hooks'
 import { numberToUsd, numberToPercent, numberToSignificant } from '../../utils/numberUtils'
 import { getNetworkLibrary } from '../../connectors'
 import { useWalletModalToggle } from '../../state/application/hooks'
-import moment from 'moment'
 import { TransactionResponse } from '@ethersproject/providers'
 import ReactGA from 'react-ga'
 import { useTransactionAdder } from '../../state/transactions/hooks'
+import positionInformation from './positionInformation'
 
 const ExternalLinkIcon = styled(ExternalLink)`
   display: inline-block;
@@ -548,351 +548,35 @@ export function FullStakingCard({
   showExpired?: boolean | true
 }) {
   const { account, chainId, library } = useActiveWeb3React()
+  const tokenPrices = useGetTokenPrices()
+  const lpTokenPrices = useGetLPTokenPrices()
   const [showMore, setShowMore] = useState(show)
+  const [fetching, setFetching] = useState(false)
   const { t } = useTranslation()
   const currency0 = unwrappedToken(values.tokens[0])
   const currency1 = unwrappedToken(values.tokens[1])
-  const [poolReserves, setPoolReserves] = useState<number[]>([0, 0])
-  const [poolTokenPrices, setPoolTokenPrices] = useState<number[]>([0, 0])
-  const [rawUserBalance, setRawUserBalance] = useState<string>('0x00')
-  const [userBalance, setUserBalance] = useState(0)
-  const [userRewards, setUserRewards] = useState<string[]>(['', ''])
-  const [periodFinish, setPeriodFinish] = useState(0)
-  const [rewardTokens, setRewardTokens] = useState<string[]>(['', ''])
-  const [rewardTokenRates, setRewardTokenRates] = useState<string[]>(['', ''])
-  const [totalSupply, setTotalSupply] = useState(0)
-  const [totalLPSupply, setTotalLPSupply] = useState(0)
-  const [fetching, setFetching] = useState(false)
-  const isHighlighted = userBalance > 0 && !my
-  const liquidityToken = unwrappedToken(values.liquidityToken)
-  const rewardInfo: any[] = [
-    {
-      address: '',
-      decimals: 18,
-      symbol: '',
-      rate: 0,
-      price: 0,
-      userReward: 0
-    },
-    {
-      address: '',
-      decimals: 18,
-      symbol: '',
-      rate: 0,
-      price: 0,
-      userReward: 0
-    }
-  ]
-  const { tokenPrices } = useGetTokenPrices()
-  const { lpTokenPrices } = useGetLPTokenPrices()
-  const id = values.liquidityToken.address.toLowerCase()
   const toggleWalletModal = useWalletModalToggle()
-  const fakeAccount = '0x0000000000000000000000000000000000000000'
-  const fakeLibrary = getNetworkLibrary()
   const headerRowStyles = show ? 'defaut' : 'pointer'
   const addTransaction = useTransactionAdder()
-  const then: any = periodFinish > 0 ? moment.unix(periodFinish) : 0
-  const now: any = moment()
-  const remaining = periodFinish > 0 ? moment(then - now).unix() : 1
-  const isInactive = remaining < 1
-  let apy = 0
+  const apy = 0
   let currencyA = currency0
   let currencyB = currency1
-  let isUni = false
-  const isDefault = values.abi === 'StakingRewards'
   const isYFLUSD =
     values.liquidityToken.address === '0x195734d862DFb5380eeDa0ACD8acf697eA95D370' ||
     values.liquidityToken.address === '0x6cD7817e6f3f52123df529E1eDF5830240Ce48c1'
-  const abi = values.abi !== 'StakingRewards' ? syflPool : StakingRewards
-  const rewardsContract =
-    !chainId || !library || !account
-      ? getContract(values.rewardsAddress, abi, fakeLibrary, fakeAccount)
-      : getContract(values.rewardsAddress, abi, library, account)
-  const lpContract =
-    !chainId || !library || !account
-      ? getContract(values.liquidityToken.address, LINKSWAPLPToken, fakeLibrary, fakeAccount)
-      : getContract(values.liquidityToken.address, LINKSWAPLPToken, library, account)
-
-  async function getUserBalance(account: string) {
-    const method: (...args: any) => Promise<BigNumber> = rewardsContract.balanceOf
-    const args: Array<string> = [account]
-    method(...args).then(response => {
-      if (BigNumber.isBigNumber(response)) {
-        setRawUserBalance(response.toHexString())
-        setUserBalance(hexStringToNumber(response.toHexString(), liquidityToken.decimals, 6))
-      }
+  const [information, setInformation] = useState<any>(false)
+  if (!fetching || !account || !tokenPrices || !lpTokenPrices) {
+    positionInformation(values, account, chainId, library, tokenPrices, lpTokenPrices).then(function(result) {
+      setInformation(result)
+      console.log(result)
     })
-  }
-
-  async function getUserRewards(account: string, index: number, indexString: string) {
-    const method: (...args: any) => Promise<any> = rewardsContract.earned
-    const args: Array<string | number> = isDefault ? [account, indexString] : [account]
-    const userRewardArray = userRewards
-    method(...args).then(response => {
-      userRewardArray[index] = !isDefault && index === 1 ? '0' : response.toHexString()
-      setUserRewards(userRewardArray)
-    })
-  }
-
-  async function getPeriodFinish() {
-    const method: (...args: any) => Promise<BigNumber> = rewardsContract.periodFinish
-    method().then(response => {
-      setPeriodFinish(hexStringToNumber(response.toHexString(), 0))
-    })
-  }
-
-  async function getTotalSupply() {
-    const method: (...args: any) => Promise<BigNumber> = rewardsContract.totalSupply
-    method().then(response => {
-      setTotalSupply(hexStringToNumber(response.toHexString(), liquidityToken.decimals))
-    })
-  }
-
-  async function getTotalLPSupply() {
-    const method: (...args: any) => Promise<BigNumber> = lpContract.totalSupply
-    method().then(response => {
-      setTotalLPSupply(hexStringToNumber(response.toHexString(), liquidityToken.decimals))
-    })
-  }
-
-  async function getRewardTokens(index: number) {
-    if (isDefault) {
-      const method: (...args: any) => Promise<string> = rewardsContract.rewardTokens
-      const args = index
-      const rewardTokensArray = rewardTokens
-      method(args).then(response => {
-        rewardTokensArray[index] = response
-        setRewardTokens(rewardTokensArray)
-      })
-    } else {
-      const rewardTokensArray = rewardTokens
-      rewardTokensArray[0] = sYFL.address
-      rewardTokensArray[1] = fakeAccount
-      setRewardTokens(rewardTokensArray)
-    }
-  }
-  async function getRewardTokenRates(index: number) {
-    const method: (...args: any) => Promise<BigNumber> = rewardsContract.rewardRate
-    const args = isDefault ? index : []
-    const rewardTokenRatesArray = rewardTokenRates
-    method(args).then(response => {
-      rewardTokenRatesArray[index] = !isDefault && index === 1 ? '0' : response.toHexString()
-      setRewardTokenRates(rewardTokenRatesArray)
-    })
-  }
-
-  async function getTokenPriceFromCoingecko(tokenAddress: string) {
-    if (!fetching) {
-      setFetching(true)
-    } else {
-      return false
-    }
-    const url = `https://api.coingecko.com/api/v3/simple/token_price/ethereum?contract_addresses=${tokenAddress}&vs_currencies=usd`
-    try {
-      const response = await fetch(url, {
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        },
-        method: 'GET'
-      })
-
-      if (response.ok) {
-        const content = await response.json()
-        return content[tokenAddress].usd
-      } else {
-        return false
-      }
-    } catch (e) {
-      return false
-    } finally {
-      //console.log('fetched price')
-    }
-  }
-
-  async function getUniswapPoolLiquidity() {
-    const method: (...args: any) => Promise<any> = lpContract.getReserves
-    method().then(response => {
-      setPoolReserves([
-        hexStringToNumber(response[0]?.toString(), currency0.decimals),
-        hexStringToNumber(response[1]?.toString(), currency1.decimals)
-      ])
-      return 0
-    })
-  }
-
-  async function getUniswapPoolTokenPrices() {
-    if (tokenPrices) {
-      const tokenAddress0 = values.tokens[0].address.toLowerCase()
-      const tokenAddress1 = values.tokens[1].address.toLowerCase()
-      const tokenPrice0 = tokenPrices[tokenAddress0]
-        ? Number(tokenPrices[tokenAddress0].price)
-        : await getTokenPriceFromCoingecko(tokenAddress0)
-      const tokenPrice1 = tokenPrices[tokenAddress1]
-        ? Number(tokenPrices[tokenAddress1].price)
-        : await getTokenPriceFromCoingecko(tokenAddress1)
-      setPoolTokenPrices([tokenPrice0, tokenPrice1])
-    } else {
-      return
-    }
-  }
-
-  if (rewardsContract) {
-    if (account) {
-      if (userBalance === 0) {
-        getUserBalance(account)
-      }
-
-      if (rewardTokens[0] !== '') {
-        getUserRewards(account, 0, '0x00')
-      }
-
-      if (rewardTokens[1] !== '') {
-        getUserRewards(account, 1, '0x01')
-      }
-    }
-    if (periodFinish === 0) {
-      getPeriodFinish()
-    }
-    if (totalSupply === 0) {
-      getTotalSupply()
-    }
-    if (rewardTokens[0] === '') {
-      getRewardTokens(0)
-    }
-    if (rewardTokens[1] === '') {
-      getRewardTokens(1)
-    }
-    if (rewardTokenRates[0] === '') {
-      getRewardTokenRates(0)
-    }
-    if (rewardTokenRates[1] === '') {
-      getRewardTokenRates(1)
-    }
-  }
-  if (lpContract) {
-    if (totalLPSupply === 0) {
-      getTotalLPSupply()
-    }
-
-    if (liquidityToken.symbol !== 'LSLP') {
-      if (poolReserves[0] === 0 && poolReserves[1] === 0) {
-        getUniswapPoolLiquidity()
-      }
-
-      if (poolTokenPrices[0] === 0 && poolTokenPrices[1] === 0) {
-        getUniswapPoolTokenPrices()
-      }
-
-      isUni = true
-    }
-  }
-
-  if (rewardTokens[0] !== '' && rewardTokens[1] !== '' && tokenPrices) {
-    const token0Address = rewardTokens[0].toLowerCase()
-    const token1Address = rewardTokens[1].toLowerCase()
-    if (tokenPrices[token0Address]) {
-      rewardInfo[0].address = token0Address
-      rewardInfo[0].decimals = tokenPrices[token0Address].decimals
-      rewardInfo[0].symbol = tokenPrices[token0Address].symbol
-      rewardInfo[0].price = tokenPrices[token0Address].price
-    } else {
-      if (token0Address !== fakeAccount) {
-        if (values.tokens[0].address.toLowerCase() === token0Address && poolTokenPrices[0] !== 0) {
-          rewardInfo[0].address = values.tokens[0].address
-          rewardInfo[0].decimals = values.tokens[0].decimals
-          rewardInfo[0].symbol = values.tokens[0].symbol
-          rewardInfo[0].price = poolTokenPrices[0]
-        }
-        if (values.tokens[1].address.toLowerCase() === token0Address && poolTokenPrices[1] !== 0) {
-          rewardInfo[0].address = values.tokens[1].address
-          rewardInfo[0].decimals = values.tokens[1].decimals
-          rewardInfo[0].symbol = values.tokens[1].symbol
-          rewardInfo[0].price = poolTokenPrices[1]
-        }
-      }
-    }
-
-    if (rewardTokenRates[0] && rewardInfo[0].decimals) {
-      rewardInfo[0].rate = hexStringToNumber(rewardTokenRates[0], rewardInfo[0].decimals, 2, true)
-    }
-
-    if (tokenPrices[token1Address]) {
-      rewardInfo[1].address = token1Address
-      rewardInfo[1].decimals = tokenPrices[token1Address].decimals
-      rewardInfo[1].symbol = tokenPrices[token1Address].symbol
-      rewardInfo[1].price = tokenPrices[token1Address].price
-    } else {
-      if (token1Address !== fakeAccount) {
-        if (values.tokens[0].address.toLowerCase() === token1Address && poolTokenPrices[0] !== 0) {
-          rewardInfo[1].address = values.tokens[0].address
-          rewardInfo[1].decimals = values.tokens[0].decimals
-          rewardInfo[1].symbol = values.tokens[0].symbol
-          rewardInfo[1].price = poolTokenPrices[0]
-        }
-        if (values.tokens[1].address.toLowerCase() === token1Address && poolTokenPrices[1] !== 0) {
-          rewardInfo[1].address = values.tokens[1].address
-          rewardInfo[1].decimals = values.tokens[1].decimals
-          rewardInfo[1].symbol = values.tokens[1].symbol
-          rewardInfo[1].price = poolTokenPrices[1]
-        }
-      }
-    }
-
-    if (rewardTokenRates[1] && rewardInfo[1].decimals) {
-      rewardInfo[1].rate = hexStringToNumber(rewardTokenRates[1], rewardInfo[1].decimals, 2, true)
-    }
-  }
-
-  if (userRewards[0] !== '' && userRewards[1] !== '') {
-    rewardInfo[0].userReward = hexStringToNumber(userRewards[0], rewardInfo[0].decimals)
-    rewardInfo[1].userReward = hexStringToNumber(userRewards[1], rewardInfo[1].decimals)
-  }
-
-  let stakePoolTotalLiq = 0
-  if (isUni) {
-    if (poolTokenPrices[0] !== 0 && poolTokenPrices[1] !== 0 && poolReserves[0] !== 0 && poolReserves[1] !== 0) {
-      stakePoolTotalLiq = poolReserves[0] * poolTokenPrices[0] + poolReserves[1] * poolTokenPrices[1]
-    }
-  } else {
-    if (lpTokenPrices) {
-      if (lpTokenPrices[id]) {
-        stakePoolTotalLiq = lpTokenPrices[id].totalLiq
-      }
-    }
-  }
-  const userShare = totalSupply > 0 && userBalance > 0 ? userBalance / (totalSupply / 100) : 0
-  const lpTokenPrice = stakePoolTotalLiq && totalLPSupply > 0 ? stakePoolTotalLiq / totalLPSupply : 0
-  const stakePoolTotalDeposited = lpTokenPrice ? totalSupply * lpTokenPrice : 0
-  const userShareUsd = lpTokenPrice && userBalance ? userBalance * lpTokenPrice : 0
-
-  if (apy === 0 && tokenPrices && stakePoolTotalDeposited) {
-    let totalDailyRewardValue = 0
-    if (rewardInfo[0].rate > 0) {
-      const dailyToken0Value = rewardInfo[0].rate * rewardInfo[0].price
-      if (dailyToken0Value > 0) {
-        totalDailyRewardValue += dailyToken0Value
-      }
-    }
-
-    if (rewardInfo[1].rate > 0) {
-      const dailyToken1Value = rewardInfo[1].rate * rewardInfo[1].price
-      if (dailyToken1Value > 0) {
-        totalDailyRewardValue += dailyToken1Value
-      }
-    }
-
-    if (!!totalSupply) {
-      const yearlyRewardsValue = totalDailyRewardValue * 365
-      const perDepositedDollarYearlyReward = yearlyRewardsValue / stakePoolTotalDeposited
-      apy = perDepositedDollarYearlyReward * 100
-    }
+    setFetching(true)
   }
 
   async function claimRewards(rewardsContractAddress: string) {
-    if (!chainId || !library || !account) return
-    const router = getContract(rewardsContractAddress, abi, library, account)
+    if (!chainId || !library || !account || !information) return
+    const isDefault = information.poolType !== 'syflPool'
+    const router = getContract(rewardsContractAddress, information.abi, library, account)
     const estimate = isDefault ? router.estimateGas.claimRewards : router.estimateGas.getReward
     const method: () => Promise<TransactionResponse> = isDefault ? router.claimRewards : router.getReward
 
@@ -922,13 +606,14 @@ export function FullStakingCard({
   }
 
   async function unstakeAndClaimRewards(rewardsContractAddress: string) {
-    if (!chainId || !library || !account || !rawUserBalance) return
-    const router = getContract(rewardsContractAddress, abi, library, account)
+    if (!chainId || !library || !account || !information) return
+    const isDefault = information.poolType !== 'syflPool'
+    const router = getContract(rewardsContractAddress, information.abi, library, account)
     const estimate = isDefault ? router.estimateGas.unstakeAndClaimRewards : router.estimateGas.exit
     const method: (...args: any) => Promise<TransactionResponse> = isDefault
       ? router.unstakeAndClaimRewards
       : router.exit
-    const args: Array<string> = isDefault ? [rawUserBalance] : []
+    const args: Array<string> = isDefault ? [information.rawUserBalance] : []
 
     const value: BigNumber | null = null
     await estimate(...args, value ? { value } : {})
@@ -979,11 +664,17 @@ export function FullStakingCard({
       break
   }
 
-  if ((userBalance === 0 && showOwn) || (isInactive && !showExpired) || (!isInactive && showExpired)) {
+  if (!information) {
+    return <></>
+  } else if (
+    (information.userBalance === 0 && showOwn) ||
+    (information.isInactive && !showExpired) ||
+    (!information.isInactive && showExpired)
+  ) {
     return <></>
   } else {
     return (
-      <StakingCard highlight={isHighlighted} show={show} uniswap={isUni}>
+      <StakingCard highlight={information.userBalance > 0 && !my} show={show} uniswap={information.poolType === 'uni'}>
         <AutoColumn gap="12px">
           <FixedHeightRow
             onClick={() => {
@@ -993,9 +684,9 @@ export function FullStakingCard({
             }}
             style={{ cursor: headerRowStyles, position: 'relative' }}
           >
-            {!my && !isInactive && (
+            {!my && !information.isInactive && (
               <div style={{ position: 'absolute', right: '-13px', top: '-16px', fontSize: '12px' }}>
-                {apy > 0 ? (
+                {information.apy > 0 ? (
                   <p style={{ margin: 0 }}>{t('apy', { apy: numberToPercent(apy) })}</p>
                 ) : (
                   <Dots>{t('loading')}</Dots>
@@ -1034,37 +725,37 @@ export function FullStakingCard({
                   {numberToSignificant(values['balance'])}
                 </RowBetween>
               )}
-              {userBalance > 0 && (
+              {information.userBalance > 0 && (
                 <RowBetween>
                   <Text>{t('stakedTokenAmount')}</Text>
-                  {numberToSignificant(userBalance)}
+                  {numberToSignificant(information.userBalance)}
                 </RowBetween>
               )}
-              {userBalance > 0 && userShare > 0 && userShareUsd > 0 && (
+              {information.userBalance > 0 && information.userShare > 0 && information.userShareUsd > 0 && (
                 <RowBetween>
                   <Text>{t('yourPoolShare')}</Text>
-                  {numberToUsd(userShareUsd)} ({numberToPercent(userShare)})
+                  {numberToUsd(information.userShareUsd)} ({numberToPercent(information.userShare)})
                 </RowBetween>
               )}
-              {rewardInfo[0].userReward > 0 || rewardInfo[1].userReward > 0 ? (
+              {information.rewardInfo[0].userReward > 0 || information.rewardInfo[1].userReward > 0 ? (
                 <RowBetween style={{ alignItems: 'flex-start' }}>
                   <Text>{t('claimableRewards')}</Text>
                   <Text style={{ textAlign: 'end' }}>
-                    {rewardInfo[0].userReward > 0 && (
+                    {information.rewardInfo[0].userReward > 0 && (
                       <div>
-                        {numberToSignificant(rewardInfo[0].userReward)} {rewardInfo[0].symbol}
+                        {numberToSignificant(information.rewardInfo[0].userReward)} {information.rewardInfo[0].symbol}
                       </div>
                     )}
-                    {rewardInfo[1].userReward > 0 && (
+                    {information.rewardInfo[1].userReward > 0 && (
                       <div>
-                        {numberToSignificant(rewardInfo[1].userReward)} {rewardInfo[1].symbol}
+                        {numberToSignificant(information.rewardInfo[1].userReward)} {information.rewardInfo[1].symbol}
                       </div>
                     )}
                   </Text>
                 </RowBetween>
               ) : (
                 <>
-                  {userBalance > 0 && (
+                  {information.userBalance > 0 && (
                     <RowBetween style={{ alignItems: 'flex-start' }}>
                       <Text>{t('claimableRewards')}</Text>
                       <Dots>{t('loading')}</Dots>
@@ -1075,7 +766,7 @@ export function FullStakingCard({
               {my && !show && (
                 <RowBetween marginTop="10px">
                   <>
-                    {isUni ? (
+                    {information.poolType === 'uni' ? (
                       <ButtonSecondary
                         as={Link}
                         width="100%"
@@ -1100,33 +791,39 @@ export function FullStakingCard({
                   {t('stakePoolStats')}
                 </Text>
               </RowBetween>
-              {stakePoolTotalLiq > 0 && (
+              {information.stakePoolTotalLiq > 0 && (
                 <RowBetween style={{ alignItems: 'flex-start' }}>
                   <Text>{t('stakePoolTotalLiq')}</Text>
-                  <Text>{numberToUsd(stakePoolTotalLiq)}</Text>
+                  <Text>{numberToUsd(information.stakePoolTotalLiq)}</Text>
                 </RowBetween>
               )}
-              {stakePoolTotalDeposited > 0 && (
+              {information.stakePoolTotalDeposited > 0 && (
                 <RowBetween style={{ alignItems: 'flex-start' }}>
                   <Text>{t('stakePoolTotalDeposited')}</Text>
-                  <Text>{numberToUsd(stakePoolTotalDeposited)}</Text>
+                  <Text>{numberToUsd(information.stakePoolTotalDeposited)}</Text>
                 </RowBetween>
               )}
-              {rewardInfo.length > 0 && !isInactive && (
+              {information.rewardInfo.length > 0 && !information.isInactive && (
                 <RowBetween style={{ alignItems: 'flex-start' }}>
                   <Text>{t('stakePoolRewards')}</Text>
                   <Text style={{ textAlign: 'end' }}>
-                    {rewardInfo[0]['rate'] > 0 && (
+                    {information.rewardInfo[0]['rate'] > 0 && (
                       <div>
-                        {t('stakeRewardPerDay', { rate: rewardInfo[0].rate, currencySymbol: rewardInfo[0].symbol })}
+                        {t('stakeRewardPerDay', {
+                          rate: information.rewardInfo[0].rate,
+                          currencySymbol: information.rewardInfo[0].symbol
+                        })}
                       </div>
                     )}
-                    {rewardInfo.length > 1 && rewardInfo[1]['rate'] > 0 && (
+                    {information.rewardInfo.length > 1 && information.rewardInfo[1]['rate'] > 0 && (
                       <div style={{ textAlign: 'end' }}>
-                        {t('stakeRewardPerDay', { rate: rewardInfo[1].rate, currencySymbol: rewardInfo[1].symbol })}
+                        {t('stakeRewardPerDay', {
+                          rate: information.rewardInfo[1].rate,
+                          currencySymbol: information.rewardInfo[1].symbol
+                        })}
                       </div>
                     )}
-                    {apy > 0 && !isInactive && (
+                    {apy > 0 && !information.isInactive && (
                       <div style={{ textAlign: 'end', marginTop: '8px' }}>
                         {t('apy', { apy: numberToPercent(apy) })}
                       </div>
@@ -1136,13 +833,13 @@ export function FullStakingCard({
               )}
               <RowBetween>
                 <Text>{t('timeRemaining')}</Text>
-                {!isDefault && isYFLUSD ? (
-                  <Countdown ends={periodFinish} format="DD[d] HH[h] mm[m] ss[s]" string="emissionDropIn" />
+                {information.poolType === 'syflPool' && isYFLUSD ? (
+                  <Countdown ends={information.periodFinish} format="DD[d] HH[h] mm[m] ss[s]" string="emissionDropIn" />
                 ) : (
-                  <Countdown ends={periodFinish} format="DD[d] HH[h] mm[m] ss[s]" string="endsIn" />
+                  <Countdown ends={information.periodFinish} format="DD[d] HH[h] mm[m] ss[s]" string="endsIn" />
                 )}
               </RowBetween>
-              {userBalance > 0 && !my && !isInactive && (
+              {information.userBalance > 0 && !my && !information.isInactive && (
                 <RowBetween marginTop="10px">
                   <ButtonSecondary
                     onClick={() => {
@@ -1154,7 +851,7 @@ export function FullStakingCard({
                     {t('claimRewards')}
                   </ButtonSecondary>
                   <>
-                    {isUni ? (
+                    {information.poolType === 'uni' ? (
                       <ButtonSecondary
                         as={Link}
                         width="48%"
@@ -1175,7 +872,7 @@ export function FullStakingCard({
                   </>
                 </RowBetween>
               )}
-              {userBalance > 0 && !my && (
+              {information.userBalance > 0 && !my && (
                 <RowBetween marginTop="10px">
                   <ButtonSecondary
                     onClick={() => {
@@ -1188,13 +885,13 @@ export function FullStakingCard({
                   </ButtonSecondary>
                 </RowBetween>
               )}
-              {!my && !isInactive && (
+              {!my && !information.isInactive && (
                 <RowBetween marginTop="10px">
                   {!account ? (
                     <ButtonLight onClick={toggleWalletModal}>{t('connectWallet')}</ButtonLight>
                   ) : (
                     <>
-                      {isUni ? (
+                      {information.poolType === 'uni' ? (
                         <ExternalButton target="_blank" href={values.liquidityUrl}>
                           {t('addLiquidity')}
                         </ExternalButton>
