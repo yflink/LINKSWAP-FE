@@ -40,6 +40,8 @@ import StakeOverview from './Stake'
 import { RedirectToStake, RedirectToUnstake } from './Stake/redirects'
 
 import { ExternalLink } from 'react-feather'
+import { useTokenUsdPrices } from '../hooks/useTokenUsdPrice'
+import { useLPTokenUsdPrices } from '../hooks/useLPTokenUsdPrice'
 
 const AppWrapper = styled.div`
   display: flex;
@@ -111,7 +113,6 @@ const NewWindowIcon = styled(ExternalLink)`
     stroke: ${({ theme }) => theme.footerTextColor};
   }
 `
-
 export default function App() {
   return (
     <Suspense fallback={null}>

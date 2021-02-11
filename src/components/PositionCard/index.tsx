@@ -34,6 +34,8 @@ import { TransactionResponse } from '@ethersproject/providers'
 import ReactGA from 'react-ga'
 import { useTransactionAdder } from '../../state/transactions/hooks'
 import positionInformation from './positionInformation'
+import { useTokenUsdPrices } from '../../hooks/useTokenUsdPrice'
+import { useLPTokenUsdPrices } from '../../hooks/useLPTokenUsdPrice'
 
 const ExternalLinkIcon = styled(ExternalLink)`
   display: inline-block;
@@ -547,34 +549,78 @@ export function FullStakingCard({
   showOwn?: boolean | false
   showExpired?: boolean | true
 }) {
+  useTokenUsdPrices()
+  useLPTokenUsdPrices()
   const { account, chainId, library } = useActiveWeb3React()
   const { tokenPrices } = useGetTokenPrices()
   const { lpTokenPrices } = useGetLPTokenPrices()
   const [showMore, setShowMore] = useState(show)
-  const [fetching, setFetching] = useState(false)
   const { t } = useTranslation()
   const currency0 = unwrappedToken(values.tokens[0])
   const currency1 = unwrappedToken(values.tokens[1])
   const toggleWalletModal = useWalletModalToggle()
   const headerRowStyles = show ? 'defaut' : 'pointer'
   const addTransaction = useTransactionAdder()
-  const apy = 0
+  const fakeAccount = '0x0000000000000000000000000000000000000000'
   let currencyA = currency0
   let currencyB = currency1
   const isYFLUSD =
     values.liquidityToken.address === '0x195734d862DFb5380eeDa0ACD8acf697eA95D370' ||
     values.liquidityToken.address === '0x6cD7817e6f3f52123df529E1eDF5830240Ce48c1'
-  const [information, setInformation] = useState<any>(false)
-  if (!fetching || !account || !tokenPrices || !lpTokenPrices) {
-    positionInformation(values, account, chainId, library, tokenPrices, lpTokenPrices).then(result => {
-      setInformation(result)
-      console.log(result)
-    })
-    setFetching(true)
+  const [information, setInformation] = useState<any>({
+    poolReserves: [0, 0],
+    poolTokenPrices: [0, 0],
+    userBalanceRaw: '0',
+    userBalance: 0,
+    userRewards: ['', ''],
+    periodFinish: 0,
+    rewardTokens: ['', ''],
+    rewardTokenRates: ['0', '0'],
+    totalSupply: 0,
+    totalLPSupply: 0,
+    poolType: 'default',
+    apy: 0,
+    userShare: 0,
+    lpTokenPrice: 0,
+    stakePoolTotalDeposited: 0,
+    stakePoolTotalLiq: 0,
+    userShareUsd: 0,
+    isInactive: false,
+    updated: false,
+    rewardInfo: [
+      {
+        address: '',
+        decimals: 18,
+        symbol: '',
+        rate: 0,
+        price: 0,
+        userReward: 0
+      },
+      {
+        address: '',
+        decimals: 18,
+        symbol: '',
+        rate: 0,
+        price: 0,
+        userReward: 0
+      }
+    ]
+  })
+  const [fetching, setFetching] = useState(false)
+
+  if (!fetching) {
+    if (!!tokenPrices && !!lpTokenPrices) {
+      setFetching(true)
+      if (!information.updated) {
+        positionInformation(values, account, chainId, library, tokenPrices, information).then(result => {
+          setInformation(result)
+        })
+      }
+    }
   }
 
   async function claimRewards(rewardsContractAddress: string) {
-    if (!chainId || !library || !account || !information) return
+    if (!chainId || !library || !account || !information.updated) return
     const isDefault = information.poolType !== 'syflPool'
     const router = getContract(rewardsContractAddress, information.abi, library, account)
     const estimate = isDefault ? router.estimateGas.claimRewards : router.estimateGas.getReward
@@ -606,7 +652,7 @@ export function FullStakingCard({
   }
 
   async function unstakeAndClaimRewards(rewardsContractAddress: string) {
-    if (!chainId || !library || !account || !information) return
+    if (!chainId || !library || !account || !information.updated) return
     const isDefault = information.poolType !== 'syflPool'
     const router = getContract(rewardsContractAddress, information.abi, library, account)
     const estimate = isDefault ? router.estimateGas.unstakeAndClaimRewards : router.estimateGas.exit
@@ -664,14 +710,151 @@ export function FullStakingCard({
       break
   }
 
-  if (!information) {
-    return <></>
-  } else if (
+  if (tokenPrices) {
+    const token0id = values.tokens[0].address.toLowerCase()
+    const token1id = values.tokens[1].address.toLowerCase()
+    if (tokenPrices[token0id]) {
+      information.poolTokenPrices[0] = Number(tokenPrices[token0id].price)
+    }
+    if (tokenPrices[token1id]) {
+      information.poolTokenPrices[1] = Number(tokenPrices[token1id].price)
+    }
+  }
+
+  if (information.updated) {
+    if (information.rewardTokens[0] !== '' && information.rewardTokens[1] !== '' && tokenPrices) {
+      const token0Address = information.rewardTokens[0].toLowerCase()
+      const token1Address = information.rewardTokens[1].toLowerCase()
+
+      if (tokenPrices[token0Address]) {
+        information.rewardInfo[0].address = token0Address
+        information.rewardInfo[0].decimals = tokenPrices[token0Address].decimals
+        information.rewardInfo[0].symbol = tokenPrices[token0Address].symbol
+        information.rewardInfo[0].price = tokenPrices[token0Address].price
+      } else {
+        if (token0Address !== fakeAccount) {
+          if (values.tokens[0].address.toLowerCase() === token0Address && information.poolTokenPrices[0] !== 0) {
+            information.rewardInfo[0].address = values.tokens[0].address
+            information.rewardInfo[0].decimals = values.tokens[0].decimals
+            information.rewardInfo[0].symbol = values.tokens[0].symbol
+            information.rewardInfo[0].price = information.poolTokenPrices[0]
+          }
+          if (values.tokens[1].address.toLowerCase() === token0Address && information.poolTokenPrices[1] !== 0) {
+            information.rewardInfo[0].address = values.tokens[1].address
+            information.rewardInfo[0].decimals = values.tokens[1].decimals
+            information.rewardInfo[0].symbol = values.tokens[1].symbol
+            information.rewardInfo[0].price = information.poolTokenPrices[1]
+          }
+        }
+      }
+
+      if (information.rewardTokenRates[0] && information.rewardInfo[0].decimals) {
+        information.rewardInfo[0].rate = hexStringToNumber(
+          information.rewardTokenRates[0],
+          information.rewardInfo[0].decimals,
+          2,
+          true
+        )
+      }
+
+      if (tokenPrices[token1Address]) {
+        information.rewardInfo[1].address = token1Address
+        information.rewardInfo[1].decimals = tokenPrices[token1Address].decimals
+        information.rewardInfo[1].symbol = tokenPrices[token1Address].symbol
+        information.rewardInfo[1].price = tokenPrices[token1Address].price
+      } else {
+        if (token1Address !== fakeAccount) {
+          if (values.tokens[0].address.toLowerCase() === token1Address && information.poolTokenPrices[0] !== 0) {
+            information.rewardInfo[1].address = values.tokens[0].address
+            information.rewardInfo[1].decimals = values.tokens[0].decimals
+            information.rewardInfo[1].symbol = values.tokens[0].symbol
+            information.rewardInfo[1].price = information.poolTokenPrices[0]
+          }
+          if (values.tokens[1].address.toLowerCase() === token1Address && information.poolTokenPrices[1] !== 0) {
+            information.rewardInfo[1].address = values.tokens[1].address
+            information.rewardInfo[1].decimals = values.tokens[1].decimals
+            information.rewardInfo[1].symbol = values.tokens[1].symbol
+            information.rewardInfo[1].price = information.poolTokenPrices[1]
+          }
+        }
+      }
+
+      if (information.rewardTokenRates[1] && information.rewardInfo[1].decimals) {
+        information.rewardInfo[1].rate = hexStringToNumber(
+          information.rewardTokenRates[1],
+          information.rewardInfo[1].decimals,
+          2,
+          true
+        )
+      }
+    }
+
+    if (information.poolType === 'uni') {
+      information.stakePoolTotalLiq =
+        information.poolReserves[0] * information.poolTokenPrices[0] +
+        information.poolReserves[1] * information.poolTokenPrices[1]
+    } else {
+      if (lpTokenPrices) {
+        if (lpTokenPrices[values.liquidityToken.address.toLowerCase()]) {
+          information.stakePoolTotalLiq = lpTokenPrices[values.liquidityToken.address.toLowerCase()].totalLiq
+        }
+      }
+    }
+    if (information.userRewards[0] !== '') {
+      information.rewardInfo[0].userReward = hexStringToNumber(
+        information.userRewards[0],
+        information.rewardInfo[0].decimals
+      )
+    }
+    if (information.userRewards[1] !== '') {
+      information.rewardInfo[1].userReward = hexStringToNumber(
+        information.userRewards[1],
+        information.rewardInfo[1].decimals
+      )
+    }
+
+    information.userShare =
+      information.totalSupply > 0 && information.userBalance > 0
+        ? information.userBalance / (information.totalSupply / 100)
+        : 0
+    information.lpTokenPrice =
+      information.stakePoolTotalLiq && information.totalLPSupply > 0
+        ? information.stakePoolTotalLiq / information.totalLPSupply
+        : 0
+    information.stakePoolTotalDeposited = information.lpTokenPrice
+      ? information.totalSupply * information.lpTokenPrice
+      : 0
+    information.userShareUsd =
+      information.lpTokenPrice && information.userBalance ? information.userBalance * information.lpTokenPrice : 0
+    if (tokenPrices && information.stakePoolTotalDeposited) {
+      let totalDailyRewardValue = 0
+      if (information.rewardInfo[0].rate > 0) {
+        const dailyToken0Value = information.rewardInfo[0].rate * information.rewardInfo[0].price
+        if (dailyToken0Value > 0) {
+          totalDailyRewardValue += dailyToken0Value
+        }
+      }
+
+      if (information.rewardInfo[1].rate > 0) {
+        const dailyToken1Value = information.rewardInfo[1].rate * information.rewardInfo[1].price
+        if (dailyToken1Value > 0) {
+          totalDailyRewardValue += dailyToken1Value
+        }
+      }
+
+      if (!!information.totalSupply) {
+        const yearlyRewardsValue = totalDailyRewardValue * 365
+        const perDepositedDollarYearlyReward = yearlyRewardsValue / information.stakePoolTotalDeposited
+        information.apy = perDepositedDollarYearlyReward * 100
+      }
+    }
+  }
+  if (
     (information.userBalance === 0 && showOwn) ||
     (information.isInactive && !showExpired) ||
     (!information.isInactive && showExpired)
   ) {
-    return <></>
+    return null
   } else {
     return (
       <StakingCard highlight={information.userBalance > 0 && !my} show={show} uniswap={information.poolType === 'uni'}>
@@ -684,10 +867,10 @@ export function FullStakingCard({
             }}
             style={{ cursor: headerRowStyles, position: 'relative' }}
           >
-            {!my && !information.isInactive && (
+            {!my && !information.isInactive && information.updated && (
               <div style={{ position: 'absolute', right: '-13px', top: '-16px', fontSize: '12px' }}>
                 {information.apy > 0 ? (
-                  <p style={{ margin: 0 }}>{t('apy', { apy: numberToPercent(apy) })}</p>
+                  <p style={{ margin: 0 }}>{t('apy', { apy: numberToPercent(information.apy) })}</p>
                 ) : (
                   <Dots>{t('loading')}</Dots>
                 )}
@@ -695,7 +878,7 @@ export function FullStakingCard({
             )}
             <RowFixed>
               <DoubleCurrencyLogo currency0={currencyA} currency1={currencyB} margin={true} size={22} />
-              {!currency0 || !currency1 ? (
+              {!information.updated ? (
                 <Text fontWeight={500} fontSize={20}>
                   <Dots>{t('loading')}</Dots>
                 </Text>
@@ -823,9 +1006,9 @@ export function FullStakingCard({
                         })}
                       </div>
                     )}
-                    {apy > 0 && !information.isInactive && (
+                    {information.apy > 0 && !information.isInactive && (
                       <div style={{ textAlign: 'end', marginTop: '8px' }}>
-                        {t('apy', { apy: numberToPercent(apy) })}
+                        {t('apy', { apy: numberToPercent(information.apy) })}
                       </div>
                     )}
                   </Text>
