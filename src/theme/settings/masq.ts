@@ -100,7 +100,7 @@ export function masqTheme() {
     headerTextColor: mainColor,
     headerButtonBG: infoText,
     headerButtonBGHover: infoBGHover,
-    headerButtonIconColor: mainColor,
+    headerButtonIconColor: mainTextColor,
     headerModalTextColor: mainTextColor,
     headerModalTextHighlight: mainColor,
 
