@@ -60,7 +60,7 @@ function TradeSummary({ trade, allowedSlippage }: { trade: Trade; allowedSlippag
     typeof trade.route.pairs[0].liquidityToken.address !== 'undefined'
       ? 'https://info.linkswap.app/pair/' + trade.route.pairs[0].liquidityToken.address
       : false
-
+  const hideAnalytics = Boolean(trade && trade.route.path.length > 2)
   return (
     <>
       <AutoColumn style={{ padding: '0 20px' }}>
@@ -102,7 +102,7 @@ function TradeSummary({ trade, allowedSlippage }: { trade: Trade; allowedSlippag
             {realizedLPFee ? `${realizedLPFee.toSignificant(4)} ${trade.inputAmount.currency.symbol}` : '-'}
           </TYPE.black>
         </RowBetween>
-        {tokenPairAddress && (
+        {tokenPairAddress && !hideAnalytics && (
           <RowBetween>
             <AnalyticsWrapper>
               <a target="_blank" rel="noopener noreferrer" href={tokenPairAddress}>
