@@ -9,7 +9,7 @@ import { ButtonError, ButtonLight, ButtonPrimary, ButtonConfirmed } from '../../
 import Card, { GreyCard } from '../../components/Card'
 import { AutoColumn } from '../../components/Column'
 import ConfirmSwapModal from '../../components/swap/ConfirmSwapModal'
-import CurrencyInputPanel, { CurrencyDoubleInputPanel } from '../../components/CurrencyInputPanel'
+import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import { SwapPoolTabs } from '../../components/NavigationTabs'
 import { AutoRow, RowBetween } from '../../components/Row'
 import AdvancedSwapDetailsDropdown from '../../components/swap/AdvancedSwapDetailsDropdown'
@@ -56,6 +56,7 @@ import { useTokenList } from '../../state/lists/hooks'
 import { useCurrencyUsdPrice } from '../../hooks/useCurrencyUsdPrice'
 import QuestionHelper from '../../components/QuestionHelper'
 import { wrappedCurrency } from '../../utils/wrappedCurrency'
+import { useTokenUsdPrices } from '../../hooks/useTokenUsdPrice'
 
 function containsKey(json: any, value: string) {
   let contains = false
@@ -294,6 +295,7 @@ export default function Swap() {
   const { t } = useTranslation()
 
   useCurrencyUsdPrice()
+  useTokenUsdPrices()
 
   const currentInput =
     currencies[Field.INPUT]?.symbol === 'ETH' ? 'ETH' : wrappedCurrency(currencies[Field.INPUT], chainId)?.address
@@ -354,31 +356,17 @@ export default function Swap() {
             onDismiss={handleConfirmDismiss}
           />
           <AutoColumn gap={'md'}>
-            {!inversed ? (
-              <CurrencyDoubleInputPanel
-                label={independentField === Field.OUTPUT && !showWrap && trade ? t('fromEstimated') : t('from')}
-                value={formattedAmounts[Field.INPUT]}
-                showMaxButton={!atMaxAmountInput}
-                currency={currencies[Field.INPUT]}
-                onUserInput={handleTypeInput}
-                onMax={handleMaxInput}
-                onCurrencySelect={handleInputSelect}
-                otherCurrency={currencies[Field.OUTPUT]}
-                id="swap-currency-input"
-              />
-            ) : (
-              <CurrencyInputPanel
-                label={independentField === Field.OUTPUT && !showWrap && trade ? t('fromEstimated') : t('from')}
-                value={formattedAmounts[Field.INPUT]}
-                showMaxButton={!atMaxAmountInput}
-                currency={currencies[Field.INPUT]}
-                onUserInput={handleTypeInput}
-                onMax={handleMaxInput}
-                onCurrencySelect={handleInputSelect}
-                otherCurrency={currencies[Field.OUTPUT]}
-                id="swap-currency-input"
-              />
-            )}
+            <CurrencyInputPanel
+              label={independentField === Field.OUTPUT && !showWrap && trade ? t('fromEstimated') : t('from')}
+              value={formattedAmounts[Field.INPUT]}
+              showMaxButton={!atMaxAmountInput}
+              currency={currencies[Field.INPUT]}
+              onUserInput={handleTypeInput}
+              onMax={handleMaxInput}
+              onCurrencySelect={handleInputSelect}
+              otherCurrency={currencies[Field.OUTPUT]}
+              id="swap-currency-input"
+            />
             <AutoColumn justify="space-between">
               <AutoRow justify={isExpertMode ? 'space-between' : 'center'} style={{ padding: '0 1rem' }}>
                 <ArrowWrapper clickable>
@@ -401,29 +389,16 @@ export default function Swap() {
                 ) : null}
               </AutoRow>
             </AutoColumn>
-            {!inversed ? (
-              <CurrencyInputPanel
-                value={formattedAmounts[Field.OUTPUT]}
-                onUserInput={handleTypeOutput}
-                label={independentField === Field.INPUT && !showWrap && trade ? t('toEstimated') : t('to')}
-                showMaxButton={false}
-                currency={currencies[Field.OUTPUT]}
-                onCurrencySelect={handleOutputSelect}
-                otherCurrency={currencies[Field.INPUT]}
-                id="swap-currency-output"
-              />
-            ) : (
-              <CurrencyDoubleInputPanel
-                value={formattedAmounts[Field.OUTPUT]}
-                onUserInput={handleTypeOutput}
-                label={independentField === Field.INPUT && !showWrap && trade ? t('toEstimated') : t('to')}
-                showMaxButton={false}
-                currency={currencies[Field.OUTPUT]}
-                onCurrencySelect={handleOutputSelect}
-                otherCurrency={currencies[Field.INPUT]}
-                id="swap-currency-output"
-              />
-            )}
+            <CurrencyInputPanel
+              value={formattedAmounts[Field.OUTPUT]}
+              onUserInput={handleTypeOutput}
+              label={independentField === Field.INPUT && !showWrap && trade ? t('toEstimated') : t('to')}
+              showMaxButton={false}
+              currency={currencies[Field.OUTPUT]}
+              onCurrencySelect={handleOutputSelect}
+              otherCurrency={currencies[Field.INPUT]}
+              id="swap-currency-output"
+            />
             {recipient !== null && !showWrap ? (
               <>
                 <AutoRow justify="space-between" style={{ padding: '0 1rem' }}>
