@@ -26,12 +26,10 @@ import { Dots, Wrapper } from '../Pool/styleds'
 import QuestionHelper from '../../components/QuestionHelper'
 import { WrappedTokenInfo } from '../../state/lists/hooks'
 import ReactGA from 'react-ga'
-import { FullStakingCard } from '../../components/PositionCard'
+import FullStakingCard from '../../components/PositionCard/stakingCard'
 import { useCurrencyBalance } from '../../state/wallet/hooks'
 import { useTransactionAdder } from '../../state/transactions/hooks'
 import hexStringToNumber from '../../utils/hexStringToNumber'
-import { useTokenUsdPrices } from '../../hooks/useTokenUsdPrice'
-import { useLPTokenUsdPrices } from '../../hooks/useLPTokenUsdPrice'
 
 const Tabs = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -256,9 +254,6 @@ export default function Unstake({
       onFieldAInput('')
     }
   }, [balance, userBalance, setUnstaking, onFieldAInput])
-
-  useTokenUsdPrices()
-  useLPTokenUsdPrices()
   return (
     <>
       <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.navigationBG, marginBottom: '16px' }}>

@@ -1,5 +1,5 @@
 import React from 'react'
-import { FullStakingCard } from '../PositionCard'
+import FullStakingCard from '../PositionCard/stakingCard'
 
 interface PoolArrayProps {
   poolArray: any[]

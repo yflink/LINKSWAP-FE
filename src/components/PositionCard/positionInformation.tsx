@@ -67,7 +67,6 @@ export default async function positionInformation(
       const now: any = moment()
       const remaining = positionOutput.periodFinish > 0 ? moment(then - now).unix() : 1
       positionOutput.isInactive = remaining < 1
-
       positionOutput.updated = true
     })
   } catch (e) {

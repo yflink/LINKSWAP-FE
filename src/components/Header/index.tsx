@@ -17,6 +17,9 @@ import Gas from '../Gas'
 import { RowBetween } from '../Row'
 import Web3Status from '../Web3Status'
 import { useGasPrices } from '../../hooks/useGasPrice'
+import { useCurrencyUsdPrice } from '../../hooks/useCurrencyUsdPrice'
+import { useTokenUsdPrices } from '../../hooks/useTokenUsdPrice'
+import { useLPTokenUsdPrices } from '../../hooks/useLPTokenUsdPrice'
 
 const HeaderFrame = styled.div`
   display: flex;
@@ -164,7 +167,9 @@ export default function Header() {
   const theme = useContext(ThemeContext)
   const hasSublogo = theme.logo.length > 2
   useGasPrices()
-
+  useCurrencyUsdPrice()
+  useTokenUsdPrices()
+  useLPTokenUsdPrices()
   return (
     <HeaderFrame>
       <RowBetween style={{ alignItems: 'flex-start' }} padding="1rem">
