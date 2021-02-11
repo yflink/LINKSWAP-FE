@@ -18,10 +18,10 @@ export default function TradePrice({ price, showInverted, priceImpactSeverity }:
   const { tokenPrices } = useGetTokenPrices()
   const baseCurrencyId = price?.baseCurrency ? currencyId(price.baseCurrency).toLowerCase() : 'eth'
   const priceBase =
-    typeof tokenPrices[baseCurrencyId] !== 'undefined'
-      ? tokenPrices[baseCurrencyId].symbol === 'ETH'
-        ? priceObject['ethPriceBase']
-        : tokenPrices[baseCurrencyId].symbol === 'WETH'
+    baseCurrencyId === 'eth'
+      ? priceObject['ethPriceBase']
+      : typeof tokenPrices[baseCurrencyId] !== 'undefined'
+      ? tokenPrices[baseCurrencyId].symbol === 'WETH'
         ? priceObject['ethPriceBase']
         : tokenPrices[baseCurrencyId].symbol === 'LINK'
         ? priceObject['linkPriceBase']
