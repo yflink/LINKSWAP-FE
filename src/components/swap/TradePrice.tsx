@@ -5,6 +5,7 @@ import { Text } from 'rebass'
 import { ThemeContext } from 'styled-components'
 import { useGetPriceBase, useGetTokenPrices } from '../../state/price/hooks'
 import { currencyId } from '../../utils/currencyId'
+import { LINK, YFLUSD } from '../../constants'
 
 interface TradePriceProps {
   price?: Price
@@ -16,24 +17,62 @@ export default function TradePrice({ price, showInverted, priceImpactSeverity }:
   const theme = useContext(ThemeContext)
   const priceObject = useGetPriceBase()
   const { tokenPrices } = useGetTokenPrices()
+
   const baseCurrencyId = price?.baseCurrency ? currencyId(price.baseCurrency).toLowerCase() : 'eth'
-  const priceBase =
-    baseCurrencyId === 'eth'
-      ? priceObject['ethPriceBase']
-      : typeof tokenPrices[baseCurrencyId] !== 'undefined'
-      ? tokenPrices[baseCurrencyId].symbol === 'WETH'
-        ? priceObject['ethPriceBase']
-        : tokenPrices[baseCurrencyId].symbol === 'LINK'
-        ? priceObject['linkPriceBase']
-        : tokenPrices[baseCurrencyId].symbol === 'YFLUSD'
-        ? priceObject['yflusdPriceBase']
-        : tokenPrices[baseCurrencyId].price
-      : 0
+  const quoteCurrencyId = price?.quoteCurrency ? currencyId(price.quoteCurrency).toLowerCase() : 'eth'
+  let baseIsAccurate = false
+  let baseIsOutput = false
+  let priceBase = 0
+  if (baseCurrencyId === 'eth') {
+    baseIsAccurate = true
+    priceBase = priceObject['ethPriceBase']
+  } else {
+    if (quoteCurrencyId === 'eth') {
+      baseIsOutput = true
+      baseIsAccurate = true
+      priceBase = priceObject['ethPriceBase']
+    }
+  }
+  if (baseCurrencyId === LINK.address.toLowerCase()) {
+    baseIsAccurate = true
+    priceBase = priceObject['linkPriceBase']
+  } else {
+    if (quoteCurrencyId === LINK.address.toLowerCase()) {
+      baseIsOutput = true
+      baseIsAccurate = true
+      priceBase = priceObject['linkPriceBase']
+    }
+  }
+  if (baseCurrencyId === YFLUSD.address.toLowerCase()) {
+    baseIsAccurate = true
+    priceBase = priceObject['linkPriceBase']
+  } else {
+    if (quoteCurrencyId === YFLUSD.address.toLowerCase()) {
+      baseIsOutput = true
+      baseIsAccurate = true
+      priceBase = priceObject['linkPriceBase']
+    }
+  }
+
+  if (!baseIsAccurate) {
+    priceBase = typeof tokenPrices[baseCurrencyId] !== 'undefined' ? tokenPrices[baseCurrencyId].price : 0
+  }
 
   const hasPriceBase = priceBase > 0 && priceImpactSeverity < 2
   const formattedPrice = showInverted ? price?.toSignificant(4) : price?.invert()?.toSignificant(4)
   const tokenPrice = Number(formattedPrice) || 1
-  const usdPrice = showInverted ? priceBase : tokenPrice * priceBase
+
+  const usdPrice = baseIsAccurate
+    ? showInverted
+      ? baseIsOutput
+        ? tokenPrice * priceBase
+        : priceBase
+      : baseIsOutput
+      ? priceBase
+      : tokenPrice * priceBase
+    : showInverted
+    ? priceBase
+    : tokenPrice * priceBase
 
   const formatedUsdPrice = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(usdPrice)
   const show = Boolean(price?.baseCurrency && price?.quoteCurrency) && priceImpactSeverity < 3
