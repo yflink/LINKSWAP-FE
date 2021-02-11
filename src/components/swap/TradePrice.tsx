@@ -33,21 +33,21 @@ export default function TradePrice({ price, showInverted, priceImpactSeverity }:
       priceBase = priceObject['ethPriceBase']
     }
   }
-  if (baseCurrencyId === LINK.address.toLowerCase()) {
+  if (baseCurrencyId === LINK.address.toLowerCase() && !baseIsAccurate) {
     baseIsAccurate = true
     priceBase = priceObject['linkPriceBase']
   } else {
-    if (quoteCurrencyId === LINK.address.toLowerCase()) {
+    if (quoteCurrencyId === LINK.address.toLowerCase() && !baseIsAccurate) {
       baseIsOutput = true
       baseIsAccurate = true
       priceBase = priceObject['linkPriceBase']
     }
   }
-  if (baseCurrencyId === YFLUSD.address.toLowerCase()) {
+  if (baseCurrencyId === YFLUSD.address.toLowerCase() && !baseIsAccurate) {
     baseIsAccurate = true
     priceBase = priceObject['yflusdPriceBase']
   } else {
-    if (quoteCurrencyId === YFLUSD.address.toLowerCase()) {
+    if (quoteCurrencyId === YFLUSD.address.toLowerCase() && !baseIsAccurate) {
       baseIsOutput = true
       baseIsAccurate = true
       priceBase = priceObject['yflusdPriceBase']
