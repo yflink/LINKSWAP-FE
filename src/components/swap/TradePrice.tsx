@@ -45,12 +45,12 @@ export default function TradePrice({ price, showInverted, priceImpactSeverity }:
   }
   if (baseCurrencyId === YFLUSD.address.toLowerCase()) {
     baseIsAccurate = true
-    priceBase = priceObject['linkPriceBase']
+    priceBase = priceObject['yflusdPriceBase']
   } else {
     if (quoteCurrencyId === YFLUSD.address.toLowerCase()) {
       baseIsOutput = true
       baseIsAccurate = true
-      priceBase = priceObject['linkPriceBase']
+      priceBase = priceObject['yflusdPriceBase']
     }
   }
 
