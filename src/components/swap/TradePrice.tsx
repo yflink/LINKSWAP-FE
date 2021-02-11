@@ -89,7 +89,15 @@ export default function TradePrice({ price, showInverted, priceImpactSeverity }:
     >
       {hasPriceBase && show ? (
         <>
-          {label} ({formatedUsdPrice})
+          {baseIsAccurate ? (
+            <>
+              {label} ({formatedUsdPrice})
+            </>
+          ) : (
+            <>
+              {label} (~{formatedUsdPrice})
+            </>
+          )}
         </>
       ) : (
         <>{label}</>
