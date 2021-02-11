@@ -179,13 +179,13 @@ export default function Header() {
 
           {!isMobile && (
             <HeaderElementMobile>
-              <Title style={{ marginInlineStart: 24 }} target="_blank" href="https://yflink.io/#/stake">
+              <Title style={{ marginInlineStart: 24 }} href="https://yflink.io/#/stake">
                 <MenuText>Stake & Vote</MenuText>
               </Title>
-              <Title style={{ marginInlineStart: 24 }} target="_blank" href="https://info.linkswap.app">
+              <Title style={{ marginInlineStart: 24 }} href="https://info.linkswap.app">
                 <MenuText>Charts</MenuText>
               </Title>
-              <Title style={{ marginInlineStart: 24 }} target="_blank" href="https://yflusd.linkswap.app">
+              <Title style={{ marginInlineStart: 24 }} href="https://yflusd.linkswap.app">
                 <MenuText>YFLUSD</MenuText>
               </Title>
               <Title style={{ marginInlineStart: 24 }} href="/#/ren">

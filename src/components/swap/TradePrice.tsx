@@ -3,7 +3,8 @@ import { Price } from '@uniswap/sdk'
 import { useContext } from 'react'
 import { Text } from 'rebass'
 import { ThemeContext } from 'styled-components'
-import { useGetPriceBase } from '../../state/price/hooks'
+import { useGetPriceBase, useGetTokenPrices } from '../../state/price/hooks'
+import { currencyId } from '../../utils/currencyId'
 
 interface TradePriceProps {
   price?: Price
@@ -14,39 +15,25 @@ interface TradePriceProps {
 export default function TradePrice({ price, showInverted, priceImpactSeverity }: TradePriceProps) {
   const theme = useContext(ThemeContext)
   const priceObject = useGetPriceBase()
-  let baseCurrency = 'ETH'
-  if (
-    (price?.baseCurrency?.symbol === 'LINK' || price?.quoteCurrency?.symbol === 'LINK') &&
-    price?.baseCurrency?.symbol !== 'ETH' &&
-    price?.baseCurrency?.symbol !== 'YFLUSD'
-  ) {
-    baseCurrency = 'LINK'
-  }
-  if (
-    (price?.baseCurrency?.symbol === 'YFLUSD' || price?.quoteCurrency?.symbol === 'YFLUSD') &&
-    price?.baseCurrency?.symbol !== 'ETH' &&
-    price?.baseCurrency?.symbol !== 'LINK'
-  ) {
-    baseCurrency = 'YFLUSD'
-  }
+  const { tokenPrices } = useGetTokenPrices()
+  const baseCurrencyId = price?.baseCurrency ? currencyId(price.baseCurrency).toLowerCase() : 'eth'
   const priceBase =
-    baseCurrency === 'ETH'
-      ? priceObject['ethPriceBase']
-      : baseCurrency === 'LINK'
-      ? priceObject['linkPriceBase']
-      : priceObject['yflusdPriceBase']
+    typeof tokenPrices[baseCurrencyId] !== 'undefined'
+      ? tokenPrices[baseCurrencyId].symbol === 'ETH'
+        ? priceObject['ethPriceBase']
+        : tokenPrices[baseCurrencyId].symbol === 'WETH'
+        ? priceObject['ethPriceBase']
+        : tokenPrices[baseCurrencyId].symbol === 'LINK'
+        ? priceObject['linkPriceBase']
+        : tokenPrices[baseCurrencyId].symbol === 'YFLUSD'
+        ? priceObject['yflusdPriceBase']
+        : tokenPrices[baseCurrencyId].price
+      : 0
+
   const hasPriceBase = priceBase > 0 && priceImpactSeverity < 2
   const formattedPrice = showInverted ? price?.toSignificant(4) : price?.invert()?.toSignificant(4)
   const tokenPrice = Number(formattedPrice) || 1
-
-  let usdPrice = showInverted ? priceBase : tokenPrice * priceBase
-  if (
-    price?.baseCurrency?.symbol !== 'ETH' &&
-    price?.baseCurrency?.symbol !== 'LINK' &&
-    price?.baseCurrency?.symbol !== 'YFLUSD'
-  ) {
-    usdPrice = showInverted ? tokenPrice * priceBase : priceBase
-  }
+  const usdPrice = showInverted ? priceBase : tokenPrice * priceBase
 
   const formatedUsdPrice = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(usdPrice)
   const show = Boolean(price?.baseCurrency && price?.quoteCurrency) && priceImpactSeverity < 3
