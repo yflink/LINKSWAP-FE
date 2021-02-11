@@ -1,12 +1,9 @@
-import React from 'react'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
 import { getNetworkLibrary } from '../../connectors'
 import hexStringToNumber from '../../utils/hexStringToNumber'
-import { Contract } from '@ethersproject/contracts'
 import { LINKSWAPLPToken, StakingRewards, syflPool } from '../../pages/Stake/stakingAbi'
 import { getContract } from '../../utils'
 import { BigNumber } from '@ethersproject/bignumber'
-import { Currency, Token } from '@uniswap/sdk'
 import { sYFL } from '../../constants'
 import moment from 'moment'
 

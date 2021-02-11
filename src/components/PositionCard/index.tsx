@@ -20,10 +20,10 @@ import { RowBetween, RowFixed } from '../Row'
 import Countdown from '../Countdown'
 import { Dots } from '../swap/styleds'
 import { useTranslation } from 'react-i18next'
-import { ACTIVE_REWARD_POOLS, sYFL } from '../../constants'
+import { ACTIVE_REWARD_POOLS } from '../../constants'
 import { StakeSVG } from '../SVG'
 import { calculateGasMargin, getContract } from '../../utils'
-import { LINKSWAPLPToken, StakingRewards, syflPool } from '../../pages/Stake/stakingAbi'
+import { LINKSWAPLPToken, StakingRewards } from '../../pages/Stake/stakingAbi'
 import { BigNumber } from '@ethersproject/bignumber'
 import hexStringToNumber from '../../utils/hexStringToNumber'
 import { useGetLPTokenPrices, useGetTokenPrices } from '../../state/price/hooks'
@@ -570,7 +570,7 @@ export function FullStakingCard({
   const [information, setInformation] = useState<any>({
     poolReserves: [0, 0],
     poolTokenPrices: [0, 0],
-    userBalanceRaw: '0',
+    userBalanceRaw: '0x00',
     userBalance: 0,
     userRewards: ['', ''],
     periodFinish: 0,
@@ -587,6 +587,7 @@ export function FullStakingCard({
     userShareUsd: 0,
     isInactive: true,
     updated: false,
+    abi: StakingRewards,
     rewardInfo: [
       {
         address: '',
@@ -659,7 +660,7 @@ export function FullStakingCard({
     const method: (...args: any) => Promise<TransactionResponse> = isDefault
       ? router.unstakeAndClaimRewards
       : router.exit
-    const args: Array<string> = isDefault ? [information.rawUserBalance] : []
+    const args: Array<string> = isDefault ? [information.userBalanceRaw] : []
 
     const value: BigNumber | null = null
     await estimate(...args, value ? { value } : {})
@@ -710,7 +711,7 @@ export function FullStakingCard({
       break
   }
 
-  if (tokenPrices) {
+  if (tokenPrices && information.apy === 0) {
     const token0id = values.tokens[0].address.toLowerCase()
     const token1id = values.tokens[1].address.toLowerCase()
     if (tokenPrices[token0id]) {
@@ -721,7 +722,7 @@ export function FullStakingCard({
     }
   }
 
-  if (information.updated) {
+  if (information.updated && information.apy === 0) {
     if (information.rewardTokens[0] !== '' && information.rewardTokens[1] !== '' && tokenPrices) {
       const token0Address = information.rewardTokens[0].toLowerCase()
       const token1Address = information.rewardTokens[1].toLowerCase()
@@ -849,6 +850,7 @@ export function FullStakingCard({
       }
     }
   }
+
   if (
     (information.userBalance === 0 && showOwn) ||
     (information.isInactive && !showExpired) ||

@@ -1,13 +1,10 @@
 import React, { Suspense } from 'react'
 import { HashRouter, Route, Switch } from 'react-router-dom'
 import styled from 'styled-components'
-
 import GoogleAnalyticsReporter from '../components/analytics/GoogleAnalyticsReporter'
 import Header from '../components/Header'
-// import Popups from '../components/Popups'
 import Web3ReactManager from '../components/Web3ReactManager'
 import ThemeQueryParamReader from '../theme/ThemeQueryParamReader'
-
 import Swap from './Swap'
 import {
   RedirectPathToSwapOnly,
@@ -15,33 +12,21 @@ import {
   RedirectThemeOutputToSwap,
   RedirectThemeInputOutputToSwap
 } from './Swap/redirects'
-
 import AddLiquidity from './AddLiquidity'
 import { RedirectDuplicateTokenIds, RedirectOldAddLiquidityPathStructure } from './AddLiquidity/redirects'
-
 import Buy from './Buy'
-
 import Pool from './Pool'
 import PoolFinder from './PoolFinder'
-
 import Ren from './Bridges/ren'
-
 import RemoveLiquidity from './RemoveLiquidity'
 import { RedirectOldRemoveLiquidityPathStructure } from './RemoveLiquidity/redirects'
-
 import CreatePair from './CreatePair'
 import { CreatePairRedirectOldPathStructure, CreatePairRedirectDuplicateTokenIds } from './CreatePair/redirects'
-
 import PreviewListing from './PreviewListing'
-
 import Analyze from './Analyze'
-
 import StakeOverview from './Stake'
 import { RedirectToStake, RedirectToUnstake } from './Stake/redirects'
-
 import { ExternalLink } from 'react-feather'
-import { useTokenUsdPrices } from '../hooks/useTokenUsdPrice'
-import { useLPTokenUsdPrices } from '../hooks/useLPTokenUsdPrice'
 
 const AppWrapper = styled.div`
   display: flex;
