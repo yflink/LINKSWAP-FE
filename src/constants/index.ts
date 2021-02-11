@@ -11,89 +11,89 @@ type ChainTokenList = {
   readonly [chainId in ChainId]: Token[]
 }
 
-export const LINK = new Token(ChainId.MAINNET, '0x514910771af9ca656af840dff83e8264ecf986ca', 18, 'LINK', 'ChainLink')
-export const YFL = new Token(ChainId.MAINNET, '0x28cb7e841ee97947a86b06fa4090c8451f64c0be', 18, 'YFL', 'YFLink')
+export const LINK = new Token(ChainId.MAINNET, '0x514910771AF9Ca656af840dff83E8264EcF986CA', 18, 'LINK', 'ChainLink')
+export const YFL = new Token(ChainId.MAINNET, '0x28cb7e841ee97947a86B06fA4090C8451f64c0be', 18, 'YFL', 'YFLink')
 export const YFLUSD = new Token(
   ChainId.MAINNET,
-  '0x7b760d06e401f85545f3b50c44bf5b05308b7b62',
+  '0x7b760D06E401f85545F3B50c44bf5B05308b7b62',
   18,
   'YFLUSD',
   'YFLink USD'
 )
 export const sYFL = new Token(
   ChainId.MAINNET,
-  '0x8282df223ac402d04b2097d16f758af4f70e7db0',
+  '0x8282df223AC402d04B2097d16f758Af4F70e7Db0',
   18,
   'sYFL',
   'YFLink Synthetic'
 )
 export const WETHER = new Token(
   ChainId.MAINNET,
-  '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+  '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
   18,
   'WETH',
   'WrappedEther'
 )
-export const DAI = new Token(ChainId.MAINNET, '0x6b175474e89094c44da98b954eedeac495271d0f', 18, 'DAI', 'Dai Stablecoin')
-export const USDC = new Token(ChainId.MAINNET, '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48', 6, 'USDC', 'USD//C')
-export const USDT = new Token(ChainId.MAINNET, '0xdac17f958d2ee523a2206206994597c13d831ec7', 6, 'USDT', 'Tether USD')
+export const DAI = new Token(ChainId.MAINNET, '0x6B175474E89094C44Da98b954EedeAC495271d0F', 18, 'DAI', 'Dai Stablecoin')
+export const USDC = new Token(ChainId.MAINNET, '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', 6, 'USDC', 'USD//C')
+export const USDT = new Token(ChainId.MAINNET, '0xdAC17F958D2ee523a2206206994597C13D831ec7', 6, 'USDT', 'Tether USD')
 export const COMP = new Token(ChainId.MAINNET, '0xc00e94Cb662C3520282E6f5717214004A7f26888', 18, 'COMP', 'Compound')
 export const MKR = new Token(ChainId.MAINNET, '0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2', 18, 'MKR', 'Maker')
 export const AMPL = new Token(ChainId.MAINNET, '0xD46bA6D942050d489DBd938a2C909A5d5039A161', 9, 'AMPL', 'Ampleforth')
 
-export const BUSD = new Token(ChainId.MAINNET, '0x4fabb145d64652a948d72533023f6e7a623c7c53', 18, 'BUSD', 'Binance USD')
+export const BUSD = new Token(ChainId.MAINNET, '0x4Fabb145d64652a948d72533023f6E7A623C7C53', 18, 'BUSD', 'Binance USD')
 export const DPI = new Token(
   ChainId.MAINNET,
-  '0x1494ca1f11d487c2bbe4543e90080aeba4ba3c2b',
+  '0x1494CA1F11D487c2bBe4543E90080AeBa4BA3C2b',
   18,
   'DPI',
   'DefiPulse Index'
 )
-export const CEL = new Token(ChainId.MAINNET, '0xaaaebe6fe48e54f431b0c390cfaf0b017d09d42d', 4, 'CEL', 'Celsius')
-export const MASQ = new Token(ChainId.MAINNET, '0x06f3c323f0238c72bf35011071f2b5b7f43a054c', 18, 'MASQ', 'MASQ')
-export const YAX = new Token(ChainId.MAINNET, '0xb1dc9124c395c1e97773ab855d66e879f053a289', 18, 'YAX', 'yAxis')
-export const WBTC = new Token(ChainId.MAINNET, '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599', 8, 'WBTC', 'Wrapped BTC')
+export const CEL = new Token(ChainId.MAINNET, '0xaaAEBE6Fe48E54f431b0C390CfaF0b017d09D42d', 4, 'CEL', 'Celsius')
+export const MASQ = new Token(ChainId.MAINNET, '0x06F3C323f0238c72BF35011071f2b5B7F43A054c', 18, 'MASQ', 'MASQ')
+export const YAX = new Token(ChainId.MAINNET, '0xb1dC9124c395c1e97773ab855d66E879f053A289', 18, 'YAX', 'yAxis')
+export const WBTC = new Token(ChainId.MAINNET, '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599', 8, 'WBTC', 'Wrapped BTC')
 export const GSWAP = new Token(
   ChainId.MAINNET,
-  '0xaac41ec512808d64625576eddd580e7ea40ef8b2',
+  '0xaac41EC512808d64625576EDdd580e7Ea40ef8B2',
   18,
   'GSWAP',
   'gameswap.org'
 )
 export const DOKI = new Token(
   ChainId.MAINNET,
-  '0x9ceb84f92a0561fa3cc4132ab9c0b76a59787544',
+  '0x9cEB84f92A0561fa3Cc4132aB9c0b76A59787544',
   18,
   'DOKI',
   'DokiDokiFinance'
 )
 export const SNX = new Token(
   ChainId.MAINNET,
-  '0xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f',
+  '0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F',
   18,
   'SNX',
   'Synthetix Network'
 )
-export const CFI = new Token(ChainId.MAINNET, '0x63b4f3e3fa4e438698ce330e365e831f7ccd1ef4', 18, 'CFI', 'CyberFi Token')
+export const CFI = new Token(ChainId.MAINNET, '0x63b4f3e3fa4e438698CE330e365E831F7cCD1eF4', 18, 'CFI', 'CyberFi Token')
 export const AZUKI = new Token(
   ChainId.MAINNET,
-  '0x910524678c0b1b23ffb9285a81f99c29c11cbaed',
+  '0x910524678C0B1B23FFB9285a81f99C29C11CBaEd',
   18,
   'AZUKI',
   'DokiDokiAzuki'
 )
-export const DRC = new Token(ChainId.MAINNET, '0xb78b3320493a4efaa1028130c5ba26f0b6085ef8', 18, 'DRC', 'Dracula Token')
-export const BONK = new Token(ChainId.MAINNET, '0x6d6506e6f438ede269877a0a720026559110b7d5', 18, 'BONK', 'BONKTOKEN')
+export const DRC = new Token(ChainId.MAINNET, '0xb78B3320493a4EFaa1028130C5Ba26f0B6085Ef8', 18, 'DRC', 'Dracula Token')
+export const BONK = new Token(ChainId.MAINNET, '0x6D6506E6F438edE269877a0A720026559110B7d5', 18, 'BONK', 'BONKTOKEN')
 export const renDOGE = new Token(
   ChainId.MAINNET,
-  '0x3832d2f059e55934220881f831be501d180671a7',
+  '0x3832d2F059E55934220881F831bE501D180671A7',
   8,
   'renDOGE',
   'Wrapped Dogecoin'
 )
 export const MFG = new Token(
   ChainId.MAINNET,
-  '0x6710c63432a2de02954fc0f851db07146a6c0312',
+  '0x6710c63432A2De02954fc0f851db07146a6c0312',
   18,
   'MFG',
   'SyncFab Smart Manufacturing Blockchain'
@@ -319,7 +319,7 @@ export const INACTIVE_REWARD_POOLS = [
 
 export const MFGWETH_POOL = new Token(
   ChainId.MAINNET,
-  '0x527d5f10d70ca41e1e0eee8d30b553bb5271ee48',
+  '0x527d5f10d70cA41e1e0EEE8d30b553bB5271ee48',
   18,
   'UNI-V2',
   'Uniswap Liquidity Token'

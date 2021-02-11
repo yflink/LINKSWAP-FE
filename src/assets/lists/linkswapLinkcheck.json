@@ -10,7 +10,7 @@
   },
   "tokens": [
     {
-      "address": "0x28cb7e841ee97947a86b06fa4090c8451f64c0be",
+      "address": "0x28cb7e841ee97947a86B06fA4090C8451f64c0be",
       "chainId": 1,
       "name": "YFLink",
       "symbol": "YFL",
@@ -19,7 +19,7 @@
       "logoURI": "https://logos.linkswap.app/0x28cb7e841ee97947a86b06fa4090c8451f64c0be.png"
     },
     {
-      "address": "0x514910771af9ca656af840dff83e8264ecf986ca",
+      "address": "0x514910771AF9Ca656af840dff83E8264EcF986CA",
       "chainId": 1,
       "name": "ChainLink",
       "symbol": "LINK",
@@ -27,7 +27,7 @@
       "logoURI": "https://logos.linkswap.app/0x514910771af9ca656af840dff83e8264ecf986ca.png"
     },
     {
-      "address": "0x9ceb84f92a0561fa3cc4132ab9c0b76a59787544",
+      "address": "0x9cEB84f92A0561fa3Cc4132aB9c0b76A59787544",
       "chainId": 1,
       "name": "Doki Doki Finance",
       "symbol": "DOKI",
@@ -36,7 +36,7 @@
       "logoURI": "https://logos.linkswap.app/0x9ceb84f92a0561fa3cc4132ab9c0b76a59787544.png"
     },
     {
-      "address": "0x06f3c323f0238c72bf35011071f2b5b7f43a054c",
+      "address": "0x06F3C323f0238c72BF35011071f2b5B7F43A054c",
       "chainId": 1,
       "name": "MASQ",
       "symbol": "MASQ",
