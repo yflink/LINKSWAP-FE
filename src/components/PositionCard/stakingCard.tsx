@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { useTransactionAdder } from '../../state/transactions/hooks'
-import { StakingRewards } from '../../pages/Stake/stakingAbi'
+import { StakingRewards } from '../../components/ABI'
 import positionInformation from './positionInformation'
 import { calculateGasMargin, getContract } from '../../utils'
 import { TransactionResponse } from '@ethersproject/providers'
@@ -26,6 +26,7 @@ import Countdown from '../Countdown'
 import { ExternalButton, FixedHeightRow } from './index'
 import styled from 'styled-components'
 import Card from '../Card'
+import { UniswapSVG, YFLSVG } from '../SVG'
 
 const StakingCard = styled(Card)<{ highlight?: boolean; show?: boolean; uniswap?: boolean }>`
   font-size: 14px;
@@ -36,6 +37,22 @@ const StakingCard = styled(Card)<{ highlight?: boolean; show?: boolean; uniswap?
   :hover {
     border: 1px solid
       ${({ theme, highlight, show }) => (highlight ? theme.textHighlight : show ? theme.appBoxBG : theme.textTertiary)};
+  }
+  position: relative;
+`
+
+const PlatformIcon = styled.div`
+  position: absolute;
+  opacity: 0.1;
+  height: 40px;
+  width: 40px;
+  left: 230px;
+  top: 12px;
+
+  & svg {
+    height: 40px;
+    width: 40px;
+    fill: ${({ theme }) => theme.textPrimary};
   }
 `
 
@@ -360,6 +377,15 @@ export default function FullStakingCard({
   } else {
     return (
       <StakingCard highlight={information.userBalance > 0 && !my} show={show} uniswap={information.poolType === 'uni'}>
+        {information.poolType === 'uni' ? (
+          <PlatformIcon>
+            <UniswapSVG />
+          </PlatformIcon>
+        ) : (
+          <PlatformIcon>
+            <YFLSVG />
+          </PlatformIcon>
+        )}
         <AutoColumn gap="12px">
           <FixedHeightRow
             onClick={() => {

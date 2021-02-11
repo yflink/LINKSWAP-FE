@@ -1,7 +1,7 @@
 import { unwrappedToken } from '../../utils/wrappedCurrency'
 import { getNetworkLibrary } from '../../connectors'
 import hexStringToNumber from '../../utils/hexStringToNumber'
-import { LINKSWAPLPToken, StakingRewards, syflPool } from '../../pages/Stake/stakingAbi'
+import { LINKSWAPLPToken, StakingRewards, syflPool } from '../ABI'
 import { getContract } from '../../utils'
 import { BigNumber } from '@ethersproject/bignumber'
 import { sYFL } from '../../constants'
