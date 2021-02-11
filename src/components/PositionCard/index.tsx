@@ -585,7 +585,7 @@ export function FullStakingCard({
     stakePoolTotalDeposited: 0,
     stakePoolTotalLiq: 0,
     userShareUsd: 0,
-    isInactive: false,
+    isInactive: true,
     updated: false,
     rewardInfo: [
       {
