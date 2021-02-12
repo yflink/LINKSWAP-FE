@@ -419,7 +419,7 @@ export default function AddLiquidity({
                 </BlueCard>
               </ColumnCenter>
             )}
-            <CurrencyDoubleInputPanel
+            <CurrencyInputPanel
               value={formattedAmounts[Field.CURRENCY_A]}
               onUserInput={onFieldAInput}
               onMax={() => {
