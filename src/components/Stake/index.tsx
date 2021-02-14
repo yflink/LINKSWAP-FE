@@ -17,7 +17,14 @@ export function StakePools({ poolArray, my, showOwn, showExpired }: PoolArrayPro
   return (
     <>
       {poolArray.map((stakingPool, index) => (
-        <FullStakingCard values={values[index]} my={my} showOwn={showOwn} showExpired={showExpired} key={index} />
+        <FullStakingCard
+          values={values[index]}
+          my={my}
+          showOwn={showOwn}
+          showExpired={showExpired}
+          key={index}
+          index={index}
+        />
       ))}
     </>
   )

@@ -1,6 +1,6 @@
 import { useActiveWeb3React } from '../../hooks'
 import { useGetLPTokenPrices, useGetTokenPrices } from '../../state/price/hooks'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
 import { useWalletModalToggle } from '../../state/application/hooks'
@@ -24,9 +24,10 @@ import { Link } from 'react-router-dom'
 import { currencyId } from '../../utils/currencyId'
 import Countdown from '../Countdown'
 import { ExternalButton, FixedHeightRow } from './index'
-import styled from 'styled-components'
-import Card from '../Card'
+import styled, { ThemeContext } from 'styled-components'
+import Card, { LightCard } from '../Card'
 import { UniswapSVG, YFLSVG, MPHSVG } from '../SVG'
+import { TYPE } from '../../theme'
 
 const StakingCard = styled(Card)<{ highlight?: boolean; show?: boolean }>`
   font-size: 14px;
@@ -60,14 +61,17 @@ export default function FullStakingCard({
   my,
   show,
   showOwn,
-  showExpired
+  showExpired,
+  index
 }: {
   values: any
   my: boolean
   show?: boolean | false
   showOwn?: boolean | false
   showExpired?: boolean | true
+  index: number
 }) {
+  const theme = useContext(ThemeContext)
   const { account, chainId, library } = useActiveWeb3React()
   const { tokenPrices } = useGetTokenPrices()
   const { lpTokenPrices } = useGetLPTokenPrices()
@@ -79,6 +83,7 @@ export default function FullStakingCard({
   const headerRowStyles = show ? 'defaut' : 'pointer'
   const addTransaction = useTransactionAdder()
   const fakeAccount = '0x0000000000000000000000000000000000000000'
+  const [lifeLine, setLifeLine] = useState(false)
   let currencyA = currency0
   let currencyB = currency1
   const isYFLUSD =
@@ -374,12 +379,32 @@ export default function FullStakingCard({
       information.lpTokenPrice && information.userBalance ? information.userBalance * information.lpTokenPrice : 0
   }
 
+  if (!lifeLine) {
+    if (
+      (information.userBalance === 0 && showOwn) ||
+      (information.isInactive && !showExpired) ||
+      (!information.isInactive && showExpired)
+    ) {
+      setTimeout(() => setLifeLine(true), 2000)
+    }
+  }
+
   if (
     (information.userBalance === 0 && showOwn) ||
     (information.isInactive && !showExpired) ||
     (!information.isInactive && showExpired)
   ) {
-    return null
+    return (
+      <>
+        {index === 0 && (
+          <LightCard padding="40px">
+            <TYPE.body color={theme.textPrimary} textAlign="center">
+              <Dots>{t('loading')}</Dots>
+            </TYPE.body>
+          </LightCard>
+        )}
+      </>
+    )
   } else {
     return (
       <StakingCard highlight={information.userBalance > 0 && !my} show={show}>
