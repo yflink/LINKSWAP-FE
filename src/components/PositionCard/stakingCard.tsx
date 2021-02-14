@@ -374,10 +374,6 @@ export default function FullStakingCard({
       information.lpTokenPrice && information.userBalance ? information.userBalance * information.lpTokenPrice : 0
   }
 
-  if (showMore) {
-    console.log(information)
-  }
-
   if (
     (information.userBalance === 0 && showOwn) ||
     (information.isInactive && !showExpired) ||

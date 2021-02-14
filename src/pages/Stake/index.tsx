@@ -106,7 +106,6 @@ export default function StakeOverview() {
       }
     })
     if (!myUniPoolsAdded) {
-      console.log('4')
       const mfg = UNI_POOLS.MFGWETH
       if (mfgBalance === 0) {
         getUserBalance(mfg.liquidityToken.address)
