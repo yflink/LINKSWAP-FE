@@ -30,16 +30,24 @@ export const MyStakePools = styled(BodyWrapper)`
 export default function StakeOverview() {
   const theme = useContext(ThemeContext)
   const { account, library } = useActiveWeb3React()
+  const [fetchMy, setFetchMy] = useState(false)
+  const [fetchAll, setFetchAll] = useState(false)
   const [myRewardPools, setMyRewardPools] = useState<any | null>([])
   const [allRewardPools, setAllRewardPools] = useState<any | null>([])
   const [uniPoolsAdded, setUniPoolsAdded] = useState(false)
   const [myUniPoolsAdded, setMyUniPoolsAdded] = useState(false)
   const [showOwn, setShowOwn] = useState(false)
   const [showExpired, setShowExpired] = useState(false)
+  const [allPoolsAdded, setAllPoolsAdded] = useState(false)
   const [mfgBalance, setMfgBalance] = useState(0)
   const trackedTokenPairs = useTrackedTokenPairs()
+  let timeOut = null
   const tokenPairsWithLiquidityTokens = useMemo(
-    () => trackedTokenPairs.map(tokens => ({ liquidityToken: toV2LiquidityToken(tokens), tokens })),
+    () =>
+      trackedTokenPairs.map(tokens => ({
+        liquidityToken: toV2LiquidityToken(tokens),
+        tokens
+      })),
     [trackedTokenPairs]
   )
   const liquidityTokens = useMemo(() => tokenPairsWithLiquidityTokens.map(tpwlt => tpwlt.liquidityToken), [
@@ -79,7 +87,8 @@ export default function StakeOverview() {
     return true
   }
 
-  if (myRewardPools.length === 0) {
+  if (!fetchMy) {
+    setFetchMy(true)
     const myStakePools: any[] = []
     ACTIVE_REWARD_POOLS.forEach(poolObject => {
       let returnValue: any = false
@@ -97,6 +106,7 @@ export default function StakeOverview() {
       }
     })
     if (!myUniPoolsAdded) {
+      console.log('4')
       const mfg = UNI_POOLS.MFGWETH
       if (mfgBalance === 0) {
         getUserBalance(mfg.liquidityToken.address)
@@ -110,7 +120,8 @@ export default function StakeOverview() {
     }
   }
 
-  if (allRewardPools.length === 0) {
+  if (!fetchAll) {
+    setFetchAll(true)
     const allStakePools: any[] = []
     if (Boolean(allRewardPools)) {
       ACTIVE_REWARD_POOLS.forEach(poolObject => {
@@ -151,6 +162,11 @@ export default function StakeOverview() {
     }
   }
 
+  if (allRewardPools.length && uniPoolsAdded && myUniPoolsAdded && fetchAll && fetchMy && !allPoolsAdded && !timeOut) {
+    timeOut = setTimeout(function() {
+      setAllPoolsAdded(true)
+    }, 500)
+  }
   const { t } = useTranslation()
   return (
     <>
@@ -201,7 +217,7 @@ export default function StakeOverview() {
                   <Dots>{t('loading')}</Dots>
                 </TYPE.body>
               </LightCard>
-            ) : allRewardPools.length > 0 ? (
+            ) : allPoolsAdded ? (
               <StakePools poolArray={allRewardPools} showOwn={showOwn} showExpired={showExpired} my={false} />
             ) : (
               <LightCard padding="40px">

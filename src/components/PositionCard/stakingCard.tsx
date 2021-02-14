@@ -26,14 +26,13 @@ import Countdown from '../Countdown'
 import { ExternalButton, FixedHeightRow } from './index'
 import styled from 'styled-components'
 import Card from '../Card'
-import { UniswapSVG, YFLSVG } from '../SVG'
+import { UniswapSVG, YFLSVG, MPHSVG } from '../SVG'
 
-const StakingCard = styled(Card)<{ highlight?: boolean; show?: boolean; uniswap?: boolean }>`
+const StakingCard = styled(Card)<{ highlight?: boolean; show?: boolean }>`
   font-size: 14px;
   line-height: 18px;
   background: ${({ theme }) => theme.appBoxBG};
-  border: 1px solid
-    ${({ theme, highlight, uniswap }) => (uniswap ? '#ff007b' : highlight ? theme.textHighlight : theme.appBoxBG)};
+  border: 1px solid ${({ theme, highlight }) => (highlight ? theme.textHighlight : theme.appBoxBG)};
   :hover {
     border: 1px solid
       ${({ theme, highlight, show }) => (highlight ? theme.textHighlight : show ? theme.appBoxBG : theme.textTertiary)};
@@ -319,32 +318,16 @@ export default function FullStakingCard({
         }
       }
     }
-    if (information.userRewards[0] !== '') {
-      information.rewardInfo[0].userReward = hexStringToNumber(
-        information.userRewards[0],
-        information.rewardInfo[0].decimals
-      )
-    }
-    if (information.userRewards[1] !== '') {
-      information.rewardInfo[1].userReward = hexStringToNumber(
-        information.userRewards[1],
-        information.rewardInfo[1].decimals
-      )
-    }
 
-    information.userShare =
-      information.totalSupply > 0 && information.userBalance > 0
-        ? information.userBalance / (information.totalSupply / 100)
-        : 0
     information.lpTokenPrice =
       information.stakePoolTotalLiq && information.totalLPSupply > 0
         ? information.stakePoolTotalLiq / information.totalLPSupply
         : 0
+
     information.stakePoolTotalDeposited = information.lpTokenPrice
       ? information.totalSupply * information.lpTokenPrice
       : 0
-    information.userShareUsd =
-      information.lpTokenPrice && information.userBalance ? information.userBalance * information.lpTokenPrice : 0
+
     if (tokenPrices && information.stakePoolTotalDeposited) {
       let totalDailyRewardValue = 0
       if (information.rewardInfo[0].rate > 0) {
@@ -368,6 +351,33 @@ export default function FullStakingCard({
       }
     }
   }
+  if (information.userRewards[0] !== '') {
+    information.rewardInfo[0].userReward = hexStringToNumber(
+      information.userRewards[0],
+      information.rewardInfo[0].decimals
+    )
+  }
+  if (information.userRewards[1] !== '') {
+    information.rewardInfo[1].userReward = hexStringToNumber(
+      information.userRewards[1],
+      information.rewardInfo[1].decimals
+    )
+  }
+
+  if (information.userBalance > 0 && information.userShareUsd === 0) {
+    information.userShare =
+      information.totalSupply > 0 && information.userBalance > 0
+        ? information.userBalance / (information.totalSupply / 100)
+        : 0
+
+    information.userShareUsd =
+      information.lpTokenPrice && information.userBalance ? information.userBalance * information.lpTokenPrice : 0
+  }
+
+  if (showMore) {
+    console.log(information)
+  }
+
   if (
     (information.userBalance === 0 && showOwn) ||
     (information.isInactive && !showExpired) ||
@@ -376,10 +386,14 @@ export default function FullStakingCard({
     return null
   } else {
     return (
-      <StakingCard highlight={information.userBalance > 0 && !my} show={show} uniswap={information.poolType === 'uni'}>
+      <StakingCard highlight={information.userBalance > 0 && !my} show={show}>
         {information.poolType === 'uni' ? (
           <PlatformIcon>
             <UniswapSVG />
+          </PlatformIcon>
+        ) : information.poolType === 'mph' ? (
+          <PlatformIcon>
+            <MPHSVG />
           </PlatformIcon>
         ) : (
           <PlatformIcon>
@@ -442,7 +456,7 @@ export default function FullStakingCard({
                   {numberToSignificant(information.userBalance)}
                 </RowBetween>
               )}
-              {information.userBalance > 0 && information.userShare > 0 && information.userShareUsd > 0 && (
+              {information.userShareUsd > 0 && (
                 <RowBetween>
                   <Text>{t('yourPoolShare')}</Text>
                   {numberToUsd(information.userShareUsd)} ({numberToPercent(information.userShare)})
