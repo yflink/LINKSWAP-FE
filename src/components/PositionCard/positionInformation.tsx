@@ -1,11 +1,12 @@
 import { unwrappedToken } from '../../utils/wrappedCurrency'
 import { getNetworkLibrary } from '../../connectors'
 import hexStringToNumber from '../../utils/hexStringToNumber'
-import { LINKSWAPLPToken, StakingRewards, syflPool } from '../ABI'
+import { LINKSWAPLPToken, mphPool, StakingRewards, syflPool } from '../ABI'
 import { getContract } from '../../utils'
 import { BigNumber } from '@ethersproject/bignumber'
-import { sYFL } from '../../constants'
+import { sYFL, WETHER } from '../../constants'
 import moment from 'moment'
+import { ETHER } from '@uniswap/sdk'
 
 async function getTokenPriceFromCoingecko(tokenAddress: string): Promise<any> {
   const url = `https://api.coingecko.com/api/v3/simple/token_price/ethereum?contract_addresses=${tokenAddress}&vs_currencies=usd`
@@ -43,20 +44,30 @@ export default async function positionInformation(
   const positionOutput = positionInput
   const currency0 = unwrappedToken(position.tokens[0])
   const currency1 = unwrappedToken(position.tokens[1])
-  const liquidityToken = unwrappedToken(position.liquidityToken)
+  const liquidityToken = position.liquidityToken ? position.liquidityToken : WETHER
+  const unwrappedLiquidityToken = position.liquidityToken ? unwrappedToken(position.liquidityToken) : ETHER
   const fakeAccount = '0x0000000000000000000000000000000000000000'
   const fakeLibrary = getNetworkLibrary()
-  const abi =
-    position.abi === 'StakingRewards' ? StakingRewards : position.abi === 'syflPool' ? syflPool : LINKSWAPLPToken
-  positionOutput.poolType = abi === StakingRewards ? 'default' : abi === syflPool ? 'syflPool' : 'other'
+  let abi
+  switch (position.abi) {
+    case 'syflPool':
+      abi = syflPool
+      break
+    case 'mphPool':
+      abi = mphPool
+      break
+    default:
+      abi = StakingRewards
+  }
+  positionOutput.poolType = position.type
   const rewardsContract =
     !chainId || !library || !account
       ? getContract(position.rewardsAddress, abi, fakeLibrary, fakeAccount)
       : getContract(position.rewardsAddress, abi, library, account)
   const lpContract =
     !chainId || !library || !account
-      ? getContract(position.liquidityToken.address, LINKSWAPLPToken, fakeLibrary, fakeAccount)
-      : getContract(position.liquidityToken.address, LINKSWAPLPToken, library, account)
+      ? getContract(liquidityToken.address, LINKSWAPLPToken, fakeLibrary, fakeAccount)
+      : getContract(liquidityToken.address, LINKSWAPLPToken, library, account)
   const isDefault = positionOutput.poolType !== 'syflPool'
 
   try {
@@ -74,10 +85,14 @@ export default async function positionInformation(
   }
 
   try {
-    const getTotalSupplyMethod: (...args: any) => Promise<BigNumber> = rewardsContract.totalSupply
-    getTotalSupplyMethod().then(response => {
-      positionOutput.totalSupply = hexStringToNumber(response.toHexString(), liquidityToken.decimals)
-    })
+    if (positionOutput.poolType === 'mph88') {
+      positionOutput.totalSupply = 50
+    } else {
+      const getTotalSupplyMethod: (...args: any) => Promise<BigNumber> = rewardsContract.totalSupply
+      getTotalSupplyMethod().then(response => {
+        positionOutput.totalSupply = hexStringToNumber(response.toHexString(), unwrappedLiquidityToken.decimals)
+      })
+    }
   } catch (e) {
     console.log('getTotalSupplyMethod', e)
   }
@@ -123,15 +138,14 @@ export default async function positionInformation(
   try {
     const getTotalLPSupplyMethod: (...args: any) => Promise<BigNumber> = lpContract.totalSupply
     getTotalLPSupplyMethod().then(response => {
-      positionOutput.totalLPSupply = hexStringToNumber(response.toHexString(), liquidityToken.decimals)
+      positionOutput.totalLPSupply = hexStringToNumber(response.toHexString(), unwrappedLiquidityToken.decimals)
     })
   } catch (e) {
     console.log('getTotalLPSupplyMethod', e)
   }
 
-  if (liquidityToken.symbol !== 'LSLP') {
+  if (unwrappedLiquidityToken.symbol === 'UNI-V2') {
     try {
-      positionOutput.poolType = 'uni'
       const getUniswapPoolLiquidityMethod: (...args: any) => Promise<any> = lpContract.getReserves
       getUniswapPoolLiquidityMethod().then(response => {
         positionOutput.poolReserves = [
@@ -164,7 +178,7 @@ export default async function positionInformation(
       const args: Array<string> = [account]
       getUserBalanceMethod(...args).then(response => {
         positionOutput.userBalanceRaw = response.toHexString()
-        positionOutput.userBalance = hexStringToNumber(response.toHexString(), liquidityToken.decimals, 6)
+        positionOutput.userBalance = hexStringToNumber(response.toHexString(), unwrappedLiquidityToken.decimals, 6)
       })
     } catch (e) {
       console.log('getUserBalanceMethod', e)

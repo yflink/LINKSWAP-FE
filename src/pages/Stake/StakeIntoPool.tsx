@@ -28,7 +28,7 @@ import { Dots, Wrapper } from '../Pool/styleds'
 import QuestionHelper from '../../components/QuestionHelper'
 import { WrappedTokenInfo } from '../../state/lists/hooks'
 import ReactGA from 'react-ga'
-import FullStakingCard from '../../components/PositionCard/stakingCard'
+import FullStakingCard from '../../components/PositionCard/fullStakingCard'
 import { useCurrencyBalance } from '../../state/wallet/hooks'
 import { useTransactionAdder } from '../../state/transactions/hooks'
 
