@@ -123,19 +123,19 @@ export default function StakeOverview() {
     }
   }
 
-  const alink = SINGLE_POOLS.ALINK
+  //const alink = SINGLE_POOLS.ALINK
   if (!mySinglePoolsAdded) {
-    if (typeof tokenBalances[alink.tokens[0].address] === 'undefined') {
-      getUserBalance(alink.tokens[0].address, ERC20)
-    }
-    if (typeof tokenBalances[alink.tokens[0].address] !== 'undefined') {
-      alink.balance = tokenBalances[alink.tokens[0].address]
-      if (Number(alink.balance) > 0) {
-        myStakePools.push(alink)
-        setMyRewardPools(myStakePools)
-      }
-      setMySinglePoolsAdded(true)
-    }
+    //  if (typeof tokenBalances[alink.tokens[0].address] === 'undefined') {
+    //    getUserBalance(alink.tokens[0].address, ERC20)
+    //  }
+    //  if (typeof tokenBalances[alink.tokens[0].address] !== 'undefined') {
+    //    alink.balance = tokenBalances[alink.tokens[0].address]
+    //    if (Number(alink.balance) > 0) {
+    //      myStakePools.push(alink)
+    //      setMyRewardPools(myStakePools)
+    //    }
+    setMySinglePoolsAdded(true)
+    //  }
   }
 
   if (!fetchAll) {
@@ -180,8 +180,8 @@ export default function StakeOverview() {
         }
       })
       if (!uniPoolsAdded) {
-        allStakePools.push(UNI_POOLS.MFGWETH)
-        setAllRewardPools(allStakePools)
+        //  allStakePools.push(UNI_POOLS.MFGWETH)
+        //  setAllRewardPools(allStakePools)
         setUniPoolsAdded(true)
       }
     }
