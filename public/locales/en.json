@@ -376,5 +376,6 @@
   "brideConclusion": "Please be patient! The minting process can take up to 1 hour because RenVM needs to wait for a safe amount of blockchain confirmations (to prevent double spend, etc).",
   "emissionDropIn": "Emission Drop (-25%) in {{time}}",
   "getToken": "Get {{currencySymbol}}",
-  "poolExpired": "Pool Expired. Do not Stake!"
+  "poolExpired": "Pool Expired. Do not Stake!",
+  "vaultHostedBy88mph":"Vault hosted by: <1>88mph</1>"
 }

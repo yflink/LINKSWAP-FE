@@ -154,9 +154,9 @@ export default function StakeIntoPool({
         ACTIVE_REWARD_POOLS.forEach((pool: any) => {
           if (pool.address === liquidityTokenAddress) {
             setFound(true)
+            currencyAsymbol = tokenA?.symbol ?? 'ETH'
+            currencyBsymbol = tokenB?.symbol ?? 'ETH'
             setPool(pool)
-            currencyAsymbol = pool.tokens[0].symbol
-            currencyBsymbol = pool.tokens[1].symbol
             return
           }
         })
@@ -279,6 +279,15 @@ export default function StakeIntoPool({
     hasError = true
   } else {
     hasError = false
+  }
+
+  if (!isUni) {
+    const passedCurrencyA = currencyIdA === 'ETH' ? (chainId ? WETH[chainId] : WETH['1']) : currencyA
+    const passedCurrencyB = currencyIdB === 'ETH' ? (chainId ? WETH[chainId] : WETH['1']) : currencyB
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    // @ts-ignore
+    pool.tokens = [passedCurrencyA, passedCurrencyB]
   }
 
   pool.balance = currentBalance ? currentBalance : 0

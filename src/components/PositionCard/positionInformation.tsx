@@ -73,6 +73,8 @@ export default async function positionInformation(
 
   try {
     if (positionOutput.poolType === 'mph88') {
+      positionOutput.isInactive = false
+      positionOutput.updated = true
     } else {
       const getPeriodFinishMethod: (...args: any) => Promise<BigNumber> = rewardsContract.periodFinish
       getPeriodFinishMethod().then(response => {
@@ -80,7 +82,7 @@ export default async function positionInformation(
         const then: any = positionOutput.periodFinish > 0 ? moment.unix(positionOutput.periodFinish) : 0
         const now: any = moment()
         const remaining = positionOutput.periodFinish > 0 ? moment(then - now).unix() : 1
-        positionOutput.isInactive = positionOutput.infinitePeriod ? false : remaining < 1
+        positionOutput.isInactive = remaining < 1
         positionOutput.updated = true
       })
     }

@@ -1,7 +1,7 @@
 import { useActiveWeb3React } from '../../hooks'
 import { useGetTokenPrices } from '../../state/price/hooks'
 import React, { useContext, useState } from 'react'
-import { useTranslation } from 'react-i18next'
+import { Trans, useTranslation } from 'react-i18next'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
 import { StakingRewards } from '../../components/ABI'
 import positionInformation from './positionInformation'
@@ -279,18 +279,12 @@ export default function SingleStakingCard({
     }
   }
 
-  if (information.userBalance === 0 && showOwn) {
-    return (
-      <>
-        {index === 0 && (
-          <LightCard padding="40px">
-            <TYPE.body color={theme.textPrimary} textAlign="center">
-              <Dots>{t('loading')}</Dots>
-            </TYPE.body>
-          </LightCard>
-        )}
-      </>
-    )
+  if (
+    (information.userBalance === 0 && showOwn) ||
+    (information.isInactive && !showExpired) ||
+    (!information.isInactive && showExpired)
+  ) {
+    return null
   } else {
     return (
       <FullStakingCard highlight={information.userBalance > 0 && !my} show={show}>
@@ -323,7 +317,6 @@ export default function SingleStakingCard({
             )}
             <RowFixed>
               <SingleCurrencyLogo currency0={currencyA} margin={true} size={22} />
-
               <div style={{ display: 'flex', position: 'relative' }}>
                 <p style={{ fontWeight: 500, fontSize: 18, margin: '0 4px' }}>{currencyA.symbol}</p>
               </div>
@@ -343,10 +336,12 @@ export default function SingleStakingCard({
               {information.poolType === 'mph88' && (
                 <RowBetween>
                   <Text style={{ margin: '0 0 12px' }} fontSize="16px">
-                    Vault hosted by:{' '}
-                    <ExternalLink href="https://88mph.app/" target="_blank">
-                      88mph
-                    </ExternalLink>
+                    <Trans i18nKey="vaultHostedBy88mph">
+                      Vault hosted by
+                      <ExternalLink href="https://88mph.app/" target="_blank">
+                        88mph
+                      </ExternalLink>
+                    </Trans>
                   </Text>
                 </RowBetween>
               )}
