@@ -29,7 +29,7 @@ import {
 import PreviewListing from './PreviewListing'
 import Analyze from './Analyze'
 import StakeOverview from './Stake'
-import { RedirectToStake, RedirectToUnstake } from './Stake/redirects'
+import { RedirectTo88mph, RedirectToStake, RedirectToUnstake } from './Stake/redirects'
 import { ExternalLink } from 'react-feather'
 
 const AppWrapper = styled.div`
@@ -137,6 +137,7 @@ export default function App() {
                 <Route exact strict path="/create" component={CreatePair} />
                 <Route exact strict path="/stake" component={StakeOverview} />
                 <Route exact strict path="/unstake" component={StakeOverview} />
+                <Route exact strict path="/stake/mph88/:vaultName" component={RedirectTo88mph} />
                 <Route exact strict path="/stake/:currencyIdA/:currencyIdB" component={RedirectToStake} />
                 <Route exact strict path="/unstake/:currencyIdA/:currencyIdB" component={RedirectToUnstake} />
                 <Route exact path="/create/:currencyIdA" component={CreatePairRedirectOldPathStructure} />
