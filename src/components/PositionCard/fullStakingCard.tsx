@@ -29,6 +29,7 @@ import Card, { LightCard } from '../Card'
 import { UniswapSVG, YFLSVG, MPHSVG } from '../SVG'
 import { TYPE } from '../../theme'
 import { getNetworkLibrary } from '../../connectors'
+import { useTokenBalance } from '../../state/wallet/hooks'
 
 const StakingCard = styled(Card)<{ highlight?: boolean; show?: boolean }>`
   font-size: 14px;
@@ -87,6 +88,7 @@ export default function FullStakingCard({
   const fakeChainId = '1'
   const fakeLibrary = getNetworkLibrary()
   const [lifeLine, setLifeLine] = useState(false)
+  const balance = useTokenBalance(account ?? undefined, values.liquidityToken)
   let currencyA = currency0
   let currencyB = currency1
   const isYFLUSD =
@@ -402,6 +404,10 @@ export default function FullStakingCard({
     setTimeout(() => setLifeLine(true), 4000)
   }
 
+  if (showMore) {
+    console.log(balance)
+  }
+
   if (
     (information.userBalance === 0 && showOwn) ||
     (information.isInactive && !showExpired) ||
@@ -485,10 +491,10 @@ export default function FullStakingCard({
           </FixedHeightRow>
           {showMore && (
             <AutoColumn gap="8px">
-              {my && (
+              {Number(balance?.toSignificant(1)) > 0 && (
                 <RowBetween>
                   <Text>{t('stakableTokenAmount')}</Text>
-                  {numberToSignificant(values['balance'])}
+                  {Number(balance?.toSignificant(6))}
                 </RowBetween>
               )}
               {information.userBalance > 0 && (
@@ -529,7 +535,7 @@ export default function FullStakingCard({
                   )}
                 </>
               )}
-              {my && !show && (
+              {Number(balance?.toSignificant(1)) > 0 && !show && (
                 <RowBetween marginTop="10px">
                   <>
                     {information.poolType === 'uni' ? (
