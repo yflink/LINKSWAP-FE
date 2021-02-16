@@ -60,6 +60,7 @@ export default async function positionInformation(
       abi = StakingRewards
   }
   positionOutput.poolType = position.type
+  positionOutput.infinitePeriod = position.type === 'mph88'
   const rewardsContract =
     !chainId || !library || !account
       ? getContract(position.rewardsAddress, abi, fakeLibrary, fakeAccount)
@@ -71,15 +72,18 @@ export default async function positionInformation(
   const isDefault = positionOutput.poolType !== 'syflPool'
 
   try {
-    const getPeriodFinishMethod: (...args: any) => Promise<BigNumber> = rewardsContract.periodFinish
-    getPeriodFinishMethod().then(response => {
-      positionOutput.periodFinish = hexStringToNumber(response.toHexString(), 0)
-      const then: any = positionOutput.periodFinish > 0 ? moment.unix(positionOutput.periodFinish) : 0
-      const now: any = moment()
-      const remaining = positionOutput.periodFinish > 0 ? moment(then - now).unix() : 1
-      positionOutput.isInactive = remaining < 1
-      positionOutput.updated = true
-    })
+    if (positionOutput.poolType === 'mph88') {
+    } else {
+      const getPeriodFinishMethod: (...args: any) => Promise<BigNumber> = rewardsContract.periodFinish
+      getPeriodFinishMethod().then(response => {
+        positionOutput.periodFinish = hexStringToNumber(response.toHexString(), 0)
+        const then: any = positionOutput.periodFinish > 0 ? moment.unix(positionOutput.periodFinish) : 0
+        const now: any = moment()
+        const remaining = positionOutput.periodFinish > 0 ? moment(then - now).unix() : 1
+        positionOutput.isInactive = positionOutput.infinitePeriod ? false : remaining < 1
+        positionOutput.updated = true
+      })
+    }
   } catch (e) {
     console.log('getPeriodFinishMethod', e)
   }
@@ -98,48 +102,57 @@ export default async function positionInformation(
   }
 
   try {
-    if (isDefault) {
-      const getRewardTokensMethod: (...args: any) => Promise<string> = rewardsContract.rewardTokens
-      const args = [0, 1]
-      getRewardTokensMethod(args[0]).then(response => {
-        positionOutput.rewardTokens[0] = response
-      })
-      getRewardTokensMethod(args[1]).then(response => {
-        positionOutput.rewardTokens[1] = response
-      })
+    if (positionOutput.poolType === 'mph88') {
     } else {
-      positionOutput.rewardTokens[0] = sYFL.address
-      positionOutput.rewardTokens[1] = '0x0000000000000000000000000000000000000000'
+      if (isDefault) {
+        const getRewardTokensMethod: (...args: any) => Promise<string> = rewardsContract.rewardTokens
+        const args = [0, 1]
+        getRewardTokensMethod(args[0]).then(response => {
+          positionOutput.rewardTokens[0] = response
+        })
+        getRewardTokensMethod(args[1]).then(response => {
+          positionOutput.rewardTokens[1] = response
+        })
+      } else {
+        positionOutput.rewardTokens[0] = sYFL.address
+        positionOutput.rewardTokens[1] = '0x0000000000000000000000000000000000000000'
+      }
     }
   } catch (e) {
     console.log('getRewardTokensMethod', e)
   }
 
   try {
-    const getRewardTokenRatesMethod: (...args: any) => Promise<BigNumber> = rewardsContract.rewardRate
-    if (isDefault) {
-      const args = [0, 1]
-      getRewardTokenRatesMethod(args[0]).then(response => {
-        positionOutput.rewardTokenRates[0] = response.toHexString()
-      })
-      getRewardTokenRatesMethod(args[1]).then(response => {
-        positionOutput.rewardTokenRates[1] = response.toHexString()
-      })
+    if (positionOutput.poolType === 'mph88') {
     } else {
-      getRewardTokenRatesMethod([]).then(response => {
-        positionOutput.rewardTokenRates[0] = response.toHexString()
-      })
-      positionOutput.rewardTokenRates[1] = '0'
+      const getRewardTokenRatesMethod: (...args: any) => Promise<BigNumber> = rewardsContract.rewardRate
+      if (isDefault) {
+        const args = [0, 1]
+        getRewardTokenRatesMethod(args[0]).then(response => {
+          positionOutput.rewardTokenRates[0] = response.toHexString()
+        })
+        getRewardTokenRatesMethod(args[1]).then(response => {
+          positionOutput.rewardTokenRates[1] = response.toHexString()
+        })
+      } else {
+        getRewardTokenRatesMethod([]).then(response => {
+          positionOutput.rewardTokenRates[0] = response.toHexString()
+        })
+        positionOutput.rewardTokenRates[1] = '0'
+      }
     }
   } catch (e) {
     console.log('getRewardTokenRatesMethod', e)
   }
 
   try {
-    const getTotalLPSupplyMethod: (...args: any) => Promise<BigNumber> = lpContract.totalSupply
-    getTotalLPSupplyMethod().then(response => {
-      positionOutput.totalLPSupply = hexStringToNumber(response.toHexString(), unwrappedLiquidityToken.decimals)
-    })
+    if (positionOutput.poolType === 'mph88') {
+    } else {
+      const getTotalLPSupplyMethod: (...args: any) => Promise<BigNumber> = lpContract.totalSupply
+      getTotalLPSupplyMethod().then(response => {
+        positionOutput.totalLPSupply = hexStringToNumber(response.toHexString(), unwrappedLiquidityToken.decimals)
+      })
+    }
   } catch (e) {
     console.log('getTotalLPSupplyMethod', e)
   }
@@ -174,36 +187,42 @@ export default async function positionInformation(
 
   if (account) {
     try {
-      const getUserBalanceMethod: (...args: any) => Promise<BigNumber> = rewardsContract.balanceOf
-      const args: Array<string> = [account]
-      getUserBalanceMethod(...args).then(response => {
-        positionOutput.userBalanceRaw = response.toHexString()
-        positionOutput.userBalance = hexStringToNumber(response.toHexString(), unwrappedLiquidityToken.decimals, 6)
-      })
+      if (positionOutput.poolType === 'mph88') {
+      } else {
+        const getUserBalanceMethod: (...args: any) => Promise<BigNumber> = rewardsContract.balanceOf
+        const args: Array<string> = [account]
+        getUserBalanceMethod(...args).then(response => {
+          positionOutput.userBalanceRaw = response.toHexString()
+          positionOutput.userBalance = hexStringToNumber(response.toHexString(), unwrappedLiquidityToken.decimals, 6)
+        })
+      }
     } catch (e) {
       console.log('getUserBalanceMethod', e)
     }
 
     if (positionOutput.rewardTokens[0] !== '') {
       try {
-        const getUserRewardsMethod: (...args: any) => Promise<any> = rewardsContract.earned
-        if (isDefault) {
-          const args = [
-            [account, '0x00'],
-            [account, '0x01']
-          ]
-          getUserRewardsMethod(...args[0]).then(response => {
-            positionOutput.userRewards[0] = response.toHexString()
-          })
-          if (positionOutput.rewardTokens[1] !== '') {
-            getUserRewardsMethod(...args[1]).then(response => {
-              positionOutput.userRewards[1] = response.toHexString()
+        if (positionOutput.poolType === 'mph88') {
+        } else {
+          const getUserRewardsMethod: (...args: any) => Promise<any> = rewardsContract.earned
+          if (isDefault) {
+            const args = [
+              [account, '0x00'],
+              [account, '0x01']
+            ]
+            getUserRewardsMethod(...args[0]).then(response => {
+              positionOutput.userRewards[0] = response.toHexString()
+            })
+            if (positionOutput.rewardTokens[1] !== '') {
+              getUserRewardsMethod(...args[1]).then(response => {
+                positionOutput.userRewards[1] = response.toHexString()
+              })
+            }
+          } else {
+            getUserRewardsMethod(account).then(response => {
+              positionOutput.userRewards[0] = response.toHexString()
             })
           }
-        } else {
-          getUserRewardsMethod(account).then(response => {
-            positionOutput.userRewards[0] = response.toHexString()
-          })
         }
       } catch (e) {
         console.log('getUserRewardsMethod', e)

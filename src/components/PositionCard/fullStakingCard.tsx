@@ -638,9 +638,7 @@ export default function FullStakingCard({
                   ) : (
                     <>
                       {information.poolType === 'uni' ? (
-                        <ExternalButton target="_blank" href={values.liquidityUrl}>
-                          {t('addLiquidity')}
-                        </ExternalButton>
+                        <ExternalButton href={values.liquidityUrl}>{t('addLiquidity')}</ExternalButton>
                       ) : (
                         <ButtonSecondary
                           as={Link}

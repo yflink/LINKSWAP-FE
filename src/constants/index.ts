@@ -379,6 +379,8 @@ export const SINGLE_POOLS = {
     tokens: [aLINK, WETHER],
     stakedToken: mphYALINKNFT,
     balance: 0,
+    liquidityUrl:
+      'https://app-v1.aave.com/deposit/LINK-0x514910771af9ca656af840dff83e8264ecf986ca0x24a42fd28c976a61df5d00d0599c34c4f90748c8',
     abi: 'mphPool',
     type: 'mph88'
   }

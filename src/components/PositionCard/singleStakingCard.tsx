@@ -1,5 +1,5 @@
 import { useActiveWeb3React } from '../../hooks'
-import { useGetLPTokenPrices, useGetTokenPrices } from '../../state/price/hooks'
+import { useGetTokenPrices } from '../../state/price/hooks'
 import React, { useContext, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
@@ -7,26 +7,21 @@ import { useWalletModalToggle } from '../../state/application/hooks'
 import { useTransactionAdder } from '../../state/transactions/hooks'
 import { StakingRewards } from '../../components/ABI'
 import positionInformation from './positionInformation'
-import { calculateGasMargin, getContract } from '../../utils'
-import { TransactionResponse } from '@ethersproject/providers'
-import { BigNumber } from '@ethersproject/bignumber'
-import ReactGA from 'react-ga'
 import hexStringToNumber from '../../utils/hexStringToNumber'
 import { AutoColumn } from '../Column'
 import { numberToPercent, numberToSignificant, numberToUsd } from '../../utils/numberUtils'
 import { Dots } from '../swap/styleds'
 import { RowBetween, RowFixed } from '../Row'
-import DoubleCurrencyLogo, { SingleCurrencyLogo } from '../DoubleLogo'
+import { SingleCurrencyLogo } from '../DoubleLogo'
 import { Text } from 'rebass'
 import { ChevronDown, ChevronUp } from 'react-feather'
-import { ButtonLight, ButtonSecondary } from '../Button'
-import { Link } from 'react-router-dom'
+import { ButtonSecondary } from '../Button'
 import { currencyId } from '../../utils/currencyId'
 import Countdown from '../Countdown'
 import { ExternalButton, FixedHeightRow } from './index'
 import styled, { ThemeContext } from 'styled-components'
 import Card, { LightCard } from '../Card'
-import { UniswapSVG, YFLSVG, MPHSVG } from '../SVG'
+import { YFLSVG, MPHSVG } from '../SVG'
 import { TYPE } from '../../theme'
 
 const FullStakingCard = styled(Card)<{ highlight?: boolean; show?: boolean }>`
@@ -56,6 +51,15 @@ const PlatformIcon = styled.div`
   }
 `
 
+const Link = styled.a`
+  color: ${({ theme }) => theme.textPrimary};
+  text-decoration: underline;
+
+  &:hover {
+    text-decoration: none;
+  }
+`
+
 export default function SingleStakingCard({
   values,
   my,
@@ -77,9 +81,7 @@ export default function SingleStakingCard({
   const [showMore, setShowMore] = useState(show)
   const { t } = useTranslation()
   const currency0 = unwrappedToken(values.tokens[0])
-  const toggleWalletModal = useWalletModalToggle()
   const headerRowStyles = show ? 'defaut' : 'pointer'
-  const addTransaction = useTransactionAdder()
   const fakeAccount = '0x0000000000000000000000000000000000000000'
   const [lifeLine, setLifeLine] = useState(false)
   const currencyA = currency0
@@ -269,11 +271,7 @@ export default function SingleStakingCard({
     }
   }
 
-  if (
-    (information.userBalance === 0 && showOwn) ||
-    (information.isInactive && !showExpired) ||
-    (!information.isInactive && showExpired)
-  ) {
+  if (information.userBalance === 0 && showOwn) {
     return (
       <>
         {index === 0 && (
@@ -317,15 +315,10 @@ export default function SingleStakingCard({
             )}
             <RowFixed>
               <SingleCurrencyLogo currency0={currencyA} margin={true} size={22} />
-              {!information.updated ? (
-                <Text fontWeight={500} fontSize={20}>
-                  <Dots>{t('loading')}</Dots>
-                </Text>
-              ) : (
-                <div style={{ display: 'flex', position: 'relative' }}>
-                  <p style={{ fontWeight: 500, fontSize: 18, margin: '0 4px' }}>{currencyA.symbol}</p>
-                </div>
-              )}
+
+              <div style={{ display: 'flex', position: 'relative' }}>
+                <p style={{ fontWeight: 500, fontSize: 18, margin: '0 4px' }}>{currencyA.symbol}</p>
+              </div>
             </RowFixed>
             {!show && (
               <RowFixed>
@@ -339,6 +332,17 @@ export default function SingleStakingCard({
           </FixedHeightRow>
           {showMore && (
             <AutoColumn gap="8px">
+              {information.poolType === 'mph88' && (
+                <RowBetween>
+                  <Text style={{ margin: '0 0 12px' }} fontSize="16px">
+                    Vault hosted by:{' '}
+                    <Link href="https://88mph.app/" target="_blank">
+                      88mph
+                    </Link>
+                  </Text>
+                </RowBetween>
+              )}
+
               {my && (
                 <RowBetween>
                   <Text>{t('stakableTokenAmount')}</Text>
@@ -383,7 +387,7 @@ export default function SingleStakingCard({
                   )}
                 </>
               )}
-              {my && !show && (
+              {my && !show ? (
                 <RowBetween marginTop="10px">
                   <>
                     {information.poolType === 'mph88' ? (
@@ -397,56 +401,74 @@ export default function SingleStakingCard({
                     )}
                   </>
                 </RowBetween>
-              )}
-              <RowBetween>
-                <Text style={{ margin: '12px 0 0' }} fontSize="16px" fontWeight={600}>
-                  {t('stakePoolStats')}
-                </Text>
-              </RowBetween>
-              {information.stakePoolTotalLiq > 0 && (
-                <RowBetween style={{ alignItems: 'flex-start' }}>
-                  <Text>{t('stakePoolTotalLiq')}</Text>
-                  <Text>{numberToUsd(information.stakePoolTotalLiq)}</Text>
+              ) : (
+                <RowBetween marginTop="10px">
+                  <>
+                    {information.poolType === 'mph88' ? (
+                      <ExternalButton href={values.liquidityUrl}>
+                        {t('getToken', { currencySymbol: currency0.symbol })}
+                      </ExternalButton>
+                    ) : (
+                      <ButtonSecondary as={Link} width="100%" to={`/swap/?outputCurrency=${currencyId(currency0)}`}>
+                        {t('getToken', { currencySymbol: currency0.symbol })}
+                      </ButtonSecondary>
+                    )}
+                  </>
                 </RowBetween>
               )}
-              {information.stakePoolTotalDeposited > 0 && (
-                <RowBetween style={{ alignItems: 'flex-start' }}>
-                  <Text>{t('stakePoolTotalDeposited')}</Text>
-                  <Text>{numberToUsd(information.stakePoolTotalDeposited)}</Text>
-                </RowBetween>
+              {!information.infinitePeriod && (
+                <>
+                  <RowBetween>
+                    <Text style={{ margin: '12px 0 0' }} fontSize="16px" fontWeight={600}>
+                      {t('stakePoolStats')}
+                    </Text>
+                  </RowBetween>
+                  {information.stakePoolTotalLiq > 0 && (
+                    <RowBetween style={{ alignItems: 'flex-start' }}>
+                      <Text>{t('stakePoolTotalLiq')}</Text>
+                      <Text>{numberToUsd(information.stakePoolTotalLiq)}</Text>
+                    </RowBetween>
+                  )}
+                  {information.stakePoolTotalDeposited > 0 && (
+                    <RowBetween style={{ alignItems: 'flex-start' }}>
+                      <Text>{t('stakePoolTotalDeposited')}</Text>
+                      <Text>{numberToUsd(information.stakePoolTotalDeposited)}</Text>
+                    </RowBetween>
+                  )}
+                  {information.rewardInfo.length > 0 && !information.isInactive && (
+                    <RowBetween style={{ alignItems: 'flex-start' }}>
+                      <Text>{t('stakePoolRewards')}</Text>
+                      <Text style={{ textAlign: 'end' }}>
+                        {information.rewardInfo[0]['rate'] > 0 && (
+                          <div>
+                            {t('stakeRewardPerDay', {
+                              rate: information.rewardInfo[0].rate,
+                              currencySymbol: information.rewardInfo[0].symbol
+                            })}
+                          </div>
+                        )}
+                        {information.rewardInfo.length > 1 && information.rewardInfo[1]['rate'] > 0 && (
+                          <div style={{ textAlign: 'end' }}>
+                            {t('stakeRewardPerDay', {
+                              rate: information.rewardInfo[1].rate,
+                              currencySymbol: information.rewardInfo[1].symbol
+                            })}
+                          </div>
+                        )}
+                        {information.apy > 0 && !information.isInactive && (
+                          <div style={{ textAlign: 'end', marginTop: '8px' }}>
+                            {t('apy', { apy: numberToPercent(information.apy) })}
+                          </div>
+                        )}
+                      </Text>
+                    </RowBetween>
+                  )}
+                  <RowBetween>
+                    <Text>{t('timeRemaining')}</Text>
+                    <Countdown ends={information.periodFinish} format="DD[d] HH[h] mm[m] ss[s]" string="endsIn" />
+                  </RowBetween>
+                </>
               )}
-              {information.rewardInfo.length > 0 && !information.isInactive && (
-                <RowBetween style={{ alignItems: 'flex-start' }}>
-                  <Text>{t('stakePoolRewards')}</Text>
-                  <Text style={{ textAlign: 'end' }}>
-                    {information.rewardInfo[0]['rate'] > 0 && (
-                      <div>
-                        {t('stakeRewardPerDay', {
-                          rate: information.rewardInfo[0].rate,
-                          currencySymbol: information.rewardInfo[0].symbol
-                        })}
-                      </div>
-                    )}
-                    {information.rewardInfo.length > 1 && information.rewardInfo[1]['rate'] > 0 && (
-                      <div style={{ textAlign: 'end' }}>
-                        {t('stakeRewardPerDay', {
-                          rate: information.rewardInfo[1].rate,
-                          currencySymbol: information.rewardInfo[1].symbol
-                        })}
-                      </div>
-                    )}
-                    {information.apy > 0 && !information.isInactive && (
-                      <div style={{ textAlign: 'end', marginTop: '8px' }}>
-                        {t('apy', { apy: numberToPercent(information.apy) })}
-                      </div>
-                    )}
-                  </Text>
-                </RowBetween>
-              )}
-              <RowBetween>
-                <Text>{t('timeRemaining')}</Text>
-                <Countdown ends={information.periodFinish} format="DD[d] HH[h] mm[m] ss[s]" string="endsIn" />
-              </RowBetween>
             </AutoColumn>
           )}
         </AutoColumn>
