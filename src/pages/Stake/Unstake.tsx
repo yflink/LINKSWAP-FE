@@ -246,7 +246,7 @@ export default function Unstake({
         setUserBalance(hexStringToNumber(response.toHexString(), liquidityToken.decimals))
       }
     })
-  }, [account, rewardsContractAddress, liquidityToken, chainId, library])
+  }, [account, liquidityToken, chainId, library, currentAbi, pool.rewardsAddress, found])
 
   useMemo(() => {
     if (balance !== userBalance) {
