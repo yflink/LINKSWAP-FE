@@ -151,8 +151,6 @@ export default function FullStakingCard({
     }
   }
 
-  console.log(fetching, information, values)
-
   async function claimRewards(rewardsContractAddress: string) {
     if (!chainId || !library || !account || !information.updated) return
     const isDefault = information.poolType !== 'syflPool'
@@ -407,14 +405,14 @@ export default function FullStakingCard({
   ) {
     return (
       <>
-        {index === 0 && !information.updated && (
+        {index === 0 && !information.updated && !showOwn && (
           <LightCard padding="40px">
             <TYPE.body color={theme.textPrimary} textAlign="center">
               <Dots>{t('loading')}</Dots>
             </TYPE.body>
           </LightCard>
         )}
-        {index === 0 && information.updated && show && (
+        {index === 0 && information.updated && show && !showOwn && (
           <LightCard padding="40px">
             <TYPE.body color={theme.textPrimary} textAlign="center">
               <Text fontSize="16px">{t('poolExpired')}</Text>

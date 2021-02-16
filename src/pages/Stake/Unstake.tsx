@@ -110,9 +110,9 @@ export default function Unstake({
         ACTIVE_REWARD_POOLS.forEach((pool: any) => {
           if (pool.address === liquidityTokenAddress) {
             setFound(true)
+            currencyAsymbol = tokenA?.symbol ?? 'ETH'
+            currencyBsymbol = tokenB?.symbol ?? 'ETH'
             setPool(pool)
-            currencyAsymbol = pool.tokens[0].symbol
-            currencyBsymbol = pool.tokens[1].symbol
             return
           }
         })
@@ -223,7 +223,14 @@ export default function Unstake({
   }
 
   pool.balance = selectedCurrencyBalance ? Number(selectedCurrencyBalance?.toSignificant(6)) : 0
+  if (!isUni) {
+    const passedCurrencyA = currencyIdA === 'ETH' ? (chainId ? WETH[chainId] : WETH['1']) : currencyA
+    const passedCurrencyB = currencyIdB === 'ETH' ? (chainId ? WETH[chainId] : WETH['1']) : currencyB
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    // @ts-ignore
+    pool.tokens = [passedCurrencyA, passedCurrencyB]
+  }
   // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
   // @ts-ignore
   pool.liquidityToken = wrappedLiquidityToken
