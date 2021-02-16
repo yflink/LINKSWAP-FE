@@ -202,33 +202,29 @@ export default async function positionInformation(
       console.log('getUserBalanceMethod', e)
     }
 
-    if (positionOutput.rewardTokens[0] !== '') {
-      try {
-        if (positionOutput.poolType === 'mph88') {
+    try {
+      if (positionOutput.poolType === 'mph88') {
+      } else {
+        const getUserRewardsMethod: (...args: any) => Promise<any> = rewardsContract.earned
+        if (isDefault) {
+          const args = [
+            [account, '0x00'],
+            [account, '0x01']
+          ]
+          getUserRewardsMethod(...args[0]).then(response => {
+            positionOutput.userRewards[0] = response.toHexString()
+          })
+          getUserRewardsMethod(...args[1]).then(response => {
+            positionOutput.userRewards[1] = response.toHexString()
+          })
         } else {
-          const getUserRewardsMethod: (...args: any) => Promise<any> = rewardsContract.earned
-          if (isDefault) {
-            const args = [
-              [account, '0x00'],
-              [account, '0x01']
-            ]
-            getUserRewardsMethod(...args[0]).then(response => {
-              positionOutput.userRewards[0] = response.toHexString()
-            })
-            if (positionOutput.rewardTokens[1] !== '') {
-              getUserRewardsMethod(...args[1]).then(response => {
-                positionOutput.userRewards[1] = response.toHexString()
-              })
-            }
-          } else {
-            getUserRewardsMethod(account).then(response => {
-              positionOutput.userRewards[0] = response.toHexString()
-            })
-          }
+          getUserRewardsMethod(account).then(response => {
+            positionOutput.userRewards[0] = response.toHexString()
+          })
         }
-      } catch (e) {
-        console.log('getUserRewardsMethod', e)
       }
+    } catch (e) {
+      console.log('getUserRewardsMethod', e)
     }
   }
 

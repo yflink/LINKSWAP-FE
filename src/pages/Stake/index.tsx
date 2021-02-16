@@ -88,57 +88,54 @@ export default function StakeOverview() {
     return true
   }
 
+  const myStakePools: any[] = []
   if (tokenBalances.length === 0 || !mySinglePoolsAdded || !myUniPoolsAdded) {
-    const myStakePools: any[] = []
-    setTimeout(function() {
-      ACTIVE_REWARD_POOLS.forEach(poolObject => {
-        let returnValue: any = false
-        liquidityTokensWithBalances.forEach((pool: any) => {
-          if (pool.liquidityToken.address === poolObject.address) {
-            pool.balance = v2PairsBalances[pool.liquidityToken.address]?.toSignificant(6) || 0
-            pool.rewardsAddress = poolObject.rewardsAddress
-            pool.abi = poolObject.abi
-            pool.type = poolObject.type
-            returnValue = pool
-            return
-          }
-        })
-        if (returnValue) {
-          myStakePools.push(returnValue)
-          setMyRewardPools(myStakePools)
+    ACTIVE_REWARD_POOLS.forEach(poolObject => {
+      let returnValue: any = false
+      liquidityTokensWithBalances.forEach((pool: any) => {
+        if (pool.liquidityToken.address === poolObject.address) {
+          pool.balance = v2PairsBalances[pool.liquidityToken.address]?.toSignificant(6) || 0
+          pool.rewardsAddress = poolObject.rewardsAddress
+          pool.abi = poolObject.abi
+          pool.type = poolObject.type
+          returnValue = pool
+          return
         }
       })
-    }, 1000)
-
-    const mfg = UNI_POOLS.MFGWETH
-    if (!myUniPoolsAdded) {
-      if (typeof tokenBalances[mfg.liquidityToken.address] === 'undefined') {
-        getUserBalance(mfg.liquidityToken.address, LINKSWAPLPToken)
+      if (returnValue) {
+        myStakePools.push(returnValue)
+        setMyRewardPools(myStakePools)
       }
-      if (typeof tokenBalances[mfg.liquidityToken.address] !== 'undefined') {
-        mfg.balance = tokenBalances[mfg.liquidityToken.address]
-        if (Number(mfg.balance) > 0) {
-          myStakePools.push(mfg)
-          setMyRewardPools(myStakePools)
-        }
-        setMyUniPoolsAdded(true)
-      }
+    })
+  }
+  const mfg = UNI_POOLS.MFGWETH
+  if (!myUniPoolsAdded) {
+    if (typeof tokenBalances[mfg.liquidityToken.address] === 'undefined') {
+      getUserBalance(mfg.liquidityToken.address, LINKSWAPLPToken)
     }
-
-    const alink = SINGLE_POOLS.ALINK
-    if (!mySinglePoolsAdded) {
-      if (typeof tokenBalances[alink.tokens[0].address] === 'undefined') {
-        getUserBalance(alink.tokens[0].address, ERC20)
+    if (typeof tokenBalances[mfg.liquidityToken.address] !== 'undefined') {
+      mfg.balance = tokenBalances[mfg.liquidityToken.address]
+      if (Number(mfg.balance) > 0) {
+        myStakePools.push(mfg)
+        setMyRewardPools(myStakePools)
       }
-      if (typeof tokenBalances[alink.tokens[0].address] !== 'undefined') {
-        alink.balance = tokenBalances[alink.tokens[0].address]
-        if (Number(alink.balance) > 0) {
-          myStakePools.push(alink)
-          setMyRewardPools(myStakePools)
-        }
-        setMySinglePoolsAdded(true)
-      }
+      setMyUniPoolsAdded(true)
     }
+  }
+
+  //const alink = SINGLE_POOLS.ALINK
+  if (!mySinglePoolsAdded) {
+    //if (typeof tokenBalances[alink.tokens[0].address] === 'undefined') {
+    //  getUserBalance(alink.tokens[0].address, ERC20)
+    //}
+    //if (typeof tokenBalances[alink.tokens[0].address] !== 'undefined') {
+    //  alink.balance = tokenBalances[alink.tokens[0].address]
+    //  if (Number(alink.balance) > 0) {
+    //    myStakePools.push(alink)
+    //    setMyRewardPools(myStakePools)
+    //  }
+    setMySinglePoolsAdded(true)
+    //}
   }
 
   if (!fetchAll) {
@@ -146,8 +143,8 @@ export default function StakeOverview() {
     const allStakePools: any[] = []
     if (Boolean(allRewardPools)) {
       if (!singlePoolsAdded) {
-        allStakePools.push(SINGLE_POOLS.ALINK)
-        setAllRewardPools(allStakePools)
+        //allStakePools.push(SINGLE_POOLS.ALINK)
+        //setAllRewardPools(allStakePools)
         setSinglePoolsAdded(true)
       }
       ACTIVE_REWARD_POOLS.forEach(poolObject => {
@@ -191,13 +188,14 @@ export default function StakeOverview() {
   }
 
   if (
-    allRewardPools.length &&
-    uniPoolsAdded &&
-    singlePoolsAdded &&
-    myUniPoolsAdded &&
-    mySinglePoolsAdded &&
-    fetchAll &&
-    !allPoolsAdded
+    (allRewardPools.length &&
+      uniPoolsAdded &&
+      singlePoolsAdded &&
+      myUniPoolsAdded &&
+      mySinglePoolsAdded &&
+      fetchAll &&
+      !allPoolsAdded) ||
+    !account
   ) {
     setTimeout(function() {
       setAllPoolsAdded(true)

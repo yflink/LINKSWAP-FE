@@ -398,6 +398,10 @@ export default function FullStakingCard({
     }
   }
 
+  if (!lifeLine && !account && information.updated) {
+    setTimeout(() => setLifeLine(true), 4000)
+  }
+
   if (
     (information.userBalance === 0 && showOwn) ||
     (information.isInactive && !showExpired) ||
