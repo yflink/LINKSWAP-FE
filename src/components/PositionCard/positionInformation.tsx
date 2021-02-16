@@ -189,12 +189,17 @@ export default async function positionInformation(
     try {
       if (positionOutput.poolType === 'mph88') {
       } else {
-        const getUserBalanceMethod: (...args: any) => Promise<BigNumber> = rewardsContract.balanceOf
-        const args: Array<string> = [account]
-        getUserBalanceMethod(...args).then(response => {
-          positionOutput.userBalanceRaw = response.toHexString()
-          positionOutput.userBalance = hexStringToNumber(response.toHexString(), unwrappedLiquidityToken.decimals, 6)
-        })
+        if (position.balance !== 0) {
+          positionOutput.userBalanceRaw = position.balance.toString(16)
+          positionOutput.userBalance = position.balance
+        } else {
+          const getUserBalanceMethod: (...args: any) => Promise<BigNumber> = rewardsContract.balanceOf
+          const args: Array<string> = [account]
+          getUserBalanceMethod(...args).then(response => {
+            positionOutput.userBalanceRaw = response.toHexString()
+            positionOutput.userBalance = hexStringToNumber(response.toHexString(), unwrappedLiquidityToken.decimals, 6)
+          })
+        }
       }
     } catch (e) {
       console.log('getUserBalanceMethod', e)
