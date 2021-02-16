@@ -143,8 +143,8 @@ export default function StakeOverview() {
     const allStakePools: any[] = []
     if (Boolean(allRewardPools)) {
       if (!singlePoolsAdded) {
-        allStakePools.push(SINGLE_POOLS.ALINK)
-        setAllRewardPools(allStakePools)
+        // allStakePools.push(SINGLE_POOLS.ALINK)
+        // setAllRewardPools(allStakePools)
         setSinglePoolsAdded(true)
       }
       ACTIVE_REWARD_POOLS.forEach(poolObject => {
@@ -180,8 +180,8 @@ export default function StakeOverview() {
         }
       })
       if (!uniPoolsAdded) {
-        //  allStakePools.push(UNI_POOLS.MFGWETH)
-        //  setAllRewardPools(allStakePools)
+        allStakePools.push(UNI_POOLS.MFGWETH)
+        setAllRewardPools(allStakePools)
         setUniPoolsAdded(true)
       }
     }
