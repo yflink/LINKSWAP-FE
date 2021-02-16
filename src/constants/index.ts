@@ -107,6 +107,8 @@ export const aLINK = new Token(
   'Aave Interest bearing LINK'
 )
 
+export const MPH = new Token(ChainId.MAINNET, '0x8888801af4d980682e47f1a9036e589479e835c5', 18, 'MPH', '88mph.app')
+
 export const mphYALINKNFT = new Token(
   ChainId.MAINNET,
   '0x968fba547baffbf2560d349dc4e5e700764d5ca1',
@@ -174,7 +176,8 @@ export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } 
     [LINK, AZUKI],
     [DRC, WETHER],
     [renDOGE, WETHER],
-    [renDOGE, LINK]
+    [renDOGE, LINK],
+    [MPH, LINK]
   ]
 }
 
@@ -333,6 +336,12 @@ export const ACTIVE_REWARD_POOLS = [
   {
     address: '0x21dee38170F1e1F26baFf2C30C0fc8F8362b6961',
     rewardsAddress: '0xBfe0D843D3DA0953EcEf08Fc231033D4B140a085',
+    abi: 'StakingRewards',
+    type: 'default'
+  },
+  {
+    address: '0x40F1068495Ba9921d6C18cF1aC25f718dF8cE69D',
+    rewardsAddress: '0x0E6FA9f95a428F185752b60D38c62184854bB9e1',
     abi: 'StakingRewards',
     type: 'default'
   }
