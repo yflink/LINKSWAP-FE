@@ -8,7 +8,8 @@ const Wrapper = styled.div<{ margin: boolean; sizeraw: number }>`
   position: relative;
   display: flex;
   flex-direction: row;
-  margin-inline-end: ${({ sizeraw, margin }) => margin && (sizeraw / 3 + 8).toString() + 'px'};
+  margin-inline-end: 10px;
+  height: ${({ sizeraw }) => sizeraw.toString() + 'px'};
 `
 
 const HigherLogo = styled(CurrencyLogo)`

@@ -3,8 +3,6 @@ import { useGetTokenPrices } from '../../state/price/hooks'
 import React, { useContext, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
-import { useWalletModalToggle } from '../../state/application/hooks'
-import { useTransactionAdder } from '../../state/transactions/hooks'
 import { StakingRewards } from '../../components/ABI'
 import positionInformation from './positionInformation'
 import hexStringToNumber from '../../utils/hexStringToNumber'
@@ -23,6 +21,7 @@ import styled, { ThemeContext } from 'styled-components'
 import Card, { LightCard } from '../Card'
 import { YFLSVG, MPHSVG } from '../SVG'
 import { TYPE } from '../../theme'
+import { Link } from 'react-router-dom'
 
 const FullStakingCard = styled(Card)<{ highlight?: boolean; show?: boolean }>`
   font-size: 14px;
@@ -51,7 +50,7 @@ const PlatformIcon = styled.div`
   }
 `
 
-const Link = styled.a`
+const ExternalLink = styled.a`
   color: ${({ theme }) => theme.textPrimary};
   text-decoration: underline;
 
@@ -336,9 +335,9 @@ export default function SingleStakingCard({
                 <RowBetween>
                   <Text style={{ margin: '0 0 12px' }} fontSize="16px">
                     Vault hosted by:{' '}
-                    <Link href="https://88mph.app/" target="_blank">
+                    <ExternalLink href="https://88mph.app/" target="_blank">
                       88mph
-                    </Link>
+                    </ExternalLink>
                   </Text>
                 </RowBetween>
               )}
