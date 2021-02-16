@@ -404,10 +404,6 @@ export default function FullStakingCard({
     setTimeout(() => setLifeLine(true), 4000)
   }
 
-  if (showMore) {
-    console.log(balance)
-  }
-
   if (
     (information.userBalance === 0 && showOwn) ||
     (information.isInactive && !showExpired) ||
