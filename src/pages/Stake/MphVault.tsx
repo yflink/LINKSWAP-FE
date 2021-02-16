@@ -1,0 +1,268 @@
+import React, { useContext, useState } from 'react'
+import { Link, RouteComponentProps } from 'react-router-dom'
+import styled, { ThemeContext } from 'styled-components'
+import Card, { BlueCard } from '../../components/Card'
+import { AutoColumn, ColumnCenter } from '../../components/Column'
+import { SwapPoolTabs } from '../../components/NavigationTabs'
+import { RowBetween } from '../../components/Row'
+import { useTranslation } from 'react-i18next'
+import AppBody from '../AppBody'
+import { Dots, Wrapper } from '../Pool/styleds'
+import QuestionHelper from '../../components/QuestionHelper'
+import { SINGLE_POOLS } from '../../constants'
+import { useTokenBalance } from '../../state/wallet/hooks'
+import { useActiveWeb3React } from '../../hooks'
+import CurrencyInputPanel from '../../components/CurrencyInputPanel'
+import { Field } from '../../state/mint/actions'
+import { useWalletModalToggle } from '../../state/application/hooks'
+import { useDerivedMintInfo, useMintActionHandlers, useMintState } from '../../state/mint/hooks'
+import { TokenAmount } from '@uniswap/sdk'
+import { maxAmountSpend } from '../../utils/maxAmountSpend'
+import { Text } from 'rebass'
+import { ButtonLight, ButtonPrimary } from '../../components/Button'
+import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
+import { calculateGasMargin, getContract } from '../../utils'
+import { TransactionResponse } from '@ethersproject/providers'
+import { BigNumber } from '@ethersproject/bignumber'
+import ReactGA from 'react-ga'
+import { mphPool } from '../../components/ABI'
+import { addTransaction } from '../../state/transactions/actions'
+
+const Tabs = styled.div`
+  ${({ theme }) => theme.flexRowNoWrap}
+  align-items: center;
+  border-radius: 6px;
+  justify-content: space-evenly;
+`
+
+const ActiveText = styled.div`
+  font-weight: 500;
+  font-size: 20px;
+`
+
+const LendingDurationWrapper = styled.div`
+  display: flex;
+  flex: 0 0 100%;
+  flex-wrap: wrap;
+  width: 100%;
+`
+
+const LendingDuration = styled.div`
+  display: flex;
+  justify-content: space-between;
+  flex: 0 0 100%;
+  width: 100%;
+`
+
+const DurationSelect = styled.div<{ isActive?: boolean }>`
+  display: flex;
+  color: ${({ theme, isActive }) => (isActive ? theme.buttonTextColor : theme.buttonTextColorActive)};
+  background-color: ${({ theme, isActive }) => (isActive ? theme.buttonBG : theme.buttonBGActive)};
+  padding: 6px 10px;
+  font-weight: 500;
+  text-align: center;
+  border-radius: 6px;
+
+  &:hover {
+    background-color: ${({ theme, isActive }) => (isActive ? theme.buttonBGHover : theme.buttonBGActiveHover)};
+    cursor: pointer;
+  }
+
+  &::selection {
+    background: transparent;
+  }
+`
+
+export default function MphVault({
+  match: {
+    params: { vaultName }
+  }
+}: RouteComponentProps<{ vaultName?: string }>) {
+  const { account, chainId, library } = useActiveWeb3React()
+  const { t } = useTranslation()
+  const theme = useContext(ThemeContext)
+  const [depositing, setDepositing] = useState(false)
+  const [duration, setDuration] = useState(7)
+  const currentVaultName = vaultName ? vaultName.toUpperCase() : 'NONE'
+  const currentVault: Record<string, any> | undefined = SINGLE_POOLS[currentVaultName]
+  const currency = currentVault?.tokens[0]
+  const vaultAddress = currentVault?.rewardsAddress
+  const userBalance = useTokenBalance(account ?? undefined, currency)
+  const toggleWalletModal = useWalletModalToggle()
+  const { independentField, typedValue } = useMintState()
+  const { dependentField, currencies, currencyBalances, parsedAmounts, noLiquidity } = useDerivedMintInfo(
+    currency ?? undefined,
+    undefined
+  )
+  const { onFieldAInput } = useMintActionHandlers(noLiquidity)
+  const formattedAmounts = {
+    [independentField]: typedValue,
+    [dependentField]: parsedAmounts[dependentField]?.toSignificant(6) ?? ''
+  }
+  const maxAmounts: { [field in Field]?: TokenAmount } = [Field.CURRENCY_A].reduce((accumulator, field) => {
+    return {
+      ...accumulator,
+      [field]: maxAmountSpend(currencyBalances[field])
+    }
+  }, {})
+  const atMaxAmounts: { [field in Field]?: TokenAmount } = [Field.CURRENCY_A].reduce((accumulator, field) => {
+    return {
+      ...accumulator,
+      [field]: maxAmounts[field]?.equalTo(parsedAmounts[field] ?? '0')
+    }
+  }, {})
+  const { [Field.CURRENCY_A]: parsedAmountA } = parsedAmounts
+  const [approvalA, approveACallback] = useApproveCallback(parsedAmountA, vaultAddress)
+  const presetDurations = [7, 14, 30, 60, 90, 180, 365]
+  let buttonString = parsedAmountA ? t('deposit') : t('enterAmount')
+  let hasError
+  if (
+    (parsedAmountA &&
+      Number(parsedAmounts[Field.CURRENCY_A]?.toExact()) > Number(maxAmounts[Field.CURRENCY_A]?.toExact())) ||
+    Number(userBalance?.toSignificant(18)) === 0
+  ) {
+    buttonString = t('insufficientCurrencyBalance', { inputCurrency: currencies[Field.CURRENCY_A]?.symbol })
+    hasError = true
+  } else {
+    hasError = false
+  }
+
+  async function onDeposit() {
+    if (!chainId || !library || !account) return
+
+    const router = getContract(vaultAddress, mphPool, library, account)
+
+    if (!parsedAmountA) {
+      return
+    }
+
+    const estimate = router.estimateGas.deposit
+    const method: (...args: any) => Promise<TransactionResponse> = router.deposit
+    const today = new Date(Date.now())
+    const maturationTimestamp = Math.floor(today.setDate(today.getDate() + duration) / 1000.0)
+    const args: Array<string | string[] | number> = [parsedAmountA.raw.toString(), maturationTimestamp]
+
+    const value: BigNumber | null = null
+    await estimate(...args, value ? { value } : {})
+      .then(estimatedGasLimit =>
+        method(...args, {
+          ...(value ? { value } : {}),
+          gasLimit: calculateGasMargin(estimatedGasLimit)
+        }).then(response => {
+          setDepositing(true)
+          addTransaction(response, {
+            summary: t('depositAmountIntoVault', {
+              vaultName: vaultName,
+              amount: parsedAmountA.toSignificant(3)
+            })
+          })
+          ReactGA.event({
+            category: 'Staking',
+            action: 'Deposit',
+            label: currencies[Field.CURRENCY_A]?.symbol
+          })
+        })
+      )
+      .catch(error => {
+        setDepositing(false)
+        if (error?.code !== 4001) {
+          console.error(error)
+        }
+      })
+  }
+
+  if (!vaultName || !currentVault || !vaultAddress) {
+    return null
+  } else {
+    return (
+      <>
+        <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.navigationBG, marginBottom: '16px' }}>
+          <SwapPoolTabs active={'stake'} />
+        </Card>
+        <AppBody>
+          <Tabs>
+            <RowBetween style={{ padding: '1rem 0' }}>
+              <ActiveText>{t('depositIntoVault', { vaultName: vaultName })}</ActiveText>
+              <QuestionHelper text={t('depositIntoVaultDescription', { vaultName: vaultName })} />
+            </RowBetween>
+          </Tabs>
+          <Wrapper>
+            <AutoColumn gap="20px">
+              <CurrencyInputPanel
+                hideCurrencySelect={true}
+                value={formattedAmounts[Field.CURRENCY_A]}
+                onUserInput={onFieldAInput}
+                onMax={() => {
+                  onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
+                }}
+                showMaxButton={!atMaxAmounts[Field.CURRENCY_A]}
+                currency={currencies[Field.CURRENCY_A]}
+                id="stake-input-tokena"
+                showCommonBases
+              />
+              <LendingDurationWrapper>
+                <Text style={{ margin: '0 0 12px' }}>Preset lending duration:</Text>
+                <LendingDuration>
+                  {presetDurations.map((itemDuration, index) => (
+                    <DurationSelect
+                      isActive={duration === itemDuration}
+                      key={index}
+                      onClick={() => {
+                        setDuration(itemDuration)
+                      }}
+                    >
+                      {t('daysShort', { days: itemDuration })}
+                    </DurationSelect>
+                  ))}
+                </LendingDuration>
+              </LendingDurationWrapper>
+              {!account ? (
+                <ButtonLight onClick={toggleWalletModal}>{t('connectWallet')}</ButtonLight>
+              ) : (
+                <AutoColumn gap={'md'}>
+                  {approvalA === ApprovalState.NOT_APPROVED || approvalA === ApprovalState.PENDING ? (
+                    <RowBetween>
+                      <ButtonPrimary
+                        style={{ fontSize: '20px' }}
+                        onClick={approveACallback}
+                        disabled={approvalA === ApprovalState.PENDING}
+                        width="100%"
+                      >
+                        {approvalA === ApprovalState.PENDING ? <Dots>{t('approving')}</Dots> : t('approve')}
+                      </ButtonPrimary>
+                    </RowBetween>
+                  ) : depositing ? (
+                    <ButtonPrimary style={{ fontSize: '20px' }} disabled={true}>
+                      <Dots>{t('depositing')}</Dots>
+                    </ButtonPrimary>
+                  ) : (
+                    <ButtonPrimary
+                      style={{ fontSize: '20px' }}
+                      onClick={() => {
+                        onDeposit()
+                      }}
+                      disabled={approvalA !== ApprovalState.APPROVED || hasError}
+                    >
+                      <Text fontSize={20} fontWeight={500}>
+                        {buttonString}
+                      </Text>
+                    </ButtonPrimary>
+                  )}
+                </AutoColumn>
+              )}
+              <BlueCard>
+                <AutoColumn gap="10px">
+                  <Text fontSize="14px">{t('depositIntoVaultStep1', { currencySymbol: currency.symbol })}</Text>
+                  <Text fontSize="14px">{t('depositIntoVaultStep2')}</Text>
+                  <Text fontSize="14px">{t('depositIntoVaultStep3')}</Text>
+                  <Text fontSize="14px">{t('depositIntoVaultStep4')}</Text>
+                  <Text fontSize="14px">{t('depositIntoVaultStep5')}</Text>
+                </AutoColumn>
+              </BlueCard>
+            </AutoColumn>
+          </Wrapper>
+        </AppBody>
+      </>
+    )
+  }
+}

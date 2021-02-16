@@ -12,7 +12,7 @@ import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import { SwapPoolTabs } from '../../components/NavigationTabs'
 import { RowBetween } from '../../components/Row'
 import { useTranslation } from 'react-i18next'
-import { ACTIVE_REWARD_POOLS, UNI_POOLS, WETHER } from '../../constants'
+import { ACTIVE_REWARD_POOLS, UNI_POOLS } from '../../constants'
 import { useActiveWeb3React } from '../../hooks'
 import { useCurrency, useToken } from '../../hooks/Tokens'
 import { useWalletModalToggle } from '../../state/application/hooks'
@@ -36,7 +36,6 @@ const Tabs = styled.div`
   align-items: center;
   border-radius: 6px;
   justify-content: space-evenly;
-  margin-inline-start: 16px;
 `
 
 const ActiveText = styled.div`

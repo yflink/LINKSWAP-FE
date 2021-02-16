@@ -12,7 +12,7 @@ import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import { SwapPoolTabs } from '../../components/NavigationTabs'
 import { RowBetween } from '../../components/Row'
 import { useTranslation } from 'react-i18next'
-import { ACTIVE_REWARD_POOLS, UNI_POOLS, WETHER } from '../../constants'
+import { ACTIVE_REWARD_POOLS, UNI_POOLS } from '../../constants'
 import { useActiveWeb3React } from '../../hooks'
 import { useCurrency, useToken } from '../../hooks/Tokens'
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
@@ -31,14 +31,12 @@ import ReactGA from 'react-ga'
 import FullStakingCard from '../../components/PositionCard/fullStakingCard'
 import { useCurrencyBalance } from '../../state/wallet/hooks'
 import { useTransactionAdder } from '../../state/transactions/hooks'
-import { Record } from '@renproject/react-components'
 
 const Tabs = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
   align-items: center;
   border-radius: 6px;
   justify-content: space-evenly;
-  margin-inline-start: 16px;
 `
 
 const ActiveText = styled.div`
