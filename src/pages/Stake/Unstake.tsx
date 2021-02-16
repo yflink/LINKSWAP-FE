@@ -17,7 +17,7 @@ import { useActiveWeb3React } from '../../hooks'
 import { useCurrency, useToken } from '../../hooks/Tokens'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { Field } from '../../state/mint/actions'
-import { StakingRewards, syflPool } from '../../components/ABI'
+import { mphPool, StakingRewards, syflPool } from '../../components/ABI'
 import { useDerivedMintInfo, useMintActionHandlers, useMintState } from '../../state/mint/hooks'
 import { toV2LiquidityToken } from '../../state/user/hooks'
 import { calculateGasMargin, getContract } from '../../utils'
@@ -56,9 +56,15 @@ export default function Unstake({
   const theme = useContext(ThemeContext)
   const currencyA = useCurrency(currencyIdA)
   const currencyB = useCurrency(currencyIdB)
-  const fakeContract = '0x0000000000000000000000000000000000000000'
-  const [rewardsContractAddress, setRewardsContractAddress] = useState(fakeContract)
-  const [abi, setAbi] = useState<any[]>(StakingRewards)
+  const [pool, setPool] = useState({
+    rewardsAddress: '0x0000000000000000000000000000000000000000',
+    abi: 'StakingRewards',
+    type: 'default',
+    balance: 0,
+    tokens: [WETH['1'], WETH['1']],
+    liquidityToken: WETHER
+  })
+  const [found, setFound] = useState(false)
   let liquidityToken: any
   let wrappedLiquidityToken
   let hasError
@@ -67,11 +73,13 @@ export default function Unstake({
   const isUni = currencyIdA === 'UNI'
   let uniEntry = {
     address: '',
-    liquidityToken: '',
-    rewardsAddress: '',
-    tokens: [WETHER, WETHER],
+    liquidityToken: WETHER,
+    rewardsAddress: '0x0000000000000000000000000000000000000000',
+    tokens: [WETH['1'], WETH['1']],
     balance: 0,
-    liquidityUrl: ''
+    liquidityUrl: '',
+    abi: 'StakingRewards',
+    type: 'uni'
   }
 
   if (!tokenA) {
@@ -87,17 +95,18 @@ export default function Unstake({
     if (isUni) {
       liquidityToken = UNI_POOLS.MFGWETH.liquidityToken
       liquidityTokenAddress = liquidityToken.address
-      Object.entries(UNI_POOLS).forEach((entry: any) => {
-        if (entry[0] === currencyIdB) {
-          uniEntry = entry[1]
-          liquidityToken = entry[1].liquidityToken
-          liquidityTokenAddress = liquidityToken.address
-          if (rewardsContractAddress === fakeContract) {
-            setRewardsContractAddress(entry[1].rewardsAddress)
-            setAbi(entry[1].abi !== 'StakingRewards' ? syflPool : StakingRewards)
+      if (!found) {
+        Object.entries(UNI_POOLS).forEach((entry: any) => {
+          if (entry[0] === currencyIdB) {
+            setFound(true)
+            uniEntry = entry[1]
+            liquidityToken = entry[1].liquidityToken
+            liquidityTokenAddress = liquidityToken.address
+            setPool(entry[1])
+            return
           }
-        }
-      })
+        })
+      }
 
       wrappedLiquidityToken = new WrappedTokenInfo(
         {
@@ -114,13 +123,12 @@ export default function Unstake({
     if (!isUni) {
       liquidityToken = toV2LiquidityToken([tokenA, tokenB])
       liquidityTokenAddress = liquidityToken.address
-      if (rewardsContractAddress === fakeContract) {
+      if (!found) {
         ACTIVE_REWARD_POOLS.forEach((pool: any) => {
           if (pool.address === liquidityTokenAddress) {
-            if (rewardsContractAddress === fakeContract) {
-              setRewardsContractAddress(pool.rewardsAddress)
-              setAbi(pool.abi !== 'StakingRewards' ? syflPool : StakingRewards)
-            }
+            setFound(true)
+            setPool(pool)
+            return
           }
         })
       }
@@ -162,6 +170,18 @@ export default function Unstake({
 
   const currencyAsymbol = isUni ? uniEntry.tokens[0]?.symbol ?? 'ETH' : currencyA?.symbol ?? 'ETH'
   const currencyBsymbol = isUni ? uniEntry.tokens[1]?.symbol ?? 'ETH' : currencyB?.symbol ?? 'ETH'
+  const rewardsContractAddress = pool.rewardsAddress
+  let currentAbi: any
+  switch (pool.abi) {
+    case 'syflPool':
+      currentAbi = syflPool
+      break
+    case 'mphPool':
+      currentAbi = mphPool
+      break
+    default:
+      currentAbi = StakingRewards
+  }
 
   const addTransaction = useTransactionAdder()
   const { t } = useTranslation()
@@ -172,8 +192,8 @@ export default function Unstake({
 
   async function unstakeAndClaimRewards(rewardsContractAddress: string) {
     if (!chainId || !library || !account || !parsedAmountA) return
-    const router = getContract(rewardsContractAddress, abi, library, account)
-    const isDefault = abi === StakingRewards
+    const router = getContract(rewardsContractAddress, currentAbi, library, account)
+    const isDefault = currentAbi === StakingRewards
     const estimate = isDefault ? router.estimateGas.unstakeAndClaimRewards : router.estimateGas.exit
     const method: (...args: any) => Promise<TransactionResponse> = isDefault
       ? router.unstakeAndClaimRewards
@@ -219,26 +239,26 @@ export default function Unstake({
     hasError = false
   }
 
-  const passedCurrencyA = currencyIdA === 'ETH' ? WETH['1'] : currencyA
-  const passedCurrencyB = currencyIdB === 'ETH' ? WETH['1'] : currencyB
+  const passedCurrencyA = currencyIdA === 'ETH' ? (chainId ? WETH[chainId] : WETH['1']) : currencyA
+  const passedCurrencyB = currencyIdB === 'ETH' ? (chainId ? WETH[chainId] : WETH['1']) : currencyB
 
   if (isUni) {
     uniEntry.balance = Number(selectedCurrencyBalance?.toSignificant(6)) || 0
   }
 
-  const stakingValues = isUni
-    ? uniEntry
-    : {
-        address: liquidityToken?.address,
-        liquidityToken: wrappedLiquidityToken,
-        rewardsAddress: rewardsContractAddress,
-        tokens: [passedCurrencyA, passedCurrencyB],
-        balance: Number(selectedCurrencyBalance?.toSignificant(6)) || 0
-      }
+  pool.balance = selectedCurrencyBalance ? Number(selectedCurrencyBalance?.toSignificant(6)) : 0
+  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+  // @ts-ignore
+  pool.tokens = [passedCurrencyA, passedCurrencyB]
+  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+  // @ts-ignore
+  pool.liquidityToken = wrappedLiquidityToken
+
+  const stakingValues = isUni ? uniEntry : pool
 
   useMemo(() => {
-    if (rewardsContractAddress === fakeContract || !chainId || !library || !account || !liquidityToken) return
-    const rewardsContract = getContract(rewardsContractAddress, StakingRewards, library, account)
+    if (!found || !chainId || !library || !account || !liquidityToken) return
+    const rewardsContract = getContract(pool.rewardsAddress, currentAbi, library, account)
     const method: (...args: any) => Promise<BigNumber> = rewardsContract.balanceOf
     const args: Array<string | string[] | number> = [account]
     method(...args).then(response => {

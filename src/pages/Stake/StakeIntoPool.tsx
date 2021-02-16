@@ -18,7 +18,7 @@ import { useCurrency, useToken } from '../../hooks/Tokens'
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { Field } from '../../state/mint/actions'
-import { StakingRewards, syflPool } from '../../components/ABI'
+import { mphPool, StakingRewards, syflPool } from '../../components/ABI'
 import { useDerivedMintInfo, useMintActionHandlers, useMintState } from '../../state/mint/hooks'
 import { toV2LiquidityToken } from '../../state/user/hooks'
 import { calculateGasMargin, getContract } from '../../utils'
@@ -31,6 +31,7 @@ import ReactGA from 'react-ga'
 import FullStakingCard from '../../components/PositionCard/fullStakingCard'
 import { useCurrencyBalance } from '../../state/wallet/hooks'
 import { useTransactionAdder } from '../../state/transactions/hooks'
+import { Record } from '@renproject/react-components'
 
 const Tabs = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -98,9 +99,15 @@ export default function StakeIntoPool({
   const theme = useContext(ThemeContext)
   const currencyA = useCurrency(currencyIdA)
   const currencyB = useCurrency(currencyIdB)
-  const fakeContract = '0x0000000000000000000000000000000000000000'
-  const [rewardsContractAddress, setRewardsContractAddress] = useState(fakeContract)
-  const [abi, setAbi] = useState<any[]>(StakingRewards)
+  const [pool, setPool] = useState({
+    rewardsAddress: '0x0000000000000000000000000000000000000000',
+    abi: 'StakingRewards',
+    type: 'default',
+    balance: 0,
+    tokens: [WETH['1'], WETH['1']],
+    liquidityToken: WETHER
+  })
+  const [found, setFound] = useState(false)
   let liquidityToken
   let wrappedLiquidityToken
   let hasError
@@ -109,11 +116,13 @@ export default function StakeIntoPool({
   const isUni = currencyIdA === 'UNI'
   let uniEntry = {
     address: '',
-    liquidityToken: '',
-    rewardsAddress: '',
-    tokens: [WETHER, WETHER],
+    liquidityToken: WETHER,
+    rewardsAddress: '0x0000000000000000000000000000000000000000',
+    tokens: [WETH['1'], WETH['1']],
     balance: 0,
-    liquidityUrl: ''
+    liquidityUrl: '',
+    abi: 'StakingRewards',
+    type: 'uni'
   }
 
   if (!tokenA) {
@@ -129,17 +138,18 @@ export default function StakeIntoPool({
     if (isUni) {
       liquidityToken = UNI_POOLS.MFGWETH.liquidityToken
       liquidityTokenAddress = liquidityToken.address
-      Object.entries(UNI_POOLS).forEach((entry: any) => {
-        if (entry[0] === currencyIdB) {
-          uniEntry = entry[1]
-          liquidityToken = entry[1].liquidityToken
-          liquidityTokenAddress = liquidityToken.address
-          if (rewardsContractAddress === fakeContract) {
-            setRewardsContractAddress(entry[1].rewardsAddress)
-            setAbi(entry[1].abi !== 'StakingRewards' ? syflPool : StakingRewards)
+      if (!found) {
+        Object.entries(UNI_POOLS).forEach((entry: any) => {
+          if (entry[0] === currencyIdB) {
+            setFound(true)
+            uniEntry = entry[1]
+            liquidityToken = entry[1].liquidityToken
+            liquidityTokenAddress = liquidityToken.address
+            setPool(entry[1])
+            return
           }
-        }
-      })
+        })
+      }
 
       wrappedLiquidityToken = new WrappedTokenInfo(
         {
@@ -156,13 +166,12 @@ export default function StakeIntoPool({
     if (!isUni) {
       liquidityToken = toV2LiquidityToken([tokenA, tokenB])
       liquidityTokenAddress = liquidityToken.address
-      if (rewardsContractAddress === fakeContract) {
+      if (!found) {
         ACTIVE_REWARD_POOLS.forEach((pool: any) => {
           if (pool.address === liquidityTokenAddress) {
-            if (rewardsContractAddress === fakeContract) {
-              setRewardsContractAddress(pool.rewardsAddress)
-              setAbi(pool.abi !== 'StakingRewards' ? syflPool : StakingRewards)
-            }
+            setFound(true)
+            setPool(pool)
+            return
           }
         })
       }
@@ -209,6 +218,18 @@ export default function StakeIntoPool({
 
   const currencyAsymbol = isUni ? uniEntry.tokens[0]?.symbol ?? 'ETH' : currencyA?.symbol ?? 'ETH'
   const currencyBsymbol = isUni ? uniEntry.tokens[1]?.symbol ?? 'ETH' : currencyB?.symbol ?? 'ETH'
+  const rewardsContractAddress = pool.rewardsAddress
+  let currentAbi: any
+  switch (pool.abi) {
+    case 'syflPool':
+      currentAbi = syflPool
+      break
+    case 'mphPool':
+      currentAbi = mphPool
+      break
+    default:
+      currentAbi = StakingRewards
+  }
 
   const addTransaction = useTransactionAdder()
   const [approvalA, approveACallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_A], rewardsContractAddress)
@@ -219,9 +240,9 @@ export default function StakeIntoPool({
   let buttonString = parsedAmountA ? t('stake') : t('enterAmount')
 
   async function onAdd(contractAddress: string) {
-    if (rewardsContractAddress === fakeContract || !chainId || !library || !account) return
+    if (!found || !chainId || !library || !account) return
 
-    const router = getContract(contractAddress, abi, library, account)
+    const router = getContract(contractAddress, currentAbi, library, account)
 
     if (!parsedAmountA) {
       return
@@ -281,16 +302,15 @@ export default function StakeIntoPool({
 
   const passedCurrencyA = currencyIdA === 'ETH' ? (chainId ? WETH[chainId] : WETH['1']) : currencyA
   const passedCurrencyB = currencyIdB === 'ETH' ? (chainId ? WETH[chainId] : WETH['1']) : currencyB
+  pool.balance = currentBalance ? currentBalance : 0
+  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+  // @ts-ignore
+  pool.tokens = [passedCurrencyA, passedCurrencyB]
+  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+  // @ts-ignore
+  pool.liquidityToken = wrappedLiquidityToken
 
-  const stakingValues = isUni
-    ? uniEntry
-    : {
-        address: liquidityToken?.address,
-        liquidityToken: wrappedLiquidityToken,
-        rewardsAddress: rewardsContractAddress,
-        tokens: [passedCurrencyA, passedCurrencyB],
-        balance: currentBalance || 0
-      }
+  const stakingValues = isUni ? uniEntry : pool
 
   useMemo(() => {
     if (balance !== currentBalance) {
@@ -298,104 +318,109 @@ export default function StakeIntoPool({
       onFieldAInput('')
     }
   }, [balance, currentBalance, setStaking, onFieldAInput])
-  return (
-    <>
-      <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.navigationBG, marginBottom: '16px' }}>
-        <SwapPoolTabs active={'stake'} />
-      </Card>
-      <AppBody>
-        <Tabs>
-          <RowBetween style={{ padding: '1rem 0' }}>
-            <ActiveText>
-              {t('stakeLPToken', {
-                currencyASymbol: currencyA?.symbol,
-                currencyBSymbol: currencyB?.symbol
-              })}
-            </ActiveText>
-            <QuestionHelper
-              text={t('stakeLPTokenDescription', {
-                currencyASymbol: currencyA?.symbol,
-                currencyBSymbol: currencyB?.symbol
-              })}
-            />
-          </RowBetween>
-        </Tabs>
-        <Wrapper>
-          <AutoColumn gap="20px">
-            <CurrencyInputPanel
-              hideCurrencySelect={true}
-              value={formattedAmounts[Field.CURRENCY_A]}
-              onUserInput={onFieldAInput}
-              onMax={() => {
-                onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
-              }}
-              showMaxButton={!atMaxAmounts[Field.CURRENCY_A]}
-              currency={currencies[Field.CURRENCY_A]}
-              id="stake-input-tokena"
-              showCommonBases
-            />
-          </AutoColumn>
-        </Wrapper>
-      </AppBody>
-      <AppBodyDark>
-        {!account ? (
-          <ButtonLight onClick={toggleWalletModal}>{t('connectWallet')}</ButtonLight>
-        ) : (
-          <AutoColumn gap={'md'}>
-            {approvalA === ApprovalState.NOT_APPROVED || approvalA === ApprovalState.PENDING ? (
-              <RowBetween>
-                <ButtonPrimary
-                  style={{ fontSize: '20px' }}
-                  onClick={approveACallback}
-                  disabled={approvalA === ApprovalState.PENDING}
-                  width="100%"
-                >
-                  {approvalA === ApprovalState.PENDING ? <Dots>{t('approving')}</Dots> : t('approve')}
-                </ButtonPrimary>
-              </RowBetween>
-            ) : staking ? (
-              <ButtonPrimary style={{ fontSize: '20px' }} disabled={true}>
-                <Dots>{t('staking')}</Dots>
-              </ButtonPrimary>
-            ) : (
-              <ButtonPrimary
-                style={{ fontSize: '20px' }}
-                onClick={() => {
-                  onAdd(rewardsContractAddress)
+
+  if (!found) {
+    return null
+  } else {
+    return (
+      <>
+        <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.navigationBG, marginBottom: '16px' }}>
+          <SwapPoolTabs active={'stake'} />
+        </Card>
+        <AppBody>
+          <Tabs>
+            <RowBetween style={{ padding: '1rem 0' }}>
+              <ActiveText>
+                {t('stakeLPToken', {
+                  currencyASymbol: currencyA?.symbol,
+                  currencyBSymbol: currencyB?.symbol
+                })}
+              </ActiveText>
+              <QuestionHelper
+                text={t('stakeLPTokenDescription', {
+                  currencyASymbol: currencyA?.symbol,
+                  currencyBSymbol: currencyB?.symbol
+                })}
+              />
+            </RowBetween>
+          </Tabs>
+          <Wrapper>
+            <AutoColumn gap="20px">
+              <CurrencyInputPanel
+                hideCurrencySelect={true}
+                value={formattedAmounts[Field.CURRENCY_A]}
+                onUserInput={onFieldAInput}
+                onMax={() => {
+                  onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
                 }}
-                disabled={approvalA !== ApprovalState.APPROVED || hasError}
-              >
-                <Text fontSize={20} fontWeight={500}>
-                  {buttonString}
-                </Text>
-              </ButtonPrimary>
-            )}
-            {hasError && (
-              <>
-                {isUni ? (
-                  <ExternalButton target="_blank" href={uniEntry.liquidityUrl}>
-                    {t('addLiquidity')}
-                  </ExternalButton>
-                ) : (
+                showMaxButton={!atMaxAmounts[Field.CURRENCY_A]}
+                currency={currencies[Field.CURRENCY_A]}
+                id="stake-input-tokena"
+                showCommonBases
+              />
+            </AutoColumn>
+          </Wrapper>
+        </AppBody>
+        <AppBodyDark>
+          {!account ? (
+            <ButtonLight onClick={toggleWalletModal}>{t('connectWallet')}</ButtonLight>
+          ) : (
+            <AutoColumn gap={'md'}>
+              {approvalA === ApprovalState.NOT_APPROVED || approvalA === ApprovalState.PENDING ? (
+                <RowBetween>
                   <ButtonPrimary
                     style={{ fontSize: '20px' }}
-                    as={Link}
-                    to={`/add/${currencyIdA}/${currencyIdB}`}
+                    onClick={approveACallback}
+                    disabled={approvalA === ApprovalState.PENDING}
                     width="100%"
                   >
-                    {t('addLiquidity')}
+                    {approvalA === ApprovalState.PENDING ? <Dots>{t('approving')}</Dots> : t('approve')}
                   </ButtonPrimary>
-                )}
-              </>
-            )}
+                </RowBetween>
+              ) : staking ? (
+                <ButtonPrimary style={{ fontSize: '20px' }} disabled={true}>
+                  <Dots>{t('staking')}</Dots>
+                </ButtonPrimary>
+              ) : (
+                <ButtonPrimary
+                  style={{ fontSize: '20px' }}
+                  onClick={() => {
+                    onAdd(rewardsContractAddress)
+                  }}
+                  disabled={approvalA !== ApprovalState.APPROVED || hasError}
+                >
+                  <Text fontSize={20} fontWeight={500}>
+                    {buttonString}
+                  </Text>
+                </ButtonPrimary>
+              )}
+              {hasError && (
+                <>
+                  {isUni ? (
+                    <ExternalButton target="_blank" href={uniEntry.liquidityUrl}>
+                      {t('addLiquidity')}
+                    </ExternalButton>
+                  ) : (
+                    <ButtonPrimary
+                      style={{ fontSize: '20px' }}
+                      as={Link}
+                      to={`/add/${currencyIdA}/${currencyIdB}`}
+                      width="100%"
+                    >
+                      {t('addLiquidity')}
+                    </ButtonPrimary>
+                  )}
+                </>
+              )}
+            </AutoColumn>
+          )}
+        </AppBodyDark>
+        {account && rewardsContractAddress && wrappedLiquidityToken && (
+          <AutoColumn style={{ marginTop: '1rem', maxWidth: '420px', width: '100%' }}>
+            <FullStakingCard values={stakingValues} my={true} show={true} index={0} />
           </AutoColumn>
         )}
-      </AppBodyDark>
-      {account && rewardsContractAddress && wrappedLiquidityToken && (
-        <AutoColumn style={{ marginTop: '1rem', maxWidth: '420px', width: '100%' }}>
-          <FullStakingCard values={stakingValues} my={true} show={true} index={0} />
-        </AutoColumn>
-      )}
-    </>
-  )
+      </>
+    )
+  }
 }

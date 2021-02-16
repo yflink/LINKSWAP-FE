@@ -22,6 +22,7 @@ import Card, { LightCard } from '../Card'
 import { YFLSVG, MPHSVG } from '../SVG'
 import { TYPE } from '../../theme'
 import { Link } from 'react-router-dom'
+import { getNetworkLibrary } from '../../connectors'
 
 const FullStakingCard = styled(Card)<{ highlight?: boolean; show?: boolean }>`
   font-size: 14px;
@@ -82,6 +83,8 @@ export default function SingleStakingCard({
   const currency0 = unwrappedToken(values.tokens[0])
   const headerRowStyles = show ? 'defaut' : 'pointer'
   const fakeAccount = '0x0000000000000000000000000000000000000000'
+  const fakeChainId = '1'
+  const fakeLibrary = getNetworkLibrary()
   const [lifeLine, setLifeLine] = useState(false)
   const currencyA = currency0
   const [information, setInformation] = useState<any>({
@@ -130,9 +133,15 @@ export default function SingleStakingCard({
     if (!!tokenPrices) {
       setFetching(true)
       if (!information.updated) {
-        positionInformation(values, account, chainId, library, tokenPrices, information).then(result => {
-          setInformation(result)
-        })
+        if (!account) {
+          positionInformation(values, fakeAccount, fakeChainId, fakeLibrary, tokenPrices, information).then(result => {
+            setInformation(result)
+          })
+        } else {
+          positionInformation(values, account, chainId, library, tokenPrices, information).then(result => {
+            setInformation(result)
+          })
+        }
       }
     }
   }

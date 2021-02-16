@@ -28,6 +28,7 @@ import styled, { ThemeContext } from 'styled-components'
 import Card, { LightCard } from '../Card'
 import { UniswapSVG, YFLSVG, MPHSVG } from '../SVG'
 import { TYPE } from '../../theme'
+import { getNetworkLibrary } from '../../connectors'
 
 const StakingCard = styled(Card)<{ highlight?: boolean; show?: boolean }>`
   font-size: 14px;
@@ -83,6 +84,8 @@ export default function FullStakingCard({
   const headerRowStyles = show ? 'defaut' : 'pointer'
   const addTransaction = useTransactionAdder()
   const fakeAccount = '0x0000000000000000000000000000000000000000'
+  const fakeChainId = '1'
+  const fakeLibrary = getNetworkLibrary()
   const [lifeLine, setLifeLine] = useState(false)
   let currencyA = currency0
   let currencyB = currency1
@@ -135,12 +138,20 @@ export default function FullStakingCard({
     if (!!tokenPrices && !!lpTokenPrices) {
       setFetching(true)
       if (!information.updated) {
-        positionInformation(values, account, chainId, library, tokenPrices, information).then(result => {
-          setInformation(result)
-        })
+        if (!account) {
+          positionInformation(values, fakeAccount, fakeChainId, fakeLibrary, tokenPrices, information).then(result => {
+            setInformation(result)
+          })
+        } else {
+          positionInformation(values, account, chainId, library, tokenPrices, information).then(result => {
+            setInformation(result)
+          })
+        }
       }
     }
   }
+
+  console.log(fetching, information, values)
 
   async function claimRewards(rewardsContractAddress: string) {
     if (!chainId || !library || !account || !information.updated) return
@@ -396,10 +407,17 @@ export default function FullStakingCard({
   ) {
     return (
       <>
-        {index === 0 && (
+        {index === 0 && !information.updated && (
           <LightCard padding="40px">
             <TYPE.body color={theme.textPrimary} textAlign="center">
               <Dots>{t('loading')}</Dots>
+            </TYPE.body>
+          </LightCard>
+        )}
+        {index === 0 && information.updated && show && (
+          <LightCard padding="40px">
+            <TYPE.body color={theme.textPrimary} textAlign="center">
+              <Text fontSize="16px">{t('poolExpired')}</Text>
             </TYPE.body>
           </LightCard>
         )}

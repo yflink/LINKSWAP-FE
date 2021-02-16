@@ -90,21 +90,25 @@ export default function StakeOverview() {
 
   if (tokenBalances.length === 0 || !mySinglePoolsAdded || !myUniPoolsAdded) {
     const myStakePools: any[] = []
-    ACTIVE_REWARD_POOLS.forEach(poolObject => {
-      let returnValue: any = false
-      liquidityTokensWithBalances.forEach((pool: any) => {
-        if (pool.liquidityToken.address === poolObject.address) {
-          pool.rewardsAddress = poolObject.rewardsAddress
-          pool.balance = v2PairsBalances[pool.liquidityToken.address]?.toSignificant(6) || 0
-          returnValue = pool
-          return
+    setTimeout(function() {
+      ACTIVE_REWARD_POOLS.forEach(poolObject => {
+        let returnValue: any = false
+        liquidityTokensWithBalances.forEach((pool: any) => {
+          if (pool.liquidityToken.address === poolObject.address) {
+            pool.balance = v2PairsBalances[pool.liquidityToken.address]?.toSignificant(6) || 0
+            pool.rewardsAddress = poolObject.rewardsAddress
+            pool.abi = poolObject.abi
+            pool.type = poolObject.type
+            returnValue = pool
+            return
+          }
+        })
+        if (returnValue) {
+          myStakePools.push(returnValue)
+          setMyRewardPools(myStakePools)
         }
       })
-      if (returnValue) {
-        myStakePools.push(returnValue)
-        setMyRewardPools(myStakePools)
-      }
-    })
+    }, 1000)
 
     const mfg = UNI_POOLS.MFGWETH
     if (!myUniPoolsAdded) {
