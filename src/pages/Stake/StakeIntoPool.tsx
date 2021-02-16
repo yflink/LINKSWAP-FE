@@ -105,7 +105,8 @@ export default function StakeIntoPool({
     type: 'default',
     balance: 0,
     tokens: ['', ''],
-    liquidityToken: ''
+    liquidityToken: '',
+    liquidityUrl: ''
   })
   const [found, setFound] = useState(false)
   let liquidityToken: any
@@ -372,7 +373,7 @@ export default function StakeIntoPool({
               {hasError && (
                 <>
                   {isUni ? (
-                    <ExternalButton target="_blank" href={uniEntry.liquidityUrl}>
+                    <ExternalButton target="_blank" href={pool.liquidityUrl}>
                       {t('addLiquidity')}
                     </ExternalButton>
                   ) : (
