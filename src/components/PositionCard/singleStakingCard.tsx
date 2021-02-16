@@ -1,6 +1,6 @@
 import { useActiveWeb3React } from '../../hooks'
 import { useGetTokenPrices } from '../../state/price/hooks'
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
 import { StakingRewards } from '../../components/ABI'
@@ -17,10 +17,9 @@ import { ButtonSecondary } from '../Button'
 import { currencyId } from '../../utils/currencyId'
 import Countdown from '../Countdown'
 import { ExternalButton, FixedHeightRow } from './index'
-import styled, { ThemeContext } from 'styled-components'
-import Card, { LightCard } from '../Card'
+import styled from 'styled-components'
+import Card from '../Card'
 import { YFLSVG, MPHSVG } from '../SVG'
-import { TYPE } from '../../theme'
 import { Link } from 'react-router-dom'
 import { getNetworkLibrary } from '../../connectors'
 
@@ -65,8 +64,7 @@ export default function SingleStakingCard({
   my,
   show,
   showOwn,
-  showExpired,
-  index
+  showExpired
 }: {
   values: any
   my: boolean
@@ -75,7 +73,6 @@ export default function SingleStakingCard({
   showExpired?: boolean | true
   index: number
 }) {
-  const theme = useContext(ThemeContext)
   const { account, chainId, library } = useActiveWeb3React()
   const { tokenPrices } = useGetTokenPrices()
   const [showMore, setShowMore] = useState(show)

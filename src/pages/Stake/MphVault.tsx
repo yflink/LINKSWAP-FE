@@ -5,7 +5,7 @@ import Card, { BlueCard } from '../../components/Card'
 import { AutoColumn, ColumnCenter } from '../../components/Column'
 import { SwapPoolTabs } from '../../components/NavigationTabs'
 import { RowBetween } from '../../components/Row'
-import { useTranslation } from 'react-i18next'
+import { Trans, useTranslation } from 'react-i18next'
 import AppBody from '../AppBody'
 import { Dots, Wrapper } from '../Pool/styleds'
 import QuestionHelper from '../../components/QuestionHelper'
@@ -28,6 +28,7 @@ import ReactGA from 'react-ga'
 import { mphPool } from '../../components/ABI'
 import { addTransaction } from '../../state/transactions/actions'
 import { Input as NumericalInput } from '../../components/NumericalInput'
+import { useTransactionAdder } from '../../state/transactions/hooks'
 
 const Tabs = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -82,6 +83,15 @@ const DurationSelect = styled.div<{ isActive?: boolean }>`
   }
 `
 
+const ExternalLink = styled.a`
+  color: ${({ theme }) => theme.textPrimary};
+  text-decoration: underline;
+
+  &:hover {
+    text-decoration: none;
+  }
+`
+
 export default function MphVault({
   match: {
     params: { vaultName }
@@ -98,6 +108,7 @@ export default function MphVault({
   const vaultAddress = currentVault?.rewardsAddress
   const userBalance = useTokenBalance(account ?? undefined, currency)
   const toggleWalletModal = useWalletModalToggle()
+  const addTransaction = useTransactionAdder()
   const { independentField, typedValue } = useMintState()
   const { dependentField, currencies, currencyBalances, parsedAmounts, noLiquidity } = useDerivedMintInfo(
     currency ?? undefined,
@@ -202,6 +213,16 @@ export default function MphVault({
               <QuestionHelper text={t('deposit88IntoVaultDescription', { vaultName: vaultName })} />
             </RowBetween>
           </Tabs>
+          <RowBetween>
+            <Text style={{ margin: '0 0 12px' }} fontSize="16px">
+              <Trans i18nKey="vaultHostedBy88mph">
+                Vault hosted by
+                <ExternalLink href="https://88mph.app/" target="_blank">
+                  88mph
+                </ExternalLink>
+              </Trans>
+            </Text>
+          </RowBetween>
           <Wrapper>
             <AutoColumn gap="20px">
               <CurrencyInputPanel
