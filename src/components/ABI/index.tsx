@@ -2147,3 +2147,767 @@ export const mphPool = [
     type: 'function'
   }
 ]
+
+export const Factory = [
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_governance',
+        type: 'address'
+      },
+      {
+        internalType: 'address',
+        name: '_treasury',
+        type: 'address'
+      },
+      {
+        internalType: 'address',
+        name: '_priceOracle',
+        type: 'address'
+      },
+      {
+        internalType: 'uint256',
+        name: '_linkListingFeeInUsd',
+        type: 'uint256'
+      },
+      {
+        internalType: 'uint256',
+        name: '_wethListingFeeInUsd',
+        type: 'uint256'
+      },
+      {
+        internalType: 'uint256',
+        name: '_yflListingFeeInUsd',
+        type: 'uint256'
+      },
+      {
+        internalType: 'uint256',
+        name: '_treasuryListingFeeShare',
+        type: 'uint256'
+      },
+      {
+        internalType: 'uint256',
+        name: '_minListingLockupAmountInUsd',
+        type: 'uint256'
+      },
+      {
+        internalType: 'uint256',
+        name: '_targetListingLockupAmountInUsd',
+        type: 'uint256'
+      },
+      {
+        internalType: 'uint256',
+        name: '_minListingLockupPeriod',
+        type: 'uint256'
+      },
+      {
+        internalType: 'uint256',
+        name: '_targetListingLockupPeriod',
+        type: 'uint256'
+      },
+      {
+        internalType: 'uint256',
+        name: '_lockupAmountListingFeeDiscountShare',
+        type: 'uint256'
+      },
+      {
+        internalType: 'address',
+        name: '_linkToken',
+        type: 'address'
+      },
+      {
+        internalType: 'address',
+        name: '_WETH',
+        type: 'address'
+      },
+      {
+        internalType: 'address',
+        name: '_yflToken',
+        type: 'address'
+      }
+    ],
+    stateMutability: 'nonpayable',
+    type: 'constructor'
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'token0',
+        type: 'address'
+      },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'token1',
+        type: 'address'
+      },
+      {
+        indexed: false,
+        internalType: 'address',
+        name: 'pair',
+        type: 'address'
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'pairNum',
+        type: 'uint256'
+      }
+    ],
+    name: 'PairCreated',
+    type: 'event'
+  },
+  {
+    inputs: [],
+    name: 'LINK',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address'
+      }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'WETH',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address'
+      }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'YFL',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address'
+      }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256'
+      }
+    ],
+    name: 'allPairs',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address'
+      }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'allPairsLength',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256'
+      }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'tokenA',
+        type: 'address'
+      },
+      {
+        internalType: 'address',
+        name: 'tokenB',
+        type: 'address'
+      }
+    ],
+    name: 'approvePairViaGovernance',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address'
+      },
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address'
+      }
+    ],
+    name: 'approvedPair',
+    outputs: [
+      {
+        internalType: 'bool',
+        name: '',
+        type: 'bool'
+      }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'newToken',
+        type: 'address'
+      },
+      {
+        internalType: 'uint256',
+        name: 'newTokenAmount',
+        type: 'uint256'
+      },
+      {
+        internalType: 'address',
+        name: 'lockupToken',
+        type: 'address'
+      },
+      {
+        internalType: 'uint256',
+        name: 'lockupTokenAmount',
+        type: 'uint256'
+      },
+      {
+        internalType: 'uint256',
+        name: 'lockupPeriod',
+        type: 'uint256'
+      },
+      {
+        internalType: 'address',
+        name: 'listingFeeToken',
+        type: 'address'
+      }
+    ],
+    name: 'createPair',
+    outputs: [
+      {
+        internalType: 'address',
+        name: 'pair',
+        type: 'address'
+      }
+    ],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'defaultLinkTradingFeePercent',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256'
+      }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'defaultNonLinkTradingFeePercent',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256'
+      }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address'
+      },
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address'
+      }
+    ],
+    name: 'getPair',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address'
+      }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'governance',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address'
+      }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'linkListingFeeInUsd',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256'
+      }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'lockupAmountListingFeeDiscountShare',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256'
+      }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'maxSlippageBlocks',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256'
+      }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'maxSlippagePercent',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256'
+      }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'minListingLockupAmountInUsd',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256'
+      }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'minListingLockupPeriod',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256'
+      }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'priceOracle',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address'
+      }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'protocolFeeFractionInverse',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256'
+      }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '_defaultLinkTradingFeePercent',
+        type: 'uint256'
+      }
+    ],
+    name: 'setDefaultLinkTradingFeePercent',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '_defaultNonLinkTradingFeePercent',
+        type: 'uint256'
+      }
+    ],
+    name: 'setDefaultNonLinkTradingFeePercent',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_governance',
+        type: 'address'
+      }
+    ],
+    name: 'setGovernance',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '_linkListingFeeInUsd',
+        type: 'uint256'
+      }
+    ],
+    name: 'setLinkListingFeeInUsd',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '_lockupAmountListingFeeDiscountShare',
+        type: 'uint256'
+      }
+    ],
+    name: 'setLockupAmountListingFeeDiscountShare',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '_maxSlippageBlocks',
+        type: 'uint256'
+      }
+    ],
+    name: 'setMaxSlippageBlocks',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '_maxSlippagePercent',
+        type: 'uint256'
+      }
+    ],
+    name: 'setMaxSlippagePercent',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '_minListingLockupAmountInUsd',
+        type: 'uint256'
+      }
+    ],
+    name: 'setMinListingLockupAmountInUsd',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '_minListingLockupPeriod',
+        type: 'uint256'
+      }
+    ],
+    name: 'setMinListingLockupPeriod',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_priceOracle',
+        type: 'address'
+      }
+    ],
+    name: 'setPriceOracle',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '_protocolFeeFractionInverse',
+        type: 'uint256'
+      }
+    ],
+    name: 'setProtocolFeeFractionInverse',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '_targetListingLockupAmountInUsd',
+        type: 'uint256'
+      }
+    ],
+    name: 'setTargetListingLockupAmountInUsd',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '_targetListingLockupPeriod',
+        type: 'uint256'
+      }
+    ],
+    name: 'setTargetListingLockupPeriod',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_treasury',
+        type: 'address'
+      }
+    ],
+    name: 'setTreasury',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '_treasuryListingFeeShare',
+        type: 'uint256'
+      }
+    ],
+    name: 'setTreasuryListingFeeShare',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '_treasuryProtocolFeeShare',
+        type: 'uint256'
+      }
+    ],
+    name: 'setTreasuryProtocolFeeShare',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '_wethListingFeeInUsd',
+        type: 'uint256'
+      }
+    ],
+    name: 'setWethListingFeeInUsd',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '_yflListingFeeInUsd',
+        type: 'uint256'
+      }
+    ],
+    name: 'setYflListingFeeInUsd',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'targetListingLockupAmountInUsd',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256'
+      }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'targetListingLockupPeriod',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256'
+      }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'treasury',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address'
+      }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'treasuryListingFeeShare',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256'
+      }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'treasuryProtocolFeeShare',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256'
+      }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'wethListingFeeInUsd',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256'
+      }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'yflListingFeeInUsd',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256'
+      }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  }
+]

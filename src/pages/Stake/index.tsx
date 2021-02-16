@@ -21,11 +21,7 @@ import Toggle from '../../components/Toggle'
 import { BigNumber } from '@ethersproject/bignumber'
 import hexStringToNumber from '../../utils/hexStringToNumber'
 import { getContract } from '../../utils'
-<<<<<<< HEAD
-import { LINKSWAPLPToken } from '../../components/ABI'
-=======
 import { ERC20, LINKSWAPLPToken } from '../../components/ABI'
->>>>>>> 6caf53a5f20869772a56f86350f6d558a13eddae
 
 export const MyStakePools = styled(BodyWrapper)`
   margin: 0 0 24px;
