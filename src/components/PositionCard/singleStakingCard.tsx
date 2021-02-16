@@ -21,6 +21,7 @@ import styled, { ThemeContext } from 'styled-components'
 import Card, { LightCard } from '../Card'
 import { YFLSVG, MPHSVG } from '../SVG'
 import { TYPE } from '../../theme'
+import { Link } from 'react-router-dom'
 
 const FullStakingCard = styled(Card)<{ highlight?: boolean; show?: boolean }>`
   font-size: 14px;
@@ -49,7 +50,7 @@ const PlatformIcon = styled.div`
   }
 `
 
-const Link = styled.a`
+const ExternalLink = styled.a`
   color: ${({ theme }) => theme.textPrimary};
   text-decoration: underline;
 
@@ -334,9 +335,9 @@ export default function SingleStakingCard({
                 <RowBetween>
                   <Text style={{ margin: '0 0 12px' }} fontSize="16px">
                     Vault hosted by:{' '}
-                    <Link href="https://88mph.app/" target="_blank">
+                    <ExternalLink href="https://88mph.app/" target="_blank">
                       88mph
-                    </Link>
+                    </ExternalLink>
                   </Text>
                 </RowBetween>
               )}
