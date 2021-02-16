@@ -27,6 +27,7 @@ import { BigNumber } from '@ethersproject/bignumber'
 import ReactGA from 'react-ga'
 import { mphPool } from '../../components/ABI'
 import { addTransaction } from '../../state/transactions/actions'
+import { Input as NumericalInput } from '../../components/NumericalInput'
 
 const Tabs = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -38,6 +39,14 @@ const Tabs = styled.div`
 const ActiveText = styled.div`
   font-weight: 500;
   font-size: 20px;
+`
+
+const CustomInput = styled(NumericalInput)`
+  background-color: ${({ theme }) => theme.appCurrencyInputBG};
+  padding: 6px 10px;
+  border-radius: 8px;
+  flex: 0 0 60px
+  font-size: 16px;
 `
 
 const LendingDurationWrapper = styled.div`
@@ -127,11 +136,19 @@ export default function MphVault({
     hasError = false
   }
 
+  if (duration < 7) {
+    buttonString = t('minimumDuration', { minDuration: 7 })
+    hasError = true
+  }
+
+  if (duration > 365) {
+    setDuration(365)
+  }
+
   async function onDeposit() {
     if (!chainId || !library || !account) return
 
     const router = getContract(vaultAddress, mphPool, library, account)
-
     if (!parsedAmountA) {
       return
     }
@@ -141,7 +158,6 @@ export default function MphVault({
     const today = new Date(Date.now())
     const maturationTimestamp = Math.floor(today.setDate(today.getDate() + duration) / 1000.0)
     const args: Array<string | string[] | number> = [parsedAmountA.raw.toString(), maturationTimestamp]
-
     const value: BigNumber | null = null
     await estimate(...args, value ? { value } : {})
       .then(estimatedGasLimit =>
@@ -151,7 +167,7 @@ export default function MphVault({
         }).then(response => {
           setDepositing(true)
           addTransaction(response, {
-            summary: t('depositAmountIntoVault', {
+            summary: t('deposit88AmountIntoVault', {
               vaultName: vaultName,
               amount: parsedAmountA.toSignificant(3)
             })
@@ -182,8 +198,8 @@ export default function MphVault({
         <AppBody>
           <Tabs>
             <RowBetween style={{ padding: '1rem 0' }}>
-              <ActiveText>{t('depositIntoVault', { vaultName: vaultName })}</ActiveText>
-              <QuestionHelper text={t('depositIntoVaultDescription', { vaultName: vaultName })} />
+              <ActiveText>{t('deposit88IntoVault', { vaultName: vaultName })}</ActiveText>
+              <QuestionHelper text={t('deposit88IntoVaultDescription', { vaultName: vaultName })} />
             </RowBetween>
           </Tabs>
           <Wrapper>
@@ -201,7 +217,7 @@ export default function MphVault({
                 showCommonBases
               />
               <LendingDurationWrapper>
-                <Text style={{ margin: '0 0 12px' }}>Preset lending duration:</Text>
+                <Text style={{ margin: '0 0 12px' }}>{t('deposit88PresetDuration')}</Text>
                 <LendingDuration>
                   {presetDurations.map((itemDuration, index) => (
                     <DurationSelect
@@ -216,6 +232,17 @@ export default function MphVault({
                   ))}
                 </LendingDuration>
               </LendingDurationWrapper>
+              <RowBetween>
+                <Text>{t('deposit88CustomDuration')}</Text>
+                <CustomInput
+                  className="custom-duration"
+                  value={duration}
+                  align="right"
+                  onUserInput={val => {
+                    setDuration(Number(val))
+                  }}
+                />
+              </RowBetween>
               {!account ? (
                 <ButtonLight onClick={toggleWalletModal}>{t('connectWallet')}</ButtonLight>
               ) : (
@@ -252,11 +279,11 @@ export default function MphVault({
               )}
               <BlueCard>
                 <AutoColumn gap="10px">
-                  <Text fontSize="14px">{t('depositIntoVaultStep1', { currencySymbol: currency.symbol })}</Text>
-                  <Text fontSize="14px">{t('depositIntoVaultStep2')}</Text>
-                  <Text fontSize="14px">{t('depositIntoVaultStep3')}</Text>
-                  <Text fontSize="14px">{t('depositIntoVaultStep4')}</Text>
-                  <Text fontSize="14px">{t('depositIntoVaultStep5')}</Text>
+                  <Text fontSize="14px">{t('deposit88IntoVaultStep1', { currencySymbol: currency.symbol })}</Text>
+                  <Text fontSize="14px">{t('deposit88IntoVaultStep2')}</Text>
+                  <Text fontSize="14px">{t('deposit88IntoVaultStep3')}</Text>
+                  <Text fontSize="14px">{t('deposit88IntoVaultStep4')}</Text>
+                  <Text fontSize="14px">{t('deposit88IntoVaultStep5')}</Text>
                 </AutoColumn>
               </BlueCard>
             </AutoColumn>
