@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import { transparentize } from 'polished'
 
 const FormErrorInner = styled.div`
-  background-color: ${({ theme }) => transparentize(0.9, theme.red1)};
+  background: ${({ theme }) => transparentize(0.9, theme.red1)};
   border-radius: 1rem;
   display: flex;
   align-items: center;
@@ -22,7 +22,7 @@ const FormErrorInner = styled.div`
 `
 
 const FormErrorInnerAlertTriangle = styled.div`
-  background-color: ${({ theme }) => transparentize(0.9, theme.red1)};
+  background: ${({ theme }) => transparentize(0.9, theme.red1)};
   display: flex;
   align-items: center;
   justify-content: center;

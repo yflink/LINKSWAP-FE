@@ -19,7 +19,7 @@
       "logoURI": "https://logos.linkswap.app/0x28cb7e841ee97947a86b06fa4090c8451f64c0be.png"
     },
     {
-      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+      "address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
       "chainId": 1,
       "name": "WrappedEther",
       "symbol": "WETH",
@@ -27,7 +27,7 @@
       "logoURI": "https://logos.linkswap.app/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.png"
     },
     {
-      "address": "0x514910771af9ca656af840dff83e8264ecf986ca",
+      "address": "0x514910771AF9Ca656af840dff83E8264EcF986CA",
       "chainId": 1,
       "name": "ChainLink",
       "symbol": "LINK",
@@ -35,7 +35,7 @@
       "logoURI": "https://logos.linkswap.app/0x514910771af9ca656af840dff83e8264ecf986ca.png"
     },
     {
-      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+      "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
       "chainId": 1,
       "name": "USDCoin",
       "symbol": "USDC",
@@ -44,7 +44,7 @@
       "logoURI": "https://logos.linkswap.app/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.png"
     },
     {
-      "address": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+      "address": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
       "chainId": 1,
       "name": "TetherUSD",
       "symbol": "USDT",
@@ -53,7 +53,7 @@
       "logoURI": "https://logos.linkswap.app/0xdac17f958d2ee523a2206206994597c13d831ec7.png"
     },
     {
-      "address": "0x6b175474e89094c44da98b954eedeac495271d0f",
+      "address": "0x6B175474E89094C44Da98b954EedeAC495271d0F",
       "chainId": 1,
       "name": "DaiStablecoin",
       "symbol": "DAI",
@@ -62,7 +62,7 @@
       "logoURI": "https://logos.linkswap.app/0x6b175474e89094c44da98b954eedeac495271d0f.png"
     },
     {
-      "address": "0x5dbcf33d8c2e976c6b560249878e6f1491bca25c",
+      "address": "0x5dbcF33D8c2E976c6b560249878e6F1491Bca25c",
       "chainId": 1,
       "name": "yearnCurve",
       "symbol": "yUSD",
@@ -71,7 +71,7 @@
       "logoURI": "https://logos.linkswap.app/0x5dbcf33d8c2e976c6b560249878e6f1491bca25c.png"
     },
     {
-      "address": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
+      "address": "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
       "chainId": 1,
       "name": "WrappedBitcoin",
       "symbol": "WBTC",
@@ -79,7 +79,7 @@
       "logoURI": "https://logos.linkswap.app/0x2260fac5e5542a773aa44fbcfedf7c193bc2c599.png"
     },
     {
-      "address": "0xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f",
+      "address": "0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F",
       "chainId": 1,
       "name": "SynthetixNetworkToken",
       "symbol": "SNX",
@@ -87,7 +87,7 @@
       "logoURI": "https://logos.linkswap.app/0xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f.png"
     },
     {
-      "address": "0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9",
+      "address": "0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9",
       "chainId": 1,
       "name": "AAVE",
       "symbol": "AAVE",
@@ -95,7 +95,7 @@
       "logoURI": "https://logos.linkswap.app/0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9.png"
     },
     {
-      "address": "0x4fabb145d64652a948d72533023f6e7a623c7c53",
+      "address": "0x4Fabb145d64652a948d72533023f6E7A623C7C53",
       "chainId": 1,
       "name": "BUSD",
       "symbol": "BUSD",
@@ -104,7 +104,7 @@
       "logoURI": "https://logos.linkswap.app/0x4fabb145d64652a948d72533023f6e7a623c7c53.png"
     },
     {
-      "address": "0xb1dc9124c395c1e97773ab855d66e879f053a289",
+      "address": "0xb1dC9124c395c1e97773ab855d66E879f053A289",
       "chainId": 1,
       "name": "YAX",
       "symbol": "YAX",
@@ -112,7 +112,7 @@
       "logoURI": "https://logos.linkswap.app/0xb1dc9124c395c1e97773ab855d66e879f053a289.png"
     },
     {
-      "address": "0xaaaebe6fe48e54f431b0c390cfaf0b017d09d42d",
+      "address": "0xaaAEBE6Fe48E54f431b0C390CfaF0b017d09D42d",
       "chainId": 1,
       "name": "CEL",
       "symbol": "CEL",
@@ -120,7 +120,7 @@
       "logoURI": "https://logos.linkswap.app/0xaaaebe6fe48e54f431b0c390cfaf0b017d09d42d.png"
     },
     {
-      "address": "0xaac41ec512808d64625576eddd580e7ea40ef8b2",
+      "address": "0xaac41EC512808d64625576EDdd580e7Ea40ef8B2",
       "chainId": 1,
       "name": "GSWAP",
       "symbol": "GSWAP",
@@ -128,7 +128,7 @@
       "logoURI": "https://logos.linkswap.app/0xaac41ec512808d64625576eddd580e7ea40ef8b2.png"
     },
     {
-      "address": "0x06f3c323f0238c72bf35011071f2b5b7f43a054c",
+      "address": "0x06F3C323f0238c72BF35011071f2b5B7F43A054c",
       "chainId": 1,
       "name": "MASQ",
       "symbol": "MASQ",
@@ -137,7 +137,7 @@
       "logoURI": "https://logos.linkswap.app/0x06f3c323f0238c72bf35011071f2b5b7f43a054c.png"
     },
     {
-      "address": "0xedfbd6c48c3ddff5612ade14b45bb19f916809ba",
+      "address": "0xEdFBd6c48c3dDfF5612Ade14B45bb19F916809ba",
       "chainId": 1,
       "name": "RUGZ",
       "symbol": "RUGZ",
@@ -145,7 +145,7 @@
       "logoURI": "https://logos.linkswap.app/0xedfbd6c48c3ddff5612ade14b45bb19f916809ba.png"
     },
     {
-      "address": "0x6d6506e6f438ede269877a0a720026559110b7d5",
+      "address": "0x6D6506E6F438edE269877a0A720026559110B7d5",
       "chainId": 1,
       "name": "BONK",
       "symbol": "BONK",
@@ -153,7 +153,7 @@
       "logoURI": "https://logos.linkswap.app/0x6d6506e6f438ede269877a0a720026559110b7d5.png"
     },
     {
-      "address": "0xb78b3320493a4efaa1028130c5ba26f0b6085ef8",
+      "address": "0xb78B3320493a4EFaa1028130C5Ba26f0B6085Ef8",
       "chainId": 1,
       "name": "DRC",
       "symbol": "DRC",
@@ -161,7 +161,7 @@
       "logoURI": "https://logos.linkswap.app/0xb78b3320493a4efaa1028130c5ba26f0b6085ef8.png"
     },
     {
-      "address": "0x9d47894f8becb68b9cf3428d256311affe8b068b",
+      "address": "0x9D47894f8BECB68B9cF3428d256311Affe8B068B",
       "chainId": 1,
       "name": "ROPE",
       "symbol": "ROPE",
@@ -169,7 +169,7 @@
       "logoURI": "https://logos.linkswap.app/0x9d47894f8becb68b9cf3428d256311affe8b068b.png"
     },
     {
-      "address": "0x0ff6ffcfda92c53f615a4a75d982f399c989366b",
+      "address": "0x0fF6ffcFDa92c53F615a4A75D982f399C989366b",
       "chainId": 1,
       "name": "LAYER",
       "symbol": "LAYER",
@@ -177,7 +177,7 @@
       "logoURI": "https://logos.linkswap.app/0x0ff6ffcfda92c53f615a4a75d982f399c989366b.png"
     },
     {
-      "address": "0x79ba92dda26fce15e1e9af47d5cfdfd2a093e000",
+      "address": "0x79BA92DDA26FcE15e1e9af47D5cFdFD2A093E000",
       "chainId": 1,
       "name": "SERGS",
       "symbol": "SERGS",
@@ -185,7 +185,7 @@
       "logoURI": "https://logos.linkswap.app/0x79ba92dda26fce15e1e9af47d5cfdfd2a093e000.png"
     },
     {
-      "address": "0x1494ca1f11d487c2bbe4543e90080aeba4ba3c2b",
+      "address": "0x1494CA1F11D487c2bBe4543E90080AeBa4BA3C2b",
       "chainId": 1,
       "name": "DPI",
       "symbol": "DPI",
@@ -193,7 +193,7 @@
       "logoURI": "https://logos.linkswap.app/0x1494ca1f11d487c2bbe4543e90080aeba4ba3c2b.png"
     },
     {
-      "address": "0x83f873388cd14b83a9f47fabde3c9850b5c74548",
+      "address": "0x83F873388Cd14b83A9f47FabDe3C9850b5C74548",
       "chainId": 1,
       "name": "ZUT",
       "symbol": "ZUT",
@@ -201,7 +201,7 @@
       "logoURI": "https://logos.linkswap.app/0x83f873388cd14b83a9f47fabde3c9850b5c74548.png"
     },
     {
-      "address": "0x63b4f3e3fa4e438698ce330e365e831f7ccd1ef4",
+      "address": "0x63b4f3e3fa4e438698CE330e365E831F7cCD1eF4",
       "chainId": 1,
       "name": "CFi",
       "symbol": "CFi",
@@ -209,7 +209,7 @@
       "logoURI": "https://logos.linkswap.app/0x63b4f3e3fa4e438698ce330e365e831f7ccd1ef4.png"
     },
     {
-      "address": "0x910524678c0b1b23ffb9285a81f99c29c11cbaed",
+      "address": "0x910524678C0B1B23FFB9285a81f99C29C11CBaEd",
       "chainId": 1,
       "name": "Azuki",
       "symbol": "AZUKI",
@@ -217,7 +217,7 @@
       "logoURI": "https://logos.linkswap.app/0x910524678c0b1b23ffb9285a81f99c29c11cbaed.png"
     },
     {
-      "address": "0x9ceb84f92a0561fa3cc4132ab9c0b76a59787544",
+      "address": "0x9cEB84f92A0561fa3Cc4132aB9c0b76A59787544",
       "chainId": 1,
       "name": "Doki Doki Finance",
       "symbol": "DOKI",
@@ -226,7 +226,7 @@
       "logoURI": "https://logos.linkswap.app/0x9ceb84f92a0561fa3cc4132ab9c0b76a59787544.png"
     },
     {
-      "address": "0x3832d2f059e55934220881f831be501d180671a7",
+      "address": "0x3832d2F059E55934220881F831bE501D180671A7",
       "chainId": 1,
       "name": "Wrapped Dogecoin",
       "symbol": "renDOGE",
@@ -234,7 +234,7 @@
       "logoURI": "https://logos.linkswap.app/0x3832d2f059e55934220881f831be501d180671a7.png"
     },
     {
-      "address": "0x7b760d06e401f85545f3b50c44bf5b05308b7b62",
+      "address": "0x7b760D06E401f85545F3B50c44bf5B05308b7b62",
       "chainId": 1,
       "name": "YFLink USD",
       "symbol": "YFLUSD",
@@ -243,17 +243,41 @@
       "logoURI": "https://logos.linkswap.app/0x7b760d06e401f85545f3b50c44bf5b05308b7b62.png"
     },
     {
-      "address": "0x8282df223ac402d04b2097d16f758af4f70e7db0",
+      "address": "0x8282df223AC402d04B2097d16f758Af4F70e7Db0",
       "chainId": 1,
       "name": "YFLink Synthetics",
       "symbol": "sYFL",
       "decimals": 18,
       "logoURI": "https://logos.linkswap.app/0x8282df223ac402d04b2097d16f758af4f70e7db0.png"
+    },
+    {
+      "address": "0xDFe66B14D37C77F4E9b180cEb433d1b164f0281D",
+      "chainId": 1,
+      "name": "Staked ETH",
+      "symbol": "stETH",
+      "decimals": 18,
+      "logoURI": "https://logos.linkswap.app/0xdfe66b14d37c77f4e9b180ceb433d1b164f0281d.png"
+    },
+    {
+      "address": "0x67B66C99D3Eb37Fa76Aa3Ed1ff33E8e39F0b9c7A",
+      "chainId": 1,
+      "name": "Interest Bearing ETH",
+      "symbol": "ibETH",
+      "decimals": 18,
+      "logoURI": "https://logos.linkswap.app/0x67b66c99d3eb37fa76aa3ed1ff33e8e39f0b9c7a.png"
+    },
+    {
+      "address": "0x8888801af4d980682e47f1a9036e589479e835c5",
+      "chainId": 1,
+      "name": "88mph",
+      "symbol": "MPH",
+      "decimals": 18,
+      "logoURI": "https://logos.linkswap.app/0x8888801af4d980682e47f1a9036e589479e835c5.png"
     }
   ],
   "version": {
-    "major": 1,
-    "minor": 0,
+    "major": 2,
+    "minor": 3,
     "patch": 0
   }
 }

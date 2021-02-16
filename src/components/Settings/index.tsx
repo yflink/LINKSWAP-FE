@@ -69,11 +69,11 @@ const StyledMenuButton = styled.button`
   width: 36px;
   height: 36px;
   border: none;
-  background-color: transparent;
+  background: transparent;
   margin: 0;
   padding: 0;
   height: 35px;
-  background-color: ${({ theme }) => theme.headerButtonBG};
+  background: ${({ theme }) => theme.headerButtonBG};
   padding: 0.15rem 0.5rem;
   border-radius: 0.5rem;
   display: flex;
@@ -83,7 +83,7 @@ const StyledMenuButton = styled.button`
   :focus {
     cursor: pointer;
     outline: none;
-    background-color: ${({ theme }) => theme.headerButtonBGHover};
+    background: ${({ theme }) => theme.headerButtonBGHover};
   }
 
   svg {
@@ -103,7 +103,7 @@ const StyledMenu = styled.div`
 
 const MenuFlyout = styled.span`
   min-width: 20.125rem;
-  background-color: ${({ theme }) => theme.modalBG};
+  background: ${({ theme }) => theme.modalBG};
   box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.01), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04),
     0px 24px 32px rgba(0, 0, 0, 0.01);
 
@@ -131,7 +131,7 @@ const MenuFlyout = styled.span`
 const Break = styled.div`
   width: 100%;
   height: 1px;
-  background-color: ${({ theme }) => theme.modalLines};
+  background: ${({ theme }) => theme.modalLines};
 `
 
 const ModalContentWrapper = styled.div`
@@ -139,7 +139,7 @@ const ModalContentWrapper = styled.div`
   align-items: center;
   justify-content: center;
   padding: 2rem 0;
-  background-color: ${({ theme }) => theme.modalSecondaryBG};
+  background: ${({ theme }) => theme.modalSecondaryBG};
   border-radius: 6px;
 `
 

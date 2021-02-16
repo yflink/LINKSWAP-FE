@@ -19,10 +19,10 @@ const BaseWrapper = styled.div<{ disable?: boolean }>`
   align-items: center;
   :hover {
     cursor: ${({ disable }) => !disable && 'pointer'};
-    background-color: ${({ theme, disable }) => !disable && theme.modalSecondaryBG};
+    background: ${({ theme, disable }) => !disable && theme.modalSecondaryBG};
   }
 
-  background-color: ${({ theme, disable }) => disable && theme.modalLines};
+  background: ${({ theme, disable }) => disable && theme.modalLines};
   opacity: ${({ disable }) => disable && '0.4'};
 `
 

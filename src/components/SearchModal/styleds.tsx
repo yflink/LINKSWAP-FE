@@ -31,7 +31,7 @@ export const MenuItem = styled(RowBetween)`
   cursor: ${({ disabled }) => !disabled && 'pointer'};
   pointer-events: ${({ disabled }) => disabled && 'none'};
   :hover {
-    background-color: ${({ theme, disabled }) => !disabled && theme.modalSecondaryBG};
+    background: ${({ theme, disabled }) => !disabled && theme.modalSecondaryBG};
   }
   opacity: ${({ disabled, selected }) => (disabled || selected ? 0.5 : 1)};
   [dir='rtl'] & {
@@ -69,11 +69,11 @@ export const SearchInput = styled.input`
 export const Separator = styled.div`
   width: 100%;
   height: 1px;
-  background-color: ${({ theme }) => theme.modalLines};
+  background: ${({ theme }) => theme.modalLines};
 `
 
 export const SeparatorDark = styled.div`
   width: 100%;
   height: 1px;
-  background-color: ${({ theme }) => theme.buttonBG};
+  background: ${({ theme }) => theme.buttonBG};
 `

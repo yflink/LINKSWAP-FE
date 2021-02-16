@@ -15,7 +15,7 @@ const Grouping = styled(RowBetween)`
 const Circle = styled.div<{ confirmed?: boolean; disabled?: boolean }>`
   min-width: 20px;
   min-height: 20px;
-  background-color: ${({ theme, confirmed, disabled }) =>
+  background: ${({ theme, confirmed, disabled }) =>
     disabled ? theme.lineColor : confirmed ? theme.green1 : theme.appCurrencyInputBGActive};
   border-radius: 50%;
   color: ${({ theme }) => theme.appCurrencyInputTextColor};
@@ -35,7 +35,7 @@ const CircleRow = styled.div`
 const Connector = styled.div<{ prevConfirmed?: boolean }>`
   width: 100%;
   height: 2px;
-  background-color: ;
+  background: ;
   background: linear-gradient(
     90deg,
     ${({ theme, prevConfirmed }) => transparentize(0.5, prevConfirmed ? theme.green1 : theme.appCurrencyInputBGActive)}

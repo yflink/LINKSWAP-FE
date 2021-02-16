@@ -13,7 +13,7 @@ export const ThemeOptionBody = styled.div`
   :hover,
   :focus {
     cursor: pointer;
-    background-color: ${({ theme }) => theme.modalSecondaryBG};
+    background: ${({ theme }) => theme.modalSecondaryBG};
   }
 `
 

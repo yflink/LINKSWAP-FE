@@ -14,7 +14,7 @@ export const ClickableText = styled(Text)`
 `
 export const MaxButton = styled.button<{ width: string }>`
   padding: 0.5rem 1rem;
-  background-color: ${({ theme }) => theme.buttonSecondaryBG};
+  background: ${({ theme }) => theme.buttonSecondaryBG};
   border: 1px solid ${({ theme }) => theme.buttonSecondaryBG};
   border-radius: 0.5rem;
   font-size: 1rem;

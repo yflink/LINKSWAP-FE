@@ -36,17 +36,17 @@ const StyledNavLink = styled(NavLink).attrs({
   * {
     fill: ${({ theme }) => theme.navigationTabIconColor};
   }
-  background-color: ${({ theme }) => theme.navigationTabBG};
+  background: ${({ theme }) => theme.navigationTabBG};
   font-size: 20px;
   padding: 30px 0;
   &.${activeClassName} {
-    background-color: ${({ theme }) => theme.navigationTabBGActive};
+    background: ${({ theme }) => theme.navigationTabBGActive};
     * {
       fill: ${({ theme }) => theme.navigationTabIconColorActive};
     }
     :hover,
     :focus {
-      background-color: ${({ theme }) => theme.navigationTabBGActive};
+      background: ${({ theme }) => theme.navigationTabBGActive};
       * {
         fill: ${({ theme }) => theme.navigationTabIconColorActive};
       }
@@ -54,7 +54,7 @@ const StyledNavLink = styled(NavLink).attrs({
   }
   :hover,
   :focus {
-    background-color: ${({ theme }) => theme.navigationTabBGHover};
+    background: ${({ theme }) => theme.navigationTabBGHover};
     * {
       fill: ${({ theme }) => theme.navigationTabIconColorHover};
     }

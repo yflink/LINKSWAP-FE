@@ -26,7 +26,7 @@ export const ArrowWrapper = styled.div<{ clickable: boolean }>`
 export const SectionBreak = styled.div`
   height: 1px;
   width: 100%;
-  background-color: ${({ theme }) => theme.textSecondary};
+  background: ${({ theme }) => theme.textSecondary};
 `
 
 export const BottomGrouping = styled.div`
@@ -47,7 +47,7 @@ export const ErrorText = styled(Text)<{ severity?: 0 | 1 | 2 | 3 | 4 }>`
 export const StyledBalanceMaxMini = styled.button`
   height: 22px;
   width: 22px;
-  background-color: ${({ theme }) => theme.modalSecondaryBG};
+  background: ${({ theme }) => theme.modalSecondaryBG};
   border: none;
   border-radius: 50%;
   padding: 0.2rem;
@@ -62,10 +62,10 @@ export const StyledBalanceMaxMini = styled.button`
   float: right;
 
   :hover {
-    background-color: ${({ theme }) => theme.buttonBG};
+    background: ${({ theme }) => theme.buttonBG};
   }
   :focus {
-    background-color: ${({ theme }) => theme.buttonBG};
+    background: ${({ theme }) => theme.buttonBG};
     outline: none;
   }
 `
@@ -99,7 +99,7 @@ export const Dots = styled.span`
 `
 
 const SwapCallbackErrorInner = styled.div`
-  background-color: ${({ theme }) => transparentize(0.9, theme.red1)};
+  background: ${({ theme }) => transparentize(0.9, theme.red1)};
   border-radius: 1rem;
   display: flex;
   align-items: center;
@@ -117,7 +117,7 @@ const SwapCallbackErrorInner = styled.div`
 `
 
 const SwapCallbackErrorInnerAlertTriangle = styled.div`
-  background-color: ${({ theme }) => transparentize(0.9, theme.red1)};
+  background: ${({ theme }) => transparentize(0.9, theme.red1)};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -139,7 +139,7 @@ export function SwapCallbackError({ error }: { error: string }) {
 }
 
 export const SwapShowAcceptChanges = styled(AutoColumn)`
-  background-color: ${({ theme }) => transparentize(0.9, theme.textHighlight)};
+  background: ${({ theme }) => transparentize(0.9, theme.textHighlight)};
   color: ${({ theme }) => theme.textHighlight};
   padding: 0.5rem;
   border-radius: 6px;

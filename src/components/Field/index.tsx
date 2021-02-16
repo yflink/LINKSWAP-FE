@@ -38,7 +38,7 @@ const StyledInput = styled.input<{ error?: boolean }>`
   color: ${({ theme }) => theme.appCurrencyInputTextColor};
   border-style: solid;
   border: 1px solid ${({ theme }) => theme.appCurrencyInputBG};
-  background-color: ${({ theme }) => theme.appCurrencyInputBG};
+  background: ${({ theme }) => theme.appCurrencyInputBG};
   -webkit-appearance: none;
 
   font-size: 18px;
@@ -72,7 +72,7 @@ const StyledInput = styled.input<{ error?: boolean }>`
   }
 
   :-webkit-autofill {
-    background-color: ${({ theme }) => theme.appCurrencyInputBG};
+    background: ${({ theme }) => theme.appCurrencyInputBG};
   }
 `
 

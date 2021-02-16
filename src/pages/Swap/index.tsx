@@ -53,10 +53,8 @@ import { ClickableText } from '../Pool/styleds'
 import Loader from '../../components/Loader'
 import { useTranslation } from 'react-i18next'
 import { useTokenList } from '../../state/lists/hooks'
-import { useCurrencyUsdPrice } from '../../hooks/useCurrencyUsdPrice'
 import QuestionHelper from '../../components/QuestionHelper'
 import { wrappedCurrency } from '../../utils/wrappedCurrency'
-import { useTokenUsdPrices } from '../../hooks/useTokenUsdPrice'
 
 function containsKey(json: any, value: string) {
   let contains = false
@@ -293,9 +291,6 @@ export default function Swap() {
   ])
 
   const { t } = useTranslation()
-
-  useCurrencyUsdPrice()
-  useTokenUsdPrices()
 
   const currentInput =
     currencies[Field.INPUT]?.symbol === 'ETH' ? 'ETH' : wrappedCurrency(currencies[Field.INPUT], chainId)?.address

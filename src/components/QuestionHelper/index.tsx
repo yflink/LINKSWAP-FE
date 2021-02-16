@@ -13,7 +13,7 @@ const QuestionWrapper = styled.div`
   outline: none;
   cursor: default;
   border-radius: 6px;
-  background-color: transparent;
+  background: transparent;
   color: ${({ theme }) => theme.textSecondary};
 
   :hover,
@@ -29,7 +29,7 @@ export default function QuestionHelper({ text }: { text: string }) {
   const close = useCallback(() => setShow(false), [setShow])
 
   return (
-    <span style={{marginInlineStart: 4 }}>
+    <span style={{ marginInlineStart: 4 }}>
       <Tooltip text={text} show={show}>
         <QuestionWrapper onClick={open} onMouseEnter={open} onMouseLeave={close}>
           <Question size={16} />

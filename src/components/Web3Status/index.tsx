@@ -47,18 +47,18 @@ const Web3StatusGeneric = styled(ButtonSecondary)`
   }
 `
 const Web3StatusError = styled(Web3StatusGeneric)`
-  background-color: ${({ theme }) => theme.red1};
+  background: ${({ theme }) => theme.red1};
   border: 1px solid ${({ theme }) => theme.red1};
   color: ${({ theme }) => theme.textPrimary};
   font-weight: 500;
   :hover,
   :focus {
-    background-color: ${({ theme }) => darken(0.1, theme.red1)};
+    background: ${({ theme }) => darken(0.1, theme.red1)};
   }
 `
 
 const Web3StatusConnect = styled(Web3StatusGeneric)<{ faded?: boolean }>`
-  background-color: ${({ theme }) => theme.appInfoBoxBG};
+  background: ${({ theme }) => theme.appInfoBoxBG};
   border: none;
   color: ${({ theme }) => theme.appInfoBoxTextColor};
   font-weight: 500;
@@ -68,13 +68,13 @@ const Web3StatusConnect = styled(Web3StatusGeneric)<{ faded?: boolean }>`
   :focus {
     border: 1px solid ${({ theme }) => darken(0.05, theme.appInfoBoxBG)};
     color: ${({ theme }) => theme.appInfoBoxTextColor};
-    background-color: ${({ theme }) => darken(0.05, theme.buttonSecondaryBG)};
+    background: ${({ theme }) => darken(0.05, theme.buttonSecondaryBG)};
   }
 
   ${({ faded }) =>
     faded &&
     css`
-      background-color: ${({ theme }) => theme.buttonSecondaryBG};
+      background: ${({ theme }) => theme.buttonSecondaryBG};
       border: 1px solid ${({ theme }) => theme.buttonSecondaryBG};
       color: ${({ theme }) => theme.appInfoBoxTextColor};
 
@@ -87,14 +87,14 @@ const Web3StatusConnect = styled(Web3StatusGeneric)<{ faded?: boolean }>`
 `
 
 const Web3StatusConnected = styled(Web3StatusGeneric)<{ pending?: boolean }>`
-  background-color: ${({ pending, theme }) => (pending ? theme.textHighlight : theme.modalSecondaryBG)};
+  background: ${({ pending, theme }) => (pending ? theme.textHighlight : theme.modalSecondaryBG)};
   border: 1px solid ${({ pending, theme }) => (pending ? theme.textHighlight : theme.headerButtonBG)};
   color: ${({ pending, theme }) => (pending ? theme.textPrimary : theme.textPrimary)};
   font-weight: 500;
 
   :hover,
   :focus {
-    background-color: ${({ pending, theme }) =>
+    background: ${({ pending, theme }) =>
       pending ? darken(0.05, theme.textHighlight) : lighten(0.05, theme.modalSecondaryBG)};
     color: ${({ theme }) => theme.headerButtonIconColor};
     :focus {

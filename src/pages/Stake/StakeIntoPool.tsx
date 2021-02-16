@@ -28,11 +28,9 @@ import { Dots, Wrapper } from '../Pool/styleds'
 import QuestionHelper from '../../components/QuestionHelper'
 import { WrappedTokenInfo } from '../../state/lists/hooks'
 import ReactGA from 'react-ga'
-import { FullStakingCard } from '../../components/PositionCard'
+import FullStakingCard from '../../components/PositionCard/fullStakingCard'
 import { useCurrencyBalance } from '../../state/wallet/hooks'
 import { useTransactionAdder } from '../../state/transactions/hooks'
-import { useTokenUsdPrices } from '../../hooks/useTokenUsdPrice'
-import { useLPTokenUsdPrices } from '../../hooks/useLPTokenUsdPrice'
 
 const Tabs = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -67,20 +65,20 @@ export const ExternalButton = styled.a`
   &:disabled {
     cursor: auto;
   }
-  background-color: ${({ theme }) => theme.buttonBG};
+  background: ${({ theme }) => theme.buttonBG};
   color: ${({ theme }) => theme.buttonTextColor};
   &:focus {
     box-shadow: 0 0 0 1pt ${({ theme }) => theme.buttonBGHover};
-    background-color: ${({ theme }) => theme.buttonBGHover};
+    background: ${({ theme }) => theme.buttonBGHover};
     color: ${({ theme }) => theme.buttonTextColorHover};
   }
   &:hover {
-    background-color: ${({ theme }) => theme.buttonBGHover};
+    background: ${({ theme }) => theme.buttonBGHover};
     color: ${({ theme }) => theme.buttonTextColorHover};
   }
   &:active {
     box-shadow: 0 0 0 1pt ${({ theme }) => theme.buttonBGActive};
-    background-color: ${({ theme }) => theme.buttonBGActive};
+    background: ${({ theme }) => theme.buttonBGActive};
     color: ${({ theme }) => theme.buttonTextColorActive};
   }
 
@@ -300,12 +298,9 @@ export default function StakeIntoPool({
       onFieldAInput('')
     }
   }, [balance, currentBalance, setStaking, onFieldAInput])
-
-  useTokenUsdPrices()
-  useLPTokenUsdPrices()
   return (
     <>
-      <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.appBGColor, marginBottom: '16px' }}>
+      <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.navigationBG, marginBottom: '16px' }}>
         <SwapPoolTabs active={'stake'} />
       </Card>
       <AppBody>
@@ -398,7 +393,7 @@ export default function StakeIntoPool({
       </AppBodyDark>
       {account && rewardsContractAddress && wrappedLiquidityToken && (
         <AutoColumn style={{ marginTop: '1rem', maxWidth: '420px', width: '100%' }}>
-          <FullStakingCard values={stakingValues} my={true} show={true} />
+          <FullStakingCard values={stakingValues} my={true} show={true} index={0} />
         </AutoColumn>
       )}
     </>

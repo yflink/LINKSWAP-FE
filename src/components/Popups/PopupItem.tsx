@@ -21,7 +21,7 @@ export const Popup = styled.div`
   display: inline-block;
   width: 100%;
   padding: 1em;
-  background-color: ${({ theme }) => theme.modalBG};
+  background: ${({ theme }) => theme.modalBG};
   position: relative;
   border-radius: 6px;
   padding: 20px;
@@ -38,7 +38,7 @@ const Fader = styled.div`
   left: 0;
   width: 100%;
   height: 2px;
-  background-color: ${({ theme }) => theme.buttonBG};
+  background: ${({ theme }) => theme.buttonBG};
   [dir='rtl'] & {
     left: unset;
     right: 0;

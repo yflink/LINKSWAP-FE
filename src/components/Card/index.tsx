@@ -10,17 +10,17 @@ const Card = styled(Box)<{ padding?: string; border?: string; borderRadius?: str
   padding: ${({ padding }) => padding};
   border: ${({ border }) => border};
   border-radius: ${({ borderRadius }) => borderRadius};
-  background-color: ${({ secondary, theme }) => (secondary ? theme.appBoxSecondaryInnerBG : 'transparent')};
+  background: ${({ secondary, theme }) => (secondary ? theme.appBoxSecondaryInnerBG : 'transparent')};
 `
 export default Card
 
 export const LightCard = styled(Card)`
   border: 1px solid ${({ theme }) => theme.appBoxBG};
-  background-color: ${({ theme }) => theme.appBoxBG};
+  background: ${({ theme }) => theme.appBoxBG};
 `
 
 export const GreyCard = styled(Card)`
-  background-color: ${({ theme }) => theme.appBoxSecondaryBG};
+  background: ${({ theme }) => theme.appBoxSecondaryBG};
 `
 
 export const OutlineCard = styled(Card)`
@@ -28,19 +28,19 @@ export const OutlineCard = styled(Card)`
 `
 
 export const YellowCard = styled(Card)`
-  background-color: rgba(243, 132, 30, 0.05);
+  background: rgba(243, 132, 30, 0.05);
   color: ${({ theme }) => theme.yellow2};
   font-weight: 500;
 `
 
 export const PinkCard = styled(Card)`
-  background-color: rgba(255, 0, 122, 0.03);
+  background: rgba(255, 0, 122, 0.03);
   color: ${({ theme }) => theme.textHighlight};
   font-weight: 500;
 `
 
 const BlueCardStyled = styled(Card)`
-  background-color: ${({ theme }) => theme.appInfoBoxBG};
+  background: ${({ theme }) => theme.appInfoBoxBG};
   color: ${({ theme }) => theme.appInfoBoxTextColor};
   border-radius: 6px;
   width: 100%;

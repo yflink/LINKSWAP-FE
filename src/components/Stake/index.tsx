@@ -1,14 +1,14 @@
 import React from 'react'
-import { FullStakingCard } from '../PositionCard'
+import StakingCard from '../PositionCard/stakingCard'
 
-interface PoolArrayProps {
+interface IStakePools {
   poolArray: any[]
   my: boolean
   showOwn?: boolean | false
   showExpired?: boolean | false
 }
 
-export function StakePools({ poolArray, my, showOwn, showExpired }: PoolArrayProps) {
+export function StakePools({ poolArray, my, showOwn, showExpired }: IStakePools) {
   const values: any[] = []
 
   poolArray.forEach((pool, index) => {
@@ -17,7 +17,15 @@ export function StakePools({ poolArray, my, showOwn, showExpired }: PoolArrayPro
   return (
     <>
       {poolArray.map((stakingPool, index) => (
-        <FullStakingCard values={values[index]} my={my} showOwn={showOwn} showExpired={showExpired} key={index} />
+        <StakingCard
+          type={values[index].type}
+          values={values[index]}
+          my={my}
+          showOwn={showOwn}
+          showExpired={showExpired}
+          index={index}
+          key={index}
+        />
       ))}
     </>
   )

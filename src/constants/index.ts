@@ -11,92 +11,108 @@ type ChainTokenList = {
   readonly [chainId in ChainId]: Token[]
 }
 
-export const LINK = new Token(ChainId.MAINNET, '0x514910771af9ca656af840dff83e8264ecf986ca', 18, 'LINK', 'ChainLink')
-export const YFL = new Token(ChainId.MAINNET, '0x28cb7e841ee97947a86b06fa4090c8451f64c0be', 18, 'YFL', 'YFLink')
+export const LINK = new Token(ChainId.MAINNET, '0x514910771AF9Ca656af840dff83E8264EcF986CA', 18, 'LINK', 'ChainLink')
+export const YFL = new Token(ChainId.MAINNET, '0x28cb7e841ee97947a86B06fA4090C8451f64c0be', 18, 'YFL', 'YFLink')
 export const YFLUSD = new Token(
   ChainId.MAINNET,
-  '0x7b760d06e401f85545f3b50c44bf5b05308b7b62',
+  '0x7b760D06E401f85545F3B50c44bf5B05308b7b62',
   18,
   'YFLUSD',
   'YFLink USD'
 )
 export const sYFL = new Token(
   ChainId.MAINNET,
-  '0x8282df223ac402d04b2097d16f758af4f70e7db0',
+  '0x8282df223AC402d04B2097d16f758Af4F70e7Db0',
   18,
   'sYFL',
   'YFLink Synthetic'
 )
 export const WETHER = new Token(
   ChainId.MAINNET,
-  '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+  '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
   18,
   'WETH',
   'WrappedEther'
 )
-export const DAI = new Token(ChainId.MAINNET, '0x6b175474e89094c44da98b954eedeac495271d0f', 18, 'DAI', 'Dai Stablecoin')
-export const USDC = new Token(ChainId.MAINNET, '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48', 6, 'USDC', 'USD//C')
-export const USDT = new Token(ChainId.MAINNET, '0xdac17f958d2ee523a2206206994597c13d831ec7', 6, 'USDT', 'Tether USD')
+export const DAI = new Token(ChainId.MAINNET, '0x6B175474E89094C44Da98b954EedeAC495271d0F', 18, 'DAI', 'Dai Stablecoin')
+export const USDC = new Token(ChainId.MAINNET, '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', 6, 'USDC', 'USD//C')
+export const USDT = new Token(ChainId.MAINNET, '0xdAC17F958D2ee523a2206206994597C13D831ec7', 6, 'USDT', 'Tether USD')
 export const COMP = new Token(ChainId.MAINNET, '0xc00e94Cb662C3520282E6f5717214004A7f26888', 18, 'COMP', 'Compound')
 export const MKR = new Token(ChainId.MAINNET, '0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2', 18, 'MKR', 'Maker')
 export const AMPL = new Token(ChainId.MAINNET, '0xD46bA6D942050d489DBd938a2C909A5d5039A161', 9, 'AMPL', 'Ampleforth')
 
-export const BUSD = new Token(ChainId.MAINNET, '0x4fabb145d64652a948d72533023f6e7a623c7c53', 18, 'BUSD', 'Binance USD')
+export const BUSD = new Token(ChainId.MAINNET, '0x4Fabb145d64652a948d72533023f6E7A623C7C53', 18, 'BUSD', 'Binance USD')
 export const DPI = new Token(
   ChainId.MAINNET,
-  '0x1494ca1f11d487c2bbe4543e90080aeba4ba3c2b',
+  '0x1494CA1F11D487c2bBe4543E90080AeBa4BA3C2b',
   18,
   'DPI',
   'DefiPulse Index'
 )
-export const CEL = new Token(ChainId.MAINNET, '0xaaaebe6fe48e54f431b0c390cfaf0b017d09d42d', 4, 'CEL', 'Celsius')
-export const MASQ = new Token(ChainId.MAINNET, '0x06f3c323f0238c72bf35011071f2b5b7f43a054c', 18, 'MASQ', 'MASQ')
-export const YAX = new Token(ChainId.MAINNET, '0xb1dc9124c395c1e97773ab855d66e879f053a289', 18, 'YAX', 'yAxis')
-export const WBTC = new Token(ChainId.MAINNET, '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599', 8, 'WBTC', 'Wrapped BTC')
+export const CEL = new Token(ChainId.MAINNET, '0xaaAEBE6Fe48E54f431b0C390CfaF0b017d09D42d', 4, 'CEL', 'Celsius')
+export const MASQ = new Token(ChainId.MAINNET, '0x06F3C323f0238c72BF35011071f2b5B7F43A054c', 18, 'MASQ', 'MASQ')
+export const YAX = new Token(ChainId.MAINNET, '0xb1dC9124c395c1e97773ab855d66E879f053A289', 18, 'YAX', 'yAxis')
+export const WBTC = new Token(ChainId.MAINNET, '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599', 8, 'WBTC', 'Wrapped BTC')
 export const GSWAP = new Token(
   ChainId.MAINNET,
-  '0xaac41ec512808d64625576eddd580e7ea40ef8b2',
+  '0xaac41EC512808d64625576EDdd580e7Ea40ef8B2',
   18,
   'GSWAP',
   'gameswap.org'
 )
 export const DOKI = new Token(
   ChainId.MAINNET,
-  '0x9ceb84f92a0561fa3cc4132ab9c0b76a59787544',
+  '0x9cEB84f92A0561fa3Cc4132aB9c0b76A59787544',
   18,
   'DOKI',
   'DokiDokiFinance'
 )
 export const SNX = new Token(
   ChainId.MAINNET,
-  '0xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f',
+  '0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F',
   18,
   'SNX',
   'Synthetix Network'
 )
-export const CFI = new Token(ChainId.MAINNET, '0x63b4f3e3fa4e438698ce330e365e831f7ccd1ef4', 18, 'CFI', 'CyberFi Token')
+export const CFI = new Token(ChainId.MAINNET, '0x63b4f3e3fa4e438698CE330e365E831F7cCD1eF4', 18, 'CFI', 'CyberFi Token')
 export const AZUKI = new Token(
   ChainId.MAINNET,
-  '0x910524678c0b1b23ffb9285a81f99c29c11cbaed',
+  '0x910524678C0B1B23FFB9285a81f99C29C11CBaEd',
   18,
   'AZUKI',
   'DokiDokiAzuki'
 )
-export const DRC = new Token(ChainId.MAINNET, '0xb78b3320493a4efaa1028130c5ba26f0b6085ef8', 18, 'DRC', 'Dracula Token')
-export const BONK = new Token(ChainId.MAINNET, '0x6d6506e6f438ede269877a0a720026559110b7d5', 18, 'BONK', 'BONKTOKEN')
+export const DRC = new Token(ChainId.MAINNET, '0xb78B3320493a4EFaa1028130C5Ba26f0B6085Ef8', 18, 'DRC', 'Dracula Token')
+export const BONK = new Token(ChainId.MAINNET, '0x6D6506E6F438edE269877a0A720026559110B7d5', 18, 'BONK', 'BONKTOKEN')
 export const renDOGE = new Token(
   ChainId.MAINNET,
-  '0x3832d2f059e55934220881f831be501d180671a7',
+  '0x3832d2F059E55934220881F831bE501D180671A7',
   8,
   'renDOGE',
   'Wrapped Dogecoin'
 )
 export const MFG = new Token(
   ChainId.MAINNET,
-  '0x6710c63432a2de02954fc0f851db07146a6c0312',
+  '0x6710c63432A2De02954fc0f851db07146a6c0312',
   18,
   'MFG',
   'SyncFab Smart Manufacturing Blockchain'
+)
+
+export const aLINK = new Token(
+  ChainId.MAINNET,
+  '0xa64bd6c70cb9051f6a9ba1f163fdc07e0dfb5f84',
+  18,
+  'aLINK',
+  'Aave Interest bearing LINK'
+)
+
+export const mphYALINKNFT = new Token(
+  ChainId.MAINNET,
+  '0x968fba547baffbf2560d349dc4e5e700764d5ca1',
+  1,
+  '88mph-yaLINK-Deposit',
+  '88mph yaLINK Pool Deposit'
 )
 
 const WETH_ONLY: ChainTokenList = {
@@ -215,92 +231,110 @@ export const ACTIVE_REWARD_POOLS = [
   {
     address: '0x195734d862DFb5380eeDa0ACD8acf697eA95D370',
     rewardsAddress: '0x6DddCc7F963C65b18FdDD842e6553528f014aDeA',
-    abi: 'syflPool'
+    abi: 'syflPool',
+    type: 'syflPool'
   },
   {
     address: '0x6cD7817e6f3f52123df529E1eDF5830240Ce48c1',
     rewardsAddress: '0x61401c19200B2420f93Bb2EECF4BAA2C193d76e1',
-    abi: 'syflPool'
+    abi: 'syflPool',
+    type: 'syflPool'
   },
   {
     address: '0x3315351F0B20595777a28054EF3d514bdC37463d',
     rewardsAddress: '0x81C76925E7F41f0306E1147c4659784d4402bD51',
-    abi: 'syflPool'
+    abi: 'syflPool',
+    type: 'syflPool'
   },
   {
     address: '0x74C89f297b1dC87F927d9432a4eeea697E6f89a5',
     rewardsAddress: '0x1b650B522b864f6BF61705A05cc89b2b0e23f9C6',
-    abi: 'syflPool'
+    abi: 'syflPool',
+    type: 'syflPool'
   },
   {
     address: '0x7e5A536F3d79791E283940ec379CEE10C9C40e86',
     rewardsAddress: '0x3bE07ed0239d46ca8435D4fb0bE96E43cD1c1796',
-    abi: 'StakingRewards'
+    abi: 'StakingRewards',
+    type: 'default'
   },
   {
     address: '0x189A730921550314934019d184EC05726881D481',
     rewardsAddress: '0x35FC734948B36370c15387342F048aC87210bC22',
-    abi: 'StakingRewards'
+    abi: 'StakingRewards',
+    type: 'default'
   },
   {
     address: '0x9d996bDD1F65C835EE92Cd0b94E15d886EF14D63',
     rewardsAddress: '0x0D03Cff17367478c3349a579e50259D8A793BBc8',
-    abi: 'StakingRewards'
+    abi: 'StakingRewards',
+    type: 'default'
   },
   {
     address: '0xf36c9fc3c2aBE4132019444AfF914Fc8DC9785a9',
     rewardsAddress: '0x603065B7e2F69c897F154Ca429a2B96Cf4703f56',
-    abi: 'StakingRewards'
+    abi: 'StakingRewards',
+    type: 'default'
   },
   {
     address: '0x639916bB4B29859FADF7A272185a3212157F8CE1',
     rewardsAddress: '0xfa9712cCc86c6BD52187125dCA4c2B9C7bAa3Ef8',
-    abi: 'StakingRewards'
+    abi: 'StakingRewards',
+    type: 'default'
   },
   {
     address: '0x626B88542495d2e341d285969F8678B99cd91DA7',
     rewardsAddress: '0xf4C17025B623665AAcAb958FC0fa454b1265A219',
-    abi: 'StakingRewards'
+    abi: 'StakingRewards',
+    type: 'default'
   },
   {
     address: '0xdef0CEF53E0D4c6A5E568c53EdCf45CeB33DBE46',
     rewardsAddress: '0x4e33D27CBCCe9Fe1c4a21A0f7C8b31C9CF5c0B75',
-    abi: 'StakingRewards'
+    abi: 'StakingRewards',
+    type: 'default'
   },
   {
     address: '0x37CeE65899dA4B1738412814155540C98DFd752C',
     rewardsAddress: '0x790aDfE75706cf70191b2bD729048e42d8Ed9f60',
-    abi: 'StakingRewards'
+    abi: 'StakingRewards',
+    type: 'default'
   },
   {
     address: '0xFe04c284a9725c141CF6de85D7E8452af1B48ab7',
     rewardsAddress: '0x017FAD4b7a54C1ACe95Ca614954e4D0d12CDb27E',
-    abi: 'StakingRewards'
+    abi: 'StakingRewards',
+    type: 'default'
   },
   {
     address: '0x983c9a1BCf0eB980a232D1b17bFfd6Bbf68Fe4Ce',
     rewardsAddress: '0x997d4BAbf8290A19EcDCbD10058fC438EB6F30DE',
-    abi: 'StakingRewards'
+    abi: 'StakingRewards',
+    type: 'default'
   },
   {
     address: '0xf68c01198cDdEaFB9d2EA43368FC9fA509A339Fa',
     rewardsAddress: '0x9667947B67199C91c109Be912807190cc490A2A3',
-    abi: 'StakingRewards'
+    abi: 'StakingRewards',
+    type: 'default'
   },
   {
     address: '0xB7Cd446a2a80d4770C6bECde661B659cFC55acf5',
     rewardsAddress: '0xa74Ef3faB9E94578c79e0077f6Bd572C9efc8733',
-    abi: 'StakingRewards'
+    abi: 'StakingRewards',
+    type: 'default'
   },
   {
     address: '0xbe755C548D585dbc4e3Fe4bcD712a32Fd81e5Ba0',
     rewardsAddress: '0x795BD26b99082E59478cfe8d9Cd207bb196808E4',
-    abi: 'StakingRewards'
+    abi: 'StakingRewards',
+    type: 'default'
   },
   {
     address: '0x21dee38170F1e1F26baFf2C30C0fc8F8362b6961',
     rewardsAddress: '0xBfe0D843D3DA0953EcEf08Fc231033D4B140a085',
-    abi: 'StakingRewards'
+    abi: 'StakingRewards',
+    type: 'default'
   }
 ]
 
@@ -308,18 +342,20 @@ export const INACTIVE_REWARD_POOLS = [
   {
     address: '0x7e5A536F3d79791E283940ec379CEE10C9C40e86',
     rewardsAddress: '0x72368fB97dab2B94A5664EbeEbF504EF482fF149',
-    abi: 'StakingRewards'
+    abi: 'StakingRewards',
+    type: 'default'
   },
   {
     address: '0x37CeE65899dA4B1738412814155540C98DFd752C',
     rewardsAddress: '0x1B62ac658Ca7D037777D24aa629613633221eFfc',
-    abi: 'StakingRewards'
+    abi: 'StakingRewards',
+    type: 'default'
   }
 ]
 
 export const MFGWETH_POOL = new Token(
   ChainId.MAINNET,
-  '0x527d5f10d70ca41e1e0eee8d30b553bb5271ee48',
+  '0x527d5f10d70cA41e1e0EEE8d30b553bB5271ee48',
   18,
   'UNI-V2',
   'Uniswap Liquidity Token'
@@ -332,7 +368,21 @@ export const UNI_POOLS = {
     tokens: [MFG, WETHER],
     balance: 0,
     liquidityUrl: 'https://app.uniswap.org/#/add/ETH/0x6710c63432A2De02954fc0f851db07146a6c0312',
-    abi: 'StakingRewards'
+    abi: 'StakingRewards',
+    type: 'uni'
+  }
+}
+
+export const SINGLE_POOLS = {
+  ALINK: {
+    rewardsAddress: '0xc791184dc537ffea0bbb106179ad45d08d5acee2',
+    tokens: [aLINK, WETHER],
+    stakedToken: mphYALINKNFT,
+    balance: 0,
+    liquidityUrl:
+      'https://app-v1.aave.com/deposit/LINK-0x514910771af9ca656af840dff83e8264ecf986ca0x24a42fd28c976a61df5d00d0599c34c4f90748c8',
+    abi: 'mphPool',
+    type: 'mph88'
   }
 }
 

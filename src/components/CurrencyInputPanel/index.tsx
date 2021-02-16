@@ -31,7 +31,7 @@ const CurrencySelect = styled.button<{
   height: 52px;
   font-size: 20px;
   font-weight: 500;
-  background-color: ${({ selected, primary, theme }) => {
+  background: ${({ selected, primary, theme }) => {
     if (selected) {
       return theme.appCurrencyInputBGActive
     } else {
@@ -58,7 +58,7 @@ const CurrencySelect = styled.button<{
   }
   :focus,
   :hover {
-    background-color: ${({ selected, primary, theme }) => {
+    background: ${({ selected, primary, theme }) => {
       if (selected) {
         return theme.appCurrencyInputBGActive
       } else {
@@ -94,14 +94,14 @@ const InputPanel = styled.div<{ hideInput?: boolean }>`
   ${({ theme }) => theme.flexColumnNoWrap}
   position: relative;
   border-radius: ${({ hideInput }) => (hideInput ? '8px' : '20px')};
-  background-color: ${({ theme }) => theme.appCurrencyInputBG};
+  background: ${({ theme }) => theme.appCurrencyInputBG};
   z-index: 1;
 `
 
 const Container = styled.div<{ hideInput: boolean }>`
   border-radius: ${({ hideInput }) => (hideInput ? '6px' : '6px')};
   border: 1px solid ${({ theme }) => theme.appCurrencyInputBG};
-  background-color: ${({ theme }) => theme.appCurrencyInputBG};
+  background: ${({ theme }) => theme.appCurrencyInputBG};
 `
 
 const StyledTokenName = styled.div<{ inline?: boolean }>`
@@ -114,7 +114,7 @@ const StyledTokenName = styled.div<{ inline?: boolean }>`
 
 const StyledBalanceMax = styled.button`
   height: 28px;
-  background-color: ${({ theme }) => theme.buttonSecondaryBG};
+  background: ${({ theme }) => theme.buttonSecondaryBG};
   border: 1px solid ${({ theme }) => theme.buttonSecondaryBorder};
   border-radius: 0.5rem;
   font-size: 0.875rem;

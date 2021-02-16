@@ -16,14 +16,16 @@ import AppBody, { BodyWrapper } from '../AppBody'
 import { Dots } from '../../components/swap/styleds'
 import { useTranslation } from 'react-i18next'
 import { StakePools } from '../../components/Stake'
-import { ACTIVE_REWARD_POOLS, INACTIVE_REWARD_POOLS, UNI_POOLS } from '../../constants'
-import { useTokenUsdPrices } from '../../hooks/useTokenUsdPrice'
-import { useLPTokenUsdPrices } from '../../hooks/useLPTokenUsdPrice'
+import { ACTIVE_REWARD_POOLS, INACTIVE_REWARD_POOLS, SINGLE_POOLS, UNI_POOLS } from '../../constants'
 import Toggle from '../../components/Toggle'
 import { BigNumber } from '@ethersproject/bignumber'
 import hexStringToNumber from '../../utils/hexStringToNumber'
 import { getContract } from '../../utils'
+<<<<<<< HEAD
 import { LINKSWAPLPToken } from '../../components/ABI'
+=======
+import { ERC20, LINKSWAPLPToken } from '../../components/ABI'
+>>>>>>> 6caf53a5f20869772a56f86350f6d558a13eddae
 
 export const MyStakePools = styled(BodyWrapper)`
   margin: 0 0 24px;
@@ -32,16 +34,24 @@ export const MyStakePools = styled(BodyWrapper)`
 export default function StakeOverview() {
   const theme = useContext(ThemeContext)
   const { account, library } = useActiveWeb3React()
+  const [fetchAll, setFetchAll] = useState(false)
   const [myRewardPools, setMyRewardPools] = useState<any | null>([])
   const [allRewardPools, setAllRewardPools] = useState<any | null>([])
   const [uniPoolsAdded, setUniPoolsAdded] = useState(false)
+  const [singlePoolsAdded, setSinglePoolsAdded] = useState(false)
   const [myUniPoolsAdded, setMyUniPoolsAdded] = useState(false)
+  const [mySinglePoolsAdded, setMySinglePoolsAdded] = useState(false)
   const [showOwn, setShowOwn] = useState(false)
   const [showExpired, setShowExpired] = useState(false)
-  const [mfgBalance, setMfgBalance] = useState(0)
+  const [allPoolsAdded, setAllPoolsAdded] = useState(false)
+  const [tokenBalances, setTokenBalances] = useState<any>({})
   const trackedTokenPairs = useTrackedTokenPairs()
   const tokenPairsWithLiquidityTokens = useMemo(
-    () => trackedTokenPairs.map(tokens => ({ liquidityToken: toV2LiquidityToken(tokens), tokens })),
+    () =>
+      trackedTokenPairs.map(tokens => ({
+        liquidityToken: toV2LiquidityToken(tokens),
+        tokens
+      })),
     [trackedTokenPairs]
   )
   const liquidityTokens = useMemo(() => tokenPairsWithLiquidityTokens.map(tpwlt => tpwlt.liquidityToken), [
@@ -69,19 +79,20 @@ export default function StakeOverview() {
   const v2IsLoading =
     fetchingV2PairBalances || v2Pairs?.length < liquidityTokensWithBalances.length || v2Pairs?.some(V2Pair => !V2Pair)
 
-  async function getUserBalance(rewardsAddress: string) {
+  async function getUserBalance(tokenAddress: string, abi: any) {
     if (!account || !library) return
-    const rewardsContract = getContract(rewardsAddress, LINKSWAPLPToken, library, account)
+    const rewardsContract = getContract(tokenAddress, abi, library, account)
     const method: (...args: any) => Promise<BigNumber> = rewardsContract.balanceOf
     const args: Array<string> = [account]
+    const balances = tokenBalances
     method(...args).then(response => {
-      setMfgBalance(hexStringToNumber(response.toHexString(), 18, 6))
-      setMyUniPoolsAdded(false)
+      balances[tokenAddress] = hexStringToNumber(response.toHexString(), 18, 6)
+      setTokenBalances(balances)
     })
     return true
   }
 
-  if (myRewardPools.length === 0) {
+  if (tokenBalances.length === 0 || !mySinglePoolsAdded || !myUniPoolsAdded) {
     const myStakePools: any[] = []
     ACTIVE_REWARD_POOLS.forEach(poolObject => {
       let returnValue: any = false
@@ -98,29 +109,54 @@ export default function StakeOverview() {
         setMyRewardPools(myStakePools)
       }
     })
+
+    const mfg = UNI_POOLS.MFGWETH
     if (!myUniPoolsAdded) {
-      const mfg = UNI_POOLS.MFGWETH
-      if (mfgBalance === 0) {
-        getUserBalance(mfg.liquidityToken.address)
+      if (typeof tokenBalances[mfg.liquidityToken.address] === 'undefined') {
+        getUserBalance(mfg.liquidityToken.address, LINKSWAPLPToken)
       }
-      mfg.balance = mfgBalance
-      if (Number(mfg.balance) > 0) {
-        myStakePools.push(mfg)
-        setMyRewardPools(myStakePools)
+      if (typeof tokenBalances[mfg.liquidityToken.address] !== 'undefined') {
+        mfg.balance = tokenBalances[mfg.liquidityToken.address]
+        if (Number(mfg.balance) > 0) {
+          myStakePools.push(mfg)
+          setMyRewardPools(myStakePools)
+        }
+        setMyUniPoolsAdded(true)
       }
-      setMyUniPoolsAdded(true)
+    }
+
+    const alink = SINGLE_POOLS.ALINK
+    if (!mySinglePoolsAdded) {
+      if (typeof tokenBalances[alink.tokens[0].address] === 'undefined') {
+        getUserBalance(alink.tokens[0].address, ERC20)
+      }
+      if (typeof tokenBalances[alink.tokens[0].address] !== 'undefined') {
+        alink.balance = tokenBalances[alink.tokens[0].address]
+        if (Number(alink.balance) > 0) {
+          myStakePools.push(alink)
+          setMyRewardPools(myStakePools)
+        }
+        setMySinglePoolsAdded(true)
+      }
     }
   }
 
-  if (allRewardPools.length === 0) {
+  if (!fetchAll) {
+    setFetchAll(true)
     const allStakePools: any[] = []
     if (Boolean(allRewardPools)) {
+      if (!singlePoolsAdded) {
+        allStakePools.push(SINGLE_POOLS.ALINK)
+        setAllRewardPools(allStakePools)
+        setSinglePoolsAdded(true)
+      }
       ACTIVE_REWARD_POOLS.forEach(poolObject => {
         let returnValue: any = false
         tokenPairsWithLiquidityTokens.forEach((pool: any) => {
           if (pool.liquidityToken.address === poolObject.address) {
             pool.rewardsAddress = poolObject.rewardsAddress
             pool.abi = poolObject.abi
+            pool.type = poolObject.type
             returnValue = pool
             return
           }
@@ -136,6 +172,7 @@ export default function StakeOverview() {
           if (pool.liquidityToken.address === poolObject.address) {
             pool.rewardsAddress = poolObject.rewardsAddress
             pool.abi = poolObject.abi
+            pool.type = poolObject.type
             returnValue = pool
             return
           }
@@ -153,12 +190,24 @@ export default function StakeOverview() {
     }
   }
 
+  if (
+    allRewardPools.length &&
+    uniPoolsAdded &&
+    singlePoolsAdded &&
+    myUniPoolsAdded &&
+    mySinglePoolsAdded &&
+    fetchAll &&
+    !allPoolsAdded
+  ) {
+    setTimeout(function() {
+      setAllPoolsAdded(true)
+    }, 500)
+  }
+
   const { t } = useTranslation()
-  useTokenUsdPrices()
-  useLPTokenUsdPrices()
   return (
     <>
-      <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.appBGColor, marginBottom: '16px' }}>
+      <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.navigationBG, marginBottom: '16px' }}>
         <SwapPoolTabs active={'stake'} />
       </Card>
       {myRewardPools.length > 0 && (
@@ -205,7 +254,7 @@ export default function StakeOverview() {
                   <Dots>{t('loading')}</Dots>
                 </TYPE.body>
               </LightCard>
-            ) : allRewardPools.length > 0 ? (
+            ) : allPoolsAdded ? (
               <StakePools poolArray={allRewardPools} showOwn={showOwn} showExpired={showExpired} my={false} />
             ) : (
               <LightCard padding="40px">
