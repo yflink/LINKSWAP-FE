@@ -104,26 +104,16 @@ export default function StakeIntoPool({
     abi: 'StakingRewards',
     type: 'default',
     balance: 0,
-    tokens: [WETH['1'], WETH['1']],
-    liquidityToken: WETHER
+    tokens: ['', ''],
+    liquidityToken: ''
   })
   const [found, setFound] = useState(false)
-  let liquidityToken
+  let liquidityToken: any
   let wrappedLiquidityToken
   let hasError
   let tokenA = useToken(currencyIdA)
   let tokenB = useToken(currencyIdB)
   const isUni = currencyIdA === 'UNI'
-  let uniEntry = {
-    address: '',
-    liquidityToken: WETHER,
-    rewardsAddress: '0x0000000000000000000000000000000000000000',
-    tokens: [WETH['1'], WETH['1']],
-    balance: 0,
-    liquidityUrl: '',
-    abi: 'StakingRewards',
-    type: 'uni'
-  }
 
   if (!tokenA) {
     tokenA = chainId ? WETH[chainId] : WETH['1']
@@ -133,6 +123,9 @@ export default function StakeIntoPool({
     tokenB = chainId ? WETH[chainId] : WETH['1']
   }
 
+  let currencyAsymbol = 'ETH'
+  let currencyBsymbol = 'ETH'
+
   if (tokenA && tokenB) {
     let liquidityTokenAddress = ''
     if (isUni) {
@@ -141,27 +134,17 @@ export default function StakeIntoPool({
       if (!found) {
         Object.entries(UNI_POOLS).forEach((entry: any) => {
           if (entry[0] === currencyIdB) {
+            console.log('entry', entry)
             setFound(true)
-            uniEntry = entry[1]
             liquidityToken = entry[1].liquidityToken
             liquidityTokenAddress = liquidityToken.address
             setPool(entry[1])
+            currencyAsymbol = entry[1].tokens[0].symbol
+            currencyBsymbol = entry[1].tokens[1].symbol
             return
           }
         })
       }
-
-      wrappedLiquidityToken = new WrappedTokenInfo(
-        {
-          address: liquidityTokenAddress,
-          chainId: Number(liquidityToken.chainId),
-          name: String(liquidityToken.name),
-          symbol: String(liquidityToken.symbol),
-          decimals: Number(liquidityToken.decimals),
-          logoURI: 'https://logos.linkswap.app/lslp.png'
-        },
-        []
-      )
     }
     if (!isUni) {
       liquidityToken = toV2LiquidityToken([tokenA, tokenB])
@@ -171,23 +154,25 @@ export default function StakeIntoPool({
           if (pool.address === liquidityTokenAddress) {
             setFound(true)
             setPool(pool)
+            currencyAsymbol = pool.tokens[0].symbol
+            currencyBsymbol = pool.tokens[1].symbol
             return
           }
         })
       }
-
-      wrappedLiquidityToken = new WrappedTokenInfo(
-        {
-          address: liquidityTokenAddress,
-          chainId: Number(liquidityToken.chainId),
-          name: String(liquidityToken.name),
-          symbol: String(liquidityToken.symbol),
-          decimals: Number(liquidityToken.decimals),
-          logoURI: 'https://logos.linkswap.app/lslp.png'
-        },
-        []
-      )
     }
+
+    wrappedLiquidityToken = new WrappedTokenInfo(
+      {
+        address: liquidityTokenAddress,
+        chainId: Number(liquidityToken.chainId),
+        name: String(liquidityToken.name),
+        symbol: String(liquidityToken.symbol),
+        decimals: Number(liquidityToken.decimals),
+        logoURI: 'https://logos.linkswap.app/lslp.png'
+      },
+      []
+    )
   }
   const toggleWalletModal = useWalletModalToggle()
   const { independentField, typedValue } = useMintState()
@@ -216,8 +201,6 @@ export default function StakeIntoPool({
     }
   }, {})
 
-  const currencyAsymbol = isUni ? uniEntry.tokens[0]?.symbol ?? 'ETH' : currencyA?.symbol ?? 'ETH'
-  const currencyBsymbol = isUni ? uniEntry.tokens[1]?.symbol ?? 'ETH' : currencyB?.symbol ?? 'ETH'
   const rewardsContractAddress = pool.rewardsAddress
   let currentAbi: any
   switch (pool.abi) {
@@ -285,9 +268,6 @@ export default function StakeIntoPool({
   }
 
   const currentBalance = Number(maxAmounts[Field.CURRENCY_A]?.toExact())
-  if (isUni) {
-    uniEntry.balance = currentBalance
-  }
 
   if (
     (parsedAmountA &&
@@ -300,17 +280,12 @@ export default function StakeIntoPool({
     hasError = false
   }
 
-  const passedCurrencyA = currencyIdA === 'ETH' ? (chainId ? WETH[chainId] : WETH['1']) : currencyA
-  const passedCurrencyB = currencyIdB === 'ETH' ? (chainId ? WETH[chainId] : WETH['1']) : currencyB
   pool.balance = currentBalance ? currentBalance : 0
-  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-  // @ts-ignore
-  pool.tokens = [passedCurrencyA, passedCurrencyB]
   // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
   // @ts-ignore
   pool.liquidityToken = wrappedLiquidityToken
 
-  const stakingValues = isUni ? uniEntry : pool
+  const stakingValues = pool
 
   useMemo(() => {
     if (balance !== currentBalance) {

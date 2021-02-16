@@ -61,8 +61,8 @@ export default function Unstake({
     abi: 'StakingRewards',
     type: 'default',
     balance: 0,
-    tokens: [WETH['1'], WETH['1']],
-    liquidityToken: WETHER
+    tokens: ['', ''],
+    liquidityToken: ''
   })
   const [found, setFound] = useState(false)
   let liquidityToken: any
@@ -71,16 +71,6 @@ export default function Unstake({
   let tokenA = useToken(currencyIdA)
   let tokenB = useToken(currencyIdB)
   const isUni = currencyIdA === 'UNI'
-  let uniEntry = {
-    address: '',
-    liquidityToken: WETHER,
-    rewardsAddress: '0x0000000000000000000000000000000000000000',
-    tokens: [WETH['1'], WETH['1']],
-    balance: 0,
-    liquidityUrl: '',
-    abi: 'StakingRewards',
-    type: 'uni'
-  }
 
   if (!tokenA) {
     tokenA = chainId ? WETH[chainId] : WETH['1']
@@ -90,6 +80,9 @@ export default function Unstake({
     tokenB = chainId ? WETH[chainId] : WETH['1']
   }
 
+  let currencyAsymbol = 'ETH'
+  let currencyBsymbol = 'ETH'
+
   if (tokenA && tokenB) {
     let liquidityTokenAddress = ''
     if (isUni) {
@@ -98,27 +91,17 @@ export default function Unstake({
       if (!found) {
         Object.entries(UNI_POOLS).forEach((entry: any) => {
           if (entry[0] === currencyIdB) {
+            console.log('entry', entry)
             setFound(true)
-            uniEntry = entry[1]
             liquidityToken = entry[1].liquidityToken
             liquidityTokenAddress = liquidityToken.address
             setPool(entry[1])
+            currencyAsymbol = entry[1].tokens[0].symbol
+            currencyBsymbol = entry[1].tokens[1].symbol
             return
           }
         })
       }
-
-      wrappedLiquidityToken = new WrappedTokenInfo(
-        {
-          address: liquidityTokenAddress,
-          chainId: Number(liquidityToken.chainId),
-          name: String(liquidityToken.name),
-          symbol: String(liquidityToken.symbol),
-          decimals: Number(liquidityToken.decimals),
-          logoURI: 'https://logos.linkswap.app/lslp.png'
-        },
-        []
-      )
     }
     if (!isUni) {
       liquidityToken = toV2LiquidityToken([tokenA, tokenB])
@@ -128,23 +111,25 @@ export default function Unstake({
           if (pool.address === liquidityTokenAddress) {
             setFound(true)
             setPool(pool)
+            currencyAsymbol = pool.tokens[0].symbol
+            currencyBsymbol = pool.tokens[1].symbol
             return
           }
         })
       }
-
-      wrappedLiquidityToken = new WrappedTokenInfo(
-        {
-          address: liquidityTokenAddress,
-          chainId: Number(liquidityToken.chainId),
-          name: String(liquidityToken.name),
-          symbol: String(liquidityToken.symbol),
-          decimals: Number(liquidityToken.decimals),
-          logoURI: 'https://logos.linkswap.app/lslp.png'
-        },
-        []
-      )
     }
+
+    wrappedLiquidityToken = new WrappedTokenInfo(
+      {
+        address: liquidityTokenAddress,
+        chainId: Number(liquidityToken.chainId),
+        name: String(liquidityToken.name),
+        symbol: String(liquidityToken.symbol),
+        decimals: Number(liquidityToken.decimals),
+        logoURI: 'https://logos.linkswap.app/lslp.png'
+      },
+      []
+    )
   }
 
   const toggleWalletModal = useWalletModalToggle()
@@ -168,8 +153,6 @@ export default function Unstake({
     }
   }, {})
 
-  const currencyAsymbol = isUni ? uniEntry.tokens[0]?.symbol ?? 'ETH' : currencyA?.symbol ?? 'ETH'
-  const currencyBsymbol = isUni ? uniEntry.tokens[1]?.symbol ?? 'ETH' : currencyB?.symbol ?? 'ETH'
   const rewardsContractAddress = pool.rewardsAddress
   let currentAbi: any
   switch (pool.abi) {
@@ -239,22 +222,13 @@ export default function Unstake({
     hasError = false
   }
 
-  const passedCurrencyA = currencyIdA === 'ETH' ? (chainId ? WETH[chainId] : WETH['1']) : currencyA
-  const passedCurrencyB = currencyIdB === 'ETH' ? (chainId ? WETH[chainId] : WETH['1']) : currencyB
-
-  if (isUni) {
-    uniEntry.balance = Number(selectedCurrencyBalance?.toSignificant(6)) || 0
-  }
-
   pool.balance = selectedCurrencyBalance ? Number(selectedCurrencyBalance?.toSignificant(6)) : 0
-  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-  // @ts-ignore
-  pool.tokens = [passedCurrencyA, passedCurrencyB]
+
   // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
   // @ts-ignore
   pool.liquidityToken = wrappedLiquidityToken
 
-  const stakingValues = isUni ? uniEntry : pool
+  const stakingValues = pool
 
   useMemo(() => {
     if (!found || !chainId || !library || !account || !liquidityToken) return
@@ -274,77 +248,82 @@ export default function Unstake({
       onFieldAInput('')
     }
   }, [balance, userBalance, setUnstaking, onFieldAInput])
-  return (
-    <>
-      <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.navigationBG, marginBottom: '16px' }}>
-        <SwapPoolTabs active={'stake'} />
-      </Card>
-      <AppBody>
-        <Tabs>
-          <RowBetween style={{ padding: '1rem 0' }}>
-            <ActiveText>
-              {t('unStakeLPToken', {
-                currencyASymbol: currencyA?.symbol,
-                currencyBSymbol: currencyB?.symbol
-              })}
-            </ActiveText>
-            <QuestionHelper
-              text={t('unStakeLPTokenDescription', {
-                currencyASymbol: currencyA?.symbol,
-                currencyBSymbol: currencyB?.symbol
-              })}
-            />
-          </RowBetween>
-        </Tabs>
-        <Wrapper>
-          <AutoColumn gap="20px">
-            <CurrencyInputPanel
-              hideCurrencySelect={true}
-              balanceOveride={true}
-              newBalance={userBalance}
-              value={formattedAmounts[Field.CURRENCY_A]}
-              onUserInput={onFieldAInput}
-              onMax={() => {
-                onFieldAInput(String(userBalance) ?? '')
-              }}
-              showMaxButton={!atMaxAmounts[Field.CURRENCY_A]}
-              currency={currencies[Field.CURRENCY_A]}
-              id="unstake-input-tokena"
-              showCommonBases
-            />
-          </AutoColumn>
-        </Wrapper>
-      </AppBody>
-      <AppBodyDark>
-        {!account ? (
-          <ButtonLight onClick={toggleWalletModal}>{t('connectWallet')}</ButtonLight>
-        ) : (
-          <AutoColumn gap={'md'}>
-            {unstaking ? (
-              <ButtonPrimary style={{ fontSize: '20px' }} disabled={true}>
-                <Dots>{t('unstaking')}</Dots>
-              </ButtonPrimary>
-            ) : (
-              <ButtonPrimary
-                style={{ fontSize: '20px' }}
-                onClick={() => {
-                  unstakeAndClaimRewards(rewardsContractAddress)
+
+  if (!found) {
+    return null
+  } else {
+    return (
+      <>
+        <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.navigationBG, marginBottom: '16px' }}>
+          <SwapPoolTabs active={'stake'} />
+        </Card>
+        <AppBody>
+          <Tabs>
+            <RowBetween style={{ padding: '1rem 0' }}>
+              <ActiveText>
+                {t('unStakeLPToken', {
+                  currencyASymbol: currencyA?.symbol,
+                  currencyBSymbol: currencyB?.symbol
+                })}
+              </ActiveText>
+              <QuestionHelper
+                text={t('unStakeLPTokenDescription', {
+                  currencyASymbol: currencyA?.symbol,
+                  currencyBSymbol: currencyB?.symbol
+                })}
+              />
+            </RowBetween>
+          </Tabs>
+          <Wrapper>
+            <AutoColumn gap="20px">
+              <CurrencyInputPanel
+                hideCurrencySelect={true}
+                balanceOveride={true}
+                newBalance={userBalance}
+                value={formattedAmounts[Field.CURRENCY_A]}
+                onUserInput={onFieldAInput}
+                onMax={() => {
+                  onFieldAInput(String(userBalance) ?? '')
                 }}
-                disabled={hasError || !parsedAmountA}
-              >
-                <Text fontSize={20} fontWeight={500}>
-                  {buttonString}
-                </Text>
-              </ButtonPrimary>
-            )}
+                showMaxButton={!atMaxAmounts[Field.CURRENCY_A]}
+                currency={currencies[Field.CURRENCY_A]}
+                id="unstake-input-tokena"
+                showCommonBases
+              />
+            </AutoColumn>
+          </Wrapper>
+        </AppBody>
+        <AppBodyDark>
+          {!account ? (
+            <ButtonLight onClick={toggleWalletModal}>{t('connectWallet')}</ButtonLight>
+          ) : (
+            <AutoColumn gap={'md'}>
+              {unstaking ? (
+                <ButtonPrimary style={{ fontSize: '20px' }} disabled={true}>
+                  <Dots>{t('unstaking')}</Dots>
+                </ButtonPrimary>
+              ) : (
+                <ButtonPrimary
+                  style={{ fontSize: '20px' }}
+                  onClick={() => {
+                    unstakeAndClaimRewards(rewardsContractAddress)
+                  }}
+                  disabled={hasError || !parsedAmountA}
+                >
+                  <Text fontSize={20} fontWeight={500}>
+                    {buttonString}
+                  </Text>
+                </ButtonPrimary>
+              )}
+            </AutoColumn>
+          )}
+        </AppBodyDark>
+        {account && rewardsContractAddress && wrappedLiquidityToken && (
+          <AutoColumn style={{ marginTop: '1rem', maxWidth: '420px', width: '100%' }}>
+            <FullStakingCard values={stakingValues} my={true} show={true} index={0} />
           </AutoColumn>
         )}
-      </AppBodyDark>
-      {account && rewardsContractAddress && wrappedLiquidityToken && (
-        <AutoColumn style={{ marginTop: '1rem', maxWidth: '420px', width: '100%' }}>
-          <FullStakingCard values={stakingValues} my={true} show={true} index={0} />
-        </AutoColumn>
-      )}
-    </>
-  )
+      </>
+    )
+  }
 }
