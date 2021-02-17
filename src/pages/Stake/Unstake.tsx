@@ -326,7 +326,7 @@ export default function Unstake({
         </AppBodyDark>
         {account && rewardsContractAddress && wrappedLiquidityToken && (
           <AutoColumn style={{ marginTop: '1rem', maxWidth: '420px', width: '100%' }}>
-            <FullStakingCard values={stakingValues} my={true} show={true} index={0} />
+            <FullStakingCard values={stakingValues} show={true} index={0} />
           </AutoColumn>
         )}
       </>

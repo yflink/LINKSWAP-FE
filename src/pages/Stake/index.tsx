@@ -19,10 +19,6 @@ import { StakePools } from '../../components/Stake'
 import { ACTIVE_REWARD_POOLS, INACTIVE_REWARD_POOLS, UNI_POOLS } from '../../constants'
 import Toggle from '../../components/Toggle'
 
-export const MyStakePools = styled(BodyWrapper)`
-  margin: 0 0 24px;
-`
-
 export default function StakeOverview() {
   const theme = useContext(ThemeContext)
   const { account } = useActiveWeb3React()
@@ -158,7 +154,7 @@ export default function StakeOverview() {
                 </TYPE.body>
               </LightCard>
             ) : allPoolsAdded ? (
-              <StakePools poolArray={allRewardPools} showOwn={showOwn} showExpired={showExpired} my={false} />
+              <StakePools poolArray={allRewardPools} showOwn={showOwn} showExpired={showExpired} />
             ) : (
               <LightCard padding="40px">
                 <TYPE.body color={theme.textPrimary} textAlign="center">

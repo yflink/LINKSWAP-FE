@@ -22,6 +22,7 @@ import Card from '../Card'
 import { YFLSVG, MPHSVG } from '../SVG'
 import { Link } from 'react-router-dom'
 import { getNetworkLibrary } from '../../connectors'
+import { useTokenBalance } from '../../state/wallet/hooks'
 
 const FullStakingCard = styled(Card)<{ highlight?: boolean; show?: boolean }>`
   font-size: 14px;
@@ -61,13 +62,11 @@ const ExternalLink = styled.a`
 
 export default function SingleStakingCard({
   values,
-  my,
   show,
   showOwn,
   showExpired
 }: {
   values: any
-  my: boolean
   show?: boolean | false
   showOwn?: boolean | false
   showExpired?: boolean | true
@@ -84,6 +83,7 @@ export default function SingleStakingCard({
   const fakeLibrary = getNetworkLibrary()
   const [lifeLine, setLifeLine] = useState(false)
   const currencyA = currency0
+  const balance = useTokenBalance(account ?? undefined, values.tokens[0])
   const [information, setInformation] = useState<any>({
     poolReserves: [0, 0],
     poolTokenPrices: [0, 0],
@@ -284,7 +284,7 @@ export default function SingleStakingCard({
     return null
   } else {
     return (
-      <FullStakingCard highlight={information.userBalance > 0 && !my} show={show}>
+      <FullStakingCard highlight={information.userBalance > 0} show={show}>
         {information.poolType === 'mph88' ? (
           <PlatformIcon>
             <MPHSVG />
@@ -303,7 +303,7 @@ export default function SingleStakingCard({
             }}
             style={{ cursor: headerRowStyles, position: 'relative' }}
           >
-            {!my && !information.isInactive && information.updated && (
+            {!information.isInactive && information.updated && (
               <div style={{ position: 'absolute', right: '-13px', top: '-16px', fontSize: '12px' }}>
                 {information.apy > 0 ? (
                   <p style={{ margin: 0 }}>{t('apy', { apy: numberToPercent(information.apy) })}</p>
@@ -343,10 +343,10 @@ export default function SingleStakingCard({
                 </RowBetween>
               )}
 
-              {my && (
+              {Number(balance?.toSignificant(1)) > 0 && (
                 <RowBetween>
                   <Text>{t('stakableTokenAmount')}</Text>
-                  {numberToSignificant(values['balance'])}
+                  {Number(balance?.toSignificant(6))}
                 </RowBetween>
               )}
               {information.userBalance > 0 && (
@@ -387,7 +387,7 @@ export default function SingleStakingCard({
                   )}
                 </>
               )}
-              {my && !show ? (
+              {Number(balance?.toSignificant(1)) > 0 && !show ? (
                 <RowBetween marginTop="10px">
                   <>
                     {information.poolType === 'mph88' ? (
