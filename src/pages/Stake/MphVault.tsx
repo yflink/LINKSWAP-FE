@@ -65,15 +65,15 @@ const LendingDuration = styled.div`
 
 const DurationSelect = styled.div<{ isActive?: boolean }>`
   display: flex;
-  color: ${({ theme, isActive }) => (isActive ? theme.buttonTextColor : theme.buttonTextColorActive)};
-  background-color: ${({ theme, isActive }) => (isActive ? theme.buttonBG : theme.buttonBGActive)};
+  color: ${({ theme, isActive }) => (isActive ? theme.buttonTextColor : theme.buttonSecondaryTextColor)};
+  background-color: ${({ theme, isActive }) => (isActive ? theme.buttonBG : theme.buttonSecondaryBG)};
   padding: 6px 10px;
   font-weight: 500;
   text-align: center;
   border-radius: 6px;
 
   &:hover {
-    background-color: ${({ theme, isActive }) => (isActive ? theme.buttonBGHover : theme.buttonBGActiveHover)};
+    background-color: ${({ theme, isActive }) => (isActive ? theme.buttonBGHover : theme.buttonSecondaryBGHover)};
     cursor: pointer;
   }
 

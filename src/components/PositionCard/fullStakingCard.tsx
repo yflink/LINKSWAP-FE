@@ -60,14 +60,12 @@ const PlatformIcon = styled.div`
 
 export default function FullStakingCard({
   values,
-  my,
   show,
   showOwn,
   showExpired,
   index
 }: {
   values: any
-  my: boolean
   show?: boolean | false
   showOwn?: boolean | false
   showExpired?: boolean | true
@@ -429,7 +427,7 @@ export default function FullStakingCard({
     )
   } else {
     return (
-      <StakingCard highlight={information.userBalance > 0 && !my} show={show}>
+      <StakingCard highlight={information.userBalance > 0} show={show}>
         {information.poolType === 'uni' ? (
           <PlatformIcon>
             <UniswapSVG />
@@ -452,7 +450,7 @@ export default function FullStakingCard({
             }}
             style={{ cursor: headerRowStyles, position: 'relative' }}
           >
-            {!my && !information.isInactive && information.updated && (
+            {!information.isInactive && information.updated && (
               <div style={{ position: 'absolute', right: '-13px', top: '-16px', fontSize: '12px' }}>
                 {information.apy > 0 ? (
                   <p style={{ margin: 0 }}>{t('apy', { apy: numberToPercent(information.apy) })}</p>
@@ -607,8 +605,8 @@ export default function FullStakingCard({
                   <Countdown ends={information.periodFinish} format="DD[d] HH[h] mm[m] ss[s]" string="endsIn" />
                 )}
               </RowBetween>
-              {information.userBalance > 0 && !my && !information.isInactive && (
-                <RowBetween marginTop="10px">
+              <RowBetween marginTop="10px">
+                {!show && (information.rewardInfo[0].userReward > 0 || information.rewardInfo[1].userReward > 0) && (
                   <ButtonSecondary
                     onClick={() => {
                       claimRewards(values.rewardsAddress)
@@ -618,6 +616,8 @@ export default function FullStakingCard({
                   >
                     {t('claimRewards')}
                   </ButtonSecondary>
+                )}
+                {!show && information.userBalance > 0 && (
                   <>
                     {information.poolType === 'uni' ? (
                       <ButtonSecondary
@@ -638,9 +638,9 @@ export default function FullStakingCard({
                       </ButtonSecondary>
                     )}
                   </>
-                </RowBetween>
-              )}
-              {information.userBalance > 0 && !my && (
+                )}
+              </RowBetween>
+              {!show && information.userBalance > 0 && (
                 <RowBetween marginTop="10px">
                   <ButtonSecondary
                     onClick={() => {
@@ -653,7 +653,7 @@ export default function FullStakingCard({
                   </ButtonSecondary>
                 </RowBetween>
               )}
-              {!my && !information.isInactive && (
+              {!show && !information.isInactive && (
                 <RowBetween marginTop="10px">
                   {!account ? (
                     <ButtonLight onClick={toggleWalletModal}>{t('connectWallet')}</ButtonLight>

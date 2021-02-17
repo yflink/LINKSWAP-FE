@@ -20,6 +20,7 @@ import { useGasPrices } from '../../hooks/useGasPrice'
 import { useCurrencyUsdPrice } from '../../hooks/useCurrencyUsdPrice'
 import { useTokenUsdPrices } from '../../hooks/useTokenUsdPrice'
 import { useLPTokenUsdPrices } from '../../hooks/useLPTokenUsdPrice'
+import { useMphPools } from '../../hooks/useMphPools'
 
 const HeaderFrame = styled.div`
   display: flex;
@@ -170,6 +171,7 @@ export default function Header() {
   useCurrencyUsdPrice()
   useTokenUsdPrices()
   useLPTokenUsdPrices()
+  useMphPools()
   return (
     <HeaderFrame>
       <RowBetween style={{ alignItems: 'flex-start' }} padding="1rem">

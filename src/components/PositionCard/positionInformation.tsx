@@ -59,6 +59,7 @@ export default async function positionInformation(
     default:
       abi = StakingRewards
   }
+  positionOutput.abi = abi
   positionOutput.poolType = position.type
   positionOutput.infinitePeriod = position.type === 'mph88'
   const rewardsContract =

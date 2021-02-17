@@ -1,14 +1,13 @@
 import React from 'react'
 import StakingCard from '../PositionCard/stakingCard'
 
-interface IStakePools {
+interface StakePools {
   poolArray: any[]
-  my: boolean
   showOwn?: boolean | false
   showExpired?: boolean | false
 }
 
-export function StakePools({ poolArray, my, showOwn, showExpired }: IStakePools) {
+export function StakePools({ poolArray, showOwn, showExpired }: StakePools) {
   const values: any[] = []
 
   poolArray.forEach((pool, index) => {
@@ -20,7 +19,6 @@ export function StakePools({ poolArray, my, showOwn, showExpired }: IStakePools)
         <StakingCard
           type={values[index].type}
           values={values[index]}
-          my={my}
           showOwn={showOwn}
           showExpired={showExpired}
           index={index}
