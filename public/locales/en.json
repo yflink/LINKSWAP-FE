@@ -389,5 +389,9 @@
   "daysShort": "{{days}}d",
   "deposit88PresetDuration": "Preset lending duration:",
   "deposit88CustomDuration": "Custom lending duration (days):",
-  "minimumDuration": "Min. duration: {{minDuration}} days"
+  "minimumDuration": "Min. duration: {{minDuration}} days",
+  "deposits": "Deposits",
+  "fixedApy": "Fixed APY",
+  "mphApy": "MPH Token APY",
+  "manageDeposits": "Manage Deposits"
 }

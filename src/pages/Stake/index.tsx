@@ -1,5 +1,5 @@
 import React, { useContext, useMemo, useState } from 'react'
-import styled, { ThemeContext } from 'styled-components'
+import { ThemeContext } from 'styled-components'
 import { SwapPoolTabs } from '../../components/NavigationTabs'
 import Card from '../../components/Card'
 import Question from '../../components/QuestionHelper'
@@ -12,11 +12,11 @@ import { AutoColumn } from '../../components/Column'
 import { useActiveWeb3React } from '../../hooks'
 import { usePairs } from '../../data/Reserves'
 import { toV2LiquidityToken, useTrackedTokenPairs } from '../../state/user/hooks'
-import AppBody, { BodyWrapper } from '../AppBody'
+import AppBody from '../AppBody'
 import { Dots } from '../../components/swap/styleds'
 import { useTranslation } from 'react-i18next'
 import { StakePools } from '../../components/Stake'
-import { ACTIVE_REWARD_POOLS, INACTIVE_REWARD_POOLS, UNI_POOLS } from '../../constants'
+import { ACTIVE_REWARD_POOLS, INACTIVE_REWARD_POOLS, SINGLE_POOLS, UNI_POOLS } from '../../constants'
 import Toggle from '../../components/Toggle'
 
 export default function StakeOverview() {
@@ -68,8 +68,9 @@ export default function StakeOverview() {
     const allStakePools: any[] = []
     if (Boolean(allRewardPools)) {
       if (!singlePoolsAdded) {
-        // allStakePools.push(SINGLE_POOLS.ALINK)
-        // setAllRewardPools(allStakePools)
+        allStakePools.push(SINGLE_POOLS.USDC)
+        allStakePools.push(SINGLE_POOLS.ALINK)
+        setAllRewardPools(allStakePools)
         setSinglePoolsAdded(true)
       }
       ACTIVE_REWARD_POOLS.forEach(poolObject => {
