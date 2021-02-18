@@ -13,7 +13,7 @@ import { RowBetween, RowFixed } from '../Row'
 import { SingleCurrencyLogo } from '../DoubleLogo'
 import { Text } from 'rebass'
 import { ChevronDown, ChevronUp } from 'react-feather'
-import { ButtonSecondary } from '../Button'
+import { ButtonLight, ButtonSecondary } from '../Button'
 import { currencyId } from '../../utils/currencyId'
 import Countdown from '../Countdown'
 import { ExternalButton, FixedHeightRow } from './index'
@@ -24,6 +24,7 @@ import { Link } from 'react-router-dom'
 import { getNetworkLibrary } from '../../connectors'
 import { useTokenBalance } from '../../state/wallet/hooks'
 import { useGetMphPools } from '../../state/mph/hooks'
+import { useWalletModalToggle } from '../../state/application/hooks'
 
 const FullStakingCard = styled(Card)<{ highlight?: boolean; show?: boolean }>`
   font-size: 14px;
@@ -83,6 +84,7 @@ export default function SingleStakingCard({
   const fakeAccount = '0x0000000000000000000000000000000000000000'
   const fakeChainId = '1'
   const fakeLibrary = getNetworkLibrary()
+  const toggleWalletModal = useWalletModalToggle()
   const [lifeLine, setLifeLine] = useState(false)
   const currencyA = currency0
   const balance = useTokenBalance(account ?? undefined, values.tokens[0])
@@ -437,17 +439,21 @@ export default function SingleStakingCard({
                 </RowBetween>
               ) : (
                 <RowBetween marginTop="10px">
-                  <>
-                    {information.poolType === 'mph88' ? (
-                      <ExternalButton href={values.liquidityUrl}>
-                        {t('getToken', { currencySymbol: currency0.symbol })}
-                      </ExternalButton>
-                    ) : (
-                      <ButtonSecondary as={Link} width="100%" to={`/swap/?outputCurrency=${currencyId(currency0)}`}>
-                        {t('getToken', { currencySymbol: currency0.symbol })}
-                      </ButtonSecondary>
-                    )}
-                  </>
+                  {!account ? (
+                    <ButtonLight onClick={toggleWalletModal}>{t('connectWallet')}</ButtonLight>
+                  ) : (
+                    <>
+                      {information.poolType === 'mph88' ? (
+                        <ExternalButton href={values.liquidityUrl}>
+                          {t('getToken', { currencySymbol: currency0.symbol })}
+                        </ExternalButton>
+                      ) : (
+                        <ButtonSecondary as={Link} width="100%" to={`/swap/?outputCurrency=${currencyId(currency0)}`}>
+                          {t('getToken', { currencySymbol: currency0.symbol })}
+                        </ButtonSecondary>
+                      )}
+                    </>
+                  )}
                 </RowBetween>
               )}
               {(information.stakePoolTotalDeposited > 0 || information.stakePoolTotalLiq > 0) && (

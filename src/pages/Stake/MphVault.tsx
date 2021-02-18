@@ -214,8 +214,8 @@ export default function MphVault({
           </Tabs>
           <RowBetween>
             <Text style={{ margin: '0 0 12px' }} fontSize="16px">
-              <Trans i18nKey="vaultHostedBy88mph">
-                Vault hosted by
+              <Trans i18nKey="vaultDetails88mph">
+                Detailed Vault information at:
                 <ExternalLink href="https://88mph.app/" target="_blank">
                   88mph
                 </ExternalLink>
