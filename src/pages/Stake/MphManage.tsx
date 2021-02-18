@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { Link, RouteComponentProps } from 'react-router-dom'
+import { RouteComponentProps } from 'react-router-dom'
 import styled, { ThemeContext } from 'styled-components'
 import Card, { BlueCard, LightCard } from '../../components/Card'
 import { AutoColumn } from '../../components/Column'
@@ -12,34 +12,22 @@ import QuestionHelper from '../../components/QuestionHelper'
 import { SINGLE_POOLS } from '../../constants'
 import { useTokenBalance } from '../../state/wallet/hooks'
 import { useActiveWeb3React } from '../../hooks'
-import CurrencyInputPanel from '../../components/CurrencyInputPanel'
-import { Field } from '../../state/mint/actions'
 import { useWalletModalToggle } from '../../state/application/hooks'
-import { useDerivedMintInfo, useMintActionHandlers, useMintState } from '../../state/mint/hooks'
-import { TokenAmount } from '@uniswap/sdk'
-import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import { Text } from 'rebass'
-import { ButtonLight, ButtonPrimary, ButtonSecondary } from '../../components/Button'
-import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
+import { ButtonLight, ButtonSecondary } from '../../components/Button'
 import { calculateGasMargin, getContract } from '../../utils'
 import { TransactionResponse } from '@ethersproject/providers'
 import { BigNumber } from '@ethersproject/bignumber'
 import ReactGA from 'react-ga'
-import { ERC721, mphPool } from '../../components/ABI'
-import { Input as NumericalInput } from '../../components/NumericalInput'
+import { mphPool } from '../../components/ABI'
 import { useTransactionAdder } from '../../state/transactions/hooks'
 import { TYPE } from '../../theme'
-import hexStringToNumber from '../../utils/hexStringToNumber'
-import StakingCard from '../../components/PositionCard/stakingCard'
-import { ExternalButton, FixedHeightRow } from '../../components/PositionCard'
+import { FixedHeightRow } from '../../components/PositionCard'
 import { numberToPercent, numberToSignificant, numberToUsd } from '../../utils/numberUtils'
 import { SingleCurrencyLogo } from '../../components/DoubleLogo'
-import { ChevronDown, ChevronUp } from 'react-feather'
-import { currencyId } from '../../utils/currencyId'
 import Countdown from '../../components/Countdown'
 import { useGetMphPools } from '../../state/mph/hooks'
 import moment from 'moment'
-import { addTransaction } from '../../state/transactions/actions'
 
 const Tabs = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -79,7 +67,7 @@ async function getDeposits(account: string) {
       },
       body: JSON.stringify({
         query: `{
-          user(id: "${account}") {pools {id address mphDepositorRewardTakeBackMultiplier deposits(where: {user: "${account}", active: true} orderBy: nftID) {nftID fundingID amount maturationTimestamp depositTimestamp interestEarned mintMPHAmount takeBackMPHAmount}} totalDepositByPool {pool {address stablecoin} totalActiveDeposit totalInterestEarned}
+          user(id: "${account}") {pools {id address mphDepositorRewardTakeBackMultiplier deposits(where: {user: "${account}", active: true} orderBy: nftID) {nftID fundingID amount maturationTimestamp depositTimestamp interestEarned mintMPHAmount takeBackMPHAmount}}
         }
       }`,
         variables: null
@@ -146,7 +134,7 @@ export default function MphManage({
     })
   }
 
-  if (userBalance !== 0 && account && library) {
+  if (userBalance !== 0 && account) {
     if (!fetching) {
       getDeposits(account.toLowerCase()).then(result => {
         if (result.length > 0) {

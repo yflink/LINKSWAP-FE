@@ -133,7 +133,6 @@ export default function StakeIntoPool({
       if (!found) {
         Object.entries(UNI_POOLS).forEach((entry: any) => {
           if (entry[0] === currencyIdB) {
-            console.log('entry', entry)
             setFound(true)
             liquidityToken = entry[1].liquidityToken
             liquidityTokenAddress = liquidityToken.address

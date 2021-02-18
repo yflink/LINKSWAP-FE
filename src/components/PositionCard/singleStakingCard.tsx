@@ -62,6 +62,35 @@ const ExternalLink = styled.a`
   }
 `
 
+async function get88Deposits(account: string) {
+  try {
+    const response = await fetch('https://api.thegraph.com/subgraphs/name/bacon-labs/eighty-eight-mph', {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        query: `{
+          user(id: "${account}") {pools {id address deposits(where: {user: "${account}", active: true} orderBy: nftID) {nftID}}
+        }
+      }`,
+        variables: null
+      }),
+      method: 'POST'
+    })
+
+    if (response.ok) {
+      const { data } = await response.json()
+      return data.user.pools
+    } else {
+      return []
+    }
+  } catch (e) {
+    console.log(e)
+    return []
+  }
+}
+
 export default function SingleStakingCard({
   values,
   show,
@@ -130,6 +159,7 @@ export default function SingleStakingCard({
     ]
   })
   const [fetching, setFetching] = useState(false)
+  const [subGraphFetching, setSubGraphFetching] = useState(false)
 
   if (!fetching) {
     if (!!tokenPrices) {
@@ -148,8 +178,22 @@ export default function SingleStakingCard({
     }
   }
 
-  information.userBalance = Number(nftBalance?.toSignificant(1)) || 0
   if (information.poolType === 'mph88' && information.apy === 0) {
+    if (Number(nftBalance?.toSignificant(1)) !== 0 && account) {
+      if (!subGraphFetching) {
+        get88Deposits(account.toLowerCase()).then(result => {
+          if (result.length > 0) {
+            result.forEach(function(pool: Record<string, string[]>) {
+              if (pool.address === values.rewardsAddress.toLowerCase()) {
+                information.userBalance = pool?.deposits.length
+              }
+            })
+          }
+        })
+        setSubGraphFetching(true)
+      }
+    }
+
     if (mphPools.length > 0) {
       mphPools.forEach((pool: any, index: number) => {
         if (mphPools[index].address === values.poolAddress.toLowerCase()) {
