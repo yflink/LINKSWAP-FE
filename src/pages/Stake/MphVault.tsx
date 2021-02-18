@@ -166,7 +166,7 @@ export default function MphVault({
     const estimate = router.estimateGas.deposit
     const method: (...args: any) => Promise<TransactionResponse> = router.deposit
     const today = new Date(Date.now())
-    const maturationTimestamp = Math.floor(today.setDate(today.getDate() + duration) / 1000.0)
+    const maturationTimestamp = Math.floor(today.setDate(today.getDate() + duration) / 1000.0) + 3600
     const args: Array<string | string[] | number> = [parsedAmountA.raw.toString(), maturationTimestamp]
     const value: BigNumber | null = null
     await estimate(...args, value ? { value } : {})
@@ -214,8 +214,8 @@ export default function MphVault({
           </Tabs>
           <RowBetween>
             <Text style={{ margin: '0 0 12px' }} fontSize="16px">
-              <Trans i18nKey="vaultHostedBy88mph">
-                Vault hosted by
+              <Trans i18nKey="vaultDetails88mph">
+                Detailed Vault information at:
                 <ExternalLink href="https://88mph.app/" target="_blank">
                   88mph
                 </ExternalLink>

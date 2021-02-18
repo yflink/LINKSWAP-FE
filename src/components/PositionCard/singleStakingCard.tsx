@@ -13,7 +13,7 @@ import { RowBetween, RowFixed } from '../Row'
 import { SingleCurrencyLogo } from '../DoubleLogo'
 import { Text } from 'rebass'
 import { ChevronDown, ChevronUp } from 'react-feather'
-import { ButtonSecondary } from '../Button'
+import { ButtonLight, ButtonSecondary } from '../Button'
 import { currencyId } from '../../utils/currencyId'
 import Countdown from '../Countdown'
 import { ExternalButton, FixedHeightRow } from './index'
@@ -24,6 +24,7 @@ import { Link } from 'react-router-dom'
 import { getNetworkLibrary } from '../../connectors'
 import { useTokenBalance } from '../../state/wallet/hooks'
 import { useGetMphPools } from '../../state/mph/hooks'
+import { useWalletModalToggle } from '../../state/application/hooks'
 
 const FullStakingCard = styled(Card)<{ highlight?: boolean; show?: boolean }>`
   font-size: 14px;
@@ -61,6 +62,35 @@ const ExternalLink = styled.a`
   }
 `
 
+async function get88Deposits(account: string) {
+  try {
+    const response = await fetch('https://api.thegraph.com/subgraphs/name/bacon-labs/eighty-eight-mph', {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        query: `{
+          user(id: "${account}") {pools {id address deposits(where: {user: "${account}", active: true} orderBy: nftID) {nftID}}
+        }
+      }`,
+        variables: null
+      }),
+      method: 'POST'
+    })
+
+    if (response.ok) {
+      const { data } = await response.json()
+      return data.user.pools
+    } else {
+      return []
+    }
+  } catch (e) {
+    console.log(e)
+    return []
+  }
+}
+
 export default function SingleStakingCard({
   values,
   show,
@@ -83,6 +113,7 @@ export default function SingleStakingCard({
   const fakeAccount = '0x0000000000000000000000000000000000000000'
   const fakeChainId = '1'
   const fakeLibrary = getNetworkLibrary()
+  const toggleWalletModal = useWalletModalToggle()
   const [lifeLine, setLifeLine] = useState(false)
   const currencyA = currency0
   const balance = useTokenBalance(account ?? undefined, values.tokens[0])
@@ -128,6 +159,7 @@ export default function SingleStakingCard({
     ]
   })
   const [fetching, setFetching] = useState(false)
+  const [subGraphFetching, setSubGraphFetching] = useState(false)
 
   if (!fetching) {
     if (!!tokenPrices) {
@@ -146,8 +178,22 @@ export default function SingleStakingCard({
     }
   }
 
-  information.userBalance = Number(nftBalance?.toSignificant(1)) || 0
   if (information.poolType === 'mph88' && information.apy === 0) {
+    if (Number(nftBalance?.toSignificant(1)) !== 0 && account) {
+      if (!subGraphFetching) {
+        get88Deposits(account.toLowerCase()).then(result => {
+          if (result.length > 0) {
+            result.forEach(function(pool: Record<string, string[]>) {
+              if (pool.address === values.rewardsAddress.toLowerCase()) {
+                information.userBalance = pool?.deposits.length
+              }
+            })
+          }
+        })
+        setSubGraphFetching(true)
+      }
+    }
+
     if (mphPools.length > 0) {
       mphPools.forEach((pool: any, index: number) => {
         if (mphPools[index].address === values.poolAddress.toLowerCase()) {
@@ -383,8 +429,8 @@ export default function SingleStakingCard({
                     </RowBetween>
                   ) : (
                     <RowBetween>
-                      <Text>{t('stakedTokenAmount')}</Text>
-                      {numberToSignificant(information.userBalance)}
+                      <Text>{t('stakedTokenAmount').toLocaleString('en-US')}</Text>
+                      {numberToSignificant(information.userBalance).toLocaleString('en-US')}
                     </RowBetween>
                   )}
                 </>
@@ -437,17 +483,29 @@ export default function SingleStakingCard({
                 </RowBetween>
               ) : (
                 <RowBetween marginTop="10px">
-                  <>
-                    {information.poolType === 'mph88' ? (
-                      <ExternalButton href={values.liquidityUrl}>
-                        {t('getToken', { currencySymbol: currency0.symbol })}
-                      </ExternalButton>
-                    ) : (
-                      <ButtonSecondary as={Link} width="100%" to={`/swap/?outputCurrency=${currencyId(currency0)}`}>
-                        {t('getToken', { currencySymbol: currency0.symbol })}
-                      </ButtonSecondary>
-                    )}
-                  </>
+                  {!account ? (
+                    <ButtonLight onClick={toggleWalletModal}>{t('connectWallet')}</ButtonLight>
+                  ) : (
+                    <>
+                      {information.poolType === 'mph88' ? (
+                        <>
+                          {information.poolType === 'mph88' && information.userBalance > 0 ? (
+                            <ButtonSecondary as={Link} width="100%" to={`/manage/mph88/${values.tokens[0].symbol}`}>
+                              {t('manageDeposits')}
+                            </ButtonSecondary>
+                          ) : (
+                            <ExternalButton href={values.liquidityUrl}>
+                              {t('getToken', { currencySymbol: currency0.symbol })}
+                            </ExternalButton>
+                          )}
+                        </>
+                      ) : (
+                        <ButtonSecondary as={Link} width="100%" to={`/swap/?outputCurrency=${currencyId(currency0)}`}>
+                          {t('getToken', { currencySymbol: currency0.symbol })}
+                        </ButtonSecondary>
+                      )}
+                    </>
+                  )}
                 </RowBetween>
               )}
               {(information.stakePoolTotalDeposited > 0 || information.stakePoolTotalLiq > 0) && (
@@ -514,11 +572,6 @@ export default function SingleStakingCard({
                   <Text>{t('timeRemaining')}</Text>
                   <Countdown ends={information.periodFinish} format="DD[d] HH[h] mm[m] ss[s]" string="endsIn" />
                 </RowBetween>
-              )}
-              {information.poolType === 'mph88' && information.userBalance > 0 && (
-                <ButtonSecondary as={Link} width="100%" to={`/manage/mph88/${values.tokens[0].symbol}`}>
-                  {t('manageDeposits')}
-                </ButtonSecondary>
               )}
             </AutoColumn>
           )}
