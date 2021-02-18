@@ -62,7 +62,7 @@ const BodyWrapper = styled.div`
   z-index: 1;
   ${({ theme }) => theme.mediaWidth.upToSmall`
     padding: 0 0 16px;
-  `};-
+  `};
 `
 
 const FooterWrapper = styled.div`

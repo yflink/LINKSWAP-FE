@@ -242,13 +242,7 @@ export default function MphManage({
               </LightCard>
             ) : (
               <>
-                {Number(balance?.toSignificant(1)) === 0 ? (
-                  <LightCard padding="40px">
-                    <TYPE.body color={theme.textPrimary} textAlign="center">
-                      {t('noDepositsFound')}
-                    </TYPE.body>
-                  </LightCard>
-                ) : (
+                {userPositions.length > 0 ? (
                   <>
                     {userPositions.map((userPosition: any, index: number) => (
                       <FullPositionCard key={index}>
@@ -345,6 +339,12 @@ export default function MphManage({
                       </FullPositionCard>
                     ))}
                   </>
+                ) : (
+                  <LightCard padding="40px">
+                    <TYPE.body color={theme.textPrimary} textAlign="center">
+                      {t('noDepositsFound')}
+                    </TYPE.body>
+                  </LightCard>
                 )}
               </>
             )}
