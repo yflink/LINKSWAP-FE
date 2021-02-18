@@ -21,11 +21,7 @@ import Ren from './Bridges/ren'
 import RemoveLiquidity from './RemoveLiquidity'
 import { RedirectOldRemoveLiquidityPathStructure } from './RemoveLiquidity/redirects'
 import CreatePair from './CreatePair'
-import {
-  CreatePairRedirectOldPathStructure,
-  CreatePairRedirectDuplicateTokenIds,
-  CreatedPairRedirect
-} from './CreatePair/redirects'
+import { CreatePairRedirectOldPathStructure, CreatePairRedirectDuplicateTokenIds } from './CreatePair/redirects'
 import PreviewListing from './PreviewListing'
 import Analyze from './Analyze'
 import StakeOverview from './Stake'
