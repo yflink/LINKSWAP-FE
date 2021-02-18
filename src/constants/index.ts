@@ -119,7 +119,7 @@ export const mphYALINKNFT = new Token(
 
 export const mphUSDCNFT = new Token(
   ChainId.MAINNET,
-  '0xdaa6bd333c83362579d9621954e9451e319d09ea',
+  '0xdaA6BD333c83362579D9621954e9451E319D09ea',
   0,
   '88mph-USDC-Deposit',
   '88mph USDC Pool Deposit'

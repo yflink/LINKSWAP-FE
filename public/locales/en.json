@@ -394,5 +394,17 @@
   "deposits": "Deposits",
   "fixedApy": "Fixed APY",
   "mphApy": "MPH Token APY",
-  "manageDeposits": "Manage Deposits"
+  "manageDeposits": "Manage Deposits",
+  "your88Deposits": "Your {{vaultName}} Deposits",
+  "deposit88Description": "After depositing in the pool, you receive a ERC-721 non-fungible token (NFT) that represents your deposit. You can see the positions represented by the ERC-721 NFT listed below.",
+  "deposit88WithdrawEarlyHead": "Withdraw Early Disclaimer",
+  "deposit88WithdrawEarly": "If the Lending period of one of your deposits isn't over yet, you can choose to \"withdraw early\". You will then withdraw your principal before the maturation date by giving up your interest & MPH rewards.",
+  "depositing": "Depositing",
+  "depositId": "deposit-id #{{id}}",
+  "unlocksIn": "Unlocks in {{time}}",
+  "withdraw": "Withdraw",
+  "withdrawEarly": "Withdraw early",
+  "interestEarned": "Interest earned",
+  "depositedTokens": "Deposit",
+  "vestedDetails88mph": "Check your <1>vested MPH rewards</1>"
 }

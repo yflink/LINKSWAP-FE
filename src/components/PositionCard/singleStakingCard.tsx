@@ -385,8 +385,8 @@ export default function SingleStakingCard({
                     </RowBetween>
                   ) : (
                     <RowBetween>
-                      <Text>{t('stakedTokenAmount')}</Text>
-                      {numberToSignificant(information.userBalance)}
+                      <Text>{t('stakedTokenAmount').toLocaleString('en-US')}</Text>
+                      {numberToSignificant(information.userBalance).toLocaleString('en-US')}
                     </RowBetween>
                   )}
                 </>
@@ -444,9 +444,17 @@ export default function SingleStakingCard({
                   ) : (
                     <>
                       {information.poolType === 'mph88' ? (
-                        <ExternalButton href={values.liquidityUrl}>
-                          {t('getToken', { currencySymbol: currency0.symbol })}
-                        </ExternalButton>
+                        <>
+                          {information.poolType === 'mph88' && information.userBalance > 0 ? (
+                            <ButtonSecondary as={Link} width="100%" to={`/manage/mph88/${values.tokens[0].symbol}`}>
+                              {t('manageDeposits')}
+                            </ButtonSecondary>
+                          ) : (
+                            <ExternalButton href={values.liquidityUrl}>
+                              {t('getToken', { currencySymbol: currency0.symbol })}
+                            </ExternalButton>
+                          )}
+                        </>
                       ) : (
                         <ButtonSecondary as={Link} width="100%" to={`/swap/?outputCurrency=${currencyId(currency0)}`}>
                           {t('getToken', { currencySymbol: currency0.symbol })}
@@ -520,11 +528,6 @@ export default function SingleStakingCard({
                   <Text>{t('timeRemaining')}</Text>
                   <Countdown ends={information.periodFinish} format="DD[d] HH[h] mm[m] ss[s]" string="endsIn" />
                 </RowBetween>
-              )}
-              {information.poolType === 'mph88' && information.userBalance > 0 && (
-                <ButtonSecondary as={Link} width="100%" to={`/manage/mph88/${values.tokens[0].symbol}`}>
-                  {t('manageDeposits')}
-                </ButtonSecondary>
               )}
             </AutoColumn>
           )}
