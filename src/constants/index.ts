@@ -268,12 +268,6 @@ export const ACTIVE_REWARD_POOLS = [
     type: 'default'
   },
   {
-    address: '0x9d996bDD1F65C835EE92Cd0b94E15d886EF14D63',
-    rewardsAddress: '0x0D03Cff17367478c3349a579e50259D8A793BBc8',
-    abi: 'StakingRewards',
-    type: 'default'
-  },
-  {
     address: '0xf36c9fc3c2aBE4132019444AfF914Fc8DC9785a9',
     rewardsAddress: '0x603065B7e2F69c897F154Ca429a2B96Cf4703f56',
     abi: 'StakingRewards',
@@ -282,12 +276,6 @@ export const ACTIVE_REWARD_POOLS = [
   {
     address: '0x639916bB4B29859FADF7A272185a3212157F8CE1',
     rewardsAddress: '0xfa9712cCc86c6BD52187125dCA4c2B9C7bAa3Ef8',
-    abi: 'StakingRewards',
-    type: 'default'
-  },
-  {
-    address: '0x626B88542495d2e341d285969F8678B99cd91DA7',
-    rewardsAddress: '0xf4C17025B623665AAcAb958FC0fa454b1265A219',
     abi: 'StakingRewards',
     type: 'default'
   },
@@ -306,18 +294,6 @@ export const ACTIVE_REWARD_POOLS = [
   {
     address: '0xFe04c284a9725c141CF6de85D7E8452af1B48ab7',
     rewardsAddress: '0x017FAD4b7a54C1ACe95Ca614954e4D0d12CDb27E',
-    abi: 'StakingRewards',
-    type: 'default'
-  },
-  {
-    address: '0x983c9a1BCf0eB980a232D1b17bFfd6Bbf68Fe4Ce',
-    rewardsAddress: '0x997d4BAbf8290A19EcDCbD10058fC438EB6F30DE',
-    abi: 'StakingRewards',
-    type: 'default'
-  },
-  {
-    address: '0xf68c01198cDdEaFB9d2EA43368FC9fA509A339Fa',
-    rewardsAddress: '0x9667947B67199C91c109Be912807190cc490A2A3',
     abi: 'StakingRewards',
     type: 'default'
   },
@@ -351,12 +327,6 @@ export const INACTIVE_REWARD_POOLS = [
   {
     address: '0x7e5A536F3d79791E283940ec379CEE10C9C40e86',
     rewardsAddress: '0x72368fB97dab2B94A5664EbeEbF504EF482fF149',
-    abi: 'StakingRewards',
-    type: 'default'
-  },
-  {
-    address: '0x37CeE65899dA4B1738412814155540C98DFd752C',
-    rewardsAddress: '0x1B62ac658Ca7D037777D24aa629613633221eFfc',
     abi: 'StakingRewards',
     type: 'default'
   }
