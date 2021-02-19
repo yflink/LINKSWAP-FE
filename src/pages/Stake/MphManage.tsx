@@ -60,7 +60,7 @@ const FullPositionCard = styled(Card)`
 
 async function getDeposits(account: string) {
   try {
-    const response = await fetch('https://api.thegraph.com/subgraphs/name/bacon-labs/eighty-eight-mph', {
+    const response = await fetch('https://api.thegraph.com/subgraphs/name/bacon-labs/eighty-eight-mph-staging', {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json'
@@ -262,14 +262,16 @@ export default function MphManage({
                               <Text>{t('depositedTokens')}</Text>
                               {numberToSignificant(userPosition.amount).toLocaleString('en-US')} {currency.symbol}
                             </RowBetween>
-                            <RowBetween>
-                              <Text>{t('yourPoolShare')}</Text>
-                              {numberToUsd(Number(userPosition.amount) * vaultStats.tokenPrice)} (
-                              {numberToPercent(
-                                Number(userPosition.amount) / (vaultStats.stakePoolTotalDeposited / 100)
-                              )}
-                              )
-                            </RowBetween>
+                            {vaultStats.tokenPrice !== 0 && (
+                              <RowBetween>
+                                <Text>{t('yourPoolShare')}</Text>
+                                {numberToUsd(Number(userPosition.amount) * vaultStats.tokenPrice)} (
+                                {numberToPercent(
+                                  Number(userPosition.amount) / (vaultStats.stakePoolTotalDeposited / 100)
+                                )}
+                                )
+                              </RowBetween>
+                            )}
 
                             <RowBetween style={{ alignItems: 'flex-start' }}>
                               <Text>{t('interestEarned')}</Text>
@@ -277,7 +279,9 @@ export default function MphManage({
                                 <div>
                                   {numberToSignificant(userPosition.interestEarned)} {currency.symbol}
                                 </div>
-                                <div>{numberToSignificant(userPosition.mintMPHAmount)} MPH</div>
+                                <div>
+                                  {t('vestedMPH', { vestedAmount: numberToSignificant(userPosition.mintMPHAmount) })}
+                                </div>
                               </Text>
                             </RowBetween>
 
@@ -316,24 +320,27 @@ export default function MphManage({
                                 </ButtonSecondary>
                               </RowBetween>
                             )}
-
-                            <RowBetween>
-                              <Text style={{ margin: '12px 0 0' }} fontSize="16px" fontWeight={600}>
-                                {t('stakePoolStats')}
-                              </Text>
-                            </RowBetween>
-                            <RowBetween style={{ alignItems: 'flex-start' }}>
-                              <Text>{t('stakePoolTotalDeposited')}</Text>
-                              <Text>{numberToUsd(vaultStats.stakePoolTotalDeposited)}</Text>
-                            </RowBetween>
-                            <RowBetween>
-                              <Text>{t('fixedApy')}</Text>
-                              <Text>{numberToPercent(vaultStats.apy)}</Text>
-                            </RowBetween>
-                            <RowBetween>
-                              <Text>{t('mphApy')}</Text>
-                              <Text>+{numberToPercent(vaultStats.mphApy)}</Text>
-                            </RowBetween>
+                            {vaultStats.tokenPrice !== 0 && (
+                              <>
+                                <RowBetween>
+                                  <Text style={{ margin: '12px 0 0' }} fontSize="16px" fontWeight={600}>
+                                    {t('stakePoolStats')}
+                                  </Text>
+                                </RowBetween>
+                                <RowBetween style={{ alignItems: 'flex-start' }}>
+                                  <Text>{t('stakePoolTotalDeposited')}</Text>
+                                  <Text>{numberToUsd(vaultStats.stakePoolTotalDeposited)}</Text>
+                                </RowBetween>
+                                <RowBetween>
+                                  <Text>{t('fixedApy')}</Text>
+                                  <Text>{numberToPercent(vaultStats.apy)}</Text>
+                                </RowBetween>
+                                <RowBetween>
+                                  <Text>{t('mphApy')}</Text>
+                                  <Text>+{numberToPercent(vaultStats.mphApy)}</Text>
+                                </RowBetween>
+                              </>
+                            )}
                           </AutoColumn>
                         </AutoColumn>
                       </FullPositionCard>

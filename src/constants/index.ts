@@ -111,18 +111,10 @@ export const MPH = new Token(ChainId.MAINNET, '0x8888801af4d980682e47f1a9036e589
 
 export const mphYALINKNFT = new Token(
   ChainId.MAINNET,
-  '0x968fba547baffbf2560d349dc4e5e700764d5ca1',
+  '0xf0b7de03134857391d8d43ed48e20edf21461097',
   0,
   '88mph-yaLINK-Deposit',
   '88mph yaLINK Pool Deposit'
-)
-
-export const mphUSDCNFT = new Token(
-  ChainId.MAINNET,
-  '0xdaA6BD333c83362579D9621954e9451E319D09ea',
-  0,
-  '88mph-USDC-Deposit',
-  '88mph USDC Pool Deposit'
 )
 
 const WETH_ONLY: ChainTokenList = {
@@ -392,23 +384,13 @@ export const UNI_POOLS = {
 
 export const SINGLE_POOLS: Record<string, any> = {
   ALINK: {
-    rewardsAddress: '0xc791184dc537ffea0bbb106179ad45d08d5acee2',
-    poolAddress: '0xc791184dc537ffea0bbb106179ad45d08d5acee2',
+    rewardsAddress: '0x904f81eff3c35877865810cca9a63f2d9cb7d4dd',
+    poolAddress: '0x904f81eff3c35877865810cca9a63f2d9cb7d4dd',
     tokens: [aLINK, WETHER],
     stakedToken: mphYALINKNFT,
     balance: 0,
     liquidityUrl:
       'https://app-v1.aave.com/deposit/LINK-0x514910771af9ca656af840dff83e8264ecf986ca0x24a42fd28c976a61df5d00d0599c34c4f90748c8',
-    abi: 'mphPool',
-    type: 'mph88'
-  },
-  USDC: {
-    rewardsAddress: '0xe8C52367b81113ED32bb276184e521C2fbE9393A',
-    poolAddress: '0x374226dbaa3e44bf3923afb63f5fd83928b7e148',
-    tokens: [USDC, WETHER],
-    stakedToken: mphUSDCNFT,
-    balance: 0,
-    liquidityUrl: 'https://app.uniswap.org/#/swap?outputCurrency=0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
     abi: 'mphPool',
     type: 'mph88'
   }

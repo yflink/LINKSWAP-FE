@@ -64,7 +64,7 @@ const ExternalLink = styled.a`
 
 async function get88Deposits(account: string) {
   try {
-    const response = await fetch('https://api.thegraph.com/subgraphs/name/bacon-labs/eighty-eight-mph', {
+    const response = await fetch('https://api.thegraph.com/subgraphs/name/bacon-labs/eighty-eight-mph-staging', {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json'
@@ -379,7 +379,7 @@ export default function SingleStakingCard({
                     )}
                   </>
                 ) : (
-                  <Dots>{t('loading')}</Dots>
+                  <>{information.poolType !== 'mph88' && <Dots>{t('loading')}</Dots>}</>
                 )}
               </div>
             )}
@@ -414,7 +414,7 @@ export default function SingleStakingCard({
                 </RowBetween>
               )}
 
-              {Number(balance?.toSignificant(1)) > 0 && (
+              {Number(balance?.toSignificant(1)) * 10000 > 1 && (
                 <RowBetween>
                   <Text>{t('stakableTokenAmount')}</Text>
                   {Number(balance?.toSignificant(6))}
@@ -467,7 +467,7 @@ export default function SingleStakingCard({
                   )}
                 </>
               )}
-              {Number(balance?.toSignificant(1)) > 0 && !show ? (
+              {Number(balance?.toSignificant(1)) * 10000 > 1 && !show && (
                 <RowBetween marginTop="10px">
                   <>
                     {information.poolType === 'mph88' ? (
@@ -481,33 +481,33 @@ export default function SingleStakingCard({
                     )}
                   </>
                 </RowBetween>
-              ) : (
-                <RowBetween marginTop="10px">
-                  {!account ? (
-                    <ButtonLight onClick={toggleWalletModal}>{t('connectWallet')}</ButtonLight>
-                  ) : (
-                    <>
-                      {information.poolType === 'mph88' ? (
-                        <>
-                          {information.poolType === 'mph88' && information.userBalance > 0 ? (
-                            <ButtonSecondary as={Link} width="100%" to={`/manage/mph88/${values.tokens[0].symbol}`}>
-                              {t('manageDeposits')}
-                            </ButtonSecondary>
-                          ) : (
-                            <ExternalButton href={values.liquidityUrl}>
-                              {t('getToken', { currencySymbol: currency0.symbol })}
-                            </ExternalButton>
-                          )}
-                        </>
-                      ) : (
-                        <ButtonSecondary as={Link} width="100%" to={`/swap/?outputCurrency=${currencyId(currency0)}`}>
-                          {t('getToken', { currencySymbol: currency0.symbol })}
-                        </ButtonSecondary>
-                      )}
-                    </>
-                  )}
-                </RowBetween>
               )}
+
+              <RowBetween marginTop="10px">
+                {!account ? (
+                  <ButtonLight onClick={toggleWalletModal}>{t('connectWallet')}</ButtonLight>
+                ) : (
+                  <>
+                    {information.poolType === 'mph88' ? (
+                      <>
+                        {information.poolType === 'mph88' && information.userBalance > 0 ? (
+                          <ButtonSecondary as={Link} width="100%" to={`/manage/mph88/${values.tokens[0].symbol}`}>
+                            {t('manageDeposits')}
+                          </ButtonSecondary>
+                        ) : (
+                          <ExternalButton href={values.liquidityUrl}>
+                            {t('getToken', { currencySymbol: currency0.symbol })}
+                          </ExternalButton>
+                        )}
+                      </>
+                    ) : (
+                      <ButtonSecondary as={Link} width="100%" to={`/swap/?outputCurrency=${currencyId(currency0)}`}>
+                        {t('getToken', { currencySymbol: currency0.symbol })}
+                      </ButtonSecondary>
+                    )}
+                  </>
+                )}
+              </RowBetween>
               {(information.stakePoolTotalDeposited > 0 || information.stakePoolTotalLiq > 0) && (
                 <RowBetween>
                   <Text style={{ margin: '12px 0 0' }} fontSize="16px" fontWeight={600}>
