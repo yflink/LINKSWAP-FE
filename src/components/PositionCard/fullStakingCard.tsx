@@ -493,7 +493,7 @@ export default function FullStakingCard({
               )}
               {information.userBalance > 0 && (
                 <RowBetween>
-                  <Text>{t('stakedTokenAmount')}</Text>
+                  <Text>{t('stakedTokenAmount').toLocaleString('en-US')}</Text>
                   {numberToSignificant(information.userBalance)}
                 </RowBetween>
               )}

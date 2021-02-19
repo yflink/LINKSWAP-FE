@@ -111,8 +111,8 @@ export const MPH = new Token(ChainId.MAINNET, '0x8888801af4d980682e47f1a9036e589
 
 export const mphYALINKNFT = new Token(
   ChainId.MAINNET,
-  '0x968fba547baffbf2560d349dc4e5e700764d5ca1',
-  1,
+  '0xf0b7de03134857391d8d43ed48e20edf21461097',
+  0,
   '88mph-yaLINK-Deposit',
   '88mph yaLINK Pool Deposit'
 )
@@ -384,7 +384,8 @@ export const UNI_POOLS = {
 
 export const SINGLE_POOLS: Record<string, any> = {
   ALINK: {
-    rewardsAddress: '0xc791184dc537ffea0bbb106179ad45d08d5acee2',
+    rewardsAddress: '0x904f81eff3c35877865810cca9a63f2d9cb7d4dd',
+    poolAddress: '0x904f81eff3c35877865810cca9a63f2d9cb7d4dd',
     tokens: [aLINK, WETHER],
     stakedToken: mphYALINKNFT,
     balance: 0,

@@ -25,7 +25,7 @@ import { CreatePairRedirectOldPathStructure, CreatePairRedirectDuplicateTokenIds
 import PreviewListing from './PreviewListing'
 import Analyze from './Analyze'
 import StakeOverview from './Stake'
-import { RedirectTo88mph, RedirectToStake, RedirectToUnstake } from './Stake/redirects'
+import { RedirectTo88mph, RedirectTo88mphWithdraw, RedirectToStake, RedirectToUnstake } from './Stake/redirects'
 import { ExternalLink } from 'react-feather'
 
 const AppWrapper = styled.div`
@@ -62,7 +62,7 @@ const BodyWrapper = styled.div`
   z-index: 1;
   ${({ theme }) => theme.mediaWidth.upToSmall`
     padding: 0 0 16px;
-  `};-
+  `};
 `
 
 const FooterWrapper = styled.div`
@@ -129,16 +129,17 @@ export default function App() {
                 <Route exact path="/add/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
                 <Route exact path="/add/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
                 <Route exact strict path="/remove/:tokens" component={RedirectOldRemoveLiquidityPathStructure} />
-                <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
+                <Route exact path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
                 <Route exact strict path="/create" component={CreatePair} />
                 <Route exact strict path="/stake" component={StakeOverview} />
                 <Route exact strict path="/unstake" component={StakeOverview} />
-                <Route exact strict path="/stake/mph88/:vaultName" component={RedirectTo88mph} />
-                <Route exact strict path="/stake/:currencyIdA/:currencyIdB" component={RedirectToStake} />
-                <Route exact strict path="/unstake/:currencyIdA/:currencyIdB" component={RedirectToUnstake} />
+                <Route exact path="/manage/mph88/:vaultName" component={RedirectTo88mphWithdraw} />
+                <Route exact path="/stake/mph88/:vaultName" component={RedirectTo88mph} />
+                <Route exact path="/stake/:currencyIdA/:currencyIdB" component={RedirectToStake} />
+                <Route exact path="/unstake/:currencyIdA/:currencyIdB" component={RedirectToUnstake} />
                 <Route exact path="/create/:currencyIdA" component={CreatePairRedirectOldPathStructure} />
                 <Route exact path="/create/:currencyIdA/:currencyIdB" component={CreatePairRedirectDuplicateTokenIds} />
-                <Route exact strict path="/previewlisting" component={PreviewListing} />{' '}
+                <Route exact strict path="/previewlisting" component={PreviewListing} />
                 <Route exact strict path="/analyze" component={Analyze} />
                 <Route exact strict path="/ren" component={Ren} />
                 <Route component={RedirectPathToSwapOnly} />

@@ -3,6 +3,7 @@ import { Redirect, RouteComponentProps } from 'react-router-dom'
 import StakeIntoPool from './StakeIntoPool'
 import Unstake from './Unstake'
 import MphVault from './MphVault'
+import MphManage from './MphManage'
 
 export function RedirectToStake(props: RouteComponentProps<{ currencyIdA: string; currencyIdB: string }>) {
   const {
@@ -38,4 +39,14 @@ export function RedirectTo88mph(props: RouteComponentProps<{ vaultName: string }
   } = props
 
   return <MphVault {...props} />
+}
+
+export function RedirectTo88mphWithdraw(props: RouteComponentProps<{ vaultName: string }>) {
+  const {
+    match: {
+      params: { vaultName }
+    }
+  } = props
+
+  return <MphManage {...props} />
 }
