@@ -407,5 +407,6 @@
   "interestEarned": "Interest earned",
   "depositedTokens": "Deposit",
   "vestedDetails88mph": "Check your <1>vested MPH rewards</1>",
-  "noDepositsFound": "No active 88mph deposits for this vault."
+  "noDepositsFound": "No active 88mph deposits for this vault.",
+  "vestedMPH": "{{vestedAmount}} MPH (vested)"
 }

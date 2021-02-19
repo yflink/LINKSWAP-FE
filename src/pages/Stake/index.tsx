@@ -68,7 +68,7 @@ export default function StakeOverview() {
     const allStakePools: any[] = []
     if (Boolean(allRewardPools)) {
       if (!singlePoolsAdded) {
-        allStakePools.push(SINGLE_POOLS.USDC)
+        //allStakePools.push(SINGLE_POOLS.USDC)
         allStakePools.push(SINGLE_POOLS.ALINK)
         setAllRewardPools(allStakePools)
         setSinglePoolsAdded(true)
