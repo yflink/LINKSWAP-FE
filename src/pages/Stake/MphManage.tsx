@@ -127,7 +127,6 @@ export default function MphManage({
         vaultStats.apy = Number(pool.oneYearInterestRate)
         vaultStats.mphApy = Number(pool.mphAPY)
         vaultStats.stakePoolTotalDeposited = Number(pool.totalValueLockedInUSD)
-        vaultStats.stakePoolTotalDeposited = Number(pool.totalValueLockedInToken)
         vaultStats.tokenPrice = Number(pool.totalValueLockedInUSD) / Number(pool.totalValueLockedInToken)
         return
       }
