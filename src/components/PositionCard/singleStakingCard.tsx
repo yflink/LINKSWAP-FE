@@ -64,7 +64,7 @@ const ExternalLink = styled.a`
 
 async function get88Deposits(account: string) {
   try {
-    const response = await fetch('https://api.thegraph.com/subgraphs/name/bacon-labs/eighty-eight-mph-staging', {
+    const response = await fetch('https://api.thegraph.com/subgraphs/name/bacon-labs/eighty-eight-mph', {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json'
