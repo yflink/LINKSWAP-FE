@@ -103,8 +103,8 @@ export const aLINK = new Token(
   ChainId.MAINNET,
   '0xa64bd6c70cb9051f6a9ba1f163fdc07e0dfb5f84',
   18,
-  'aLINK',
-  'Aave Interest bearing LINK'
+  'aLINK v1',
+  'Aave Interest bearing LINK v1'
 )
 
 export const MPH = new Token(ChainId.MAINNET, '0x8888801af4d980682e47f1a9036e589479e835c5', 18, 'MPH', '88mph.app')
