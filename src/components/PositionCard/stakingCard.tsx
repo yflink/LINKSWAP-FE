@@ -13,7 +13,7 @@ interface IStakingCard {
 export default function StakingCard({ type, values, showOwn, showExpired, index }: IStakingCard) {
   return (
     <>
-      {type === 'mph88' ? (
+      {type === 'mph88' || type === 'single' ? (
         <SingleStakingCard values={values} showOwn={showOwn} showExpired={showExpired} index={index} />
       ) : (
         <FullStakingCard values={values} showOwn={showOwn} showExpired={showExpired} index={index} />

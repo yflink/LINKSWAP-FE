@@ -80,7 +80,7 @@ export default function FullStakingCard({
   const currency0 = unwrappedToken(values.tokens[0])
   const currency1 = unwrappedToken(values.tokens[1])
   const toggleWalletModal = useWalletModalToggle()
-  const headerRowStyles = show ? 'defaut' : 'pointer'
+  const headerRowStyles = show ? 'default' : 'pointer'
   const addTransaction = useTransactionAdder()
   const fakeAccount = '0x0000000000000000000000000000000000000000'
   const fakeChainId = '1'

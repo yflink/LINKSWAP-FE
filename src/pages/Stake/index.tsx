@@ -18,6 +18,7 @@ import { useTranslation } from 'react-i18next'
 import { StakePools } from '../../components/Stake'
 import { ACTIVE_REWARD_POOLS, INACTIVE_REWARD_POOLS, SINGLE_POOLS, UNI_POOLS } from '../../constants'
 import Toggle from '../../components/Toggle'
+import { Record } from '@renproject/react-components'
 
 export default function StakeOverview() {
   const theme = useContext(ThemeContext)
@@ -68,8 +69,9 @@ export default function StakeOverview() {
     const allStakePools: any[] = []
     if (Boolean(allRewardPools)) {
       if (!singlePoolsAdded) {
-        //allStakePools.push(SINGLE_POOLS.USDC)
-        allStakePools.push(SINGLE_POOLS.ALINK)
+        for (const singlePoolObject in SINGLE_POOLS) {
+          allStakePools.push(SINGLE_POOLS[singlePoolObject])
+        }
         setAllRewardPools(allStakePools)
         setSinglePoolsAdded(true)
       }

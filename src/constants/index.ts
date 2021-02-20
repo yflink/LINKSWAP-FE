@@ -52,6 +52,7 @@ export const DPI = new Token(
 export const CEL = new Token(ChainId.MAINNET, '0xaaAEBE6Fe48E54f431b0C390CfaF0b017d09D42d', 4, 'CEL', 'Celsius')
 export const MASQ = new Token(ChainId.MAINNET, '0x06F3C323f0238c72BF35011071f2b5B7F43A054c', 18, 'MASQ', 'MASQ')
 export const YAX = new Token(ChainId.MAINNET, '0xb1dC9124c395c1e97773ab855d66E879f053A289', 18, 'YAX', 'yAxis')
+export const SYAX = new Token(ChainId.MAINNET, '0xb1dC9124c395c1e97773ab855d66E879f053A289', 18, 'sYAX', 'staked yAxis')
 export const WBTC = new Token(ChainId.MAINNET, '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599', 8, 'WBTC', 'Wrapped BTC')
 export const GSWAP = new Token(
   ChainId.MAINNET,
@@ -103,8 +104,8 @@ export const aLINK = new Token(
   ChainId.MAINNET,
   '0xa64bd6c70cb9051f6a9ba1f163fdc07e0dfb5f84',
   18,
-  'aLINK',
-  'Aave Interest bearing LINK'
+  'aLINK v1',
+  'Aave Interest bearing LINK v1'
 )
 
 export const MPH = new Token(ChainId.MAINNET, '0x8888801af4d980682e47f1a9036e589479e835c5', 18, 'MPH', '88mph.app')
@@ -353,7 +354,7 @@ export const UNI_POOLS = {
 }
 
 export const SINGLE_POOLS: Record<string, any> = {
-  ALINK: {
+  ALINKV1: {
     rewardsAddress: '0x904f81eff3c35877865810cca9a63f2d9cb7d4dd',
     poolAddress: '0x904f81eff3c35877865810cca9a63f2d9cb7d4dd',
     tokens: [aLINK, WETHER],
@@ -363,6 +364,54 @@ export const SINGLE_POOLS: Record<string, any> = {
       'https://app-v1.aave.com/deposit/LINK-0x514910771af9ca656af840dff83e8264ecf986ca0x24a42fd28c976a61df5d00d0599c34c4f90748c8',
     abi: 'mphPool',
     type: 'mph88'
+  },
+  YFLYFLUSD: {
+    rewardsAddress: '0x5f35334ef7E38EBE1f94d31E6fC3d78b477f4f91',
+    tokens: [YFL, WETHER],
+    stakedToken: YFL,
+    balance: 0,
+    abi: 'syflSinglePool',
+    type: 'single'
+  },
+  LINKYFLUSD: {
+    rewardsAddress: '0x4043D9BF3bC91893604c0281Dac857e6F24824a1',
+    tokens: [LINK, WETHER],
+    stakedToken: LINK,
+    balance: 0,
+    abi: 'syflSinglePool',
+    type: 'single'
+  },
+  BONKYFLUSD: {
+    rewardsAddress: '0xA54550653b6F5D55CB8D258a3Ed7c653eb186cC0',
+    tokens: [BONK, WETHER],
+    stakedToken: BONK,
+    balance: 0,
+    abi: 'syflSinglePool',
+    type: 'single'
+  },
+  DOKIYFLUSD: {
+    rewardsAddress: '0xFa60fFae050Edda279399209f3BBc0AC59327c88',
+    tokens: [DOKI, WETHER],
+    stakedToken: DOKI,
+    balance: 0,
+    abi: 'syflSinglePool',
+    type: 'single'
+  },
+  SYAXYFLUSD: {
+    rewardsAddress: '0xEB94b4a6700F5b5DaDB9ecb2973bEACB71A17bCD',
+    tokens: [SYAX, WETHER],
+    stakedToken: SYAX,
+    balance: 0,
+    abi: 'syflSinglePool',
+    type: 'single'
+  },
+  MASQYFLUSD: {
+    rewardsAddress: '0x77eAddB37d116D0272fda5d6441e4423950C8427',
+    tokens: [MASQ, WETHER],
+    stakedToken: MASQ,
+    balance: 0,
+    abi: 'syflSinglePool',
+    type: 'single'
   }
 }
 
