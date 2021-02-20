@@ -160,6 +160,7 @@ export default function SingleStakingCard({
   })
   const [fetching, setFetching] = useState(false)
   const [subGraphFetching, setSubGraphFetching] = useState(false)
+  const urlSymbol = values.tokens[0].symbol.replace(' ', '').toUpperCase()
 
   if (!fetching) {
     if (!!tokenPrices) {
@@ -471,7 +472,7 @@ export default function SingleStakingCard({
                 <RowBetween marginTop="10px">
                   <>
                     {information.poolType === 'mph88' ? (
-                      <ButtonSecondary as={Link} width="100%" to={`/stake/mph88/${values.tokens[0].symbol}`}>
+                      <ButtonSecondary as={Link} width="100%" to={`/stake/mph88/${urlSymbol}`}>
                         {t('stake')}
                       </ButtonSecondary>
                     ) : (
@@ -491,7 +492,7 @@ export default function SingleStakingCard({
                     {information.poolType === 'mph88' ? (
                       <>
                         {information.poolType === 'mph88' && information.userBalance > 0 ? (
-                          <ButtonSecondary as={Link} width="100%" to={`/manage/mph88/${values.tokens[0].symbol}`}>
+                          <ButtonSecondary as={Link} width="100%" to={`/manage/mph88/${urlSymbol}`}>
                             {t('manageDeposits')}
                           </ButtonSecondary>
                         ) : (
