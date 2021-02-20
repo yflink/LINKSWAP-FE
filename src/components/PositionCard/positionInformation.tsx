@@ -1,10 +1,10 @@
 import { unwrappedToken } from '../../utils/wrappedCurrency'
 import { getNetworkLibrary } from '../../connectors'
 import hexStringToNumber from '../../utils/hexStringToNumber'
-import { LINKSWAPLPToken, mphPool, StakingRewards, syflPool } from '../ABI'
+import { LINKSWAPLPToken, mphPool, StakingRewards, syflPool, syflSinglePool } from '../ABI'
 import { getContract } from '../../utils'
 import { BigNumber } from '@ethersproject/bignumber'
-import { sYFL, WETHER } from '../../constants'
+import { sYFL, WETHER, YFLUSD } from '../../constants'
 import moment from 'moment'
 import { ETHER } from '@uniswap/sdk'
 
@@ -53,6 +53,9 @@ export default async function positionInformation(
     case 'syflPool':
       abi = syflPool
       break
+    case 'syflSinglePool':
+      abi = syflSinglePool
+      break
     case 'mphPool':
       abi = mphPool
       break
@@ -70,7 +73,7 @@ export default async function positionInformation(
     !chainId || !library || !account
       ? getContract(liquidityToken.address, LINKSWAPLPToken, fakeLibrary, fakeAccount)
       : getContract(liquidityToken.address, LINKSWAPLPToken, library, account)
-  const isDefault = positionOutput.poolType !== 'syflPool'
+  const isDefault = position.abi === 'StakingRewards'
 
   try {
     if (positionOutput.poolType === 'mph88') {
@@ -117,7 +120,16 @@ export default async function positionInformation(
           positionOutput.rewardTokens[1] = response
         })
       } else {
-        positionOutput.rewardTokens[0] = sYFL.address
+        if (position.type === 'single') {
+          if (position.abi !== 'syflSinglePool') {
+            positionOutput.rewardTokens[0] = position.tokens[0].address
+          } else {
+            positionOutput.rewardTokens[0] = YFLUSD.address
+          }
+        } else {
+          positionOutput.rewardTokens[0] = sYFL.address
+        }
+
         positionOutput.rewardTokens[1] = '0x0000000000000000000000000000000000000000'
       }
     }

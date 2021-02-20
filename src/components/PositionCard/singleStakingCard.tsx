@@ -25,6 +25,12 @@ import { getNetworkLibrary } from '../../connectors'
 import { useTokenBalance } from '../../state/wallet/hooks'
 import { useGetMphPools } from '../../state/mph/hooks'
 import { useWalletModalToggle } from '../../state/application/hooks'
+import { calculateGasMargin, getContract } from '../../utils'
+import { TransactionResponse } from '@ethersproject/providers'
+import { BigNumber } from '@ethersproject/bignumber'
+import ReactGA from 'react-ga'
+import { addTransaction } from '../../state/transactions/actions'
+import { useTransactionAdder } from '../../state/transactions/hooks'
 
 const FullStakingCard = styled(Card)<{ highlight?: boolean; show?: boolean }>`
   font-size: 14px;
@@ -109,10 +115,11 @@ export default function SingleStakingCard({
   const [showMore, setShowMore] = useState(show)
   const { t } = useTranslation()
   const currency0 = unwrappedToken(values.tokens[0])
-  const headerRowStyles = show ? 'defaut' : 'pointer'
+  const headerRowStyles = show ? 'default' : 'pointer'
   const fakeAccount = '0x0000000000000000000000000000000000000000'
   const fakeChainId = '1'
   const fakeLibrary = getNetworkLibrary()
+  const addTransaction = useTransactionAdder()
   const toggleWalletModal = useWalletModalToggle()
   const [lifeLine, setLifeLine] = useState(false)
   const currencyA = currency0
@@ -322,11 +329,10 @@ export default function SingleStakingCard({
     if (information.userBalance > 0 && information.userShareUsd === 0) {
       information.userShare =
         information.totalSupply > 0 && information.userBalance > 0
-          ? information.userBalance / (information.totalSupply / 100)
+          ? (information.userBalance * information.poolTokenPrices[0]) / (information.stakePoolTotalDeposited / 100)
           : 0
 
-      information.userShareUsd =
-        information.lpTokenPrice && information.userBalance ? information.userBalance * information.lpTokenPrice : 0
+      information.userShareUsd = information.userBalance * information.poolTokenPrices[0]
     }
   }
 
@@ -338,6 +344,69 @@ export default function SingleStakingCard({
     ) {
       setTimeout(() => setLifeLine(true), 2000)
     }
+  }
+
+  async function claimRewards(rewardsContractAddress: string) {
+    if (!chainId || !library || !account || !information.updated) return
+    const router = getContract(rewardsContractAddress, information.abi, library, account)
+    const estimate = router.estimateGas.getReward
+    const method: () => Promise<TransactionResponse> = router.getReward
+
+    const value: BigNumber | null = null
+    await estimate(value ? { value } : {})
+      .then(() =>
+        method().then(response => {
+          addTransaction(response, {
+            summary: t('claimRewardsOnSinglePool', {
+              currencyASymbol: currency0?.symbol
+            })
+          })
+
+          ReactGA.event({
+            category: 'Staking',
+            action: 'ClaimRewards',
+            label: currency0?.symbol
+          })
+        })
+      )
+      .catch(error => {
+        if (error?.code !== 4001) {
+          console.error(error)
+        }
+      })
+  }
+
+  async function unstakeAndClaimRewards(rewardsContractAddress: string) {
+    if (!chainId || !library || !account || !information.updated) return
+    const router = getContract(rewardsContractAddress, information.abi, library, account)
+    const estimate = router.estimateGas.exit
+    const method: (...args: any) => Promise<TransactionResponse> = router.exit
+    const args: Array<string> = []
+    const value: BigNumber | null = null
+    await estimate(...args, value ? { value } : {})
+      .then(estimatedGasLimit =>
+        method(...args, {
+          ...(value ? { value } : {}),
+          gasLimit: calculateGasMargin(estimatedGasLimit)
+        }).then(response => {
+          addTransaction(response, {
+            summary: t('unstakeAndClaimRewardsOnSinglePool', {
+              currencyASymbol: currency0?.symbol
+            })
+          })
+
+          ReactGA.event({
+            category: 'Staking',
+            action: 'UnstkeAndClaimRewards',
+            label: currency0?.symbol
+          })
+        })
+      )
+      .catch(error => {
+        if (error?.code !== 4001) {
+          console.error(error)
+        }
+      })
   }
 
   if (
@@ -415,7 +484,7 @@ export default function SingleStakingCard({
                 </RowBetween>
               )}
 
-              {Number(balance?.toSignificant(1)) * 10000 > 1 && (
+              {Number(balance?.toSignificant(1)) * 10000 > 1 && !information.isInactive && (
                 <RowBetween>
                   <Text>{t('stakableTokenAmount')}</Text>
                   {Number(balance?.toSignificant(6))}
@@ -442,33 +511,25 @@ export default function SingleStakingCard({
                   {numberToUsd(information.userShareUsd)} ({numberToPercent(information.userShare)})
                 </RowBetween>
               )}
-              {information.rewardInfo[0].userReward > 0 || information.rewardInfo[1].userReward > 0 ? (
-                <RowBetween style={{ alignItems: 'flex-start' }}>
-                  <Text>{t('claimableRewards')}</Text>
-                  <Text style={{ textAlign: 'end' }}>
-                    {information.rewardInfo[0].userReward > 0 && (
-                      <div>
-                        {numberToSignificant(information.rewardInfo[0].userReward)} {information.rewardInfo[0].symbol}
-                      </div>
-                    )}
-                    {information.rewardInfo[1].userReward > 0 && (
-                      <div>
-                        {numberToSignificant(information.rewardInfo[1].userReward)} {information.rewardInfo[1].symbol}
-                      </div>
-                    )}
-                  </Text>
-                </RowBetween>
-              ) : (
-                <>
-                  {information.userBalance > 0 && information.poolType !== 'mph88' && (
-                    <RowBetween style={{ alignItems: 'flex-start' }}>
-                      <Text>{t('claimableRewards')}</Text>
-                      <Dots>{t('loading')}</Dots>
-                    </RowBetween>
-                  )}
-                </>
-              )}
-              {Number(balance?.toSignificant(1)) * 10000 > 1 && !show && (
+              {information.rewardInfo[0].userReward > 0 ||
+                (information.rewardInfo[1].userReward > 0 && (
+                  <RowBetween style={{ alignItems: 'flex-start' }}>
+                    <Text>{t('claimableRewards')}</Text>
+                    <Text style={{ textAlign: 'end' }}>
+                      {information.rewardInfo[0].userReward > 0 && (
+                        <div>
+                          {numberToSignificant(information.rewardInfo[0].userReward)} {information.rewardInfo[0].symbol}
+                        </div>
+                      )}
+                      {information.rewardInfo[1].userReward > 0 && (
+                        <div>
+                          {numberToSignificant(information.rewardInfo[1].userReward)} {information.rewardInfo[1].symbol}
+                        </div>
+                      )}
+                    </Text>
+                  </RowBetween>
+                ))}
+              {Number(balance?.toSignificant(1)) * 10000 > 1 && !show && !information.isInactive && (
                 <RowBetween marginTop="10px">
                   <>
                     {information.poolType === 'mph88' ? (
@@ -489,9 +550,9 @@ export default function SingleStakingCard({
                   <ButtonLight onClick={toggleWalletModal}>{t('connectWallet')}</ButtonLight>
                 ) : (
                   <>
-                    {information.poolType === 'mph88' ? (
+                    {information.poolType === 'mph88' && (
                       <>
-                        {information.poolType === 'mph88' && information.userBalance > 0 ? (
+                        {information.userBalance > 0 ? (
                           <ButtonSecondary as={Link} width="100%" to={`/manage/mph88/${urlSymbol}`}>
                             {t('manageDeposits')}
                           </ButtonSecondary>
@@ -501,10 +562,6 @@ export default function SingleStakingCard({
                           </ExternalButton>
                         )}
                       </>
-                    ) : (
-                      <ButtonSecondary as={Link} width="100%" to={`/swap/?outputCurrency=${currencyId(currency0)}`}>
-                        {t('getToken', { currencySymbol: currency0.symbol })}
-                      </ButtonSecondary>
                     )}
                   </>
                 )}
@@ -573,6 +630,48 @@ export default function SingleStakingCard({
                   <Text>{t('timeRemaining')}</Text>
                   <Countdown ends={information.periodFinish} format="DD[d] HH[h] mm[m] ss[s]" string="endsIn" />
                 </RowBetween>
+              )}
+              {information.poolType !== 'mph88' && (
+                <>
+                  <RowBetween marginTop="10px">
+                    {!show &&
+                      (information.rewardInfo[0].userReward > 0 || information.rewardInfo[1].userReward > 0) &&
+                      !information.isInactive && (
+                        <ButtonSecondary
+                          onClick={() => {
+                            claimRewards(values.rewardsAddress)
+                          }}
+                          width="48%"
+                          style={{ marginInlineEnd: '1%' }}
+                        >
+                          {t('claimRewards')}
+                        </ButtonSecondary>
+                      )}
+                    {!show && information.userBalance > 0 && !information.isInactive && (
+                      <ButtonSecondary
+                        as={Link}
+                        width="48%"
+                        style={{ marginInlineStart: '1%' }}
+                        to={`/unstake/single/${currencyId(currency0)}`}
+                      >
+                        {t('unstake')}
+                      </ButtonSecondary>
+                    )}
+                  </RowBetween>
+                  {!show && information.userBalance > 0 && (
+                    <RowBetween marginTop="10px">
+                      <ButtonSecondary
+                        onClick={() => {
+                          unstakeAndClaimRewards(values.rewardsAddress)
+                        }}
+                        width="100%"
+                        style={{ marginInlineEnd: '1%' }}
+                      >
+                        {t('unstakeAndClaim')}
+                      </ButtonSecondary>
+                    </RowBetween>
+                  )}
+                </>
               )}
             </AutoColumn>
           )}
