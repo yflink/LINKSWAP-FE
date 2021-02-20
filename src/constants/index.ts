@@ -353,7 +353,7 @@ export const UNI_POOLS = {
 }
 
 export const SINGLE_POOLS: Record<string, any> = {
-  ALINK: {
+  ALINKV1: {
     rewardsAddress: '0x904f81eff3c35877865810cca9a63f2d9cb7d4dd',
     poolAddress: '0x904f81eff3c35877865810cca9a63f2d9cb7d4dd',
     tokens: [aLINK, WETHER],
