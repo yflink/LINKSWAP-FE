@@ -69,7 +69,7 @@ export default function StakeOverview() {
     if (Boolean(allRewardPools)) {
       if (!singlePoolsAdded) {
         //allStakePools.push(SINGLE_POOLS.USDC)
-        allStakePools.push(SINGLE_POOLS.ALINK)
+        allStakePools.push(SINGLE_POOLS.ALINKV1)
         setAllRewardPools(allStakePools)
         setSinglePoolsAdded(true)
       }
