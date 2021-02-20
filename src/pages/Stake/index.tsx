@@ -18,7 +18,6 @@ import { useTranslation } from 'react-i18next'
 import { StakePools } from '../../components/Stake'
 import { ACTIVE_REWARD_POOLS, INACTIVE_REWARD_POOLS, SINGLE_POOLS, UNI_POOLS } from '../../constants'
 import Toggle from '../../components/Toggle'
-import { Record } from '@renproject/react-components'
 
 export default function StakeOverview() {
   const theme = useContext(ThemeContext)
