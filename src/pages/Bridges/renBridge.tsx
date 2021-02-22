@@ -337,7 +337,6 @@ export default function RenBridge({
               left={true}
               onClick={() => {
                 setAction('mint')
-                setResume(false)
               }}
             >
               {t('mint')}
@@ -348,7 +347,6 @@ export default function RenBridge({
               right={true}
               onClick={() => {
                 setAction('burn')
-                setResume(false)
               }}
             >
               {t('burn')}
@@ -425,7 +423,6 @@ export default function RenBridge({
                       <AutoColumn gap="12px">
                         <ButtonPrimary
                           onClick={() => {
-                            setResume(false)
                             generateMintAddress()
                           }}
                         >
@@ -452,55 +449,49 @@ export default function RenBridge({
                     {t('burnDescription', { inputCurrency: outputCurrency, outputCurrency: inputCurrency })}
                   </TYPE.link>
                 </BlueCard>
-                {!resume && (
-                  <>
-                    <Input
-                      type="text"
-                      autoComplete="off"
-                      autoCorrect="off"
-                      autoCapitalize="off"
-                      spellCheck="false"
-                      placeholder={t('walletAddress', { currency: tokenName })}
-                      onChange={e => {
-                        setErrorMessage(null)
-                        setRecipientAddress(e.target.value)
-                      }}
-                      value={recipientAddress}
-                    />
-                    <CurrencyInputPanel
-                      label={outputCurrency}
-                      hideCurrencySelect={true}
-                      value={formattedAmounts[Field.CURRENCY_A]}
-                      onUserInput={onFieldAInput}
-                      onMax={() => {
-                        setErrorMessage(null)
-                        onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
-                      }}
-                      showMaxButton={!atMaxAmounts[Field.CURRENCY_A]}
-                      currency={currencies[Field.CURRENCY_A]}
-                      id="burn-token-input"
-                      showCommonBases
-                    />
-                  </>
+                <Input
+                  type="text"
+                  autoComplete="off"
+                  autoCorrect="off"
+                  autoCapitalize="off"
+                  spellCheck="false"
+                  placeholder={t('walletAddress', { currency: tokenName })}
+                  onChange={e => {
+                    setErrorMessage(null)
+                    setRecipientAddress(e.target.value)
+                  }}
+                  value={recipientAddress}
+                />
+                <CurrencyInputPanel
+                  label={outputCurrency}
+                  hideCurrencySelect={true}
+                  value={formattedAmounts[Field.CURRENCY_A]}
+                  onUserInput={onFieldAInput}
+                  onMax={() => {
+                    setErrorMessage(null)
+                    onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
+                  }}
+                  showMaxButton={!atMaxAmounts[Field.CURRENCY_A]}
+                  currency={currencies[Field.CURRENCY_A]}
+                  id="burn-token-input"
+                  showCommonBases
+                />
+                {submitting && (
+                  <Text textAlign="center">
+                    <Loader />
+                  </Text>
                 )}
-                <>
-                  {submitting && (
-                    <Text textAlign="center">
-                      <Loader />
-                    </Text>
-                  )}
-                  {!submitting && !resume && (
-                    <AutoColumn gap="12px">
-                      <ButtonPrimary
-                        onClick={() => {
-                          burnTokens()
-                        }}
-                      >
-                        {t('burn')}
-                      </ButtonPrimary>
-                    </AutoColumn>
-                  )}
-                </>
+                {!submitting && (
+                  <AutoColumn gap="12px">
+                    <ButtonPrimary
+                      onClick={() => {
+                        burnTokens()
+                      }}
+                    >
+                      {t('burn')}
+                    </ButtonPrimary>
+                  </AutoColumn>
+                )}
               </AutoColumn>
             )}
             {errorMessage && (
