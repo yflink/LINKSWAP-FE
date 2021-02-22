@@ -373,7 +373,7 @@
 	"bridgeWarning": "لطفاً قبل از ادامه کار با دقت مطالعه کنید",
 	"bridgeDisclaimer": " باید مشخص شود که آیا شما در هنگام استفاده از renBridge  (ارسال وجوه به آدرس اشتباه، واریز چندین TX و غیره) که باعث می شوند تا وجوه شما به صورت خودکار از دست بروند (مانند هرگونه اشتباه blockchain  دیگر) اشتباه می کنید یا خیر. RenVM  فناوری جدیدی است و حسابرسی های امنیتی نمی توانند به طور کامل ریسک ها را از بین ببرند. لطفاً دارایی هایی که نمی توانید هزینه از دست دادن آنها را پرداخت کنید را تامین نکنید.",
 	"bridgeAbout": " در صورت بستن یا بارگذاری مجدد رابط ساخت، قبل از ارسال توکن های ساخته شده به کیف پول ERC-20 خود تنها بر روی دکمه ساخت(Mint) کلیک کنید تا تراکنش خود و دکمه ای که وجوه ساخته شده را به کیف پول شما ارسال می کند را مشاهده کنید.",
-	"brideConclusion": "لطفاً صبور باشید! فرآیند ساخت می تواند تا یک ساعت به طول انجامد زیرا RenVM  باید برای مبلغ ایمن و بی خطر تاییدات blockchain  (برای جلوگیری از دو بار ارسال و غیره) منتظر بماند",
+  "brideConclusion": "Please be patient! The minting process can take up to 24 hours because RenVM needs to wait for a safe amount of blockchain confirmations (to prevent double spend, etc).",
   "emissionDropIn": "Emission Drop (-25%) in {{time}}",
   "getToken": "Get {{currencySymbol}}",
   "poolExpired": "Pool Expired. Do not Stake!",

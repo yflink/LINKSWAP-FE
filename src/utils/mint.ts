@@ -1,6 +1,7 @@
 import { Ethereum } from '@renproject/chains-ethereum'
 import { Bitcoin, Dogecoin, BitcoinCash, Zcash } from '@renproject/chains-bitcoin'
 import { Filecoin } from '@renproject/chains-filecoin'
+import { Terra } from '@renproject/chains-terra'
 import { LockChain, LogLevel, MintChain, SimpleLogger, TxStatus } from '@renproject/interfaces'
 import RenJS from '@renproject/ren'
 import { LockAndMintDeposit } from '@renproject/ren/build/main/lockAndMint'
@@ -47,7 +48,6 @@ export const startMint = async (
   asset: Asset,
   recipientAddress: string,
   showAddress: (address: string | { address: string; params?: string }) => void,
-  setMinimumAmount: (amount: string) => void,
   onDeposit: (txHash: string, deposit: LockAndMintDeposit) => void
 ) => {
   let from: LockChain
@@ -67,24 +67,13 @@ export const startMint = async (
     case Asset.FIL:
       from = Filecoin()
       break
+    case Asset.LUNA:
+      from = Terra()
+      break
     default:
       throw new Error(`Unsupported asset ${asset}.`)
   }
   const to: MintChain = getMintChainObject(mintChain, mintChainProvider, recipientAddress)
-
-  switch (asset) {
-    case Asset.DOGE:
-      const decimals = await from.assetDecimals(asset)
-      const fees = await renJS.getFees({ asset, from, to })
-      const minimumAmount = new BigNumber(fees.mint).dividedBy(new BigNumber(10).exponentiatedBy(decimals))
-      setMinimumAmount(minimumAmount.toFixed())
-      break
-    case Asset.BTC:
-      setMinimumAmount('0.01')
-      break
-    default:
-      setMinimumAmount('0.1')
-  }
 
   const lockAndMint = await renJS.lockAndMint({
     asset,
@@ -117,12 +106,6 @@ export const handleDeposit = async (
   onRenVMStatus: (status: TxStatus) => void,
   onTransactionHash: (txHash: string) => void
 ) => {
-  console.log(deposit.depositDetails)
-  console.log(deposit.mintTransaction)
-  console.log(deposit.params)
-  console.log(deposit.renVM)
-  console.log(deposit.status)
-
   const hash = await deposit.txHash()
 
   const findTransaction = await deposit.params.to.findTransaction(deposit.params.asset, {
@@ -219,6 +202,9 @@ export const startBurn = async (
       break
     case Asset.DOGE:
       to = Dogecoin().Address(recipientAddress)
+      break
+    case Asset.LUNA:
+      to = Terra().Address(recipientAddress)
       break
     default:
       throw new Error(`Unsupported asset ${asset}.`)

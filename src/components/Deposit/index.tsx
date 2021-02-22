@@ -109,6 +109,9 @@ export const DepositObject: React.FC<DepositProps> = ({ txHash, deposit, status,
     case 'BCH':
       targetConfirmations = 16
       break
+    case 'ZEC':
+      targetConfirmations = 24
+      break
     case 'BTC':
       targetConfirmations = 6
       break

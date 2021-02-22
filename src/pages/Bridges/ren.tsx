@@ -9,7 +9,7 @@ import { AutoColumn } from '../../components/Column'
 import { RowBetween } from '../../components/Row'
 import Question from '../../components/QuestionHelper'
 import { TYPE } from '../../theme'
-import { renBCH, renBTC, renDOGE, renFIL, renZEC } from '../../constants'
+import { renBCH, renBTC, renDGB, renDOGE, renFIL, renLUNA, renZEC } from '../../constants'
 import BridgeCurrencyLogo from '../../components/BridgeLogo'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
 
@@ -17,10 +17,12 @@ export default function Ren() {
   const theme = useContext(ThemeContext)
   const { t } = useTranslation()
   const bridges = [
+    { url: 'ren/bch', currency0: { symbol: 'BCH', decimals: renBCH.decimals }, currency1: unwrappedToken(renBCH) },
+    { url: 'ren/btc', currency0: { symbol: 'BTC', decimals: renBTC.decimals }, currency1: unwrappedToken(renBTC) },
+    { url: 'ren/dgb', currency0: { symbol: 'DGB', decimals: renDGB.decimals }, currency1: unwrappedToken(renDGB) },
     { url: 'ren/doge', currency0: { symbol: 'DOGE', decimals: renDOGE.decimals }, currency1: unwrappedToken(renDOGE) },
     { url: 'ren/fil', currency0: { symbol: 'FIL', decimals: renFIL.decimals }, currency1: unwrappedToken(renFIL) },
-    { url: 'ren/btc', currency0: { symbol: 'BTC', decimals: renBTC.decimals }, currency1: unwrappedToken(renBTC) },
-    { url: 'ren/bch', currency0: { symbol: 'BCH', decimals: renBCH.decimals }, currency1: unwrappedToken(renBCH) },
+    { url: 'ren/luna', currency0: { symbol: 'LUNA', decimals: renLUNA.decimals }, currency1: unwrappedToken(renLUNA) },
     { url: 'ren/zec', currency0: { symbol: 'ZEC', decimals: renZEC.decimals }, currency1: unwrappedToken(renZEC) }
   ]
 

@@ -24,7 +24,9 @@ export enum Asset {
   BTC = 'BTC',
   BCH = 'BCH',
   ZEC = 'ZEC',
-  DOGE = 'DOGE'
+  DOGE = 'DOGE',
+  DGB = 'DGB',
+  LUNA = 'LUNA'
 }
 
 export const Assets = new Map<Asset, { symbol: Asset; name: string }>()
@@ -47,6 +49,14 @@ export const Assets = new Map<Asset, { symbol: Asset; name: string }>()
   .set(Asset.DOGE, {
     symbol: Asset.DOGE,
     name: 'Dogecoin'
+  })
+  .set(Asset.DGB, {
+    symbol: Asset.DGB,
+    name: 'Digibyte'
+  })
+  .set(Asset.LUNA, {
+    symbol: Asset.LUNA,
+    name: 'Terra'
   })
 
 export const defaultAsset = Asset.DOGE

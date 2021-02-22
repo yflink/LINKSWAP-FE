@@ -17,7 +17,7 @@ import BridgeWarningModal from '../../components/Bridges/warning-modal'
 import Question from '../../components/QuestionHelper'
 import { Asset, defaultMintChain } from '../../utils/assets'
 import { useTokenBalances } from '../../state/wallet/hooks'
-import { renBCH, renBTC, renDOGE, renFIL, renZEC } from '../../constants'
+import { renBCH, renBTC, renDGB, renDOGE, renFIL, renLUNA, renZEC } from '../../constants'
 import { startBurn, startMint } from '../../utils/mint'
 import { useTransactionStorage } from '../../utils/useTransactionStorage'
 import Web3 from 'web3'
@@ -136,26 +136,42 @@ export default function RenBridge({
   const outputCurrency = 'ren' + inputCurrency
   let token
   let tokenAsset: any
+  let tokenName: string
   switch (inputCurrency) {
     case 'BTC':
       token = renBTC
       tokenAsset = Asset.BTC
+      tokenName = 'Bitcoin'
       break
     case 'BCH':
       token = renBCH
       tokenAsset = Asset.BCH
+      tokenName = 'Bitcoin Cash'
       break
     case 'FIL':
       token = renFIL
       tokenAsset = Asset.FIL
+      tokenName = 'Filecoin'
       break
     case 'ZEC':
       token = renZEC
       tokenAsset = Asset.ZEC
+      tokenName = 'ZCash'
+      break
+    case 'LUNA':
+      token = renLUNA
+      tokenAsset = Asset.LUNA
+      tokenName = 'Terra (LUNA)'
+      break
+    case 'DGB':
+      token = renDGB
+      tokenAsset = Asset.DGB
+      tokenName = 'Digibyte'
       break
     default:
       token = renDOGE
       tokenAsset = Asset.DOGE
+      tokenName = 'Dogecoin'
   }
 
   const { account } = useWeb3React()
@@ -171,7 +187,6 @@ export default function RenBridge({
     string | { address: string; params?: string; memo?: string } | null
   >(null)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
-  const [minimumAmount, setMinimumAmount] = useState<string | null>(null)
   const [recipientAddress, setRecipientAddress] = React.useState('')
   const [submitting, setSubmitting] = React.useState(false)
   const toggleWalletModal = useWalletModalToggle()
@@ -226,16 +241,7 @@ export default function RenBridge({
       return
     }
     try {
-      await startMint(
-        renJS,
-        defaultMintChain,
-        provider,
-        tokenAsset,
-        account,
-        setDepositAddress,
-        setMinimumAmount,
-        addDeposit
-      )
+      await startMint(renJS, defaultMintChain, provider, tokenAsset, account, setDepositAddress, addDeposit)
     } catch (error) {
       console.error(error)
       setErrorMessage(String(error.message || error.error || JSON.stringify(error)))
@@ -284,6 +290,7 @@ export default function RenBridge({
     }
     setSubmitting(false)
   }
+
   return (
     <>
       <BridgeWarningModal isOpen={!dismissBridgeWarning} onConfirm={handleConfirmBridgeWarning} />
@@ -346,10 +353,6 @@ export default function RenBridge({
                 </BlueCard>
                 {depositAddress && !resume ? (
                   <AutoColumn gap={'5px'}>
-                    <RowBetween>
-                      <Text>{t('depositAtLeast')}:</Text>
-                      <Text>{t('minimumAmount', { currency: tokenAsset, minimumAmount: minimumAmount ?? 0 })}</Text>
-                    </RowBetween>
                     <Text style={{ padding: '15px 0 0' }}>{t('sendCurrencyTo', { currency: tokenAsset })}:</Text>
                     {typeof depositAddress === 'string' ? (
                       <Text fontSize="14px" fontWeight={600} style={{ wordBreak: 'break-all' }}>
@@ -397,7 +400,7 @@ export default function RenBridge({
                   <>
                     {(generatingAddress || resume) && deposits.count() === 0 && (
                       <Text textAlign="center">
-                        <Dots>{t('loading')}</Dots>
+                        <Loader />
                       </Text>
                     )}
                     {!generatingAddress && !resume && (
@@ -439,7 +442,7 @@ export default function RenBridge({
                       autoCorrect="off"
                       autoCapitalize="off"
                       spellCheck="false"
-                      placeholder={t('walletAddress', { currency: 'Dogecoin' })}
+                      placeholder={t('walletAddress', { currency: tokenName })}
                       onChange={e => {
                         setErrorMessage(null)
                         setRecipientAddress(e.target.value)
@@ -463,31 +466,20 @@ export default function RenBridge({
                   </>
                 )}
                 <>
-                  {(submitting || resume) && deposits.count() === 0 && (
+                  {submitting && (
                     <Text textAlign="center">
                       <Loader />
                     </Text>
                   )}
                   {!submitting && !resume && (
                     <AutoColumn gap="12px">
-                      {!resume && (
-                        <ButtonPrimary
-                          onClick={() => {
-                            setResume(false)
-                            burnTokens()
-                          }}
-                        >
-                          {t('burn')}
-                        </ButtonPrimary>
-                      )}
-                      <ButtonSecondary
-                        padding="18px"
+                      <ButtonPrimary
                         onClick={() => {
-                          setResume(true)
+                          burnTokens()
                         }}
                       >
-                        {t('resume', { action: t(action) })}
-                      </ButtonSecondary>
+                        {t('burn')}
+                      </ButtonPrimary>
                     </AutoColumn>
                   )}
                 </>

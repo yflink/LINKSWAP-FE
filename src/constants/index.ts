@@ -149,6 +149,22 @@ export const renZEC = new Token(
   'RenVM Zcash'
 )
 
+export const renDGB = new Token(
+  ChainId.MAINNET,
+  '0xe3cb486f3f5c639e98ccbaf57d95369375687f80',
+  8,
+  'renDGB',
+  'RenVM DigiByte'
+)
+
+export const renLUNA = new Token(
+  ChainId.MAINNET,
+  '0x52d87F22192131636F93c5AB18d0127Ea52CB641',
+  6,
+  'renLUNA',
+  'RenVM Terra'
+)
+
 const WETH_ONLY: ChainTokenList = {
   [ChainId.MAINNET]: [WETH[ChainId.MAINNET]],
   [ChainId.ROPSTEN]: [WETH[ChainId.ROPSTEN]],
