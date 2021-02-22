@@ -38,14 +38,14 @@ export const ExternalLink: React.FC<React.AnchorHTMLAttributes<HTMLAnchorElement
   </Link>
 )
 
-interface Props {
+interface DepositProps {
   txHash: string
   deposit: LockAndMintDeposit
   status: DepositStatus
   updateTransaction: (txHash: string, transaction: Partial<BurnDetails> | Partial<DepositDetails>) => void
 }
 
-export const DepositObject: React.FC<Props> = ({ txHash, deposit, status, updateTransaction }) => {
+export const DepositObject: React.FC<DepositProps> = ({ txHash, deposit, status, updateTransaction }: DepositProps) => {
   const { asset, from, to } = deposit.params
   const { amount } = deposit.depositDetails
 
@@ -62,10 +62,8 @@ export const DepositObject: React.FC<Props> = ({ txHash, deposit, status, update
 
   // Confirmations
   const [confirmations, setConfirmations] = useState<number | null>(null)
-  const [targetConfirmations, setTargetConfirmations] = useState<number | null>(null)
-  const onConfirmation = useCallback((confs: number, target: number) => {
-    setConfirmations(confs)
-    setTargetConfirmations(target)
+  const onConfirmation = useCallback((values_0: number) => {
+    setConfirmations(values_0)
   }, [])
 
   // The RenVM Status - see the TxStatus type.
@@ -85,7 +83,6 @@ export const DepositObject: React.FC<Props> = ({ txHash, deposit, status, update
   useEffect(() => {
     ;(async () => {
       step1()
-
       const decimals = await from.assetDecimals(asset)
       setAmountReadable(new BigNumber(amount).div(new BigNumber(10).exponentiatedBy(decimals)).toFixed())
     })().catch(console.error)
@@ -103,6 +100,22 @@ export const DepositObject: React.FC<Props> = ({ txHash, deposit, status, update
     setSubmitting(false)
   }, [setSubmitting, deposit, onStatus])
   const { t } = useTranslation()
+
+  let targetConfirmations
+  switch (asset) {
+    case 'FIL':
+      targetConfirmations = 200
+      break
+    case 'BCH':
+      targetConfirmations = 16
+      break
+    case 'BTC':
+      targetConfirmations = 6
+      break
+
+    default:
+      targetConfirmations = 50
+  }
 
   return (
     <AutoColumn gap="12px">

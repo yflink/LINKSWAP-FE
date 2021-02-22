@@ -18,12 +18,8 @@ import Buy from './Buy'
 import Pool from './Pool'
 import PoolFinder from './PoolFinder'
 import Ren from './Bridges/ren'
-import RenDoge from './Bridges/renDoge'
-import RenFil from './Bridges/renFil'
-import RenBtc from './Bridges/renBtc'
-import RenBch from './Bridges/renBch'
-import RenZec from './Bridges/renZec'
 import RemoveLiquidity from './RemoveLiquidity'
+
 import { RedirectOldRemoveLiquidityPathStructure } from './RemoveLiquidity/redirects'
 import CreatePair from './CreatePair'
 import { CreatePairRedirectOldPathStructure, CreatePairRedirectDuplicateTokenIds } from './CreatePair/redirects'
@@ -32,6 +28,7 @@ import Analyze from './Analyze'
 import StakeOverview from './Stake'
 import { RedirectTo88mph, RedirectTo88mphWithdraw, RedirectToStake, RedirectToUnstake } from './Stake/redirects'
 import { ExternalLink } from 'react-feather'
+import { RedirectToRenBridge } from './Bridges/redirects'
 
 const AppWrapper = styled.div`
   display: flex;
@@ -147,11 +144,7 @@ export default function App() {
                 <Route exact strict path="/previewlisting" component={PreviewListing} />
                 <Route exact strict path="/analyze" component={Analyze} />
                 <Route exact strict path="/ren" component={Ren} />
-                <Route exact strict path="/ren/doge" component={RenDoge} />
-                <Route exact strict path="/ren/fil" component={RenFil} />
-                <Route exact strict path="/ren/btc" component={RenBtc} />
-                <Route exact strict path="/ren/bch" component={RenBch} />
-                <Route exact strict path="/ren/zec" component={RenZec} />
+                <Route exact strict path="/ren/:bridgeName" component={RedirectToRenBridge} />
                 <Route component={RedirectPathToSwapOnly} />
               </Switch>
             </Web3ReactManager>

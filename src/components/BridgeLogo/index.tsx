@@ -1,7 +1,7 @@
 import { Currency } from '@uniswap/sdk'
 import React from 'react'
 import styled from 'styled-components'
-import { ArrowLeft, ArrowRight, ExternalLink } from 'react-feather'
+import { ArrowLeft, ArrowRight } from 'react-feather'
 
 import CurrencyLogo from '../CurrencyLogo'
 import { NavLink } from 'react-router-dom'

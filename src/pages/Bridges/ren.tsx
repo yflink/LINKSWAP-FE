@@ -46,7 +46,7 @@ export default function Ren() {
         <AutoColumn gap={'12px'}>
           {bridges.map((bridge, i) => {
             return (
-              <RowBetween>
+              <RowBetween key={i}>
                 <BridgeCurrencyLogo
                   currency0={bridge.currency0}
                   currency1={bridge.currency1}

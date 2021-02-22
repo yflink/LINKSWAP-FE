@@ -8,7 +8,7 @@ import RenJS from '@renproject/ren'
 import { Loading } from '@renproject/react-components'
 import { RenNetwork } from '@renproject/interfaces'
 import { useWeb3React } from '@web3-react/core'
-import { ButtonLight, ButtonPrimary } from '../../components/Button'
+import { ButtonLight, ButtonPrimary, ButtonSecondary } from '../../components/Button'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { useTranslation } from 'react-i18next'
 import { AutoColumn } from '../../components/Column'
@@ -17,7 +17,7 @@ import BridgeWarningModal from '../../components/Bridges/warning-modal'
 import Question from '../../components/QuestionHelper'
 import { Asset, defaultMintChain } from '../../utils/assets'
 import { useTokenBalances } from '../../state/wallet/hooks'
-import { renBCH } from '../../constants'
+import { renBCH, renBTC, renDOGE, renFIL, renZEC } from '../../constants'
 import { startBurn, startMint } from '../../utils/mint'
 import { useTransactionStorage } from '../../utils/useTransactionStorage'
 import Web3 from 'web3'
@@ -31,6 +31,7 @@ import { TokenAmount } from '@uniswap/sdk'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import { BurnObject } from '../../components/Burn'
 import { DepositObject } from '../../components/Deposit'
+import { RouteComponentProps } from 'react-router-dom'
 
 const NavigationWrapper = styled.div`
   display: flex;
@@ -126,7 +127,37 @@ const Loader = styled(Loading)`
   }
 `
 
-export default function RenBch() {
+export default function RenBridge({
+  match: {
+    params: { bridgeName }
+  }
+}: RouteComponentProps<{ bridgeName?: string }>) {
+  const inputCurrency = bridgeName ? bridgeName.toUpperCase() : 'DOGE'
+  const outputCurrency = 'ren' + inputCurrency
+  let token
+  let tokenAsset: any
+  switch (inputCurrency) {
+    case 'BTC':
+      token = renBTC
+      tokenAsset = Asset.BTC
+      break
+    case 'BCH':
+      token = renBCH
+      tokenAsset = Asset.BCH
+      break
+    case 'FIL':
+      token = renFIL
+      tokenAsset = Asset.FIL
+      break
+    case 'ZEC':
+      token = renZEC
+      tokenAsset = Asset.ZEC
+      break
+    default:
+      token = renDOGE
+      tokenAsset = Asset.DOGE
+  }
+
   const { account } = useWeb3React()
   const theme = useContext(ThemeContext)
   const [dismissBridgeWarning, setDismissBridgeWarning] = useState<boolean>(false)
@@ -134,6 +165,7 @@ export default function RenBch() {
     setDismissBridgeWarning(true)
   }, [])
   const [action, setAction] = useState('mint')
+  const [resume, setResume] = useState(false)
   const [generatingAddress, setGeneratingAddress] = useState(false)
   const [depositAddress, setDepositAddress] = useState<
     string | { address: string; params?: string; memo?: string } | null
@@ -145,17 +177,15 @@ export default function RenBch() {
   const toggleWalletModal = useWalletModalToggle()
   const { t } = useTranslation()
   const renJS = useMemo(() => new RenJS(RenNetwork.Mainnet, {}), [])
-  const balance = useTokenBalances(account ?? undefined, [renBCH])
-  const userBalance = balance[renBCH.address]
+  const balance = useTokenBalances(account ?? undefined, [token])
+  const userBalance = balance[token.address]
   const web3 = new Web3(Web3.givenProvider)
   const provider = web3.currentProvider
   const { independentField, typedValue } = useMintState()
   const { dependentField, currencies, parsedAmounts, noLiquidity, currencyBalances } = useDerivedMintInfo(
-    renBCH ?? undefined,
+    token ?? undefined,
     undefined
   )
-  const inputCurrency = 'BCH'
-  const outputCurrency = 'renBCH'
   const { onFieldAInput } = useMintActionHandlers(noLiquidity)
   const formattedAmounts = {
     [independentField]: typedValue,
@@ -175,12 +205,12 @@ export default function RenBch() {
   }, {})
   const updateBalance = useCallback(
     (assetIn?: Asset) => {
-      if (assetIn && assetIn !== Asset.BCH) {
+      if (assetIn && assetIn !== tokenAsset) {
         return
       }
       return userBalance
     },
-    [userBalance]
+    [userBalance, tokenAsset]
   )
 
   const { deposits, addDeposit, addBurn, updateTransaction } = useTransactionStorage(updateBalance)
@@ -200,7 +230,7 @@ export default function RenBch() {
         renJS,
         defaultMintChain,
         provider,
-        Asset.BCH,
+        tokenAsset,
         account,
         setDepositAddress,
         setMinimumAmount,
@@ -238,7 +268,7 @@ export default function RenBch() {
         renJS,
         defaultMintChain,
         provider,
-        Asset.BCH,
+        tokenAsset,
         recipientAddress,
         formattedAmounts[Field.CURRENCY_A],
         account,
@@ -276,10 +306,26 @@ export default function RenBch() {
             </Text>
           </RowBetween>
           <NavigationWrapper>
-            <Navigation selected={action === 'mint'} primary={true} left={true} onClick={() => setAction('mint')}>
+            <Navigation
+              selected={action === 'mint'}
+              primary={true}
+              left={true}
+              onClick={() => {
+                setAction('mint')
+                setResume(false)
+              }}
+            >
               {t('mint')}
             </Navigation>
-            <Navigation selected={action === 'burn'} primary={true} right={true} onClick={() => setAction('burn')}>
+            <Navigation
+              selected={action === 'burn'}
+              primary={true}
+              right={true}
+              onClick={() => {
+                setAction('burn')
+                setResume(false)
+              }}
+            >
               {t('burn')}
             </Navigation>
           </NavigationWrapper>
@@ -298,18 +344,47 @@ export default function RenBch() {
                     {t('mintDescription', { inputCurrency: inputCurrency, outputCurrency: outputCurrency })}
                   </TYPE.link>
                 </BlueCard>
-                {depositAddress ? (
-                  <AutoColumn gap={'18px'}>
+                {depositAddress && !resume ? (
+                  <AutoColumn gap={'5px'}>
                     <RowBetween>
                       <Text>{t('depositAtLeast')}:</Text>
-                      <Text>{t('minimumAmount', { currency: Asset.BCH, minimumAmount: minimumAmount ?? 0 })}</Text>
+                      <Text>{t('minimumAmount', { currency: tokenAsset, minimumAmount: minimumAmount ?? 0 })}</Text>
                     </RowBetween>
-                    <Text textAlign="center">{t('sendCurrencyTo', { currency: Asset.BCH })}:</Text>
-                    <BlueCard>
-                      <TYPE.link textAlign="center" fontWeight={400}>
-                        <strong>{depositAddress}</strong>
-                      </TYPE.link>
-                      <Text textAlign="center" padding="1.5rem 0 0" fontSize="12px">
+                    <Text style={{ padding: '15px 0 0' }}>{t('sendCurrencyTo', { currency: tokenAsset })}:</Text>
+                    {typeof depositAddress === 'string' ? (
+                      <Text fontSize="14px" fontWeight={600} style={{ wordBreak: 'break-all' }}>
+                        {depositAddress}
+                      </Text>
+                    ) : (
+                      <>
+                        <Text fontWeight={600} style={{ wordBreak: 'break-all' }}>
+                          {depositAddress.address}
+                        </Text>
+                        {depositAddress.params && (
+                          <>
+                            <Text style={{ padding: '10px 0 0' }}>{t('addParamsBase64')}:</Text>
+                            <Text fontSize="14px" fontWeight={600} style={{ wordBreak: 'break-all' }}>
+                              {depositAddress.params}
+                            </Text>
+                            <Text style={{ padding: '10px 0 0' }}>{t('addParamsBaseHex')}:</Text>
+                            <Text fontSize="14px" fontWeight={600} style={{ wordBreak: 'break-all' }}>
+                              {Buffer.from(depositAddress.params, 'base64').toString('hex')}
+                            </Text>
+                          </>
+                        )}
+                        {depositAddress.memo && (
+                          <>
+                            <Text style={{ padding: '10px 0 0' }}>{t('addMemo')}:</Text>
+                            <Text fontSize="14px" fontWeight={600} style={{ wordBreak: 'break-all' }}>
+                              {depositAddress.memo}
+                            </Text>
+                          </>
+                        )}
+                      </>
+                    )}
+
+                    <BlueCard style={{ margin: '15px 0' }}>
+                      <Text textAlign="center" fontSize="12px">
                         {t('onlyDepositOnce')}
                       </Text>
                     </BlueCard>
@@ -320,18 +395,31 @@ export default function RenBch() {
                   </AutoColumn>
                 ) : (
                   <>
-                    {generatingAddress ? (
+                    {(generatingAddress || resume) && deposits.count() === 0 && (
                       <Text textAlign="center">
                         <Dots>{t('loading')}</Dots>
                       </Text>
-                    ) : (
-                      <ButtonPrimary
-                        onClick={() => {
-                          generateMintAddress()
-                        }}
-                      >
-                        {t('mint')}
-                      </ButtonPrimary>
+                    )}
+                    {!generatingAddress && !resume && (
+                      <AutoColumn gap="12px">
+                        <ButtonPrimary
+                          onClick={() => {
+                            setResume(false)
+                            generateMintAddress()
+                          }}
+                        >
+                          {t('mint')}
+                        </ButtonPrimary>
+                        <ButtonSecondary
+                          padding="18px"
+                          onClick={() => {
+                            setResume(true)
+                            generateMintAddress()
+                          }}
+                        >
+                          {t('resume', { action: t(action) })}
+                        </ButtonSecondary>
+                      </AutoColumn>
                     )}
                   </>
                 )}
@@ -343,46 +431,64 @@ export default function RenBch() {
                     {t('burnDescription', { inputCurrency: outputCurrency, outputCurrency: inputCurrency })}
                   </TYPE.link>
                 </BlueCard>
-                <Input
-                  type="text"
-                  autoComplete="off"
-                  autoCorrect="off"
-                  autoCapitalize="off"
-                  spellCheck="false"
-                  placeholder={t('walletAddress', { currency: 'Bitcoin Cash' })}
-                  onChange={e => {
-                    setErrorMessage(null)
-                    setRecipientAddress(e.target.value)
-                  }}
-                  value={recipientAddress}
-                />
-                <CurrencyInputPanel
-                  label="renBCH"
-                  hideCurrencySelect={true}
-                  value={formattedAmounts[Field.CURRENCY_A]}
-                  onUserInput={onFieldAInput}
-                  onMax={() => {
-                    setErrorMessage(null)
-                    onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
-                  }}
-                  showMaxButton={!atMaxAmounts[Field.CURRENCY_A]}
-                  currency={currencies[Field.CURRENCY_A]}
-                  id="burn-token-input"
-                  showCommonBases
-                />
+                {!resume && (
+                  <>
+                    <Input
+                      type="text"
+                      autoComplete="off"
+                      autoCorrect="off"
+                      autoCapitalize="off"
+                      spellCheck="false"
+                      placeholder={t('walletAddress', { currency: 'Dogecoin' })}
+                      onChange={e => {
+                        setErrorMessage(null)
+                        setRecipientAddress(e.target.value)
+                      }}
+                      value={recipientAddress}
+                    />
+                    <CurrencyInputPanel
+                      label={outputCurrency}
+                      hideCurrencySelect={true}
+                      value={formattedAmounts[Field.CURRENCY_A]}
+                      onUserInput={onFieldAInput}
+                      onMax={() => {
+                        setErrorMessage(null)
+                        onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
+                      }}
+                      showMaxButton={!atMaxAmounts[Field.CURRENCY_A]}
+                      currency={currencies[Field.CURRENCY_A]}
+                      id="burn-token-input"
+                      showCommonBases
+                    />
+                  </>
+                )}
                 <>
-                  {submitting ? (
+                  {(submitting || resume) && deposits.count() === 0 && (
                     <Text textAlign="center">
                       <Loader />
                     </Text>
-                  ) : (
-                    <ButtonPrimary
-                      onClick={() => {
-                        burnTokens()
-                      }}
-                    >
-                      {t('burn')}
-                    </ButtonPrimary>
+                  )}
+                  {!submitting && !resume && (
+                    <AutoColumn gap="12px">
+                      {!resume && (
+                        <ButtonPrimary
+                          onClick={() => {
+                            setResume(false)
+                            burnTokens()
+                          }}
+                        >
+                          {t('burn')}
+                        </ButtonPrimary>
+                      )}
+                      <ButtonSecondary
+                        padding="18px"
+                        onClick={() => {
+                          setResume(true)
+                        }}
+                      >
+                        {t('resume', { action: t(action) })}
+                      </ButtonSecondary>
+                    </AutoColumn>
                   )}
                 </>
               </AutoColumn>

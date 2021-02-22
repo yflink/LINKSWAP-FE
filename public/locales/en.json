@@ -413,5 +413,11 @@
   "renDescription": "Choose a bridge and transfer your crypto currencies between their blockchain and the Ethereum blockchain",
   "bridgeRen": "{{inputCurrency}} Bridge",
   "bridgeRenDescription": "Convert {{inputCurrency}} to {{outputCurrency}}",
-  "yourRenBalance": "Your {{currency}} balance: {{balance}} {{currency}}"
+  "yourRenBalance": "Your {{currency}} balance: {{balance}} {{currency}}",
+  "addParamsBase64": "Add parameter (Base64 format)",
+  "addParamsHex": "Add parameter (Hex format)",
+  "addMemo": "Add this memo to your transaction",
+  "resume": "Resume {{action}}"
+
+
 }
