@@ -36,7 +36,6 @@ const Link = styled.a`
 
 const AddLiquidity = styled(NavLink)`
   padding: 16px;
-  margin: 12px 0 0 0;
   text-decoration: none;
   color: ${({ theme }) => theme.buttonTextColor};
   background: ${({ theme }) => theme.buttonBG};
