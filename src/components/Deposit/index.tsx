@@ -61,9 +61,13 @@ export const DepositObject: React.FC<DepositProps> = ({ txHash, deposit, status,
   )
 
   // Confirmations
+  const [tConfirmations, setTConfirmations] = useState(0)
   const [confirmations, setConfirmations] = useState<number | null>(null)
   const onConfirmation = useCallback((values_0: number) => {
     setConfirmations(values_0)
+  }, [])
+  const onConfirmationTarget = useCallback((values_0: number) => {
+    setTConfirmations(values_0)
   }, [])
 
   // The RenVM Status - see the TxStatus type.
@@ -73,10 +77,12 @@ export const DepositObject: React.FC<DepositProps> = ({ txHash, deposit, status,
 
   const step1 = useCallback(() => {
     onStatus(DepositStatus.DETECTED)
-    handleDeposit(deposit, onStatus, onConfirmation, setRenVMStatus, setMintTransaction).catch(error => {
-      setErrorMessage(String(error.message || error))
-      onStatus(DepositStatus.ERROR)
-    })
+    handleDeposit(deposit, onStatus, onConfirmation, onConfirmationTarget, setRenVMStatus, setMintTransaction).catch(
+      error => {
+        setErrorMessage(String(error.message || error))
+        onStatus(DepositStatus.ERROR)
+      }
+    )
   }, [onConfirmation, setErrorMessage, onStatus, deposit, setRenVMStatus, setMintTransaction])
 
   const theme = useContext(ThemeContext)
@@ -100,25 +106,6 @@ export const DepositObject: React.FC<DepositProps> = ({ txHash, deposit, status,
     setSubmitting(false)
   }, [setSubmitting, deposit, onStatus])
   const { t } = useTranslation()
-
-  let targetConfirmations
-  switch (asset) {
-    case 'FIL':
-      targetConfirmations = 200
-      break
-    case 'BCH':
-      targetConfirmations = 16
-      break
-    case 'ZEC':
-      targetConfirmations = 24
-      break
-    case 'BTC':
-      targetConfirmations = 6
-      break
-
-    default:
-      targetConfirmations = 50
-  }
 
   return (
     <AutoColumn gap="12px">
@@ -189,7 +176,7 @@ export const DepositObject: React.FC<DepositProps> = ({ txHash, deposit, status,
         <RowBetween>
           <Text fontSize="12px">{t('confirmations')}:</Text>
           <Text fontSize="12px">
-            {confirmations}/{targetConfirmations}
+            {confirmations}/{tConfirmations}
           </Text>
         </RowBetween>
       ) : null}

@@ -103,6 +103,7 @@ export const handleDeposit = async (
   deposit: LockAndMintDeposit,
   onStatus: (status: DepositStatus) => void,
   onConfirmation: (values_0: number) => void,
+  onConfirmationTarget: (values_0: number) => void,
   onRenVMStatus: (status: TxStatus) => void,
   onTransactionHash: (txHash: string) => void
 ) => {
@@ -123,7 +124,7 @@ export const handleDeposit = async (
 
   await deposit
     .confirmed()
-    .on('target', onConfirmation)
+    .on('target', onConfirmationTarget)
     .on('confirmation', onConfirmation)
 
   onStatus(DepositStatus.CONFIRMED)
