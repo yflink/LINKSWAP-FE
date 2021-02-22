@@ -1,5 +1,6 @@
 import { Ethereum } from '@renproject/chains-ethereum'
-import { Bitcoin, Dogecoin } from '@renproject/chains-bitcoin'
+import { Bitcoin, Dogecoin, BitcoinCash, Zcash } from '@renproject/chains-bitcoin'
+import { Filecoin } from '@renproject/chains-filecoin'
 import { LockChain, LogLevel, MintChain, SimpleLogger, TxStatus } from '@renproject/interfaces'
 import RenJS from '@renproject/ren'
 import { LockAndMintDeposit } from '@renproject/ren/build/main/lockAndMint'
@@ -57,12 +58,22 @@ export const startMint = async (
     case Asset.DOGE:
       from = Dogecoin()
       break
+    case Asset.BCH:
+      from = BitcoinCash()
+      break
+    case Asset.ZEC:
+      from = Zcash()
+      break
+    case Asset.FIL:
+      from = Filecoin()
+      break
     default:
       throw new Error(`Unsupported asset ${asset}.`)
   }
   const to: MintChain = getMintChainObject(mintChain, mintChainProvider, recipientAddress)
 
   const decimals = await from.assetDecimals(asset)
+  console.log(asset, from, to)
   const fees = await renJS.getFees({ asset, from, to })
   const minimumAmount = new BigNumber(fees.mint).dividedBy(new BigNumber(10).exponentiatedBy(decimals))
   setMinimumAmount(minimumAmount.toFixed())

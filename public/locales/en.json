@@ -341,12 +341,9 @@
   "copyCurrentSelection": "Copy url to current selection",
   "copied": "Copied current selection to clipboard!",
   "openSwapUrl": "Trade",
-  "bridgeRenDoge": "renDOGE Bridge",
-  "bridgeRenDogeDescription": "Convert DOGE to renDOGE",
   "burn": "Burn",
   "mint": "Mint",
   "walletConnectDisclaimerBridge": "To mint and burn Tokens, you need to connect a Web3 wallet such as Metamask, Trust Wallet or Coinbase Wallet.",
-  "yourRenDogeBalance": "Your {{currency}} balance: {{balance}} {{currency}}",
   "mintDescription": "You can mint {{outputCurrency}} by sending {{inputCurrency}} to an automatically generated Gateway Address. These addresses are only valid for 24 hours! Click 'Mint' to generate a Gateway Address associated with your wallet.",
   "depositAtLeast": "Deposit at least",
   "minimumAmount": "{{minimumAmount}} {{currency}}",
@@ -410,5 +407,11 @@
   "noDepositsFound": "No active 88mph deposits for this vault.",
   "vestedMPH": "{{vestedAmount}} MPH (vested)",
   "claimRewardsOnSinglePool": "Claim Rewards on {{currencyASymbol}} Pool",
-  "unstakeAndClaimRewardsOnSinglePool": "Unstake all and Claim Rewards on {{currencyASymbol}} Pool"
+  "unstakeAndClaimRewardsOnSinglePool": "Unstake all and Claim Rewards on {{currencyASymbol}} Pool",
+  "bridgesRen": "LINKSWAP RenVM Bridges",
+  "bridgesRenDescription": "Transfer crypto currencies from different blockchains onto the Ethereum blockchain, with our RenVM implementation",
+  "renDescription": "Choose a bridge and transfer your crypto currencies between their blockchain and the Ethereum blockchain",
+  "bridgeRen": "{{inputCurrency}} Bridge",
+  "bridgeRenDescription": "Convert {{inputCurrency}} to {{outputCurrency}}",
+  "yourRenBalance": "Your {{currency}} balance: {{balance}} {{currency}}"
 }

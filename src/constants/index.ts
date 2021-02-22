@@ -85,13 +85,6 @@ export const AZUKI = new Token(
 )
 export const DRC = new Token(ChainId.MAINNET, '0xb78B3320493a4EFaa1028130C5Ba26f0B6085Ef8', 18, 'DRC', 'Dracula Token')
 export const BONK = new Token(ChainId.MAINNET, '0x6D6506E6F438edE269877a0A720026559110B7d5', 18, 'BONK', 'BONKTOKEN')
-export const renDOGE = new Token(
-  ChainId.MAINNET,
-  '0x3832d2F059E55934220881F831bE501D180671A7',
-  8,
-  'renDOGE',
-  'Wrapped Dogecoin'
-)
 export const MFG = new Token(
   ChainId.MAINNET,
   '0x6710c63432A2De02954fc0f851db07146a6c0312',
@@ -116,6 +109,44 @@ export const mphYALINKNFT = new Token(
   0,
   '88mph-yaLINK-Deposit',
   '88mph yaLINK Pool Deposit'
+)
+
+//renTokens
+export const renDOGE = new Token(
+  ChainId.MAINNET,
+  '0x3832d2F059E55934220881F831bE501D180671A7',
+  8,
+  'renDOGE',
+  'RenVM Dogecoin'
+)
+export const renFIL = new Token(
+  ChainId.MAINNET,
+  '0xD5147bc8e386d91Cc5DBE72099DAC6C9b99276F5',
+  18,
+  'renFIL',
+  'RenVM Filecoin'
+)
+export const renBTC = new Token(
+  ChainId.MAINNET,
+  '0xeb4c2781e4eba804ce9a9803c67d0893436bb27d',
+  8,
+  'renBTC',
+  'RenVM Bitcoin'
+)
+export const renBCH = new Token(
+  ChainId.MAINNET,
+  '0x459086f2376525bdceba5bdda135e4e9d3fef5bf',
+  8,
+  'renBCH',
+  'RenVM BitcoinCash'
+)
+
+export const renZEC = new Token(
+  ChainId.MAINNET,
+  '0x1c5db575e2ff833e46a2e9864c22f4b22e0b37c2',
+  8,
+  'renZEC',
+  'RenVM Zcash'
 )
 
 const WETH_ONLY: ChainTokenList = {

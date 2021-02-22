@@ -196,7 +196,7 @@ export default function Header() {
                 <MenuText>YFLUSD</MenuText>
               </Title>
               <Title style={{ marginInlineStart: 24 }} href="/#/ren">
-                <MenuText>renDOGE</MenuText>
+                <MenuText>Ren Bridges</MenuText>
               </Title>
             </HeaderElementMobile>
           )}
