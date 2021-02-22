@@ -21,7 +21,6 @@ import { renBCH, renBTC, renDGB, renDOGE, renFIL, renLUNA, renZEC } from '../../
 import { startBurn, startMint } from '../../utils/mint'
 import { useTransactionStorage } from '../../utils/useTransactionStorage'
 import Web3 from 'web3'
-import { Dots } from '../../components/swap/styleds'
 import { TYPE } from '../../theme'
 import BigNumber from 'bignumber.js'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
@@ -31,7 +30,8 @@ import { TokenAmount } from '@uniswap/sdk'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import { BurnObject } from '../../components/Burn'
 import { DepositObject } from '../../components/Deposit'
-import { RouteComponentProps } from 'react-router-dom'
+import { Link as HistoryLink, RouteComponentProps } from 'react-router-dom'
+import { ArrowLeft } from 'react-feather'
 
 const NavigationWrapper = styled.div`
   display: flex;
@@ -124,6 +124,19 @@ const Loader = styled(Loading)`
   display: inline-block;
   &:after {
     border-color: ${({ theme }) => theme.textHighlight} transparent !important;
+  }
+`
+
+const BackButton = styled.div`
+  display: flex;
+  flex: 0 0 100%;
+
+  > * {
+    display: flex;
+    align-items: center;
+    color: ${({ theme }) => theme.textPrimary};
+    font-size: 16px;
+    text-decoration: none;
   }
 `
 
@@ -299,6 +312,11 @@ export default function RenBridge({
       </Card>
       <AppBody>
         <AutoColumn gap={'12px'}>
+          <BackButton>
+            <HistoryLink to="/ren">
+              <ArrowLeft /> {t('back')}
+            </HistoryLink>
+          </BackButton>
           <RowBetween>
             <Text color={theme.textPrimary} fontWeight={500}>
               {t('bridgeRen', { inputCurrency: outputCurrency })}

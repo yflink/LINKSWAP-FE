@@ -418,6 +418,4 @@
   "addParamsHex": "Add parameter (Hex format)",
   "addMemo": "Add this memo to your transaction",
   "resume": "Resume {{action}}"
-
-
 }
