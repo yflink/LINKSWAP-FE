@@ -314,7 +314,7 @@ export default function RenBridge({
         <AutoColumn gap={'12px'}>
           <BackButton>
             <HistoryLink to="/ren">
-              <ArrowLeft /> {t('back')}
+              <ArrowLeft /> {t('bridgesRen')}
             </HistoryLink>
           </BackButton>
           <RowBetween>

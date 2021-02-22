@@ -408,7 +408,7 @@
   "vestedMPH": "{{vestedAmount}} MPH (vested)",
   "claimRewardsOnSinglePool": "Claim Rewards on {{currencyASymbol}} Pool",
   "unstakeAndClaimRewardsOnSinglePool": "Unstake all and Claim Rewards on {{currencyASymbol}} Pool",
-  "bridgesRen": "LINKSWAP RenVM Bridges",
+  "bridgesRen": "All RenVM Bridges",
   "bridgesRenDescription": "Transfer crypto currencies from different blockchains onto the Ethereum blockchain, with our RenVM implementation",
   "renDescription": "Choose a bridge and transfer your crypto currencies between their blockchain and the Ethereum blockchain",
   "bridgeRen": "{{inputCurrency}} Bridge",

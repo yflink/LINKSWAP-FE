@@ -11,6 +11,8 @@ import { RowBetween } from '../Row'
 import { useTranslation } from 'react-i18next'
 import styled, { ThemeContext } from 'styled-components'
 import { ButtonPrimary } from '../Button'
+import { renBCH, renBTC, renDGB, renDOGE, renFIL, renLUNA, renZEC } from '../../constants'
+import { NavLink } from 'react-router-dom'
 
 const Loader = styled(Loading)`
   display: inline-block;
@@ -32,6 +34,23 @@ const Link = styled.a`
   }
 `
 
+const AddLiquidity = styled(NavLink)`
+  padding: 16px;
+  margin: 12px 0 0 0;
+  text-decoration: none;
+  color: ${({ theme }) => theme.buttonTextColor};
+  background: ${({ theme }) => theme.buttonBG};
+  max-width: 100%;
+  text-align: center;
+  border-radius: 6px;
+
+  &:hover {
+    text-decoration: none;
+    color: ${({ theme }) => theme.buttonTextColorHover};
+    background: ${({ theme }) => theme.buttonBGHover};
+  }
+`
+
 export const ExternalLink: React.FC<React.AnchorHTMLAttributes<HTMLAnchorElement>> = ({ children, ...props }) => (
   <Link {...props} target="_blank" rel="noopener noreferrer">
     {children}
@@ -48,7 +67,6 @@ interface DepositProps {
 export const DepositObject: React.FC<DepositProps> = ({ txHash, deposit, status, updateTransaction }: DepositProps) => {
   const { asset, from, to } = deposit.params
   const { amount } = deposit.depositDetails
-
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   const [amountReadable, setAmountReadable] = useState<string | null>(null)
@@ -106,6 +124,30 @@ export const DepositObject: React.FC<DepositProps> = ({ txHash, deposit, status,
     setSubmitting(false)
   }, [setSubmitting, deposit, onStatus])
   const { t } = useTranslation()
+
+  let assetAddress
+  switch (asset) {
+    case 'BCH':
+      assetAddress = renBCH.address
+      break
+    case 'BTC':
+      assetAddress = renBTC.address
+      break
+    case 'DGB':
+      assetAddress = renDGB.address
+      break
+    case 'LUNA':
+      assetAddress = renLUNA.address
+      break
+    case 'FIL':
+      assetAddress = renFIL.address
+      break
+    case 'ZEC':
+      assetAddress = renZEC.address
+      break
+    default:
+      assetAddress = renDOGE.address
+  }
 
   return (
     <AutoColumn gap="12px">
@@ -185,6 +227,10 @@ export const DepositObject: React.FC<DepositProps> = ({ txHash, deposit, status,
         <ButtonPrimary disabled={submitting} onClick={step2}>
           {submitting ? <Loader /> : <>{t('submitTo', { name: to.name })}</>}
         </ButtonPrimary>
+      ) : null}
+
+      {status === DepositStatus.DONE ? (
+        <AddLiquidity to={`/add/${assetAddress}/ETH`}>{t('addLiquidity')}</AddLiquidity>
       ) : null}
 
       {status === DepositStatus.ERROR ? (
