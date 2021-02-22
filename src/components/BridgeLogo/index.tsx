@@ -21,7 +21,7 @@ const Wrapper = styled(NavLink)`
   color: ${({ theme }) => theme.textPrimary};
   text-decoration: none;
   :hover {
-    border: 1px solid ${({ theme }) => theme.textTertiary};
+    border: 1px solid ${({ theme }) => theme.textHighlight};
   }
   position: relative;
 `
