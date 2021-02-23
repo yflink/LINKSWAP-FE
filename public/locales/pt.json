@@ -373,7 +373,6 @@
   "bridgeWarning": "Please read carefully before you proceed",
   "bridgeDisclaimer": "It should be clear that if you make a mistake while using the renBridge (sending funds to the wrong address, depositing multiple TXs, etc.) that your funds are permanently lost (as with any other blockchain mistake). RenVM is a new technology and security audits don't completely eliminate risks. Please don’t supply assets you can’t afford to lose.",
   "bridgeAbout": "If you closed or reloaded the minting interface, before sending the minted tokens to your ERC-20 Wallet. Just click on the 'Mint' button again to see your transaction and the button that sends the minted funds to your wallet.",
-  "brideConclusion": "Please be patient! The minting process can take up to 24 hours because RenVM needs to wait for a safe amount of blockchain confirmations (to prevent double spend, etc).",
   "emissionDropIn": "Emission Drop (-25%) in {{time}}",
   "getToken": "Get {{currencySymbol}}",
   "poolExpired": "Pool Expired. Do not Stake!",
@@ -410,5 +409,16 @@
   "noDepositsFound": "No active 88mph deposits for this vault.",
   "vestedMPH": "{{vestedAmount}} MPH (vested)",
   "claimRewardsOnSinglePool": "Claim Rewards on {{currencyASymbol}} Pool",
-  "unstakeAndClaimRewardsOnSinglePool": "Unstake all and Claim Rewards on {{currencyASymbol}} Pool"
+  "unstakeAndClaimRewardsOnSinglePool": "Unstake all and Claim Rewards on {{currencyASymbol}} Pool",
+  "bridgesRen": "All RenVM Bridges",
+  "bridgesRenDescription": "Transfer crypto currencies from different blockchains onto the Ethereum blockchain, with our RenVM implementation",
+  "renDescription": "Choose a bridge and transfer your crypto currencies between their blockchain and the Ethereum blockchain",
+  "bridgeRen": "{{inputCurrency}} Bridge",
+  "bridgeRenDescription": "Convert {{inputCurrency}} to {{outputCurrency}}",
+  "yourRenBalance": "Your {{currency}} balance: {{balance}} {{currency}}",
+  "addParamsBase64": "Add parameter (Base64 format)",
+  "addParamsHex": "Add parameter (Hex format)",
+  "addMemo": "Add this memo to your transaction",
+  "resume": "Resume {{action}}",
+  "bridgeConclusion": "Please be patient! The minting process can take up to 24 hours because RenVM needs to wait for a safe amount of blockchain confirmations (to prevent double spend, etc)."
 }

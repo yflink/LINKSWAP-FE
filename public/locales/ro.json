@@ -367,7 +367,7 @@
   "bridgeWarning": "Vă rugăm să citiți cu atenție înainte de a continua",
   "bridgeDisclaimer": "Ar trebui să fie clar că, dacă faceți o greșeală în timp ce utilizați renBridge (trimiterea de fonduri la adresa greșită, depunerea mai multor TX-uri etc.), fondurile dvs. sunt pierdute definitiv (la fel ca în cazul oricărei alte greșeli blockchain). RenVM este o tehnologie nouă, iar auditurile de securitate nu elimină complet riscurile. Vă rugăm să nu furnizați active pe care nu vă puteți permite să le pierdeți.",
   "bridgeAbout": "Dacă ați închis sau ați reîncărcat interfața de crearea tokenilor, înainte de a primi tokenurile create în portofelul dvs. ERC-20. Doar faceți clic pe butonul „Crează token” din nou pentru a vedea tranzacția dvs. și butonul care trimite fondurile create în portofel.",
-  "brideConclusion": "Te rog fii rabdator! Procesul de creare a noilor token-uri poate dura până la 24 orăs, deoarece RenVM trebuie să aștepte o cantitate sigură de confirmări blockchain (pentru a preveni cheltuielile duble etc.).",
+  "bridgeConclusion": "Te rog fii rabdator! Procesul de creare a noilor token-uri poate dura până la 24 orăs, deoarece RenVM trebuie să aștepte o cantitate sigură de confirmări blockchain (pentru a preveni cheltuielile duble etc.).",
   "emissionDropIn": "Emission Drop (-25%) in {{time}}",
   "getToken": "Get {{currencySymbol}}",
   "poolExpired": "Pool Expired. Do not Stake!",
@@ -404,5 +404,15 @@
   "noDepositsFound": "No active 88mph deposits for this vault.",
   "vestedMPH": "{{vestedAmount}} MPH (vested)",
   "claimRewardsOnSinglePool": "Claim Rewards on {{currencyASymbol}} Pool",
-  "unstakeAndClaimRewardsOnSinglePool": "Unstake all and Claim Rewards on {{currencyASymbol}} Pool"
+  "unstakeAndClaimRewardsOnSinglePool": "Unstake all and Claim Rewards on {{currencyASymbol}} Pool",
+  "bridgesRen": "All RenVM Bridges",
+  "bridgesRenDescription": "Transfer crypto currencies from different blockchains onto the Ethereum blockchain, with our RenVM implementation",
+  "renDescription": "Choose a bridge and transfer your crypto currencies between their blockchain and the Ethereum blockchain",
+  "bridgeRen": "{{inputCurrency}} Bridge",
+  "bridgeRenDescription": "Convert {{inputCurrency}} to {{outputCurrency}}",
+  "yourRenBalance": "Your {{currency}} balance: {{balance}} {{currency}}",
+  "addParamsBase64": "Add parameter (Base64 format)",
+  "addParamsHex": "Add parameter (Hex format)",
+  "addMemo": "Add this memo to your transaction",
+  "resume": "Resume {{action}}"
 }

@@ -373,7 +373,7 @@
   "bridgeWarning": "Lea atentamente antes de continuar",
   "bridgeDisclaimer": "Debe quedar claro que si comete un error al usar renBridge (enviar fondos a la dirección incorrecta, depositar múltiples TX, etc.), sus fondos se perderán permanentemente (como con cualquier otro error en el blockchain). RenVM es una nueva tecnología y las auditorías de seguridad no eliminan por completo los riesgos. No proporcione activos que no pueda permitirse perder.",
   "bridgeAbout": "Si cerró o recargó la interfaz de acuñación, antes de enviar los tokens acuñados a su Billetera ERC-20, simplemente haga clic en el botón 'Acuñar' nuevamente para ver su transacción y el botón que envía los fondos acuñados a su billetera.",
-  "brideConclusion": "¡Por favor tenga paciencia! El proceso de acuñación puede tardar hasta 1 hora porque RenVM necesita esperar una cantidad segura de confirmaciones de blockchain (para evitar el doble gasto, etc.).",
+  "bridgeConclusion": "¡Por favor tenga paciencia! El proceso de acuñación puede tardar hasta 24 horas porque RenVM necesita esperar una cantidad segura de confirmaciones de blockchain (para evitar el doble gasto, etc.).",
   "emissionDropIn": "Emission Drop (-25%) in {{time}}",
   "getToken": "Get {{currencySymbol}}",
   "poolExpired": "Pool Expired. Do not Stake!",
@@ -410,5 +410,15 @@
   "noDepositsFound": "No active 88mph deposits for this vault.",
   "vestedMPH": "{{vestedAmount}} MPH (vested)",
   "claimRewardsOnSinglePool": "Claim Rewards on {{currencyASymbol}} Pool",
-  "unstakeAndClaimRewardsOnSinglePool": "Unstake all and Claim Rewards on {{currencyASymbol}} Pool"
+  "unstakeAndClaimRewardsOnSinglePool": "Unstake all and Claim Rewards on {{currencyASymbol}} Pool",
+  "bridgesRen": "All RenVM Bridges",
+  "bridgesRenDescription": "Transfer crypto currencies from different blockchains onto the Ethereum blockchain, with our RenVM implementation",
+  "renDescription": "Choose a bridge and transfer your crypto currencies between their blockchain and the Ethereum blockchain",
+  "bridgeRen": "{{inputCurrency}} Bridge",
+  "bridgeRenDescription": "Convert {{inputCurrency}} to {{outputCurrency}}",
+  "yourRenBalance": "Your {{currency}} balance: {{balance}} {{currency}}",
+  "addParamsBase64": "Add parameter (Base64 format)",
+  "addParamsHex": "Add parameter (Hex format)",
+  "addMemo": "Add this memo to your transaction",
+  "resume": "Resume {{action}}"
 }
