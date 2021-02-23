@@ -98,7 +98,6 @@ export const useTransactionStorage = (updateBalance: (asset: Asset) => void) => 
         }
       }
     } else {
-      console.log('HALLO')
       if (status !== 'Done') {
         newRenMints(depositDetails)
       }
