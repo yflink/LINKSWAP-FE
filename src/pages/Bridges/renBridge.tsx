@@ -32,6 +32,22 @@ import { BurnObject } from '../../components/Burn'
 import { DepositObject } from '../../components/Deposit'
 import { Link as HistoryLink, RouteComponentProps } from 'react-router-dom'
 import { ArrowLeft } from 'react-feather'
+import {
+  useGetRenMintsBCH,
+  useGetRenMintsBTC,
+  useGetRenMintsDGB,
+  useGetRenMintsDOGE,
+  useGetRenMintsFIL,
+  useGetRenMintsLUNA,
+  useGetRenMintsZEC,
+  useRenMintsBCH,
+  useRenMintsBTC,
+  useRenMintsDGB,
+  useRenMintsDOGE,
+  useRenMintsFIL,
+  useRenMintsLUNA,
+  useRenMintsZEC
+} from '../../state/ren/hooks'
 
 const NavigationWrapper = styled.div`
   display: flex;
@@ -147,46 +163,75 @@ export default function RenBridge({
 }: RouteComponentProps<{ bridgeName?: string }>) {
   const inputCurrency = bridgeName ? bridgeName.toUpperCase() : 'DOGE'
   const outputCurrency = 'ren' + inputCurrency
+  const { BTC } = useGetRenMintsBTC()
+  const { BCH } = useGetRenMintsBCH()
+  const { FIL } = useGetRenMintsFIL()
+  const { ZEC } = useGetRenMintsZEC()
+  const { LUNA } = useGetRenMintsLUNA()
+  const { DGB } = useGetRenMintsDGB()
+  const { DOGE } = useGetRenMintsDOGE()
+  const newRenMintsBTC = useRenMintsBTC()
+  const newRenMintsBCH = useRenMintsBCH()
+  const newRenMintsFIL = useRenMintsFIL()
+  const newRenMintsZEC = useRenMintsZEC()
+  const newRenMintsLUNA = useRenMintsLUNA()
+  const newRenMintsDGB = useRenMintsDGB()
+  const newRenMintsDOGE = useRenMintsDOGE()
   let token
   let tokenAsset: any
   let tokenName: string
+  let previousMint: any
+  let newRenMints: any
   switch (inputCurrency) {
     case 'BTC':
       token = renBTC
       tokenAsset = Asset.BTC
       tokenName = 'Bitcoin'
+      previousMint = BTC
+      newRenMints = newRenMintsBTC
       break
     case 'BCH':
       token = renBCH
       tokenAsset = Asset.BCH
       tokenName = 'Bitcoin Cash'
+      previousMint = BCH
+      newRenMints = newRenMintsBCH
       break
     case 'FIL':
       token = renFIL
       tokenAsset = Asset.FIL
       tokenName = 'Filecoin'
+      previousMint = FIL
+      newRenMints = newRenMintsFIL
       break
     case 'ZEC':
       token = renZEC
       tokenAsset = Asset.ZEC
       tokenName = 'ZCash'
+      previousMint = ZEC
+      newRenMints = newRenMintsZEC
       break
     case 'LUNA':
       token = renLUNA
       tokenAsset = Asset.LUNA
       tokenName = 'Terra (LUNA)'
+      previousMint = LUNA
+      newRenMints = newRenMintsLUNA
       break
     case 'DGB':
       token = renDGB
       tokenAsset = Asset.DGB
       tokenName = 'Digibyte'
+      previousMint = DGB
+      newRenMints = newRenMintsDGB
       break
     default:
       token = renDOGE
       tokenAsset = Asset.DOGE
       tokenName = 'Dogecoin'
+      previousMint = DOGE
+      newRenMints = newRenMintsDOGE
   }
-
   const { account } = useWeb3React()
   const theme = useContext(ThemeContext)
   const [dismissBridgeWarning, setDismissBridgeWarning] = useState<boolean>(false)
@@ -241,8 +286,9 @@ export default function RenBridge({
     [userBalance, tokenAsset]
   )
 
-  const { deposits, addDeposit, addBurn, updateTransaction } = useTransactionStorage(updateBalance)
-  async function generateMintAddress() {
+  const { deposits, addDeposit, addBurn, updateTransaction, updateMints } = useTransactionStorage(updateBalance)
+
+  async function generateMintAddress(previousMint?: Record<string, unknown>) {
     setGeneratingAddress(true)
     setDepositAddress(null)
 
@@ -254,7 +300,16 @@ export default function RenBridge({
       return
     }
     try {
-      await startMint(renJS, defaultMintChain, provider, tokenAsset, account, setDepositAddress, addDeposit)
+      await startMint(
+        renJS,
+        defaultMintChain,
+        provider,
+        tokenAsset,
+        account,
+        setDepositAddress,
+        addDeposit,
+        previousMint
+      )
     } catch (error) {
       console.error(error)
       setErrorMessage(String(error.message || error.error || JSON.stringify(error)))
@@ -420,24 +475,25 @@ export default function RenBridge({
                       </Text>
                     )}
                     {!generatingAddress && !resume && (
-                      <AutoColumn gap="12px">
-                        <ButtonPrimary
-                          onClick={() => {
-                            generateMintAddress()
-                          }}
-                        >
-                          {t('mint')}
-                        </ButtonPrimary>
-                        <ButtonSecondary
-                          padding="18px"
-                          onClick={() => {
-                            setResume(true)
-                            generateMintAddress()
-                          }}
-                        >
-                          {t('resume', { action: t(action) })}
-                        </ButtonSecondary>
-                      </AutoColumn>
+                      <ButtonPrimary
+                        onClick={() => {
+                          generateMintAddress()
+                        }}
+                      >
+                        {t('mint')}
+                      </ButtonPrimary>
+                    )}
+
+                    {typeof previousMint !== 'undefined' && typeof previousMint.transaction !== 'undefined' && !resume && (
+                      <ButtonSecondary
+                        padding="18px"
+                        onClick={() => {
+                          setResume(true)
+                          generateMintAddress(previousMint)
+                        }}
+                      >
+                        {t('resume', { action: t(action) })}
+                      </ButtonSecondary>
                     )}
                   </>
                 )}
@@ -510,6 +566,8 @@ export default function RenBridge({
                   return <></>
                 }
                 const { deposit, status } = depositDetails
+                updateMints(deposit, newRenMints, status, previousMint)
+
                 return (
                   <DepositObject
                     key={txHash}

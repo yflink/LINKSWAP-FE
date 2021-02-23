@@ -48,7 +48,8 @@ export const startMint = async (
   asset: Asset,
   recipientAddress: string,
   showAddress: (address: string | { address: string; params?: string }) => void,
-  onDeposit: (txHash: string, deposit: LockAndMintDeposit) => void
+  onDeposit: (txHash: string, deposit: LockAndMintDeposit) => void,
+  previousMint: any
 ) => {
   let from: LockChain
   switch (asset) {
@@ -85,10 +86,20 @@ export const startMint = async (
     showAddress(lockAndMint.gatewayAddress)
   }
 
-  lockAndMint.on('deposit', async deposit => {
-    const txHash = await deposit.txHash()
-    onDeposit(txHash, (deposit as unknown) as LockAndMintDeposit)
-  })
+  if (previousMint) {
+    lockAndMint
+      .processDeposit(previousMint)
+      .then(async deposit => {
+        const txHash = await deposit.txHash()
+        onDeposit(txHash, (deposit as unknown) as LockAndMintDeposit)
+      })
+      .catch(console.error)
+  } else {
+    lockAndMint.on('deposit', async deposit => {
+      const txHash = await deposit.txHash()
+      onDeposit(txHash, (deposit as unknown) as LockAndMintDeposit)
+    })
+  }
 }
 
 export enum DepositStatus {
