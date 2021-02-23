@@ -100,7 +100,7 @@ export const DepositObject: React.FC<DepositProps> = ({ txHash, deposit, status,
         onStatus(DepositStatus.ERROR)
       }
     )
-  }, [onConfirmation, setErrorMessage, onStatus, deposit, setRenVMStatus, setMintTransaction])
+  }, [onConfirmation, setErrorMessage, onStatus, deposit, setRenVMStatus, setMintTransaction, onConfirmationTarget])
 
   const theme = useContext(ThemeContext)
   useEffect(() => {
