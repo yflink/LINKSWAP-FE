@@ -417,5 +417,5 @@
   "addParamsHex": "Add parameter (Hex format)",
   "addMemo": "Add this memo to your transaction",
   "resume": "Resume {{action}}",
-  "brideConclusion": "Please be patient! The minting process can take up to 24 hours because RenVM needs to wait for a safe amount of blockchain confirmations (to prevent double spend, etc)."
+  "bridgeConclusion": "Please be patient! The minting process can take up to 24 hours because RenVM needs to wait for a safe amount of blockchain confirmations (to prevent double spend, etc)."
 }
