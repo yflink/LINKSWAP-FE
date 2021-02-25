@@ -560,13 +560,13 @@ export default function RenBridge({
         {deposits && action === 'mint' && (
           <>
             {Array.from(deposits.keys())
-              .map(txHash => {
+              .map((txHash, index) => {
                 const depositDetails = deposits.get(txHash)!
                 if (depositDetails.type === 'BURN') {
                   return <></>
                 }
                 const { deposit, status } = depositDetails
-                updateMints(deposit, newRenMints, status, previousMint)
+                updateMints(deposit, newRenMints, status, previousMint, index)
 
                 return (
                   <DepositObject

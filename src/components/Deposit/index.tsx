@@ -106,6 +106,7 @@ export const DepositObject: React.FC<DepositProps> = ({ txHash, deposit, status,
   useEffect(() => {
     ;(async () => {
       step1()
+
       const decimals = await from.assetDecimals(asset)
       setAmountReadable(new BigNumber(amount).div(new BigNumber(10).exponentiatedBy(decimals)).toFixed())
     })().catch(console.error)

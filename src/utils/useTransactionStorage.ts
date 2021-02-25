@@ -87,19 +87,21 @@ export const useTransactionStorage = (updateBalance: (asset: Asset) => void) => 
     [setDeposits, updateBalance]
   )
 
-  const updateMints = useCallback((deposit: any, newRenMints: any, status: string, currentMint: any) => {
-    const depositDetails = deposit.depositDetails
-    if (typeof currentMint.transaction !== 'undefined') {
-      if (status === 'Done') {
-        newRenMints({})
+  const updateMints = useCallback((deposit: any, newRenMints: any, status: string, currentMint: any, index: number) => {
+    if (index === 0) {
+      const depositDetails = deposit.depositDetails
+      if (typeof currentMint.transaction !== 'undefined') {
+        if (status === 'Done') {
+          newRenMints({})
+        } else {
+          if (depositDetails.transaction.confirmations !== currentMint.transaction.confirmations) {
+            newRenMints(depositDetails)
+          }
+        }
       } else {
-        if (depositDetails.transaction.confirmations !== currentMint.transaction.confirmations) {
+        if (status !== 'Done') {
           newRenMints(depositDetails)
         }
-      }
-    } else {
-      if (status !== 'Done') {
-        newRenMints(depositDetails)
       }
     }
   }, [])

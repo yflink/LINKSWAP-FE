@@ -1,7 +1,7 @@
-import { Ethereum } from '@renproject/chains-ethereum'
-import { Bitcoin, Dogecoin, BitcoinCash, Zcash } from '@renproject/chains-bitcoin'
 import { Filecoin } from '@renproject/chains-filecoin'
 import { Terra } from '@renproject/chains-terra'
+import { Ethereum } from '@renproject/chains-ethereum'
+import { Bitcoin, BitcoinCash, Dogecoin, Zcash } from '@renproject/chains-bitcoin'
 import { LockChain, LogLevel, MintChain, SimpleLogger, TxStatus } from '@renproject/interfaces'
 import RenJS from '@renproject/ren'
 import { LockAndMintDeposit } from '@renproject/ren/build/main/lockAndMint'
@@ -56,20 +56,20 @@ export const startMint = async (
     case Asset.BTC:
       from = Bitcoin()
       break
-    case Asset.DOGE:
-      from = Dogecoin()
+    case Asset.ZEC:
+      from = Zcash()
       break
     case Asset.BCH:
       from = BitcoinCash()
-      break
-    case Asset.ZEC:
-      from = Zcash()
       break
     case Asset.FIL:
       from = Filecoin()
       break
     case Asset.LUNA:
       from = Terra()
+      break
+    case Asset.DOGE:
+      from = Dogecoin()
       break
     default:
       throw new Error(`Unsupported asset ${asset}.`)
@@ -79,7 +79,8 @@ export const startMint = async (
   const lockAndMint = await renJS.lockAndMint({
     asset,
     from,
-    to
+    to,
+    nonce: '0x' + '00'.repeat(32)
   })
 
   if (lockAndMint.gatewayAddress) {
@@ -203,20 +204,20 @@ export const startBurn = async (
     case Asset.BTC:
       to = Bitcoin().Address(recipientAddress)
       break
+    case Asset.ZEC:
+      to = Zcash().Address(recipientAddress)
+      break
     case Asset.BCH:
       to = BitcoinCash().Address(recipientAddress)
       break
     case Asset.FIL:
       to = Filecoin().Address(recipientAddress)
       break
-    case Asset.ZEC:
-      to = Zcash().Address(recipientAddress)
+    case Asset.LUNA:
+      to = Terra().Address(recipientAddress)
       break
     case Asset.DOGE:
       to = Dogecoin().Address(recipientAddress)
-      break
-    case Asset.LUNA:
-      to = Terra().Address(recipientAddress)
       break
     default:
       throw new Error(`Unsupported asset ${asset}.`)
@@ -232,6 +233,7 @@ export const startBurn = async (
     from: from as any,
     to: ((to as any) as LockChain) as any
   })
+
   let txHash: string | undefined
 
   await burnAndRelease.burn().on('confirmation', confs => {
