@@ -2,7 +2,7 @@ import { Currency } from '@uniswap/sdk'
 import React from 'react'
 import styled from 'styled-components'
 import { ArrowLeft, ArrowRight } from 'react-feather'
-
+import { MPHSVG, RENSVG } from '../SVG'
 import CurrencyLogo from '../CurrencyLogo'
 import { NavLink } from 'react-router-dom'
 
@@ -24,6 +24,10 @@ const Wrapper = styled(NavLink)`
     border: 1px solid ${({ theme }) => theme.textHighlight};
   }
   position: relative;
+
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    padding: 12px 10px;
+  `};
 `
 
 const InfoWrapper = styled.div`
@@ -31,11 +35,27 @@ const InfoWrapper = styled.div`
   flex-wrap: wrap;
   flex: 1;
   justify-content: center;
+  align-items: center;
 `
 
 const StyledLogo = styled.img<{ size: string }>`
   width: ${({ size }) => size};
   height: ${({ size }) => size};
+`
+
+const PlatformIcon = styled.div`
+  opacity: 0.3;
+  height: 40px;
+  width: 40px;
+  & svg {
+    height: 40px;
+    width: 40px;
+    fill: ${({ theme }) => theme.textPrimary};
+  }
+
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    display: none;
+  `};
 `
 
 const ArrowLeftIcon = styled(ArrowLeft)`
@@ -62,6 +82,10 @@ const ArrowRightIcon = styled(ArrowRight)`
 const CurrencySymbol = styled.div`
   margin: 0 10px;
   font-size: 16px;
+
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    font-size: 13px;
+  `};
 `
 
 interface BridgeCurrencyLogoProps {
@@ -82,6 +106,9 @@ export default function BridgeCurrencyLogo({ currency0, currency1, size = 40, ur
       <InfoWrapper>
         <CurrencySymbol>{currency0.symbol}</CurrencySymbol>
         <ArrowLeftIcon />
+        <PlatformIcon>
+          <RENSVG />
+        </PlatformIcon>
         <ArrowRightIcon />
         <CurrencySymbol>{currency1.symbol}</CurrencySymbol>
       </InfoWrapper>
