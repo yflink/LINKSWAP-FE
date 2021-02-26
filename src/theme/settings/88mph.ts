@@ -14,7 +14,7 @@ export function mphTheme() {
   const buttonSecondaryBG = '#2a244f'
   const modalBG = '#2a244f'
   const infoText = '#fff'
-  const highLights = '#080817'
+  const highLights = '#f7bf2c'
   const disabledBG = '#747474'
 
   return {

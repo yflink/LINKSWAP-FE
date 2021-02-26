@@ -11,6 +11,8 @@ import { RowBetween } from '../Row'
 import { useTranslation } from 'react-i18next'
 import styled, { ThemeContext } from 'styled-components'
 import { ButtonPrimary } from '../Button'
+import { renBCH, renBTC, renDGB, renDOGE, renFIL, renLUNA, renZEC } from '../../constants'
+import { NavLink } from 'react-router-dom'
 
 const Loader = styled(Loading)`
   display: inline-block;
@@ -32,23 +34,38 @@ const Link = styled.a`
   }
 `
 
+const AddLiquidity = styled(NavLink)`
+  padding: 16px;
+  text-decoration: none;
+  color: ${({ theme }) => theme.buttonTextColor};
+  background: ${({ theme }) => theme.buttonBG};
+  max-width: 100%;
+  text-align: center;
+  border-radius: 6px;
+
+  &:hover {
+    text-decoration: none;
+    color: ${({ theme }) => theme.buttonTextColorHover};
+    background: ${({ theme }) => theme.buttonBGHover};
+  }
+`
+
 export const ExternalLink: React.FC<React.AnchorHTMLAttributes<HTMLAnchorElement>> = ({ children, ...props }) => (
   <Link {...props} target="_blank" rel="noopener noreferrer">
     {children}
   </Link>
 )
 
-interface Props {
+interface DepositProps {
   txHash: string
   deposit: LockAndMintDeposit
   status: DepositStatus
   updateTransaction: (txHash: string, transaction: Partial<BurnDetails> | Partial<DepositDetails>) => void
 }
 
-export const DepositObject: React.FC<Props> = ({ txHash, deposit, status, updateTransaction }) => {
+export const DepositObject: React.FC<DepositProps> = ({ txHash, deposit, status, updateTransaction }: DepositProps) => {
   const { asset, from, to } = deposit.params
   const { amount } = deposit.depositDetails
-
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   const [amountReadable, setAmountReadable] = useState<string | null>(null)
@@ -61,11 +78,13 @@ export const DepositObject: React.FC<Props> = ({ txHash, deposit, status, update
   )
 
   // Confirmations
+  const [tConfirmations, setTConfirmations] = useState(0)
   const [confirmations, setConfirmations] = useState<number | null>(null)
-  const [targetConfirmations, setTargetConfirmations] = useState<number | null>(null)
-  const onConfirmation = useCallback((confs: number, target: number) => {
-    setConfirmations(confs)
-    setTargetConfirmations(target)
+  const onConfirmation = useCallback((values_0: number) => {
+    setConfirmations(values_0)
+  }, [])
+  const onConfirmationTarget = useCallback((values_0: number) => {
+    setTConfirmations(values_0)
   }, [])
 
   // The RenVM Status - see the TxStatus type.
@@ -75,11 +94,13 @@ export const DepositObject: React.FC<Props> = ({ txHash, deposit, status, update
 
   const step1 = useCallback(() => {
     onStatus(DepositStatus.DETECTED)
-    handleDeposit(deposit, onStatus, onConfirmation, setRenVMStatus, setMintTransaction).catch(error => {
-      setErrorMessage(String(error.message || error))
-      onStatus(DepositStatus.ERROR)
-    })
-  }, [onConfirmation, setErrorMessage, onStatus, deposit, setRenVMStatus, setMintTransaction])
+    handleDeposit(deposit, onStatus, onConfirmation, onConfirmationTarget, setRenVMStatus, setMintTransaction).catch(
+      error => {
+        setErrorMessage(String(error.message || error))
+        onStatus(DepositStatus.ERROR)
+      }
+    )
+  }, [onConfirmation, setErrorMessage, onStatus, deposit, setRenVMStatus, setMintTransaction, onConfirmationTarget])
 
   const theme = useContext(ThemeContext)
   useEffect(() => {
@@ -103,6 +124,30 @@ export const DepositObject: React.FC<Props> = ({ txHash, deposit, status, update
     setSubmitting(false)
   }, [setSubmitting, deposit, onStatus])
   const { t } = useTranslation()
+
+  let assetAddress
+  switch (asset) {
+    case 'BCH':
+      assetAddress = renBCH.address
+      break
+    case 'BTC':
+      assetAddress = renBTC.address
+      break
+    case 'DGB':
+      assetAddress = renDGB.address
+      break
+    case 'LUNA':
+      assetAddress = renLUNA.address
+      break
+    case 'FIL':
+      assetAddress = renFIL.address
+      break
+    case 'ZEC':
+      assetAddress = renZEC.address
+      break
+    default:
+      assetAddress = renDOGE.address
+  }
 
   return (
     <AutoColumn gap="12px">
@@ -173,7 +218,7 @@ export const DepositObject: React.FC<Props> = ({ txHash, deposit, status, update
         <RowBetween>
           <Text fontSize="12px">{t('confirmations')}:</Text>
           <Text fontSize="12px">
-            {confirmations}/{targetConfirmations}
+            {confirmations}/{tConfirmations}
           </Text>
         </RowBetween>
       ) : null}
@@ -182,6 +227,10 @@ export const DepositObject: React.FC<Props> = ({ txHash, deposit, status, update
         <ButtonPrimary disabled={submitting} onClick={step2}>
           {submitting ? <Loader /> : <>{t('submitTo', { name: to.name })}</>}
         </ButtonPrimary>
+      ) : null}
+
+      {status === DepositStatus.DONE ? (
+        <AddLiquidity to={`/add/${assetAddress}/ETH`}>{t('addLiquidity')}</AddLiquidity>
       ) : null}
 
       {status === DepositStatus.ERROR ? (

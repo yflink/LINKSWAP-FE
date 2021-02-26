@@ -29,7 +29,6 @@ import { calculateGasMargin, getContract } from '../../utils'
 import { TransactionResponse } from '@ethersproject/providers'
 import { BigNumber } from '@ethersproject/bignumber'
 import ReactGA from 'react-ga'
-import { addTransaction } from '../../state/transactions/actions'
 import { useTransactionAdder } from '../../state/transactions/hooks'
 
 const FullStakingCard = styled(Card)<{ highlight?: boolean; show?: boolean }>`

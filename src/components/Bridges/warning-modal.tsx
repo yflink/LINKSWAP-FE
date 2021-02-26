@@ -39,7 +39,7 @@ export default function BridgeWarningModal({ isOpen, onConfirm }: { isOpen: bool
           <TYPE.body color={'red2'}>{t('bridgeDisclaimer')}</TYPE.body>
           <TYPE.body color={'red2'}>{t('bridgeAbout')}</TYPE.body>
           <TYPE.body color={'red2'}>
-            <strong>{t('brideConclusion')}</strong>
+            <strong>{t('bridgeConclusion')}</strong>
           </TYPE.body>
           <RowBetween>
             <div>

@@ -195,8 +195,8 @@ export default function Header() {
               <Title style={{ marginInlineStart: 24 }} href="https://yflusd.linkswap.app">
                 <MenuText>YFLUSD</MenuText>
               </Title>
-              <Title style={{ marginInlineStart: 24 }} href="/#/ren">
-                <MenuText>renDOGE</MenuText>
+              <Title style={{ marginInlineStart: 24 }} href="/#/bridges/ren">
+                <MenuText>Ren Bridges</MenuText>
               </Title>
             </HeaderElementMobile>
           )}
