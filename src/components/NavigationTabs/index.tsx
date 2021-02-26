@@ -96,11 +96,6 @@ export function SwapPoolTabs({ active }: { active: 'swap' | 'pool' | 'stake' | '
           <StakeSVG />
         </Icon>
       </StyledNavLink>
-      <StyledNavLink id={`stake-nav-link`} to={'/create'} isActive={() => active === 'create'}>
-        <Icon>
-          <CreateSVG />
-        </Icon>
-      </StyledNavLink>
       <StyledNavLink id={`buy-nav-link`} to={'/buy'} isActive={() => active === 'buy'}>
         <Icon>
           <BuySVG />
