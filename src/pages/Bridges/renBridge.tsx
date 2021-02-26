@@ -368,7 +368,7 @@ export default function RenBridge({
       <AppBody>
         <AutoColumn gap={'12px'}>
           <BackButton>
-            <HistoryLink to="/bridges/ren">
+            <HistoryLink to="/ren">
               <ArrowLeft /> {t('bridgesRen')}
             </HistoryLink>
           </BackButton>
