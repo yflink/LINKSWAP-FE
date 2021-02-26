@@ -152,20 +152,24 @@ export const DepositObject: React.FC<DepositProps> = ({ txHash, deposit, status,
   return (
     <AutoColumn gap="12px">
       <RowBetween>
-        <Text fontSize="12px" padding="1rem 0 0">
+        <Text fontSize="14px" padding="1rem 0 0">
           {t('received')}:
         </Text>
-        <Text fontSize="12px" padding="1rem 0 0">
+        <Text fontSize="14px" padding="1rem 0 0">
           {amountReadable ? amountReadable : <Loader />} {asset}
         </Text>
       </RowBetween>
       <RowBetween>
-        <Text fontSize="12px">{t('renVMHash')}:</Text>
-        <Text fontSize="12px">{txHash}</Text>
+        <Text fontSize="14px" style={{ flex: '0 0 120px' }}>
+          {t('renVMHash')}:
+        </Text>
+        <Text fontSize="14px" style={{ wordBreak: 'break-all', textAlign: 'right' }}>
+          {txHash}
+        </Text>
       </RowBetween>
       <RowBetween>
-        <Text fontSize="12px">{t('status')}:</Text>
-        <Text fontSize="12px">
+        <Text fontSize="14px">{t('status')}:</Text>
+        <Text fontSize="14px">
           {status === DepositStatus.CONFIRMED ? (
             <>
               <Loader />
@@ -177,8 +181,8 @@ export const DepositObject: React.FC<DepositProps> = ({ txHash, deposit, status,
       </RowBetween>
       {deposit.depositDetails.transaction ? (
         <RowBetween>
-          <Text fontSize="12px">{t('fromTx', { from: from.name })}:</Text>
-          <Text fontSize="12px">
+          <Text fontSize="14px">{t('fromTx', { from: from.name })}:</Text>
+          <Text fontSize="14px">
             {(from as any).utils.transactionExplorerLink ? (
               <ExternalLink href={(from as any).utils.transactionExplorerLink(deposit.depositDetails.transaction)}>
                 {from.transactionID(deposit.depositDetails.transaction)}
@@ -193,8 +197,8 @@ export const DepositObject: React.FC<DepositProps> = ({ txHash, deposit, status,
       ) : null}
       {mintTransaction ? (
         <RowBetween>
-          <Text fontSize="12px">{t('toTx', { to: to.name })}:</Text>
-          <Text fontSize="12px">
+          <Text fontSize="14px">{t('toTx', { to: to.name })}:</Text>
+          <Text fontSize="14px">
             {(to as any).utils.transactionExplorerLink ? (
               <ExternalLink href={(to as any).utils.transactionExplorerLink(mintTransaction)}>
                 {mintTransaction}
@@ -209,15 +213,15 @@ export const DepositObject: React.FC<DepositProps> = ({ txHash, deposit, status,
       ) : null}
       {status === DepositStatus.CONFIRMED && renVMStatus ? (
         <RowBetween>
-          <Text fontSize="12px">{t('renVMStatus')}:</Text>
-          <Text fontSize="12px">{renVMStatus}</Text>
+          <Text fontSize="14px">{t('renVMStatus')}:</Text>
+          <Text fontSize="14px">{renVMStatus}</Text>
         </RowBetween>
       ) : null}
 
       {status === DepositStatus.DETECTED && confirmations !== null ? (
         <RowBetween>
-          <Text fontSize="12px">{t('confirmations')}:</Text>
-          <Text fontSize="12px">
+          <Text fontSize="14px">{t('confirmations')}:</Text>
+          <Text fontSize="14px">
             {confirmations}/{tConfirmations}
           </Text>
         </RowBetween>
