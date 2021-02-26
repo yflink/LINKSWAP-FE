@@ -143,9 +143,6 @@ export default function App() {
                 <Route exact path="/create/:currencyIdA/:currencyIdB" component={CreatePairRedirectDuplicateTokenIds} />
                 <Route exact strict path="/previewlisting" component={PreviewListing} />
                 <Route exact strict path="/analyze" component={Analyze} />
-                <Route exact strict path="/bridges" component={Ren} />
-                <Route exact strict path="/bridges/ren" component={Ren} />
-                <Route exact strict path="/bridges/ren/:bridgeName" component={RedirectToRenBridge} />
                 <Route exact strict path="/ren" component={Ren} />
                 <Route exact strict path="/ren/:bridgeName" component={RedirectToRenBridge} />
                 <Route component={RedirectPathToSwapOnly} />
