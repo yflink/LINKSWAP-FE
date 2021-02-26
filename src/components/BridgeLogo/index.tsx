@@ -2,7 +2,7 @@ import { Currency } from '@uniswap/sdk'
 import React from 'react'
 import styled from 'styled-components'
 import { ArrowLeft, ArrowRight } from 'react-feather'
-import { MPHSVG, RENSVG } from '../SVG'
+import { RENSVG } from '../SVG'
 import CurrencyLogo from '../CurrencyLogo'
 import { NavLink } from 'react-router-dom'
 
