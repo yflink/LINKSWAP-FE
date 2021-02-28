@@ -21,7 +21,7 @@ const StyledMenuButton = styled.button`
   position: relative;
   width: auto;
   border: none;
-  margin: 0.5rem 0 0 0;
+  margin: 14px 0 0 0;
   background: transparent;
   display: flex;
   align-items: center;
@@ -66,7 +66,7 @@ const MenuFlyout = styled.span`
   display: flex;
   flex-direction: column;
   position: absolute;
-  top: 2.5rem;
+  top: 50px;
   right: 0;
   z-index: 100;
 
