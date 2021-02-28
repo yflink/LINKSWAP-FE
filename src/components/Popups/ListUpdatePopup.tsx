@@ -100,7 +100,7 @@ export default function ListUpdatePopup({
                 <ButtonSecondary onClick={handleAcceptUpdate}>{t('acceptUpdate')}</ButtonSecondary>
               </div>
               <div style={{ flexGrow: 1 }}>
-                <ButtonSecondary onClick={removeThisPopup}>{t('dimiss')}</ButtonSecondary>
+                <ButtonSecondary onClick={removeThisPopup}>{t('dismiss')}</ButtonSecondary>
               </div>
             </AutoRow>
           </>
