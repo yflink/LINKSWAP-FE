@@ -417,5 +417,13 @@
   "addParamsHex": "Add parameter (Hex format)",
   "addMemo": "Add this memo to your transaction",
   "resume": "Resume {{action}}",
-  "bridgeConclusion": "Please be patient! The minting process can take up to 24 hours because RenVM needs to wait for a safe amount of blockchain confirmations (to prevent double spend, etc)."
+  "bridgeConclusion": "Please be patient! The minting process can take up to 24 hours because RenVM needs to wait for a safe amount of blockchain confirmations (to prevent double spend, etc).",
+  "renCoin": "Ren",
+  "renCoinDescription": "This coin is part of the RenVM Ecosystem.",
+  "oldListUpdate": "The token list \"{{listName}}\" has been updated to {{version}}.",
+  "listUpdate": "An update is available for the token list \"{{listName}}\" ({{oldListVersion}} to {{newListVersion}}).",
+  "tokensAdded": "Tokens added:",
+  "tokensRemoved": "Tokens removed:",
+  "tokensUpdated": "{{tokenCount}} tokens updated",
+  "acceptUpdate": "Accept update"
 }

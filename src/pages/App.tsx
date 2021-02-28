@@ -29,6 +29,7 @@ import StakeOverview from './Stake'
 import { RedirectTo88mph, RedirectTo88mphWithdraw, RedirectToStake, RedirectToUnstake } from './Stake/redirects'
 import { ExternalLink } from 'react-feather'
 import { RedirectToRenBridge } from './Bridges/redirects'
+import Popups from '../components/Popups'
 
 const AppWrapper = styled.div`
   display: flex;
@@ -111,7 +112,7 @@ export default function App() {
             <Header />
           </HeaderWrapper>
           <BodyWrapper>
-            {/* <Popups /> */}
+            <Popups />
             <Web3ReactManager>
               <Switch>
                 <Route exact strict path="/buy" component={Buy} />
