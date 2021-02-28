@@ -2,11 +2,12 @@
   "name": "LINKSWAP Token List",
   "logoURI": "https://logos.linkswap.app/0x28cb7e841ee97947a86b06fa4090c8451f64c0be.png",
   "keywords": ["linkswap", "link", "swap"],
-  "timestamp": "2020-01-31T00:00:00+00:00",
+  "timestamp": "2020-02-26T00:00:00+00:00",
   "tags":{
     "base":{"name":"base","description":"baseDescription"},
     "stablecoin":{"name":"stablecoin","description":"stablecoinDescription"},
-    "linkcheck":{"name":"linkcheck","description":"linkcheckDescription"}
+    "linkcheck":{"name":"linkcheck","description":"linkcheckDescription"},
+    "ren":{"name":"renCoin","description":"renCoinDescription"}
   },
   "tokens": [
     {
@@ -226,12 +227,67 @@
       "logoURI": "https://logos.linkswap.app/0x9ceb84f92a0561fa3cc4132ab9c0b76a59787544.png"
     },
     {
+      "address": "0xe3cb486f3f5c639e98ccbaf57d95369375687f80",
+      "chainId": 1,
+      "name": "RenVM Digibyte",
+      "symbol": "renDGB",
+      "decimals": 8,
+      "tags": ["ren"],
+      "logoURI": "https://logos.linkswap.app/0xe3cb486f3f5c639e98ccbaf57d95369375687f80.png"
+    },
+    {
       "address": "0x3832d2F059E55934220881F831bE501D180671A7",
       "chainId": 1,
-      "name": "Wrapped Dogecoin",
+      "name": "RenVM Dogecoin",
       "symbol": "renDOGE",
       "decimals": 8,
+      "tags": ["ren"],
       "logoURI": "https://logos.linkswap.app/0x3832d2f059e55934220881f831be501d180671a7.png"
+    },
+    {
+      "address": "0x52d87F22192131636F93c5AB18d0127Ea52CB641",
+      "chainId": 1,
+      "name": "RenVM Terra",
+      "symbol": "renLUNA",
+      "decimals": 6,
+      "tags": ["ren"],
+      "logoURI": "https://logos.linkswap.app/0x52d87f22192131636f93c5ab18d0127ea52cb641.png"
+    },
+    {
+      "address": "0xeb4c2781e4eba804ce9a9803c67d0893436bb27d",
+      "chainId": 1,
+      "name": "RenVM Bitcoin",
+      "symbol": "renBTC",
+      "decimals": 8,
+      "tags": ["ren"],
+      "logoURI": "https://logos.linkswap.app/0xeb4c2781e4eba804ce9a9803c67d0893436bb27d.png"
+    },
+    {
+      "address": "0x459086f2376525bdceba5bdda135e4e9d3fef5bf",
+      "chainId": 1,
+      "name": "RenVM BitcoinCash",
+      "symbol": "renBCH",
+      "decimals": 8,
+      "tags": ["ren"],
+      "logoURI": "https://logos.linkswap.app/0x459086f2376525bdceba5bdda135e4e9d3fef5bf.png"
+    },
+    {
+      "address": "0x1c5db575e2ff833e46a2e9864c22f4b22e0b37c2",
+      "chainId": 1,
+      "name": "RenVM ZCash",
+      "symbol": "renZEC",
+      "decimals": 8,
+      "tags": ["ren"],
+      "logoURI": "https://logos.linkswap.app/0x1c5db575e2ff833e46a2e9864c22f4b22e0b37c2.png"
+    },
+    {
+      "address": "0xD5147bc8e386d91Cc5DBE72099DAC6C9b99276F5",
+      "chainId": 1,
+      "name": "RenVM Filecoin",
+      "symbol": "renFIL",
+      "decimals": 18,
+      "tags": ["ren"],
+      "logoURI": "https://logos.linkswap.app/0xd5147bc8e386d91cc5dbe72099dac6c9b99276f5.png"
     },
     {
       "address": "0x7b760D06E401f85545F3B50c44bf5B05308b7b62",
@@ -276,7 +332,7 @@
     }
   ],
   "version": {
-    "major": 2,
+    "major": 3,
     "minor": 3,
     "patch": 0
   }
