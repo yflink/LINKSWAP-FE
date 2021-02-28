@@ -373,5 +373,13 @@
   "bridgeWarning": "SVP, lisez attentivement avant de continuer",
   "bridgeDisclaimer": "Il est imporant de savoir qu'en cas d'erreur pendant l'utilisation de renBridge (envoie de fond a la mauvaise adresse, depots de plusieurs transactions, etc.) votre argent sera perdu definitivement (comme toute erreur avec la blockchain). RenVM est une nouvelle technologie et les audits de securite n'evitent pas tous les risques. SVP, n'envoyer pas l'argent que vous ne pouirriez pas perdre.",
   "bridgeAbout": "Si vous fermez ou rechargez l'interface de minage avant d'envoyer les token minés a votre wallet ERC-20, juste cliquer encore sur le bouton 'Mint' pour voir votre transaction et cliquer sur le bouton \"envoyer\" pour envoyer les fund miner dans votre wallet.",
-  "brideConclusion": "SVP, soyez patient! La démarche de minage peut prendre jusqu'a une heure car les démarche \"RenVM\WS" a besoin d'attendre needs un certain nombre de confirmations sur la blockchain (pour empecher la double production, etc)."
+  "brideConclusion": "SVP, soyez patient! La démarche de minage peut prendre jusqu'a une heure car les démarche \"RenVM\", a besoin d'attendre needs un certain nombre de confirmations sur la blockchain (pour empecher la double production, etc).",
+  "renCoin": "Ren",
+  "renCoinDescription": "This coin is part of the RenVM Ecosystem.",
+  "oldListUpdate": "The token list \"{{listName}}\" has been updated to {{version}}.",
+  "listUpdate": "An update is available for the token list \"{{listName}}\" ({{oldListVersion}} to {{newListVersion}}).",
+  "tokensAdded": "Tokens added:",
+  "tokensRemoved": "Tokens removed:",
+  "tokensUpdated": "{{tokenCount}} tokens updated",
+  "acceptUpdate": "Accept update"
 }

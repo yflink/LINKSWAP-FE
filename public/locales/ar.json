@@ -420,5 +420,13 @@
 	"addParamsHex": "إضافة parameter (تنسيق Hex)",
 	"addMemo": "أضف هذه المذكرة إلى معاملتك",
 	"resume": "استئناف {{action}}",
-	"bridgeConclusion": "يرجى التحلي بالصبر! يمكن أن تستغرق عملية السك ما يصل إلى 24 ساعة لأن RenVM يحتاج إلى انتظار قدر آمن من تأكيدات blockchain (لمنع الإنفاق المزدوج ، إلخ)."
+	"bridgeConclusion": "يرجى التحلي بالصبر! يمكن أن تستغرق عملية السك ما يصل إلى 24 ساعة لأن RenVM يحتاج إلى انتظار قدر آمن من تأكيدات blockchain (لمنع الإنفاق المزدوج ، إلخ).",
+  "renCoin": "Ren",
+  "renCoinDescription": "This coin is part of the RenVM Ecosystem.",
+  "oldListUpdate": "The token list \"{{listName}}\" has been updated to {{version}}.",
+  "listUpdate": "An update is available for the token list \"{{listName}}\" ({{oldListVersion}} to {{newListVersion}}).",
+  "tokensAdded": "Tokens added:",
+  "tokensRemoved": "Tokens removed:",
+  "tokensUpdated": "{{tokenCount}} tokens updated",
+  "acceptUpdate": "Accept update"
 }

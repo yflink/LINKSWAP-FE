@@ -420,5 +420,13 @@
   "addParamsHex": "Add parameter (Hex format)",
   "addMemo": "Thêm ghi chú vào giao dịch của bạn",
   "resume": "Resume {{action}}",
-  "bridgeConclusion": "Vui lòng chờ! Quá trình mint có thể mất đến 24 giờ vì RenVM cần đợi một lượng xác nhận blockchain an toàn (để ngăn chặn việc chi phí gấp đôi, v.v.)"
+  "bridgeConclusion": "Vui lòng chờ! Quá trình mint có thể mất đến 24 giờ vì RenVM cần đợi một lượng xác nhận blockchain an toàn (để ngăn chặn việc chi phí gấp đôi, v.v.)",
+  "renCoin": "Ren",
+  "renCoinDescription": "This coin is part of the RenVM Ecosystem.",
+  "oldListUpdate": "The token list \"{{listName}}\" has been updated to {{version}}.",
+  "listUpdate": "An update is available for the token list \"{{listName}}\" ({{oldListVersion}} to {{newListVersion}}).",
+  "tokensAdded": "Tokens added:",
+  "tokensRemoved": "Tokens removed:",
+  "tokensUpdated": "{{tokenCount}} tokens updated",
+  "acceptUpdate": "Accept update"
 }

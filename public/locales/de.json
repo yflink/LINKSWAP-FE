@@ -418,5 +418,13 @@
   "addParamsBase64": "Parameter hinzufügen (Base64 Format)",
   "addParamsHex": "Parameter hinzufügen (Hex Format)",
   "addMemo": "Füge diese Notiz Deiner Transaktion hinzu",
-  "resume": "Setze {{action}} fort"
+  "resume": "Setze {{action}} fort",
+  "renCoin": "Ren",
+  "renCoinDescription": "This coin is part of the RenVM Ecosystem.",
+  "oldListUpdate": "The token list \"{{listName}}\" has been updated to {{version}}.",
+  "listUpdate": "An update is available for the token list \"{{listName}}\" ({{oldListVersion}} to {{newListVersion}}).",
+  "tokensAdded": "Tokens added:",
+  "tokensRemoved": "Tokens removed:",
+  "tokensUpdated": "{{tokenCount}} tokens updated",
+  "acceptUpdate": "Accept update"
 }
