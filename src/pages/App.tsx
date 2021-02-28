@@ -51,6 +51,7 @@ const HeaderWrapper = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
   width: 100%;
   justify-content: space-between;
+  z-index: 2;
 `
 
 const BodyWrapper = styled.div`
@@ -62,7 +63,7 @@ const BodyWrapper = styled.div`
   box-sizing: content-box;
   align-items: center;
   flex: 1;
-  z-index: 2;
+  z-index: 1;
   ${({ theme }) => theme.mediaWidth.upToSmall`
     padding: 0 0 16px;
   `};
@@ -76,7 +77,7 @@ const FooterWrapper = styled.div`
   bottom: 0;
   width: 100%;
   text-align: center;
-  z-index: 3;
+  z-index: 1;
   padding: 5px 0;
   background-color: ${({ theme }) => theme.footerBG};
 
