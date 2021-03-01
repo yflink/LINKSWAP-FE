@@ -52,7 +52,7 @@ const HeaderWrapper = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
   width: 100%;
   justify-content: space-between;
-  z-index: 2;
+  z-index: 1;
 `
 
 const BodyWrapper = styled.div`
@@ -64,7 +64,7 @@ const BodyWrapper = styled.div`
   box-sizing: content-box;
   align-items: center;
   flex: 1;
-  z-index: 1;
+  z-index: 2;
   ${({ theme }) => theme.mediaWidth.upToSmall`
     padding: 0 0 16px;
   `};
@@ -75,17 +75,27 @@ const NavigationWrapper = styled.div`
   position: absolute;
   top: 0;
   right: 0;
-  width: 15rem;
+  width: 300px;
   display: flex;
-  flex: 0 0 15rem;
+  flex: 0 0 300px;
   flex-direction: column;
   flex-wrap: wrap;
-  background-color: ${({ theme }) => theme.modalBG};
+  background: ${({ theme }) => theme.appBGColor};
   border-left: 1px solid ${({ theme }) => theme.modalBorder};
   box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.01), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04),
     0px 24px 32px rgba(0, 0, 0, 0.01);
   overflow-x: hidden;
   overflow-y: auto;
+  box-sizing: content-box;
+
+  [dir='rtl'] & {
+    right: unset;
+    left: 0;
+  }
+
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    display: none;
+  `};
 `
 
 const FooterWrapper = styled.div`
@@ -109,7 +119,6 @@ const FooterWrapper = styled.div`
     }
   }
 `
-
 const NewWindowIcon = styled(ExternalLink)`
   display: inline-block;
   margin-inline-start: 5px;
@@ -138,7 +147,7 @@ export default function App() {
                 <Switch>
                   <Route exact strict path="/buy" component={Buy} />
                   <Route exact strict path="/swap" component={Swap} />
-                  <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap} />
+                  <Route exact strict path="/swap/:inputCurrency" component={RedirectToSwap} />
                   <Route exact strict path="/swap/:theme/:outputCurrency" component={RedirectThemeOutputToSwap} />
                   <Route
                     exact

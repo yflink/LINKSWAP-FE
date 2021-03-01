@@ -3,26 +3,16 @@ import styled from 'styled-components'
 import i18next from 'i18next'
 import ReactGA from 'react-ga'
 
-export const LanguageOptionBody = styled.div`
-  padding: 0.5rem;
-  padding-inline-start: 1rem;
-  padding-inline-end: 0;
+export const LanguageOptionBody = styled.div<{ active?: boolean }>`
+  width: 100%;
   text-align: start;
-  -webkit-column-break-inside: avoid;
-  page-break-inside: avoid;
-  break-inside: avoid-column;
-  display: inline-grid;
-  font-size: 14px;
-  height: 33px;
-  overflow: hidden;
+  display: block;
+  font-weight: ${({ active }) => (active ? 'bold' : 'normal')};
 
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    font-size: 13px;
-  `};
   :hover,
   :focus {
-    cursor: pointer;
-    background: ${({ theme }) => theme.modalSecondaryBG};
+    cursor: ${({ active }) => (active ? 'default' : 'pointer')};
+    text-decoration: ${({ active }) => (active ? 'none' : 'underline')};
   }
 `
 
@@ -47,18 +37,13 @@ function setLang(lang?: string | 'en') {
   document.body.dir = i18next.dir(lang!)
 }
 
-export default function LanguageOptionHelper(props: {
-  languageString: string
-  shortCode: string
-  fullWidth?: boolean
-}) {
+export default function LanguageOptionHelper(props: { languageString: string; shortCode: string }) {
   const currentLanguage = i18next.language || 'en'
   const lang = currentLanguage.substring(0, 2)
-  const fontWeight = lang === props.shortCode ? 'bold' : 'normal'
-  const width = props.fullWidth ? '100%' : '8.7rem'
+  const active = lang === props.shortCode
 
   return (
-    <LanguageOptionBody style={{ fontWeight: fontWeight, width: width }} onClick={() => setLang(props.shortCode)}>
+    <LanguageOptionBody active={active} onClick={() => setLang(props.shortCode)}>
       <LanguageOption>
         <LanguageShortCode>{props.shortCode}</LanguageShortCode>&nbsp;-&nbsp;{props.languageString}
       </LanguageOption>

@@ -27,6 +27,7 @@ export const sYFL = new Token(
   'sYFL',
   'YFLink Synthetic'
 )
+export const yYFL = new Token(ChainId.MAINNET, '0x75d1aa733920b14fc74c9f6e6fab7ac1ece8482e', 18, 'yYFL', 'Staked YFL')
 export const WETHER = new Token(
   ChainId.MAINNET,
   '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',

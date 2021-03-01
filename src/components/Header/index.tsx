@@ -9,9 +9,6 @@ import { useETHBalances } from '../../state/wallet/hooks'
 import logo from '../../assets/svg/logo.png'
 
 import { YellowCard } from '../Card'
-import Theme from '../Theme'
-import Settings from '../Settings'
-import Language from '../Language'
 import Gas from '../Gas'
 
 import { RowBetween } from '../Row'
@@ -38,22 +35,6 @@ const HeaderFrame = styled.div`
 const HeaderElement = styled.div`
   display: flex;
   align-items: flex-start;
-`
-
-const HeaderElementMobile = styled.div`
-  display: flex;
-  align-items: flex-start;
-  @media (max-width: 699px) {
-    display: none;
-  }
-`
-
-const HeaderElementWrap = styled.div`
-  display: flex;
-  align-items: flex-start;
-  ${({ theme }) => theme.mediaWidth.upToMedium`
-    margin: 0 0 0.5rem 0;
-`};
 `
 
 const Logo = styled.img`
@@ -91,23 +72,6 @@ const TitleText = styled.h1`
   color: ${({ theme }) => theme.headerTextColor};
 `
 
-const MenuText = styled.h3`
-  margin: 0;
-  padding: 0;
-  font-family: 'Work Sans Thin', sans-serif;
-  text-transform: uppercase;
-  font-size: 18px;
-  font-weight: 400;
-  letter-spacing: 0.06em;
-  padding: 4px 0;
-  border-bottom: 2px solid transparent;
-  color: ${({ theme }) => theme.headerTextColor};
-
-  :hover {
-    border-bottom: 2px solid ${({ theme }) => theme.headerTextColor};
-  }
-`
-
 const AccountElement = styled.div<{ active: boolean }>`
   display: flex;
   flex-direction: row;
@@ -137,19 +101,19 @@ const NetworkCard = styled(YellowCard)`
 `
 
 const HeaderControls = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
+  flex: 0;
+  flex-direction: column;
+  align-items: flex-end;
+  display: none;
 
   ${({ theme }) => theme.mediaWidth.upToMedium`
-    flex-direction: column;
-    align-items: flex-end;
+    display: flex;
   `};
 `
 
 const BalanceText = styled(Text)`
   color: ${({ theme }) => theme.headerButtonIconColor}
-    ${({ theme }) => theme.mediaWidth.upToMedium`
+    ${({ theme }) => theme.mediaWidth.upToSmall`
     display: none;
   `};
 `
@@ -180,16 +144,11 @@ export default function Header() {
             <Title href="https://yflink.io">
               <Logo src={logo}></Logo>
               <TitleText>YFLINK</TitleText>
-            </Title>{' '}
+            </Title>
             {hasSublogo && <SubLogo src={theme.logo}></SubLogo>}
           </LogoWrapper>
         </HeaderElement>
-        <HeaderControls style={{ flex: '0' }}>
-          <HeaderElementWrap>
-            <Theme />
-            <Language />
-            <Settings />
-          </HeaderElementWrap>
+        <HeaderControls>
           <HeaderElement style={{ flexWrap: 'wrap', flexGrow: 0 }}>
             <RowBetween>
               <TestnetWrapper>
