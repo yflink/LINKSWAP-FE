@@ -23,6 +23,7 @@ const HeaderFrame = styled.div`
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
+  flex: 0 0 100%;
   width: 100%;
   top: 0;
   position: relative;
@@ -32,7 +33,7 @@ const HeaderFrame = styled.div`
   padding: 1rem;
 
   ${({ theme }) => theme.mediaWidth.upToSmall`
-    flex-direction: column;
+    flex-wrap: wrap;
   `};
 `
 
@@ -42,7 +43,6 @@ const HeaderElement = styled.div`
 
   ${({ theme }) => theme.mediaWidth.upToSmall`
     flex: 0 0 100%;
-    justify-content: flex-end;
   `};
 `
 
@@ -100,6 +100,7 @@ const AccountElement = styled.div<{ active: boolean }>`
 
   ${({ theme }) => theme.mediaWidth.upToSmall`
     margin: 1rem 0 0;
+    flex: 0;
   `};
 `
 
@@ -123,13 +124,12 @@ const HeaderControls = styled.div`
   ${({ theme }) => theme.mediaWidth.upToMedium`
     flex: 0;
     display: flex;
-    align-items: flex-end;
+    align-items: flex-start;
+    flex-wrap: wrap;
   `};
 
   ${({ theme }) => theme.mediaWidth.upToSmall`
     flex: 0 0 100%;
-    width: 100%;
-    flex-direction: column;
   `};
 `
 

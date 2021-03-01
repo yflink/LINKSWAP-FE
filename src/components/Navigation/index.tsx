@@ -196,12 +196,13 @@ const ExternalNavLink = styled.a`
     text-decoration: underline;
   }
 `
-const NavTitle = styled.div`
+const NavTitle = styled.div<{ active?: boolean }>`
   width: 100%;
   display: flex;
   flex: 0 0 100%;
   flex-wrap: nowrap;
   align-items: center;
+  font-weight: ${({ active }) => (active ? '700' : 'normal')};
   text-transform: uppercase;
   position: relative;
   z-index: 1;
@@ -263,7 +264,6 @@ const SettingsIconBottom = styled(Settings)`
 `
 
 const SettingsIcon = styled(Settings)`
-  margin-inline-end: 10px;
   color: ${({ theme }) => theme.textPrimary};
   height: 16px;
   width: auto;
@@ -291,6 +291,10 @@ const CollapseToggle = styled.div`
 
     & > * {
       color: ${({ theme }) => theme.textHighlight};
+
+      ${({ theme }) => theme.mediaWidth.upToSmall`
+        color: ${({ theme }) => theme.textPrimary};
+      `};
     }
   }
 
@@ -355,8 +359,7 @@ const NavigationToggle = styled.div`
     display: flex;
   `};
 
-  :hover,
-  :focus {
+  :hover {
     cursor: pointer;
     outline: none;
     background: ${({ theme }) => theme.headerButtonBGHover};
@@ -625,7 +628,7 @@ export default function Navigation() {
             </SubNavigationBody>
           </NavigationElement>
           <NavigationElement>
-            <NavTitle>
+            <NavTitle active={currentActive === 'swap'}>
               <NavTitleLink
                 onClick={() => {
                   goTo('/swap')
@@ -665,7 +668,7 @@ export default function Navigation() {
               </SubNavigationElement>
               <SubNavigationElement>
                 <StyledNavLink id={'swap'} to={'/swap/ETH'} isActive={() => active === 'swap'}>
-                  <NavLabel>Ethereum</NavLabel>
+                  <NavLabel>ETH</NavLabel>
                 </StyledNavLink>
               </SubNavigationElement>
               <SubNavigationElement>
@@ -680,7 +683,7 @@ export default function Navigation() {
             </SubNavigationBodyList>
           </NavigationElement>
           <NavigationElement>
-            <NavTitle>
+            <NavTitle active={currentActive === 'liquidity'}>
               <NavTitleLink
                 onClick={() => {
                   goTo('/pool')
@@ -727,7 +730,7 @@ export default function Navigation() {
             </SubNavigationBodyList>
           </NavigationElement>
           <NavigationElement>
-            <NavTitle>
+            <NavTitle active={currentActive === 'stake'}>
               <NavTitleLink
                 onClick={() => {
                   goTo('/stake')
@@ -778,7 +781,7 @@ export default function Navigation() {
             </SubNavigationBodyList>
           </NavigationElement>
           <NavigationElement>
-            <NavTitle>
+            <NavTitle active={currentActive === 'bridges'}>
               <NavTitleLink
                 onClick={() => {
                   goTo('/bridges')
@@ -818,7 +821,7 @@ export default function Navigation() {
                   to={'/bridges/ren/bch'}
                   isActive={() => active === 'bridges-renbch'}
                 >
-                  <NavLabel>RenBCH</NavLabel>
+                  <NavLabel>renBCH</NavLabel>
                 </StyledNavLink>
               </SubNavigationElement>
               <SubNavigationElement>
@@ -827,16 +830,7 @@ export default function Navigation() {
                   to={'/bridges/ren/btc'}
                   isActive={() => active === 'bridges-renbtc'}
                 >
-                  <NavLabel>RenBTC</NavLabel>
-                </StyledNavLink>
-              </SubNavigationElement>
-              <SubNavigationElement>
-                <StyledNavLink
-                  id={'bridges-rendgb'}
-                  to={'/bridges/ren/dgb'}
-                  isActive={() => active === 'bridges-rendgb'}
-                >
-                  <NavLabel>RenDGB</NavLabel>
+                  <NavLabel>renBTC</NavLabel>
                 </StyledNavLink>
               </SubNavigationElement>
               <SubNavigationElement>
@@ -845,7 +839,7 @@ export default function Navigation() {
                   to={'/bridges/ren/doge'}
                   isActive={() => active === 'bridges-rendoge'}
                 >
-                  <NavLabel>RenDOGE</NavLabel>
+                  <NavLabel>renDOGE</NavLabel>
                 </StyledNavLink>
               </SubNavigationElement>
               <SubNavigationElement>
@@ -854,16 +848,7 @@ export default function Navigation() {
                   to={'/bridges/ren/fil'}
                   isActive={() => active === 'bridges-renfil'}
                 >
-                  <NavLabel>RenFIL</NavLabel>
-                </StyledNavLink>
-              </SubNavigationElement>
-              <SubNavigationElement>
-                <StyledNavLink
-                  id={'bridges-renluna'}
-                  to={'/bridges/ren/luna'}
-                  isActive={() => active === 'bridges-renluna'}
-                >
-                  <NavLabel>RenLUNA</NavLabel>
+                  <NavLabel>renFIL</NavLabel>
                 </StyledNavLink>
               </SubNavigationElement>
               <SubNavigationElement>
@@ -872,13 +857,13 @@ export default function Navigation() {
                   to={'/bridges/ren/zec'}
                   isActive={() => active === 'bridges-renzec'}
                 >
-                  <NavLabel>RenZEC</NavLabel>
+                  <NavLabel>renZEC</NavLabel>
                 </StyledNavLink>
               </SubNavigationElement>
             </SubNavigationBodyList>
           </NavigationElement>
           <NavigationElement>
-            <NavTitle>
+            <NavTitle active={currentActive === 'buy'}>
               <NavTitleLink
                 onClick={() => {
                   goTo('/buy')
