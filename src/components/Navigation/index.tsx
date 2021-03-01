@@ -257,6 +257,7 @@ export default function Navigation() {
   const { account, chainId } = useActiveWeb3React()
   const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']
   const active = useNavigationActiveItem()
+  const currentActive = active.split('-')[0]
   const [showWallet, setShowWallet] = useState(true)
   const [showSettings, setShowSettings] = useState(false)
   const [showSwap, setShowSwap] = useState(false)
@@ -281,6 +282,53 @@ export default function Navigation() {
 
   const goTo = (path: string) => {
     history.push(path)
+  }
+
+  switch (currentActive) {
+    case 'liquidity':
+      if (!showLiquidity) {
+        setShowSwap(false)
+        setShowLiquidity(true)
+        setShowStaking(false)
+        setShowWyre(false)
+        setShowBridges(false)
+      }
+      break
+    case 'stake':
+      if (!showStaking) {
+        setShowSwap(false)
+        setShowLiquidity(false)
+        setShowStaking(true)
+        setShowWyre(false)
+        setShowBridges(false)
+      }
+      break
+    case 'buy':
+      if (!showWyre) {
+        setShowSwap(false)
+        setShowLiquidity(false)
+        setShowStaking(false)
+        setShowWyre(true)
+        setShowBridges(false)
+      }
+      break
+    case 'bridges':
+      if (!showBridges) {
+        setShowSwap(false)
+        setShowLiquidity(false)
+        setShowStaking(false)
+        setShowWyre(false)
+        setShowBridges(true)
+      }
+      break
+    default:
+      if (!showSwap) {
+        setShowSwap(true)
+        setShowLiquidity(false)
+        setShowStaking(false)
+        setShowWyre(false)
+        setShowBridges(false)
+      }
   }
 
   return (
@@ -428,7 +476,13 @@ export default function Navigation() {
             <NavTitleLink
               onClick={() => {
                 goTo('/swap')
-                setShowSwap(true)
+                if (!showSwap) {
+                  setShowSwap(true)
+                  setShowLiquidity(false)
+                  setShowStaking(false)
+                  setShowWyre(false)
+                  setShowBridges(false)
+                }
               }}
             >
               <NavigationIconWrapper>
@@ -475,7 +529,13 @@ export default function Navigation() {
             <NavTitleLink
               onClick={() => {
                 goTo('/pool')
-                setShowLiquidity(true)
+                if (!showLiquidity) {
+                  setShowSwap(false)
+                  setShowLiquidity(true)
+                  setShowStaking(false)
+                  setShowWyre(false)
+                  setShowBridges(false)
+                }
               }}
             >
               <NavigationIconWrapper>
@@ -514,7 +574,13 @@ export default function Navigation() {
             <NavTitleLink
               onClick={() => {
                 goTo('/stake')
-                setShowStaking(true)
+                if (!showStaking) {
+                  setShowSwap(false)
+                  setShowLiquidity(false)
+                  setShowStaking(true)
+                  setShowWyre(false)
+                  setShowBridges(false)
+                }
               }}
             >
               <NavigationIconWrapper>
@@ -553,7 +619,13 @@ export default function Navigation() {
             <NavTitleLink
               onClick={() => {
                 goTo('/buy')
-                setShowWyre(true)
+                if (!showWyre) {
+                  setShowSwap(false)
+                  setShowLiquidity(false)
+                  setShowStaking(false)
+                  setShowWyre(true)
+                  setShowBridges(false)
+                }
               }}
             >
               <NavigationIconWrapper>
@@ -587,7 +659,13 @@ export default function Navigation() {
             <NavTitleLink
               onClick={() => {
                 goTo('/bridges')
-                setShowBridges(true)
+                if (!showBridges) {
+                  setShowSwap(false)
+                  setShowLiquidity(false)
+                  setShowStaking(false)
+                  setShowWyre(false)
+                  setShowBridges(true)
+                }
               }}
             >
               <NavigationIconWrapper>
