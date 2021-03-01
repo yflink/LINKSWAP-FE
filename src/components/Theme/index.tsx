@@ -7,7 +7,7 @@ import ThemeOption from './ThemeOption'
 const StyledMenu = styled.div`
   display: flex;
   flex: 0 0 100%;
-  padding: 0 26px;
+  padding: 0 36px;
   position: relative;
   border: none;
   text-align: start;

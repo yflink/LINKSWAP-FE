@@ -18,8 +18,14 @@ import { useTranslation } from 'react-i18next'
 import { StakePools } from '../../components/Stake'
 import { ACTIVE_REWARD_POOLS, INACTIVE_REWARD_POOLS, SINGLE_POOLS, UNI_POOLS } from '../../constants'
 import Toggle from '../../components/Toggle'
+import { useNavigationActiveItemManager } from '../../state/navigation/hooks'
+import { RouteComponentProps } from 'react-router-dom'
 
-export default function StakeOverview() {
+export default function StakeOverview({
+  match: {
+    params: { param }
+  }
+}: RouteComponentProps<{ param?: string }>) {
   const theme = useContext(ThemeContext)
   const { account } = useActiveWeb3React()
   const [fetchAll, setFetchAll] = useState(false)
@@ -119,7 +125,25 @@ export default function StakeOverview() {
       setAllPoolsAdded(true)
     }, 500)
   }
-
+  const newActive = useNavigationActiveItemManager()
+  let activeId = 'stake'
+  if (param) {
+    if (param === 'yours') {
+      if (!showOwn) {
+        setShowOwn(true)
+        setShowExpired(false)
+      }
+      activeId = 'stake-yours'
+    }
+    if (param === 'inactive') {
+      if (!showExpired) {
+        setShowExpired(true)
+        setShowOwn(false)
+      }
+      activeId = 'stake-inactive'
+    }
+  }
+  newActive(activeId)
   const { t } = useTranslation()
   return (
     <>

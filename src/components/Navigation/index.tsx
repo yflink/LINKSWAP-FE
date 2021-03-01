@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
-import { ExternalLink, RefreshCw, Globe } from 'react-feather'
+import { ExternalLink, RefreshCw, Globe, PlusSquare, MinusSquare } from 'react-feather'
 import { Settings } from 'react-feather'
 import { SwapSVG, PoolSVG, StakeSVG, BuySVG, YFLSVG, WalletSVG, ThemeSVG } from '../SVG'
 import { NavLink } from 'react-router-dom'
@@ -12,14 +12,15 @@ import SettingsTab from '../Settings'
 import Web3Status from '../Web3Status'
 import Gas from '../Gas'
 import { useActiveWeb3React } from '../../hooks'
-import { useETHBalances, useTokenBalances, useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks'
+import { useETHBalances, useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks'
 import { Text } from 'rebass'
 import { ChainId } from '@uniswap/sdk'
-import { useExpertModeManager, useGetTheme } from '../../state/user/hooks'
+import { useExpertModeManager } from '../../state/user/hooks'
 import { AutoColumn } from '../Column'
 import { LINK, sYFL, YFL, YFLUSD, yYFL } from '../../constants'
 import Loader from '../Loader'
 import { useTranslation } from 'react-i18next'
+import { useHistory } from 'react-router-dom'
 
 const NavigationIconWrapper = styled.div`
   width: 26px;
@@ -27,6 +28,8 @@ const NavigationIconWrapper = styled.div`
   position: relative;
   display: flex;
   align-items: center;
+  justify-content: center;
+  margin-inline-end: 10px;
 
   & svg {
     height: 18px;
@@ -62,21 +65,33 @@ const NavigationBody = styled.ul`
   display: block;
 `
 
-const SubNavigationBody = styled.div`
+const SubNavigationBody = styled.div<{ show?: boolean }>`
   width: 100%;
-  margin: 0.5rem 0 1.5rem;
+  margin: 0.5rem 0 1rem;
   padding: 0;
-  display: block;
+  display: ${({ show }) => (show ? 'block' : 'none')};
   font-size: 14px;
+
+  * {
+    ::selection {
+      background: transparent;
+    }
+  }
 `
 
-const SubNavigationBodyList = styled.ul`
+const SubNavigationBodyList = styled.ul<{ show?: boolean }>`
   width: 100%;
-  margin: 0.5rem 0 1.5rem;
-  padding: 0 0 0 26px;
+  margin: 0.5rem 0 0;
+  padding: 0 0 0 36px;
   list-style: none;
-  display: block;
+  display: ${({ show }) => (show ? 'block' : 'none')};
   font-size: 14px;
+
+  * {
+    ::selection {
+      background: transparent;
+    }
+  }
 `
 
 const NavigationElement = styled.li`
@@ -125,13 +140,30 @@ const ExternalNavLink = styled.a`
     text-decoration: underline;
   }
 `
-const NavTitle = styled.span`
+const NavTitle = styled.div`
   width: 100%;
   display: flex;
   flex: 0 0 100%;
   flex-wrap: nowrap;
   align-items: center;
   text-transform: uppercase;
+  position: relative;
+  z-index: 1;
+`
+const NavTitleLink = styled.span`
+  display: flex;
+  flex: 0;
+  flex-wrap: nowrap;
+  align-items: center;
+
+  ::selection {
+    background: transparent;
+  }
+
+  &:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
 `
 
 const NavLabel = styled.span`
@@ -145,7 +177,7 @@ const NETWORK_LABELS: { [chainId in ChainId]: string | null } = {
   [ChainId.MAINNET]: 'Ethereum Mainnet',
   [ChainId.RINKEBY]: 'Rinkeby',
   [ChainId.ROPSTEN]: 'Ropsten',
-  [ChainId.GÖRLI]: 'Görli',
+  [ChainId.GOERLI]: 'Görli',
   [ChainId.KOVAN]: 'Kovan'
 }
 
@@ -158,7 +190,7 @@ const SettingsIconTop = styled(Settings)`
 
   > * {
     fill: transparent !important;
-    stroke: ${({ theme }) => theme.headerButtonIconColor};
+    stroke: ${({ theme }) => theme.textPrimary};
   }
 `
 const SettingsIconBottom = styled(Settings)`
@@ -170,7 +202,7 @@ const SettingsIconBottom = styled(Settings)`
 
   > * {
     fill: transparent !important;
-    stroke: ${({ theme }) => theme.headerButtonIconColor};
+    stroke: ${({ theme }) => theme.textPrimary};
   }
 `
 
@@ -189,10 +221,53 @@ const BalanceText = styled.p`
   white-space: nowrap;
 `
 
+const CollapseToggle = styled.div`
+  height: 26px;
+  width: 23px;
+  padding: 3px 0 3px 3px;
+  display: block;
+  position: absolute;
+  right: 0;
+  z-index: 2;
+
+  &:hover {
+    cursor: pointer;
+
+    & > * {
+      color: ${({ theme }) => theme.textHighlight};
+    }
+  }
+`
+
+const ExpandIcon = styled(PlusSquare)`
+  color: ${({ theme }) => theme.textPrimary};
+  height: 20px;
+  width: auto;
+  fill: transparent !important;
+`
+
+const CollapseIcon = styled(MinusSquare)`
+  color: ${({ theme }) => theme.textPrimary};
+  height: 20px;
+  width: auto;
+  fill: transparent !important;
+`
+
 export default function Navigation() {
   const { account, chainId } = useActiveWeb3React()
   const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']
   const active = useNavigationActiveItem()
+  const [showWallet, setShowWallet] = useState(true)
+  const [showSettings, setShowSettings] = useState(false)
+  const [showSwap, setShowSwap] = useState(false)
+  const [showLiquidity, setShowLiquidity] = useState(false)
+  const [showStaking, setShowStaking] = useState(false)
+  const [showWyre, setShowWyre] = useState(false)
+  const [showBridges, setShowBridges] = useState(false)
+  const [showYflusd, setShowYflusd] = useState(false)
+  const [showExternal, setShowExternal] = useState(false)
+  const [showThemes, setShowThemes] = useState(false)
+  const [showLanguages, setShowLanguages] = useState(false)
   const [expertMode] = useExpertModeManager()
   const [userBalances, fetchingUserBalances] = useTokenBalancesWithLoadingIndicator(account ?? undefined, [
     LINK,
@@ -202,17 +277,36 @@ export default function Navigation() {
     yYFL
   ])
   const { t } = useTranslation()
+  const history = useHistory()
+
+  const goTo = (path: string) => {
+    history.push(path)
+  }
+
   return (
     <nav>
       <NavigationBody>
         <NavigationElement>
           <NavTitle>
-            <NavigationIconWrapper>
-              <WalletSVG />
-            </NavigationIconWrapper>
-            Wallet
+            <NavTitleLink
+              onClick={() => {
+                setShowWallet(!showWallet)
+              }}
+            >
+              <NavigationIconWrapper>
+                <WalletSVG />
+              </NavigationIconWrapper>
+              {t('wallet')}
+            </NavTitleLink>
+            <CollapseToggle
+              onClick={() => {
+                setShowWallet(!showWallet)
+              }}
+            >
+              {showWallet ? <CollapseIcon /> : <ExpandIcon />}
+            </CollapseToggle>
           </NavTitle>
-          <SubNavigationBody>
+          <SubNavigationBody show={showWallet}>
             {account ? (
               <AutoColumn gap="8px">
                 <Web3Status />
@@ -300,30 +394,57 @@ export default function Navigation() {
         </NavigationElement>
         <NavigationElement>
           <NavTitle>
-            {expertMode ? (
-              <NavigationIconWrapper>
-                <SettingsIconTop />
-                <SettingsIconBottom />
-              </NavigationIconWrapper>
-            ) : (
-              <NavigationIconWrapper>
-                <SettingsIcon />
-              </NavigationIconWrapper>
-            )}
-            {t('settings')}
+            <NavTitleLink
+              onClick={() => {
+                setShowSettings(!showSettings)
+              }}
+            >
+              {expertMode ? (
+                <NavigationIconWrapper>
+                  <SettingsIconTop />
+                  <SettingsIconBottom />
+                </NavigationIconWrapper>
+              ) : (
+                <NavigationIconWrapper>
+                  <SettingsIcon />
+                </NavigationIconWrapper>
+              )}
+              {t('settings')}
+            </NavTitleLink>
+            <CollapseToggle
+              onClick={() => {
+                setShowSettings(!showSettings)
+              }}
+            >
+              {showSettings ? <CollapseIcon /> : <ExpandIcon />}
+            </CollapseToggle>
           </NavTitle>
-          <SubNavigationBody>
+          <SubNavigationBody show={showSettings}>
             <SettingsTab />
           </SubNavigationBody>
         </NavigationElement>
         <NavigationElement>
           <NavTitle>
-            <NavigationIconWrapper>
-              <SwapSVG />
-            </NavigationIconWrapper>
-            {t('swap')}
+            <NavTitleLink
+              onClick={() => {
+                goTo('/swap')
+                setShowSwap(true)
+              }}
+            >
+              <NavigationIconWrapper>
+                <SwapSVG />
+              </NavigationIconWrapper>
+              {t('swap')}
+            </NavTitleLink>
+            <CollapseToggle
+              onClick={() => {
+                setShowSwap(!showSwap)
+              }}
+            >
+              {showSwap ? <CollapseIcon /> : <ExpandIcon />}
+            </CollapseToggle>
           </NavTitle>
-          <SubNavigationBodyList>
+          <SubNavigationBodyList show={showSwap}>
             <SubNavigationElement>
               <StyledNavLink
                 id={'swap-link'}
@@ -351,85 +472,141 @@ export default function Navigation() {
         </NavigationElement>
         <NavigationElement>
           <NavTitle>
-            <NavigationIconWrapper>
-              <PoolSVG />
-            </NavigationIconWrapper>
-            {t('liquidity')}
+            <NavTitleLink
+              onClick={() => {
+                goTo('/pool')
+                setShowLiquidity(true)
+              }}
+            >
+              <NavigationIconWrapper>
+                <PoolSVG />
+              </NavigationIconWrapper>
+              {t('liquidity')}
+            </NavTitleLink>
+            <CollapseToggle
+              onClick={() => {
+                setShowLiquidity(!showLiquidity)
+              }}
+            >
+              {showLiquidity ? <CollapseIcon /> : <ExpandIcon />}
+            </CollapseToggle>
           </NavTitle>
-          <SubNavigationBodyList>
+          <SubNavigationBodyList show={showLiquidity}>
             <SubNavigationElement>
-              <StyledNavLink id={'pool'} to={'/pool'} isActive={() => active === 'pool'}>
-                <NavLabel>Your Positions</NavLabel>
+              <StyledNavLink id={'pool'} to={'/pool'} isActive={() => active === 'liquidity-pool'}>
+                <NavLabel>{t('myPositions')}</NavLabel>
               </StyledNavLink>
             </SubNavigationElement>
             <SubNavigationElement>
-              <StyledNavLink id={'add'} to={'/add/ETH'} isActive={() => active === 'add-liquidity'}>
-                <NavLabel>Add Liquidity</NavLabel>
+              <StyledNavLink id={'add'} to={'/add/ETH'} isActive={() => active === 'liquidity-add'}>
+                <NavLabel>{t('addLiquidity')}</NavLabel>
               </StyledNavLink>
             </SubNavigationElement>
             <SubNavigationElement>
-              <StyledNavLink id={'import-pool'} to={'/find'} isActive={() => active === 'import-pool'}>
-                <NavLabel>Import Pool</NavLabel>
+              <StyledNavLink id={'import-pool'} to={'/find'} isActive={() => active === 'liquidity-import'}>
+                <NavLabel>{t('importPool')}</NavLabel>
               </StyledNavLink>
             </SubNavigationElement>
           </SubNavigationBodyList>
         </NavigationElement>
         <NavigationElement>
           <NavTitle>
-            <NavigationIconWrapper>
-              <StakeSVG />
-            </NavigationIconWrapper>
-            {t('staking')}
+            <NavTitleLink
+              onClick={() => {
+                goTo('/stake')
+                setShowStaking(true)
+              }}
+            >
+              <NavigationIconWrapper>
+                <StakeSVG />
+              </NavigationIconWrapper>
+              {t('staking')}
+            </NavTitleLink>
+            <CollapseToggle
+              onClick={() => {
+                setShowStaking(!showStaking)
+              }}
+            >
+              {showStaking ? <CollapseIcon /> : <ExpandIcon />}
+            </CollapseToggle>
           </NavTitle>
-          <SubNavigationBodyList>
+          <SubNavigationBodyList show={showStaking}>
             <SubNavigationElement>
               <StyledNavLink id={'stake'} to={'/stake'} isActive={() => active === 'stake'}>
-                <NavLabel>All Pools</NavLabel>
+                <NavLabel>{t('allPools')}</NavLabel>
               </StyledNavLink>
             </SubNavigationElement>
             <SubNavigationElement>
               <StyledNavLink id={'stake-yours'} to={'/stake/yours'} isActive={() => active === 'stake-yours'}>
-                <NavLabel>Your Positions</NavLabel>
+                <NavLabel>{t('myPositions')}</NavLabel>
               </StyledNavLink>
             </SubNavigationElement>
             <SubNavigationElement>
               <StyledNavLink id={'stake-inactive'} to={'/stake/inactive'} isActive={() => active === 'stake-inactive'}>
-                <NavLabel>Inactive Pools</NavLabel>
+                <NavLabel>{t('inactivePools')}</NavLabel>
               </StyledNavLink>
             </SubNavigationElement>
           </SubNavigationBodyList>
         </NavigationElement>
         <NavigationElement>
           <NavTitle>
-            <NavigationIconWrapper>
-              <BuySVG />
-            </NavigationIconWrapper>
-            Wyre
+            <NavTitleLink
+              onClick={() => {
+                goTo('/buy')
+                setShowWyre(true)
+              }}
+            >
+              <NavigationIconWrapper>
+                <BuySVG />
+              </NavigationIconWrapper>
+              Wyre
+            </NavTitleLink>
+            <CollapseToggle
+              onClick={() => {
+                setShowWyre(!showWyre)
+              }}
+            >
+              {showWyre ? <CollapseIcon /> : <ExpandIcon />}
+            </CollapseToggle>
           </NavTitle>
-          <SubNavigationBodyList>
+          <SubNavigationBodyList show={showWyre}>
             <SubNavigationElement>
               <StyledNavLink id={'buy'} to={'/buy'} isActive={() => active === 'buy'}>
-                <NavLabel>Buy Ethereum</NavLabel>
+                <NavLabel>{t('buyCurrency', { currency: 'Ethereum' })}</NavLabel>
               </StyledNavLink>
             </SubNavigationElement>
             <SubNavigationElement>
-              <StyledNavLink id={'buy-link'} to={'/buy/LINK'} isActive={() => active === 'buy-link'}>
-                <NavLabel>Buy Chainlink</NavLabel>
+              <StyledNavLink id={'buy-link'} to={'/buy?currency=LINK'} isActive={() => active === 'buy-link'}>
+                <NavLabel>{t('buyCurrency', { currency: LINK.name })}</NavLabel>
               </StyledNavLink>
             </SubNavigationElement>
           </SubNavigationBodyList>
         </NavigationElement>
         <NavigationElement>
           <NavTitle>
-            <NavigationIconWrapper>
-              <BridgeIcon />
-            </NavigationIconWrapper>
-            Bridges
+            <NavTitleLink
+              onClick={() => {
+                goTo('/bridges')
+                setShowBridges(true)
+              }}
+            >
+              <NavigationIconWrapper>
+                <BridgeIcon />
+              </NavigationIconWrapper>
+              {t('bridges')}
+            </NavTitleLink>
+            <CollapseToggle
+              onClick={() => {
+                setShowBridges(!showBridges)
+              }}
+            >
+              {showBridges ? <CollapseIcon /> : <ExpandIcon />}
+            </CollapseToggle>
           </NavTitle>
-          <SubNavigationBodyList>
+          <SubNavigationBodyList show={showBridges}>
             <SubNavigationElement>
               <StyledNavLink id={'bridges'} to={'/bridges'} isActive={() => active === 'bridges'}>
-                <NavLabel>Overview</NavLabel>
+                <NavLabel>{t('overview')}</NavLabel>
               </StyledNavLink>
             </SubNavigationElement>
             <SubNavigationElement>
@@ -479,73 +656,120 @@ export default function Navigation() {
         </NavigationElement>
         <NavigationElement>
           <NavTitle>
-            <NavigationIconWrapper>
-              <YFLSVG />
-            </NavigationIconWrapper>
-            YFLUSD
+            <NavTitleLink
+              onClick={() => {
+                setShowYflusd(!showYflusd)
+              }}
+            >
+              <NavigationIconWrapper>
+                <YFLSVG />
+              </NavigationIconWrapper>
+              YFLUSD
+            </NavTitleLink>
+            <CollapseToggle
+              onClick={() => {
+                setShowYflusd(!showYflusd)
+              }}
+            >
+              {showYflusd ? <CollapseIcon /> : <ExpandIcon />}
+            </CollapseToggle>
           </NavTitle>
-          <SubNavigationBodyList>
+          <SubNavigationBodyList show={showYflusd}>
             <SubNavigationElement>
               <ExternalNavLink target="_blank" href="https://yflusd.linkswap.app">
                 <NavLabel>Info</NavLabel>
               </ExternalNavLink>
             </SubNavigationElement>
             <SubNavigationElement>
-              <ExternalNavLink target="_blank" href="https://yflusd.linkswap.app/bank">
-                <NavLabel>Pools</NavLabel>
-              </ExternalNavLink>
-            </SubNavigationElement>
-            <SubNavigationElement>
               <ExternalNavLink target="_blank" href="https://yflusd.linkswap.app/bonds">
-                <NavLabel>Bonds</NavLabel>
+                <NavLabel>{t('bonds')}</NavLabel>
               </ExternalNavLink>
             </SubNavigationElement>
             <SubNavigationElement>
               <ExternalNavLink target="_blank" href="https://yflusd.linkswap.app/boardroom">
-                <NavLabel>Boardroom</NavLabel>
+                <NavLabel>{t('boardroom')}</NavLabel>
               </ExternalNavLink>
             </SubNavigationElement>
           </SubNavigationBodyList>
         </NavigationElement>
         <NavigationElement>
           <NavTitle>
-            <NavigationIconWrapper>
-              <ExternalLinkIcon />
-            </NavigationIconWrapper>
-            External
+            <NavTitleLink
+              onClick={() => {
+                setShowExternal(!showExternal)
+              }}
+            >
+              <NavigationIconWrapper>
+                <ExternalLinkIcon />
+              </NavigationIconWrapper>
+              {t('external')}
+            </NavTitleLink>
+            <CollapseToggle
+              onClick={() => {
+                setShowExternal(!showExternal)
+              }}
+            >
+              {showExternal ? <CollapseIcon /> : <ExpandIcon />}
+            </CollapseToggle>
           </NavTitle>
-          <SubNavigationBodyList>
+          <SubNavigationBodyList show={showExternal}>
             <SubNavigationElement>
               <ExternalNavLink target="_blank" href="https://yflink.io/#/stake">
-                <NavLabel>Stake & Vote</NavLabel>
+                <NavLabel>{t('governanceStaking')}</NavLabel>
               </ExternalNavLink>
             </SubNavigationElement>
             <SubNavigationElement>
               <ExternalNavLink target="_blank" href="https://info.linkswap.app">
-                <NavLabel>Charts</NavLabel>
+                <NavLabel>{t('charts')}</NavLabel>
               </ExternalNavLink>
             </SubNavigationElement>
           </SubNavigationBodyList>
         </NavigationElement>
         <NavigationElement>
           <NavTitle>
-            <NavigationIconWrapper>
-              <ThemeSVG />
-            </NavigationIconWrapper>
-            Themes
+            <NavTitleLink
+              onClick={() => {
+                setShowThemes(!showThemes)
+              }}
+            >
+              <NavigationIconWrapper>
+                <ThemeSVG />
+              </NavigationIconWrapper>
+              {t('themes')}
+            </NavTitleLink>
+            <CollapseToggle
+              onClick={() => {
+                setShowThemes(!showThemes)
+              }}
+            >
+              {showThemes ? <CollapseIcon /> : <ExpandIcon />}
+            </CollapseToggle>
           </NavTitle>
-          <SubNavigationBody>
+          <SubNavigationBody show={showThemes}>
             <Theme />
           </SubNavigationBody>
         </NavigationElement>
         <NavigationElement>
           <NavTitle>
-            <NavigationIconWrapper>
-              <LanguageIcon />
-            </NavigationIconWrapper>
-            Languages
+            <NavTitleLink
+              onClick={() => {
+                setShowLanguages(!showLanguages)
+              }}
+            >
+              <NavigationIconWrapper>
+                <LanguageIcon />
+              </NavigationIconWrapper>
+              {t('languages')}
+            </NavTitleLink>
+            <CollapseToggle
+              onClick={() => {
+                setShowLanguages(!showLanguages)
+              }}
+            >
+              {showLanguages ? <CollapseIcon /> : <ExpandIcon />}
+            </CollapseToggle>
           </NavTitle>
-          <SubNavigationBody>
+          <SubNavigationBody show={showLanguages}>
             <Language />
           </SubNavigationBody>
         </NavigationElement>

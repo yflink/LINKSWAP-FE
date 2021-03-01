@@ -19,6 +19,7 @@ import { currencyId } from '../../utils/currencyId'
 import AppBody from '../AppBody'
 import { Dots } from '../Pool/styleds'
 import { useTranslation } from 'react-i18next'
+import { useNavigationActiveItemManager } from '../../state/navigation/hooks'
 
 enum Fields {
   TOKEN0 = 0,
@@ -76,7 +77,8 @@ export default function PoolFinder() {
       <Text textAlign="center">{!account ? t('connectToFindPools') : t('selectATokenToFindLiquidity')}</Text>
     </LightCard>
   )
-
+  const newActive = useNavigationActiveItemManager()
+  newActive('liquidity-import')
   return (
     <AppBody>
       <FindPoolTabs />

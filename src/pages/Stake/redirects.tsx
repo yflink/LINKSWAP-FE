@@ -4,6 +4,7 @@ import StakeIntoPool from './StakeIntoPool'
 import Unstake from './Unstake'
 import MphVault from './MphVault'
 import MphManage from './MphManage'
+import StakeOverview from './index'
 
 export function RedirectToStake(props: RouteComponentProps<{ currencyIdA: string; currencyIdB: string }>) {
   const {
@@ -16,6 +17,16 @@ export function RedirectToStake(props: RouteComponentProps<{ currencyIdA: string
     return <Redirect to={`/add/${currencyIdA}`} />
   }
   return <StakeIntoPool {...props} />
+}
+
+export function RedirectToStakeWithParam(props: RouteComponentProps<{ param: string }>) {
+  const {
+    match: {
+      params: { param }
+    }
+  } = props
+
+  return <StakeOverview {...props} />
 }
 
 export function RedirectToUnstake(props: RouteComponentProps<{ currencyIdA: string; currencyIdB: string }>) {

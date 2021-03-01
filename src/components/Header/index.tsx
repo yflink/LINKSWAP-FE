@@ -122,7 +122,7 @@ const NETWORK_LABELS: { [chainId in ChainId]: string | null } = {
   [ChainId.MAINNET]: null,
   [ChainId.RINKEBY]: 'Rinkeby',
   [ChainId.ROPSTEN]: 'Ropsten',
-  [ChainId.GÖRLI]: 'Görli',
+  [ChainId.GOERLI]: 'Görli',
   [ChainId.KOVAN]: 'Kovan'
 }
 
@@ -142,7 +142,7 @@ export default function Header() {
         <HeaderElement>
           <LogoWrapper>
             <Title href="https://yflink.io">
-              <Logo src={logo}></Logo>
+              <Logo src={logo} />
               <TitleText>YFLINK</TitleText>
             </Title>
             {hasSublogo && <SubLogo src={theme.logo}></SubLogo>}

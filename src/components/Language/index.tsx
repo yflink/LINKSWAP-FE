@@ -5,7 +5,7 @@ import i18next from 'i18next'
 import LanguageOption from './LanguageOption'
 
 const StyledMenu = styled.div`
-  padding: 0 26px;
+  padding: 0 36px;
   display: flex;
   position: relative;
   text-align: start;

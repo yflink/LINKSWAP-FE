@@ -1,7 +1,6 @@
-import React, { useRef, useContext, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { X } from 'react-feather'
 import styled from 'styled-components'
-import { useOnClickOutside } from '../../hooks/useOnClickOutside'
 import {
   useUserSlippageTolerance,
   useExpertModeManager,
@@ -16,7 +15,7 @@ import Toggle from '../Toggle'
 import { ThemeContext } from 'styled-components'
 import { AutoColumn } from '../Column'
 import { ButtonError } from '../Button'
-import { useSettingsMenuOpen, useToggleSettingsMenu } from '../../state/application/hooks'
+import { useToggleSettingsMenu } from '../../state/application/hooks'
 import { Text } from 'rebass'
 import Modal from '../Modal'
 import { useTranslation } from 'react-i18next'
