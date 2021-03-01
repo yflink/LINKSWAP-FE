@@ -12,13 +12,13 @@ import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import { SwapPoolTabs } from '../../components/NavigationTabs'
 import { RowBetween } from '../../components/Row'
 import { useTranslation } from 'react-i18next'
-import { ACTIVE_REWARD_POOLS } from '../../constants'
+import { ACTIVE_REWARD_POOLS, UNI_POOLS } from '../../constants'
 import { useActiveWeb3React } from '../../hooks'
 import { useCurrency, useToken } from '../../hooks/Tokens'
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { Field } from '../../state/mint/actions'
-import { StakingRewards } from './stakingAbi'
+import { mphPool, StakingRewards, syflPool } from '../../components/ABI'
 import { useDerivedMintInfo, useMintActionHandlers, useMintState } from '../../state/mint/hooks'
 import { toV2LiquidityToken } from '../../state/user/hooks'
 import { calculateGasMargin, getContract } from '../../utils'
@@ -28,23 +28,62 @@ import { Dots, Wrapper } from '../Pool/styleds'
 import QuestionHelper from '../../components/QuestionHelper'
 import { WrappedTokenInfo } from '../../state/lists/hooks'
 import ReactGA from 'react-ga'
-import { FullStakingCard } from '../../components/PositionCard'
+import FullStakingCard from '../../components/PositionCard/fullStakingCard'
 import { useCurrencyBalance } from '../../state/wallet/hooks'
 import { useTransactionAdder } from '../../state/transactions/hooks'
-import { useTokenUsdPrices } from '../../hooks/useTokenUsdPrice'
-import { useLPTokenUsdPrices } from '../../hooks/useLPTokenUsdPrice'
 
 const Tabs = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
   align-items: center;
   border-radius: 6px;
   justify-content: space-evenly;
-  margin-inline-start: 16px;
 `
 
 const ActiveText = styled.div`
   font-weight: 500;
   font-size: 20px;
+`
+
+export const ExternalButton = styled.a`
+  padding: 18px;
+  font-weight: 500;
+  text-align: center;
+  border-radius: 6px;
+  outline: none;
+  border: 1px solid transparent;
+  color: white;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  flex-wrap: nowrap;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+  font-size: 20px;
+  z-index: 1;
+  &:disabled {
+    cursor: auto;
+  }
+  background: ${({ theme }) => theme.buttonBG};
+  color: ${({ theme }) => theme.buttonTextColor};
+  &:focus {
+    box-shadow: 0 0 0 1pt ${({ theme }) => theme.buttonBGHover};
+    background: ${({ theme }) => theme.buttonBGHover};
+    color: ${({ theme }) => theme.buttonTextColorHover};
+  }
+  &:hover {
+    background: ${({ theme }) => theme.buttonBGHover};
+    color: ${({ theme }) => theme.buttonTextColorHover};
+  }
+  &:active {
+    box-shadow: 0 0 0 1pt ${({ theme }) => theme.buttonBGActive};
+    background: ${({ theme }) => theme.buttonBGActive};
+    color: ${({ theme }) => theme.buttonTextColorActive};
+  }
+
+  > * {
+    user-select: none;
+  }
 `
 
 export default function StakeIntoPool({
@@ -58,13 +97,22 @@ export default function StakeIntoPool({
   const theme = useContext(ThemeContext)
   const currencyA = useCurrency(currencyIdA)
   const currencyB = useCurrency(currencyIdB)
-  const fakeContract = '0x0000000000000000000000000000000000000000'
-  const [rewardsContractAddress, setRewardsContractAddress] = useState(fakeContract)
-  let liquidityToken
+  const [pool, setPool] = useState({
+    rewardsAddress: '0x0000000000000000000000000000000000000000',
+    abi: 'StakingRewards',
+    type: 'default',
+    balance: 0,
+    tokens: ['', ''],
+    liquidityToken: '',
+    liquidityUrl: ''
+  })
+  const [found, setFound] = useState(false)
+  let liquidityToken: any
   let wrappedLiquidityToken
   let hasError
   let tokenA = useToken(currencyIdA)
   let tokenB = useToken(currencyIdB)
+  const isUni = currencyIdA === 'UNI'
 
   if (!tokenA) {
     tokenA = chainId ? WETH[chainId] : WETH['1']
@@ -74,16 +122,42 @@ export default function StakeIntoPool({
     tokenB = chainId ? WETH[chainId] : WETH['1']
   }
 
-  if (tokenA && tokenB) {
-    liquidityToken = toV2LiquidityToken([tokenA, tokenB])
+  let currencyAsymbol = 'ETH'
+  let currencyBsymbol = 'ETH'
 
-    const liquidityTokenAddress = liquidityToken.address
-    if (rewardsContractAddress === fakeContract) {
-      ACTIVE_REWARD_POOLS.forEach((pool: any) => {
-        if (pool.address === liquidityTokenAddress) {
-          setRewardsContractAddress(pool.rewardsAddress)
-        }
-      })
+  if (tokenA && tokenB) {
+    let liquidityTokenAddress = ''
+    if (isUni) {
+      liquidityToken = UNI_POOLS.MFGWETH.liquidityToken
+      liquidityTokenAddress = liquidityToken.address
+      if (!found) {
+        Object.entries(UNI_POOLS).forEach((entry: any) => {
+          if (entry[0] === currencyIdB) {
+            setFound(true)
+            liquidityToken = entry[1].liquidityToken
+            liquidityTokenAddress = liquidityToken.address
+            setPool(entry[1])
+            currencyAsymbol = entry[1].tokens[0].symbol
+            currencyBsymbol = entry[1].tokens[1].symbol
+            return
+          }
+        })
+      }
+    }
+    if (!isUni) {
+      liquidityToken = toV2LiquidityToken([tokenA, tokenB])
+      liquidityTokenAddress = liquidityToken.address
+      if (!found) {
+        ACTIVE_REWARD_POOLS.forEach((pool: any) => {
+          if (pool.address === liquidityTokenAddress) {
+            setFound(true)
+            currencyAsymbol = tokenA?.symbol ?? 'ETH'
+            currencyBsymbol = tokenB?.symbol ?? 'ETH'
+            setPool(pool)
+            return
+          }
+        })
+      }
     }
 
     wrappedLiquidityToken = new WrappedTokenInfo(
@@ -125,6 +199,19 @@ export default function StakeIntoPool({
     }
   }, {})
 
+  const rewardsContractAddress = pool.rewardsAddress
+  let currentAbi: any
+  switch (pool.abi) {
+    case 'syflPool':
+      currentAbi = syflPool
+      break
+    case 'mphPool':
+      currentAbi = mphPool
+      break
+    default:
+      currentAbi = StakingRewards
+  }
+
   const addTransaction = useTransactionAdder()
   const [approvalA, approveACallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_A], rewardsContractAddress)
   const { t } = useTranslation()
@@ -134,12 +221,11 @@ export default function StakeIntoPool({
   let buttonString = parsedAmountA ? t('stake') : t('enterAmount')
 
   async function onAdd(contractAddress: string) {
-    if (rewardsContractAddress === fakeContract || !chainId || !library || !account) return
-    const router = getContract(contractAddress, StakingRewards, library, account)
+    if (!found || !chainId || !library || !account) return
 
-    const { [Field.CURRENCY_A]: parsedAmountA } = parsedAmounts
+    const router = getContract(contractAddress, currentAbi, library, account)
 
-    if (!parsedAmountA || !currencyA) {
+    if (!parsedAmountA) {
       return
     }
 
@@ -158,8 +244,8 @@ export default function StakeIntoPool({
           setBalance(Number(selectedCurrencyBalance?.toSignificant(6)))
           addTransaction(response, {
             summary: t('stakeLPTokenAmount', {
-              currencyASymbol: currencyA?.symbol,
-              currencyBSymbol: currencyB?.symbol,
+              currencyASymbol: currencyAsymbol,
+              currencyBSymbol: currencyBsymbol,
               amount: parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)
             })
           })
@@ -192,16 +278,21 @@ export default function StakeIntoPool({
     hasError = false
   }
 
-  const passedCurrencyA = currencyIdA === 'ETH' ? (chainId ? WETH[chainId] : WETH['1']) : currencyA
-  const passedCurrencyB = currencyIdB === 'ETH' ? (chainId ? WETH[chainId] : WETH['1']) : currencyB
+  if (!isUni) {
+    const passedCurrencyA = currencyIdA === 'ETH' ? (chainId ? WETH[chainId] : WETH['1']) : currencyA
+    const passedCurrencyB = currencyIdB === 'ETH' ? (chainId ? WETH[chainId] : WETH['1']) : currencyB
 
-  const stakingValues = {
-    address: liquidityToken?.address,
-    liquidityToken: wrappedLiquidityToken,
-    rewardsAddress: rewardsContractAddress,
-    tokens: [passedCurrencyA, passedCurrencyB],
-    balance: currentBalance || 0
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    // @ts-ignore
+    pool.tokens = [passedCurrencyA, passedCurrencyB]
   }
+
+  pool.balance = currentBalance ? currentBalance : 0
+  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+  // @ts-ignore
+  pool.liquidityToken = wrappedLiquidityToken
+
+  const stakingValues = pool
 
   useMemo(() => {
     if (balance !== currentBalance) {
@@ -210,98 +301,108 @@ export default function StakeIntoPool({
     }
   }, [balance, currentBalance, setStaking, onFieldAInput])
 
-  useTokenUsdPrices()
-  useLPTokenUsdPrices()
-  return (
-    <>
-      <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.appBGColor, marginBottom: '16px' }}>
-        <SwapPoolTabs active={'stake'} />
-      </Card>
-      <AppBody>
-        <Tabs>
-          <RowBetween style={{ padding: '1rem 0' }}>
-            <ActiveText>
-              {t('stakeLPToken', {
-                currencyASymbol: currencyA?.symbol,
-                currencyBSymbol: currencyB?.symbol
-              })}
-            </ActiveText>
-            <QuestionHelper
-              text={t('stakeLPTokenDescription', {
-                currencyASymbol: currencyA?.symbol,
-                currencyBSymbol: currencyB?.symbol
-              })}
-            />
-          </RowBetween>
-        </Tabs>
-        <Wrapper>
-          <AutoColumn gap="20px">
-            <CurrencyInputPanel
-              hideCurrencySelect={true}
-              value={formattedAmounts[Field.CURRENCY_A]}
-              onUserInput={onFieldAInput}
-              onMax={() => {
-                onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
-              }}
-              showMaxButton={!atMaxAmounts[Field.CURRENCY_A]}
-              currency={currencies[Field.CURRENCY_A]}
-              id="stake-input-tokena"
-              showCommonBases
-            />
-          </AutoColumn>
-        </Wrapper>
-      </AppBody>
-      <AppBodyDark>
-        {!account ? (
-          <ButtonLight onClick={toggleWalletModal}>{t('connectWallet')}</ButtonLight>
-        ) : (
-          <AutoColumn gap={'md'}>
-            {approvalA === ApprovalState.NOT_APPROVED || approvalA === ApprovalState.PENDING ? (
-              <RowBetween>
+  if (!found) {
+    return null
+  } else {
+    return (
+      <>
+        <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.navigationBG, marginBottom: '16px' }}>
+          <SwapPoolTabs active={'stake'} />
+        </Card>
+        <AppBody>
+          <Tabs>
+            <RowBetween style={{ padding: '1rem 0' }}>
+              <ActiveText>
+                {t('stakeLPToken', {
+                  currencyASymbol: currencyA?.symbol,
+                  currencyBSymbol: currencyB?.symbol
+                })}
+              </ActiveText>
+              <QuestionHelper
+                text={t('stakeLPTokenDescription', {
+                  currencyASymbol: currencyA?.symbol,
+                  currencyBSymbol: currencyB?.symbol
+                })}
+              />
+            </RowBetween>
+          </Tabs>
+          <Wrapper>
+            <AutoColumn gap="20px">
+              <CurrencyInputPanel
+                hideCurrencySelect={true}
+                value={formattedAmounts[Field.CURRENCY_A]}
+                onUserInput={onFieldAInput}
+                onMax={() => {
+                  onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
+                }}
+                showMaxButton={!atMaxAmounts[Field.CURRENCY_A]}
+                currency={currencies[Field.CURRENCY_A]}
+                id="stake-input-tokena"
+                showCommonBases
+              />
+            </AutoColumn>
+          </Wrapper>
+        </AppBody>
+        <AppBodyDark>
+          {!account ? (
+            <ButtonLight onClick={toggleWalletModal}>{t('connectWallet')}</ButtonLight>
+          ) : (
+            <AutoColumn gap={'md'}>
+              {approvalA === ApprovalState.NOT_APPROVED || approvalA === ApprovalState.PENDING ? (
+                <RowBetween>
+                  <ButtonPrimary
+                    style={{ fontSize: '20px' }}
+                    onClick={approveACallback}
+                    disabled={approvalA === ApprovalState.PENDING}
+                    width="100%"
+                  >
+                    {approvalA === ApprovalState.PENDING ? <Dots>{t('approving')}</Dots> : t('approve')}
+                  </ButtonPrimary>
+                </RowBetween>
+              ) : staking ? (
+                <ButtonPrimary style={{ fontSize: '20px' }} disabled={true}>
+                  <Dots>{t('staking')}</Dots>
+                </ButtonPrimary>
+              ) : (
                 <ButtonPrimary
                   style={{ fontSize: '20px' }}
-                  onClick={approveACallback}
-                  disabled={approvalA === ApprovalState.PENDING}
-                  width="100%"
+                  onClick={() => {
+                    onAdd(rewardsContractAddress)
+                  }}
+                  disabled={approvalA !== ApprovalState.APPROVED || hasError}
                 >
-                  {approvalA === ApprovalState.PENDING ? <Dots>{t('approving')}</Dots> : t('approve')}
+                  <Text fontSize={20} fontWeight={500}>
+                    {buttonString}
+                  </Text>
                 </ButtonPrimary>
-              </RowBetween>
-            ) : staking ? (
-              <ButtonPrimary style={{ fontSize: '20px' }} disabled={true}>
-                <Dots>{t('staking')}</Dots>
-              </ButtonPrimary>
-            ) : (
-              <ButtonPrimary
-                style={{ fontSize: '20px' }}
-                onClick={() => {
-                  onAdd(rewardsContractAddress)
-                }}
-                disabled={approvalA !== ApprovalState.APPROVED || hasError}
-              >
-                <Text fontSize={20} fontWeight={500}>
-                  {buttonString}
-                </Text>
-              </ButtonPrimary>
-            )}
-            {hasError && (
-              <ButtonPrimary
-                style={{ fontSize: '20px' }}
-                as={Link}
-                to={`/add/${currencyIdA}/${currencyIdB}`}
-                width="100%"
-              >
-                {t('addLiquidity')}
-              </ButtonPrimary>
-            )}
+              )}
+              {hasError && (
+                <>
+                  {isUni ? (
+                    <ExternalButton target="_blank" href={pool.liquidityUrl}>
+                      {t('addLiquidity')}
+                    </ExternalButton>
+                  ) : (
+                    <ButtonPrimary
+                      style={{ fontSize: '20px' }}
+                      as={Link}
+                      to={`/add/${currencyIdA}/${currencyIdB}`}
+                      width="100%"
+                    >
+                      {t('addLiquidity')}
+                    </ButtonPrimary>
+                  )}
+                </>
+              )}
+            </AutoColumn>
+          )}
+        </AppBodyDark>
+        {account && rewardsContractAddress && wrappedLiquidityToken && (
+          <AutoColumn style={{ marginTop: '1rem', maxWidth: '420px', width: '100%' }}>
+            <FullStakingCard values={stakingValues} show={true} index={0} />
           </AutoColumn>
         )}
-      </AppBodyDark>
-      {account && rewardsContractAddress && wrappedLiquidityToken && (
-        <AutoColumn style={{ marginTop: '1rem', maxWidth: '420px', width: '100%' }}>
-          <FullStakingCard values={stakingValues} my={true} show={true} />
-        </AutoColumn>
-      )}
-    </>
-  )
+      </>
+    )
+  }
 }

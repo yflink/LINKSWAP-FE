@@ -78,26 +78,30 @@ export const BurnObject: React.FC<Props> = ({ txHash, burn, status, confirmation
   return (
     <AutoColumn gap="12px">
       <RowBetween>
-        <Text fontSize="12px" padding="1rem 0 0">
+        <Text fontSize="14px" padding="1rem 0 0">
           {t('burnt')}:
         </Text>
-        <Text fontSize="12px" padding="1rem 0 0">
+        <Text fontSize="14px" padding="1rem 0 0">
           {amountReadable ? amountReadable : <Loader />} {asset}
         </Text>
       </RowBetween>
       {burnDetails && burnDetails.to ? (
         <RowBetween>
-          <Text fontSize="12px">{t('to')}:</Text>
-          <Text fontSize="12px">{burnDetails.to}</Text>
+          <Text fontSize="14px">{t('to')}:</Text>
+          <Text fontSize="14px">{burnDetails.to}</Text>
         </RowBetween>
       ) : null}
       <RowBetween>
-        <Text fontSize="12px">{t('renVMHash')}:</Text>
-        <Text fontSize="12px">{txHash}</Text>
+        <Text fontSize="14px" style={{ flex: '0 0 120px' }}>
+          {t('renVMHash')}:
+        </Text>
+        <Text fontSize="14px" style={{ wordBreak: 'break-all', textAlign: 'right' }}>
+          {txHash}
+        </Text>
       </RowBetween>
       <RowBetween>
-        <Text fontSize="12px">{t('status')}:</Text>
-        <Text fontSize="12px">
+        <Text fontSize="14px">{t('status')}:</Text>
+        <Text fontSize="14px">
           {status === BurnStatus.BURNT ? (
             <>
               <Loader />
@@ -108,13 +112,13 @@ export const BurnObject: React.FC<Props> = ({ txHash, burn, status, confirmation
         </Text>
       </RowBetween>
       <RowBetween>
-        <Text fontSize="12px">{t('renVMStatus')}:</Text>
-        <Text fontSize="12px">{renVMStatus}</Text>
+        <Text fontSize="14px">{t('renVMStatus')}:</Text>
+        <Text fontSize="14px">{renVMStatus}</Text>
       </RowBetween>
       {status === BurnStatus.BURNT && confirmations !== null ? (
         <RowBetween>
-          <Text fontSize="12px">{t('confirmations')}:</Text>
-          <Text fontSize="12px">
+          <Text fontSize="14px">{t('confirmations')}:</Text>
+          <Text fontSize="14px">
             {confirmations}
             {targetConfs ? <>/{targetConfs}</> : <></>}
           </Text>
@@ -123,8 +127,8 @@ export const BurnObject: React.FC<Props> = ({ txHash, burn, status, confirmation
 
       {burnDetails && burnDetails.transaction ? (
         <RowBetween>
-          <Text fontSize="12px">{t('fromTx', { from: from.name })}:</Text>
-          <Text fontSize="12px">
+          <Text fontSize="14px">{t('fromTx', { from: from.name })}:</Text>
+          <Text fontSize="14px">
             {from.utils.transactionExplorerLink ? (
               <ExternalLink href={from.utils.transactionExplorerLink(burnDetails.transaction)}>
                 {from.transactionID(burnDetails.transaction)}

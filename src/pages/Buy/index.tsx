@@ -47,7 +47,7 @@ const InputRow = styled.div`
 `
 const Container = styled.div`
   border: 1px solid ${({ theme }) => theme.appCurrencyInputBG};
-  background-color: ${({ theme }) => theme.appCurrencyInputBG};
+  background: ${({ theme }) => theme.appCurrencyInputBG};
   overflow: hidden;
   border-radius: 6px;
   width: 100%;
@@ -81,7 +81,7 @@ const CurrencySelect = styled.button<{ selected: boolean; primary?: boolean; lef
   height: 48px;
   font-size: 20px;
   font-weight: 500;
-  background-color: ${({ selected, primary, theme }) => {
+  background: ${({ selected, primary, theme }) => {
     if (selected) {
       return theme.appCurrencyInputBGActive
     } else {
@@ -106,7 +106,7 @@ const CurrencySelect = styled.button<{ selected: boolean; primary?: boolean; lef
   }
   :focus,
   :hover {
-    background-color: ${({ selected, primary, theme }) => {
+    background: ${({ selected, primary, theme }) => {
       if (selected) {
         return theme.appCurrencyInputBGActive
       } else {
@@ -204,7 +204,7 @@ export default function Buy() {
 
   return (
     <>
-      <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.appBGColor, marginBottom: '16px' }}>
+      <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.navigationBG, marginBottom: '16px' }}>
         <SwapPoolTabs active={'buy'} />
       </Card>
       <AppBody>

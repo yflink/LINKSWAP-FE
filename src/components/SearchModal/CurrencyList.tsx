@@ -30,7 +30,7 @@ const StyledBalanceText = styled(Text)`
 `
 
 const Tag = styled.div`
-  background-color: ${({ theme }) => theme.modalSecondaryBG};
+  background: ${({ theme }) => theme.modalSecondaryBG};
   color: ${({ theme }) => theme.textSecondary};
   font-size: 14px;
   border-radius: 6px;

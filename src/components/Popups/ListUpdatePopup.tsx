@@ -11,6 +11,7 @@ import listVersionLabel from '../../utils/listVersionLabel'
 import { ButtonSecondary } from '../Button'
 import { AutoColumn } from '../Column'
 import { AutoRow } from '../Row'
+import { useTranslation } from 'react-i18next'
 
 export default function ListUpdatePopup({
   popKey,
@@ -49,53 +50,57 @@ export default function ListUpdatePopup({
     [tokensChanged]
   )
 
+  const { t } = useTranslation()
+
   return (
     <AutoRow>
       <AutoColumn style={{ flex: '1' }} gap="8px">
         {auto ? (
           <TYPE.body fontWeight={500}>
-            The token list &quot;{oldList.name}&quot; has been updated to{' '}
-            <strong>{listVersionLabel(newList.version)}</strong>.
+            {t('oldListUpdate', { listName: oldList.name, version: listVersionLabel(newList.version) })}
           </TYPE.body>
         ) : (
           <>
             <div>
               <Text>
-                An update is available for the token list &quot;{oldList.name}&quot; (
-                {listVersionLabel(oldList.version)} to {listVersionLabel(newList.version)}).
+                {t('listUpdate', {
+                  listName: oldList.name,
+                  oldListVersion: listVersionLabel(oldList.version),
+                  newListVersion: listVersionLabel(newList.version)
+                })}
               </Text>
               <ul>
                 {tokensAdded.length > 0 ? (
                   <li>
+                    {t('tokensAdded')}&nbsp;
                     {tokensAdded.map((token, i) => (
                       <React.Fragment key={`${token.chainId}-${token.address}`}>
                         <strong title={token.address}>{token.symbol}</strong>
                         {i === tokensAdded.length - 1 ? null : ', '}
                       </React.Fragment>
-                    ))}{' '}
-                    added
+                    ))}
                   </li>
                 ) : null}
                 {tokensRemoved.length > 0 ? (
                   <li>
+                    {t('tokensRemoved')}&nbsp;
                     {tokensRemoved.map((token, i) => (
                       <React.Fragment key={`${token.chainId}-${token.address}`}>
                         <strong title={token.address}>{token.symbol}</strong>
                         {i === tokensRemoved.length - 1 ? null : ', '}
                       </React.Fragment>
-                    ))}{' '}
-                    removed
+                    ))}
                   </li>
                 ) : null}
-                {numTokensChanged > 0 ? <li>{numTokensChanged} tokens updated</li> : null}
+                {numTokensChanged > 0 ? <li>{t('tokensUpdated', { tokenCount: numTokensChanged })}</li> : null}
               </ul>
             </div>
             <AutoRow>
-              <div style={{ flexGrow: 1,marginInlineEnd: 12 }}>
-                <ButtonSecondary onClick={handleAcceptUpdate}>Accept update</ButtonSecondary>
+              <div style={{ flexGrow: 1, marginInlineEnd: 12 }}>
+                <ButtonSecondary onClick={handleAcceptUpdate}>{t('acceptUpdate')}</ButtonSecondary>
               </div>
               <div style={{ flexGrow: 1 }}>
-                <ButtonSecondary onClick={removeThisPopup}>Dismiss</ButtonSecondary>
+                <ButtonSecondary onClick={removeThisPopup}>{t('dismiss')}</ButtonSecondary>
               </div>
             </AutoRow>
           </>

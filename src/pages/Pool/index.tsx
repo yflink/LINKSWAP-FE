@@ -22,8 +22,6 @@ import { toV2LiquidityToken, useTrackedTokenPairs } from '../../state/user/hooks
 import AppBody from '../AppBody'
 import { Dots } from '../../components/swap/styleds'
 import { useTranslation } from 'react-i18next'
-import { useTokenUsdPrices } from '../../hooks/useTokenUsdPrice'
-import { useLPTokenUsdPrices } from '../../hooks/useLPTokenUsdPrice'
 import { AnalyticsWrapper, ExternalLinkIcon } from './styleds'
 
 export default function Pool() {
@@ -66,11 +64,9 @@ export default function Pool() {
   const tokenPairAddress = account ? 'https://info.linkswap.app/account/' + account : false
 
   const { t } = useTranslation()
-  useTokenUsdPrices()
-  useLPTokenUsdPrices()
   return (
     <>
-      <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.appBGColor, marginBottom: '16px' }}>
+      <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.navigationBG, marginBottom: '16px' }}>
         <SwapPoolTabs active={'pool'} />
       </Card>
       <AppBody>

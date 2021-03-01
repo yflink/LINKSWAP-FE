@@ -227,13 +227,13 @@ export default function Analyze() {
 
   return (
     <>
-    <h1>Test - Analyze</h1>
+      <h1>Test - Analyze</h1>
       {/* <TokenWarningModal
         isOpen={urlLoadedTokens.length > 0 && !dismissTokenWarning}
         tokens={urlLoadedTokens}
         onConfirm={handleConfirmTokenWarning}
       />
-      <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.appBGColor, marginBottom: '16px' }}>
+      <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.navigationBG, marginBottom: '16px' }}>
         <SwapPoolTabs active={'swap'} />
       </Card>
       <AppBody>

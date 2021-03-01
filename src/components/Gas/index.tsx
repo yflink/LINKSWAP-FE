@@ -21,18 +21,18 @@ const StyledMenuButton = styled.button`
   position: relative;
   width: auto;
   border: none;
-  margin: 0.5rem 0 0 0;
-  background-color: transparent;
+  margin: 14px 0 0 0;
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: flex-end;
   padding: 0.25rem 0.5rem;
   border-radius: 2px;
-  background-color: ${({ theme }) => theme.headerButtonBG};
+  background: ${({ theme }) => theme.headerButtonBG};
 
   :hover,
   :focus {
-    background-color: ${({ theme }) => theme.headerButtonBGHover};
+    background: ${({ theme }) => theme.headerButtonBGHover};
     cursor: pointer;
     outline: none;
   }
@@ -57,7 +57,7 @@ const GasPrice = styled.div`
 const MenuFlyout = styled.span`
   max-width: 100vw;
   width: 11rem;
-  background-color: ${({ theme }) => theme.modalBG};
+  background: ${({ theme }) => theme.modalBG};
   box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.01), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04),
     0px 24px 32px rgba(0, 0, 0, 0.01);
   border: 1px solid ${({ theme }) => theme.modalBorder};
@@ -66,7 +66,7 @@ const MenuFlyout = styled.span`
   display: flex;
   flex-direction: column;
   position: absolute;
-  top: 2.5rem;
+  top: 50px;
   right: 0;
   z-index: 100;
 

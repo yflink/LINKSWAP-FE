@@ -11,7 +11,7 @@ import { ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button
 import Card, { BlueCard, LightCard } from '../../components/Card'
 import { AutoColumn, ColumnCenter } from '../../components/Column'
 import TransactionConfirmationModal, { ConfirmationModalContent } from '../../components/TransactionConfirmationModal'
-import CurrencyInputPanel, { CurrencyDoubleInputPanel } from '../../components/CurrencyInputPanel'
+import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import DoubleCurrencyLogo from '../../components/DoubleLogo'
 import { SwapPoolTabs, AddRemoveTabs } from '../../components/NavigationTabs'
 import { MinimalPositionCard } from '../../components/PositionCard'
@@ -37,8 +37,6 @@ import { Dots, Wrapper } from '../Pool/styleds'
 import { ConfirmAddModalBottom } from './ConfirmAddModalBottom'
 import { currencyId } from '../../utils/currencyId'
 import { PoolPriceBar } from './PoolPriceBar'
-import { useTokenUsdPrices } from '../../hooks/useTokenUsdPrice'
-import { useLPTokenUsdPrices } from '../../hooks/useLPTokenUsdPrice'
 
 export default function AddLiquidity({
   match: {
@@ -49,78 +47,14 @@ export default function AddLiquidity({
   const { account, chainId, library } = useActiveWeb3React()
   const theme = useContext(ThemeContext)
 
-  const curIdA =
-    currencyIdA !== 'ETH' &&
-    currencyIdA?.toLowerCase() !== '0x514910771af9ca656af840dff83e8264ecf986ca' &&
-    currencyIdA?.toLowerCase() !== '0x7b760d06e401f85545f3b50c44bf5b05308b7b62'
-      ? 'ETH'
-      : currencyIdA
-
-  const curIdB = curIdA === currencyIdB ? 'undefined' : currencyIdB
-
-  let currencyA = useCurrency(curIdA)
-  let currencyB = useCurrency(curIdB)
+  const currencyA = useCurrency(currencyIdA)
+  const currencyB = useCurrency(currencyIdB)
 
   const oneCurrencyIsWETH = Boolean(
     chainId &&
       ((currencyA && currencyEquals(currencyA, WETH[chainId])) ||
         (currencyB && currencyEquals(currencyB, WETH[chainId])))
   )
-
-  let newCurrencyA = currencyA ?? ETHER
-  let newCurrencyB = currencyB
-
-  if (currencyA?.symbol && currencyB?.symbol) {
-    switch (currencyB?.symbol) {
-      case 'LINK':
-        if (currencyA?.symbol !== 'ETH' && currencyA?.symbol !== 'YFLUSD') {
-          newCurrencyA = currencyB
-          newCurrencyB = currencyA
-        }
-        if (currencyA?.symbol === currencyB?.symbol) {
-          newCurrencyA = ETHER
-          newCurrencyB = currencyA
-        }
-        break
-
-      case 'ETH':
-        if (currencyA?.symbol !== 'LINK' && currencyA?.symbol !== 'YFLUSD') {
-          newCurrencyA = ETHER
-          newCurrencyB = currencyA
-        }
-        if (currencyA?.symbol === currencyB?.symbol) {
-          newCurrencyA = ETHER
-          newCurrencyB = undefined
-        }
-        break
-
-      case 'YFLUSD':
-        if (currencyA?.symbol !== 'ETH' && currencyA?.symbol !== 'LINK') {
-          newCurrencyA = currencyB
-          newCurrencyB = currencyA
-        }
-        if (currencyA?.symbol === currencyB?.symbol) {
-          newCurrencyA = ETHER
-          newCurrencyB = currencyA
-        }
-        break
-    }
-    if (newCurrencyA.symbol === newCurrencyB?.symbol) {
-      if (newCurrencyA.symbol !== 'ETH' && newCurrencyB !== null) {
-        const newCurrencyBId = currencyId(newCurrencyB ?? ETHER)
-        if (newCurrencyBId !== 'ETH') {
-          history.push(`/add/ETH/${newCurrencyBId}`)
-        }
-        newCurrencyA = ETHER
-      } else {
-        history.push(`/add/ETH`)
-        newCurrencyB = undefined
-      }
-    }
-  }
-
-  currencyA = newCurrencyA
-  currencyB = newCurrencyB
 
   const toggleWalletModal = useWalletModalToggle() // toggle wallet when disconnected
 
@@ -344,11 +278,11 @@ export default function AddLiquidity({
 
   const handleCurrencyASelect = useCallback(
     (selectedCurrencyA: Currency) => {
-      const newCurrencyIdA = currencyId(selectedCurrencyA)
-      if (newCurrencyIdA === currencyIdB) {
+      const currencyIdA = currencyId(selectedCurrencyA)
+      if (currencyIdA === currencyIdB) {
         history.push(`/add/${currencyIdB}`)
       } else {
-        history.push(`/add/${newCurrencyIdA}/${currencyIdB}`)
+        history.push(`/add/${currencyIdA}/${currencyIdB}`)
       }
       setUpdate(!update)
     },
@@ -356,11 +290,11 @@ export default function AddLiquidity({
   )
   const handleCurrencyBSelect = useCallback(
     (selectedCurrencyB: Currency) => {
-      const newCurrencyIdB = currencyId(selectedCurrencyB)
-      if (currencyIdA === newCurrencyIdB) {
-        history.push(`/add/${newCurrencyIdB}`)
+      const currencyIdB = currencyId(selectedCurrencyB)
+      if (currencyIdA === currencyIdB) {
+        history.push(`/add/${currencyIdB}`)
       } else {
-        history.push(`/add/${currencyIdA ? currencyIdA : 'ETH'}/${newCurrencyIdB}`)
+        history.push(`/add/${currencyIdA ? currencyIdA : 'ETH'}/${currencyIdB}`)
       }
       setUpdate(!update)
     },
@@ -376,11 +310,9 @@ export default function AddLiquidity({
     setTxHash('')
   }, [onFieldAInput, txHash])
 
-  useTokenUsdPrices()
-  useLPTokenUsdPrices()
   return (
     <>
-      <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.appBGColor, marginBottom: '16px' }}>
+      <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.navigationBG, marginBottom: '16px' }}>
         <SwapPoolTabs active={'pool'} />
       </Card>
       <AppBody>
@@ -419,7 +351,7 @@ export default function AddLiquidity({
                 </BlueCard>
               </ColumnCenter>
             )}
-            <CurrencyDoubleInputPanel
+            <CurrencyInputPanel
               value={formattedAmounts[Field.CURRENCY_A]}
               onUserInput={onFieldAInput}
               onMax={() => {

@@ -94,18 +94,18 @@ const activeStyle = {
 
 const StepsContainer = styled.div`
   .ant-steps-item-active .ant-steps-item-icon {
-    background-color: ${({ theme }) => theme.appCurrencyInputBGActive};
+    background: ${({ theme }) => theme.appCurrencyInputBGActive};
 
     color: ${({ theme }) => theme.appCurrencyInputTextColorActive};
   }
 
   .ant-steps-item-wait .ant-steps-item-icon {
-    background-color: ${({ theme }) => theme.appCurrencyInputBG};
+    background: ${({ theme }) => theme.appCurrencyInputBG};
     color: ${({ theme }) => theme.appCurrencyInputTextColor};
   }
 
   .ant-steps-item-finish .ant-steps-item-icon {
-    background-color: ${({ theme }) => theme.appInfoBoxBG};
+    background: ${({ theme }) => theme.appInfoBoxBG};
     color: ${({ theme }) => theme.appInfoBoxTextColor};
   }
 `
@@ -375,7 +375,7 @@ export default function CreateNewPool({
 
   return (
     <>
-      <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.appBGColor, marginBottom: '16px' }}>
+      <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.navigationBG, marginBottom: '16px' }}>
         <SwapPoolTabs active={'create'} />
       </Card>
       <AppBody>

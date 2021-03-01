@@ -8,7 +8,6 @@ export function useCurrencyUsdPrice(): any {
   const timeDiff = currentTimestamp() - currentPriceBase.timestamp
   const [fetching, setFetching] = useState<boolean>(false)
   const [initial, setInitial] = useState<boolean>(false)
-
   if ((timeDiff > 10000 && !fetching) || (currentPriceBase.ethPriceBase === 0 && !initial)) {
     setInitial(true)
     const getPrice = async ({ fetching }: { fetching: boolean }) => {

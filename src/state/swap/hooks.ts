@@ -20,6 +20,7 @@ import { useUserSlippageTolerance } from '../user/hooks'
 import { computeSlippageAdjustedAmounts } from '../../utils/prices'
 import { useTranslation } from 'react-i18next'
 import { useNavigationActiveItemManager } from '../navigation/hooks'
+import { LINK } from '../../constants'
 
 export function useSwapState(): AppState['swap'] {
   return useSelector<AppState, AppState['swap']>(state => state.swap)
@@ -224,9 +225,9 @@ function parseCurrencyFromURLParameter(urlParam: any): string {
     const valid = isAddress(urlParam)
     if (valid) return valid
     if (urlParam.toUpperCase() === 'ETH') return 'ETH'
-    if (valid === false) return 'ETH'
+    if (valid === false) return LINK.address
   }
-  return 'ETH' ?? ''
+  return LINK.address ?? ''
 }
 
 function parseTokenAmountURLParameter(urlParam: any): string {

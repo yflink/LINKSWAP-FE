@@ -61,17 +61,17 @@
   content: attr(data-yes);
   text-transform: uppercase;
   padding-inline-start: 10px;
-  background-color: #2a5bdb;
+  background: #2a5bdb;
   color: #fff;
 }
 
 .toggle-switch-disabled {
-  background-color: #ddd;
+  background: #ddd;
   cursor: not-allowed;
 }
 
 .toggle-switch-disabled:before {
-  background-color: #ddd;
+  background: #ddd;
   cursor: not-allowed;
 }
 
@@ -79,7 +79,7 @@
   content: attr(data-no);
   text-transform: uppercase;
   padding-inline-end: 10px;
-  background-color: #374049;
+  background: #374049;
   color: #fff;
   text-align: end;
 }

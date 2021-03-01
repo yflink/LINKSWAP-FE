@@ -7,8 +7,9 @@ import { useTranslation } from 'react-i18next'
 interface CountdownProps {
   ends: number
   format: string
+  string: string
 }
-export default function Countdown({ ends, format }: CountdownProps) {
+export default function Countdown({ ends, format, string }: CountdownProps) {
   const remaining = useCountdown(ends)
   const { t } = useTranslation()
   const duration = moment.duration(remaining, 'seconds')
@@ -19,7 +20,7 @@ export default function Countdown({ ends, format }: CountdownProps) {
     trim: false
   }
 
-  let display = ends === 0 ? t('notStarted') : t('endsIn', { time: duration.format(format, 0, options) })
+  let display = ends === 0 ? t('notStarted') : t(string, { time: duration.format(format, 0, options) })
   display = !!remaining && remaining >= 0 ? display : t('expired')
   return <span>{display}</span>
 }

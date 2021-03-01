@@ -7,14 +7,16 @@ import user from './user/reducer'
 import transactions from './transactions/reducer'
 import swap from './swap/reducer'
 import mint from './mint/reducer'
+import mph from './mph/reducer'
 import lists from './lists/reducer'
 import burn from './burn/reducer'
 import multicall from './multicall/reducer'
 import price from './price/reducer'
 import gas from './gas/reducer'
 import navigation from './navigation/reducer'
+import ren from './ren/reducer'
 
-const PERSISTED_KEYS: string[] = ['user', 'transactions', 'lists']
+const PERSISTED_KEYS: string[] = ['user', 'transactions', 'lists', 'ren']
 
 const store = configureStore({
   reducer: {
@@ -23,12 +25,14 @@ const store = configureStore({
     transactions,
     swap,
     mint,
+    mph,
     burn,
     multicall,
     lists,
     price,
     gas,
-    navigation
+    navigation,
+    ren
   },
   middleware: [...getDefaultMiddleware({ thunk: false }), save({ states: PERSISTED_KEYS })],
   preloadedState: load({ states: PERSISTED_KEYS })

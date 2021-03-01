@@ -3,7 +3,9 @@ import { Price } from '@uniswap/sdk'
 import { useContext } from 'react'
 import { Text } from 'rebass'
 import { ThemeContext } from 'styled-components'
-import { useGetPriceBase } from '../../state/price/hooks'
+import { useGetPriceBase, useGetTokenPrices } from '../../state/price/hooks'
+import { currencyId } from '../../utils/currencyId'
+import { LINK, YFLUSD } from '../../constants'
 
 interface TradePriceProps {
   price?: Price
@@ -14,39 +16,63 @@ interface TradePriceProps {
 export default function TradePrice({ price, showInverted, priceImpactSeverity }: TradePriceProps) {
   const theme = useContext(ThemeContext)
   const priceObject = useGetPriceBase()
-  let baseCurrency = 'ETH'
-  if (
-    (price?.baseCurrency?.symbol === 'LINK' || price?.quoteCurrency?.symbol === 'LINK') &&
-    price?.baseCurrency?.symbol !== 'ETH' &&
-    price?.baseCurrency?.symbol !== 'YFLUSD'
-  ) {
-    baseCurrency = 'LINK'
+  const { tokenPrices } = useGetTokenPrices()
+
+  const baseCurrencyId = price?.baseCurrency ? currencyId(price.baseCurrency).toLowerCase() : 'eth'
+  const quoteCurrencyId = price?.quoteCurrency ? currencyId(price.quoteCurrency).toLowerCase() : 'eth'
+  let baseIsAccurate = false
+  let baseIsOutput = false
+  let priceBase = 0
+  if (baseCurrencyId === 'eth') {
+    baseIsAccurate = true
+    priceBase = priceObject['ethPriceBase']
+  } else {
+    if (quoteCurrencyId === 'eth') {
+      baseIsOutput = true
+      baseIsAccurate = true
+      priceBase = priceObject['ethPriceBase']
+    }
   }
-  if (
-    (price?.baseCurrency?.symbol === 'YFLUSD' || price?.quoteCurrency?.symbol === 'YFLUSD') &&
-    price?.baseCurrency?.symbol !== 'ETH' &&
-    price?.baseCurrency?.symbol !== 'LINK'
-  ) {
-    baseCurrency = 'YFLUSD'
+  if (baseCurrencyId === LINK.address.toLowerCase() && !baseIsAccurate) {
+    baseIsAccurate = true
+    priceBase = priceObject['linkPriceBase']
+  } else {
+    if (quoteCurrencyId === LINK.address.toLowerCase() && !baseIsAccurate) {
+      baseIsOutput = true
+      baseIsAccurate = true
+      priceBase = priceObject['linkPriceBase']
+    }
   }
-  const priceBase =
-    baseCurrency === 'ETH'
-      ? priceObject['ethPriceBase']
-      : baseCurrency === 'LINK'
-      ? priceObject['linkPriceBase']
-      : priceObject['yflusdPriceBase']
+  if (baseCurrencyId === YFLUSD.address.toLowerCase() && !baseIsAccurate) {
+    baseIsAccurate = true
+    priceBase = priceObject['yflusdPriceBase']
+  } else {
+    if (quoteCurrencyId === YFLUSD.address.toLowerCase() && !baseIsAccurate) {
+      baseIsOutput = true
+      baseIsAccurate = true
+      priceBase = priceObject['yflusdPriceBase']
+    }
+  }
+
+  if (!baseIsAccurate) {
+    priceBase = typeof tokenPrices[baseCurrencyId] !== 'undefined' ? tokenPrices[baseCurrencyId].price : 0
+  }
+
   const hasPriceBase = priceBase > 0 && priceImpactSeverity < 2
   const formattedPrice = showInverted ? price?.toSignificant(4) : price?.invert()?.toSignificant(4)
   const tokenPrice = Number(formattedPrice) || 1
 
-  let usdPrice = showInverted ? priceBase : tokenPrice * priceBase
-  if (
-    price?.baseCurrency?.symbol !== 'ETH' &&
-    price?.baseCurrency?.symbol !== 'LINK' &&
-    price?.baseCurrency?.symbol !== 'YFLUSD'
-  ) {
-    usdPrice = showInverted ? tokenPrice * priceBase : priceBase
-  }
+  const usdPrice = baseIsAccurate
+    ? showInverted
+      ? baseIsOutput
+        ? tokenPrice * priceBase
+        : priceBase
+      : baseIsOutput
+      ? priceBase
+      : tokenPrice * priceBase
+    : showInverted
+    ? priceBase
+    : tokenPrice * priceBase
 
   const formatedUsdPrice = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(usdPrice)
   const show = Boolean(price?.baseCurrency && price?.quoteCurrency) && priceImpactSeverity < 3
@@ -63,7 +89,15 @@ export default function TradePrice({ price, showInverted, priceImpactSeverity }:
     >
       {hasPriceBase && show ? (
         <>
-          {label} ({formatedUsdPrice})
+          {baseIsAccurate ? (
+            <>
+              {label} ({formatedUsdPrice})
+            </>
+          ) : (
+            <>
+              {label} (~{formatedUsdPrice})
+            </>
+          )}
         </>
       ) : (
         <>{label}</>

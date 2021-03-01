@@ -1,5 +1,5 @@
 import { useGasPricesManager, useGetGasPrices } from '../state/gas/hooks'
-import { ETH_API_KEY } from '../connectors'
+import { ETH_API_KEYS } from '../connectors'
 import { useState } from 'react'
 
 export function useGasPrices(): any {
@@ -9,6 +9,7 @@ export function useGasPrices(): any {
   const timeDiff = currentTimestamp() - gasObject.timestamp
   const [fetching, setFetching] = useState<boolean>(false)
   const [initial, setInitial] = useState<boolean>(false)
+  const ethAPIKey = ETH_API_KEYS[Math.floor(Math.random() * ETH_API_KEYS.length)]
 
   if ((timeDiff > 30000 && !fetching) || (gasObject.lowGas === 0 && !initial)) {
     setInitial(true)
@@ -16,7 +17,7 @@ export function useGasPrices(): any {
       if (!fetching) {
         setFetching(true)
         try {
-          const url = 'https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=' + ETH_API_KEY
+          const url = 'https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=' + ethAPIKey
           const response = await fetch(url, {
             headers: {
               Accept: 'application/json',

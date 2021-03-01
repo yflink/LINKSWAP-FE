@@ -1,5 +1,7 @@
+import { Filecoin } from '@renproject/chains-filecoin'
+import { Terra } from '@renproject/chains-terra'
 import { Ethereum } from '@renproject/chains-ethereum'
-import { Bitcoin, Dogecoin } from '@renproject/chains-bitcoin'
+import { Bitcoin, BitcoinCash, Dogecoin, Zcash } from '@renproject/chains-bitcoin'
 import { LockChain, LogLevel, MintChain, SimpleLogger, TxStatus } from '@renproject/interfaces'
 import RenJS from '@renproject/ren'
 import { LockAndMintDeposit } from '@renproject/ren/build/main/lockAndMint'
@@ -46,13 +48,25 @@ export const startMint = async (
   asset: Asset,
   recipientAddress: string,
   showAddress: (address: string | { address: string; params?: string }) => void,
-  setMinimumAmount: (amount: string) => void,
-  onDeposit: (txHash: string, deposit: LockAndMintDeposit) => void
+  onDeposit: (txHash: string, deposit: LockAndMintDeposit) => void,
+  previousMint: any
 ) => {
   let from: LockChain
   switch (asset) {
     case Asset.BTC:
       from = Bitcoin()
+      break
+    case Asset.ZEC:
+      from = Zcash()
+      break
+    case Asset.BCH:
+      from = BitcoinCash()
+      break
+    case Asset.FIL:
+      from = Filecoin()
+      break
+    case Asset.LUNA:
+      from = Terra()
       break
     case Asset.DOGE:
       from = Dogecoin()
@@ -62,26 +76,31 @@ export const startMint = async (
   }
   const to: MintChain = getMintChainObject(mintChain, mintChainProvider, recipientAddress)
 
-  const decimals = await from.assetDecimals(asset)
-  const fees = await renJS.getFees({ asset, from, to })
-  const minimumAmount = new BigNumber(fees.mint).dividedBy(new BigNumber(10).exponentiatedBy(decimals))
-  setMinimumAmount(minimumAmount.toFixed())
-
   const lockAndMint = await renJS.lockAndMint({
     asset,
     from,
-    to
+    to,
+    nonce: '0x' + '00'.repeat(32)
   })
 
   if (lockAndMint.gatewayAddress) {
     showAddress(lockAndMint.gatewayAddress)
   }
 
-  lockAndMint.on('deposit', async deposit => {
-    const txHash = await deposit.txHash()
-    // TODO: Ensure deposit types don't have to be typecast.
-    onDeposit(txHash, (deposit as unknown) as LockAndMintDeposit)
-  })
+  if (previousMint) {
+    lockAndMint
+      .processDeposit(previousMint)
+      .then(async deposit => {
+        const txHash = await deposit.txHash()
+        onDeposit(txHash, (deposit as unknown) as LockAndMintDeposit)
+      })
+      .catch(console.error)
+  } else {
+    lockAndMint.on('deposit', async deposit => {
+      const txHash = await deposit.txHash()
+      onDeposit(txHash, (deposit as unknown) as LockAndMintDeposit)
+    })
+  }
 }
 
 export enum DepositStatus {
@@ -95,7 +114,8 @@ export enum DepositStatus {
 export const handleDeposit = async (
   deposit: LockAndMintDeposit,
   onStatus: (status: DepositStatus) => void,
-  onConfirmation: (confs: number, target: number) => void,
+  onConfirmation: (values_0: number) => void,
+  onConfirmationTarget: (values_0: number) => void,
   onRenVMStatus: (status: TxStatus) => void,
   onTransactionHash: (txHash: string) => void
 ) => {
@@ -116,7 +136,7 @@ export const handleDeposit = async (
 
   await deposit
     .confirmed()
-    .on('target', onConfirmation)
+    .on('target', onConfirmationTarget)
     .on('confirmation', onConfirmation)
 
   onStatus(DepositStatus.CONFIRMED)
@@ -146,7 +166,6 @@ export const handleDeposit = async (
     onStatus(DepositStatus.DONE)
     return
   }
-
   onStatus(DepositStatus.SIGNED)
 }
 
@@ -183,10 +202,20 @@ export const startBurn = async (
   let to: LockChain
   switch (asset) {
     case Asset.BTC:
-      // TODO: Fix typing issues.
       to = Bitcoin().Address(recipientAddress)
       break
-
+    case Asset.ZEC:
+      to = Zcash().Address(recipientAddress)
+      break
+    case Asset.BCH:
+      to = BitcoinCash().Address(recipientAddress)
+      break
+    case Asset.FIL:
+      to = Filecoin().Address(recipientAddress)
+      break
+    case Asset.LUNA:
+      to = Terra().Address(recipientAddress)
+      break
     case Asset.DOGE:
       to = Dogecoin().Address(recipientAddress)
       break
@@ -202,9 +231,9 @@ export const startBurn = async (
   const burnAndRelease = await renJS.burnAndRelease({
     asset,
     from: from as any,
-    // TODO: Fix typing issues.
     to: ((to as any) as LockChain) as any
   })
+
   let txHash: string | undefined
 
   await burnAndRelease.burn().on('confirmation', confs => {
@@ -231,6 +260,5 @@ export const startBurn = async (
       }
     })
 
-  // TODO: Fix typing issues.
   return (burnAndRelease as any) as BurnAndRelease
 }
