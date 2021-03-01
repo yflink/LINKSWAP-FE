@@ -65,44 +65,17 @@ const BodyWrapper = styled.div`
   min-height: calc(100vh - 220px);
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: calc(100% - 300px);
   padding-top: 70px;
-  box-sizing: content-box;
   align-items: center;
   box-sizing: content-box;
   flex: 1;
   z-index: 2;
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    width: 100%;
+  `};
   ${({ theme }) => theme.mediaWidth.upToSmall`
     padding: 0 0 16px;
-  `};
-`
-
-const NavigationWrapper = styled.div`
-  height: 100vh;
-  position: fixed;
-  top: 0;
-  right: -20px;
-  width: 320px;
-  display: flex;
-  flex: 0 0 320px;
-  flex-direction: column;
-  flex-wrap: wrap;
-  background: ${({ theme }) => theme.appBGColor};
-  border-left: 1px solid ${({ theme }) => theme.modalBorder};
-  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.01), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04),
-    0px 24px 32px rgba(0, 0, 0, 0.01);
-  overflow-x: hidden;
-  overflow-y: scroll;
-  box-sizing: content-box;
-  z-index: 4;
-
-  [dir='rtl'] & {
-    right: unset;
-    left: -20px;
-  }
-
-  ${({ theme }) => theme.mediaWidth.upToMedium`
-    display: none;
   `};
 `
 
@@ -148,9 +121,7 @@ export default function App() {
           <HeaderWrapper>
             <Header />
           </HeaderWrapper>
-          <NavigationWrapper>
-            <Navigation />
-          </NavigationWrapper>
+          <Navigation />
           <BodyWrapper>
             <Popups />
             <Web3ReactManager>

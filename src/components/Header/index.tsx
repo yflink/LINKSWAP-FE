@@ -23,18 +23,27 @@ const HeaderFrame = styled.div`
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  flex-direction: column;
   width: 100%;
   top: 0;
   position: relative;
   z-index: 2;
   background: ${({ theme }) => theme.headerBG};
   color: ${({ theme }) => theme.headerTextColor};
+  padding: 1rem;
+
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    flex-direction: column;
+  `};
 `
 
 const HeaderElement = styled.div`
   display: flex;
   align-items: flex-start;
+
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    flex: 0 0 100%;
+    justify-content: flex-end;
+  `};
 `
 
 const Logo = styled.img`
@@ -84,6 +93,14 @@ const AccountElement = styled.div<{ active: boolean }>`
   :focus {
     border: 1px solid blue;
   }
+
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    margin: 0 44px 0 0;
+  `};
+
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    margin: 1rem 0 0;
+  `};
 `
 
 const TestnetWrapper = styled.div`
@@ -101,13 +118,18 @@ const NetworkCard = styled(YellowCard)`
 `
 
 const HeaderControls = styled.div`
-  flex: 0;
-  flex-direction: column;
-  align-items: flex-end;
   display: none;
 
   ${({ theme }) => theme.mediaWidth.upToMedium`
+    flex: 0;
     display: flex;
+    align-items: flex-end;
+  `};
+
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    flex: 0 0 100%;
+    width: 100%;
+    flex-direction: column;
   `};
 `
 
@@ -138,39 +160,35 @@ export default function Header() {
   useMphPools()
   return (
     <HeaderFrame>
-      <RowBetween style={{ alignItems: 'flex-start' }} padding="1rem">
-        <HeaderElement>
-          <LogoWrapper>
-            <Title href="https://yflink.io">
-              <Logo src={logo} />
-              <TitleText>YFLINK</TitleText>
-            </Title>
-            {hasSublogo && <SubLogo src={theme.logo}></SubLogo>}
-          </LogoWrapper>
+      <HeaderElement>
+        <LogoWrapper>
+          <Title href="https://yflink.io">
+            <Logo src={logo} />
+            <TitleText>YFLINK</TitleText>
+          </Title>
+          {hasSublogo && <SubLogo src={theme.logo}></SubLogo>}
+        </LogoWrapper>
+      </HeaderElement>
+      <HeaderControls>
+        <HeaderElement style={{ flexWrap: 'wrap', flexGrow: 0 }}>
+          <RowBetween>
+            <TestnetWrapper>
+              {!isMobile && chainId && NETWORK_LABELS[chainId] && <NetworkCard>{NETWORK_LABELS[chainId]}</NetworkCard>}
+            </TestnetWrapper>
+            <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
+              {account && userEthBalance ? (
+                <BalanceText style={{ flexShrink: 0 }} pl="0.75rem" pr="0.5rem" fontWeight={500}>
+                  {userEthBalance?.toSignificant(4)} ETH
+                </BalanceText>
+              ) : null}
+              <Web3Status />
+            </AccountElement>
+          </RowBetween>
+          <RowBetween>
+            <Gas />
+          </RowBetween>
         </HeaderElement>
-        <HeaderControls>
-          <HeaderElement style={{ flexWrap: 'wrap', flexGrow: 0 }}>
-            <RowBetween>
-              <TestnetWrapper>
-                {!isMobile && chainId && NETWORK_LABELS[chainId] && (
-                  <NetworkCard>{NETWORK_LABELS[chainId]}</NetworkCard>
-                )}
-              </TestnetWrapper>
-              <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
-                {account && userEthBalance ? (
-                  <BalanceText style={{ flexShrink: 0 }} pl="0.75rem" pr="0.5rem" fontWeight={500}>
-                    {userEthBalance?.toSignificant(4)} ETH
-                  </BalanceText>
-                ) : null}
-                <Web3Status />
-              </AccountElement>
-            </RowBetween>
-            <RowBetween>
-              <Gas />
-            </RowBetween>
-          </HeaderElement>
-        </HeaderControls>
-      </RowBetween>
+      </HeaderControls>
     </HeaderFrame>
   )
 }
