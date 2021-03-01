@@ -150,3 +150,12 @@ export function ThemeSVG() {
     </svg>
   )
 }
+
+export function BridgeSVG() {
+  return (
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+      <polygon points="86.3,41.1 14.6,41.1 0.4,18.3 8.9,13 20.1,31.1 80.7,31.1 92,13 100.5,18.3 " />
+      <polygon points="14.3,58.9 86,58.9 100.2,81.7 91.7,87 80.4,68.9 19.8,68.9 8.6,87 0.1,81.7 " />
+    </svg>
+  )
+}

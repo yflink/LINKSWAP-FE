@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { ExternalLink, RefreshCw, Globe, PlusSquare, MinusSquare, Menu, X } from 'react-feather'
+import { ExternalLink, Globe, PlusSquare, MinusSquare, Menu, X } from 'react-feather'
 import { Settings } from 'react-feather'
-import { SwapSVG, PoolSVG, StakeSVG, BuySVG, YFLSVG, WalletSVG, ThemeSVG } from '../SVG'
+import { SwapSVG, PoolSVG, StakeSVG, BuySVG, YFLSVG, WalletSVG, ThemeSVG, BridgeSVG } from '../SVG'
 import { NavLink } from 'react-router-dom'
 import { useNavigationActiveItem } from '../../state/navigation/hooks'
 import { RowBetween } from '../Row'
@@ -84,12 +84,7 @@ const ExternalLinkIcon = styled(ExternalLink)`
   width: auto;
   fill: transparent !important;
 `
-const BridgeIcon = styled(RefreshCw)`
-  color: ${({ theme }) => theme.textPrimary};
-  height: 16px;
-  width: auto;
-  fill: transparent !important;
-`
+
 const LanguageIcon = styled(Globe)`
   color: ${({ theme }) => theme.textPrimary};
   height: 16px;
@@ -786,48 +781,6 @@ export default function Navigation() {
             <NavTitle>
               <NavTitleLink
                 onClick={() => {
-                  goTo('/buy')
-                  if (!showWyre) {
-                    setShowSwap(false)
-                    setShowLiquidity(false)
-                    setShowStaking(false)
-                    setShowWyre(true)
-                    setShowBridges(false)
-                  }
-                }}
-              >
-                <NavigationIconWrapper>
-                  <BuySVG />
-                </NavigationIconWrapper>
-                Wyre
-              </NavTitleLink>
-              {currentActive !== 'buy' && (
-                <CollapseToggle
-                  onClick={() => {
-                    setShowWyre(!showWyre)
-                  }}
-                >
-                  {showWyre ? <CollapseIcon /> : <ExpandIcon />}
-                </CollapseToggle>
-              )}
-            </NavTitle>
-            <SubNavigationBodyList show={showWyre}>
-              <SubNavigationElement>
-                <StyledNavLink id={'buy'} to={'/buy'} isActive={() => active === 'buy'}>
-                  <NavLabel>{t('buyCurrency', { currency: 'Ethereum' })}</NavLabel>
-                </StyledNavLink>
-              </SubNavigationElement>
-              <SubNavigationElement>
-                <StyledNavLink id={'buy-link'} to={'/buy?currency=LINK'} isActive={() => active === 'buy-link'}>
-                  <NavLabel>{t('buyCurrency', { currency: LINK.name })}</NavLabel>
-                </StyledNavLink>
-              </SubNavigationElement>
-            </SubNavigationBodyList>
-          </NavigationElement>
-          <NavigationElement>
-            <NavTitle>
-              <NavTitleLink
-                onClick={() => {
                   goTo('/bridges')
                   if (!showBridges) {
                     setShowSwap(false)
@@ -839,7 +792,7 @@ export default function Navigation() {
                 }}
               >
                 <NavigationIconWrapper>
-                  <BridgeIcon />
+                  <BridgeSVG />
                 </NavigationIconWrapper>
                 {t('bridges')}
               </NavTitleLink>
@@ -920,6 +873,48 @@ export default function Navigation() {
                   isActive={() => active === 'bridges-renzec'}
                 >
                   <NavLabel>RenZEC</NavLabel>
+                </StyledNavLink>
+              </SubNavigationElement>
+            </SubNavigationBodyList>
+          </NavigationElement>
+          <NavigationElement>
+            <NavTitle>
+              <NavTitleLink
+                onClick={() => {
+                  goTo('/buy')
+                  if (!showWyre) {
+                    setShowSwap(false)
+                    setShowLiquidity(false)
+                    setShowStaking(false)
+                    setShowWyre(true)
+                    setShowBridges(false)
+                  }
+                }}
+              >
+                <NavigationIconWrapper>
+                  <BuySVG />
+                </NavigationIconWrapper>
+                Wyre
+              </NavTitleLink>
+              {currentActive !== 'buy' && (
+                <CollapseToggle
+                  onClick={() => {
+                    setShowWyre(!showWyre)
+                  }}
+                >
+                  {showWyre ? <CollapseIcon /> : <ExpandIcon />}
+                </CollapseToggle>
+              )}
+            </NavTitle>
+            <SubNavigationBodyList show={showWyre}>
+              <SubNavigationElement>
+                <StyledNavLink id={'buy'} to={'/buy'} isActive={() => active === 'buy'}>
+                  <NavLabel>{t('buyCurrency', { currency: 'Ethereum' })}</NavLabel>
+                </StyledNavLink>
+              </SubNavigationElement>
+              <SubNavigationElement>
+                <StyledNavLink id={'buy-link'} to={'/buy?currency=LINK'} isActive={() => active === 'buy-link'}>
+                  <NavLabel>{t('buyCurrency', { currency: LINK.name })}</NavLabel>
                 </StyledNavLink>
               </SubNavigationElement>
             </SubNavigationBodyList>
