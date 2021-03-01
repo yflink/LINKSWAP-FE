@@ -926,17 +926,17 @@ export default function Navigation() {
             </NavTitle>
             <SubNavigationBodyList show={showYflusd}>
               <SubNavigationElement>
-                <ExternalNavLink target="_blank" href="https://yflusd.linkswap.app">
+                <ExternalNavLink href="https://yflusd.linkswap.app">
                   <NavLabel>Info</NavLabel>
                 </ExternalNavLink>
               </SubNavigationElement>
               <SubNavigationElement>
-                <ExternalNavLink target="_blank" href="https://yflusd.linkswap.app/bonds">
+                <ExternalNavLink href="https://yflusd.linkswap.app/bonds">
                   <NavLabel>{t('bonds')}</NavLabel>
                 </ExternalNavLink>
               </SubNavigationElement>
               <SubNavigationElement>
-                <ExternalNavLink target="_blank" href="https://yflusd.linkswap.app/boardroom">
+                <ExternalNavLink href="https://yflusd.linkswap.app/boardroom">
                   <NavLabel>{t('boardroom')}</NavLabel>
                 </ExternalNavLink>
               </SubNavigationElement>
@@ -964,12 +964,12 @@ export default function Navigation() {
             </NavTitle>
             <SubNavigationBodyList show={showExternal}>
               <SubNavigationElement>
-                <ExternalNavLink target="_blank" href="https://yflink.io/#/stake">
+                <ExternalNavLink href="https://yflink.io/#/stake">
                   <NavLabel>{t('governanceStaking')}</NavLabel>
                 </ExternalNavLink>
               </SubNavigationElement>
               <SubNavigationElement>
-                <ExternalNavLink target="_blank" href="https://info.linkswap.app">
+                <ExternalNavLink href="https://info.linkswap.app">
                   <NavLabel>{t('charts')}</NavLabel>
                 </ExternalNavLink>
               </SubNavigationElement>
