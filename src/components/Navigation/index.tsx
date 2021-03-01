@@ -15,7 +15,7 @@ import { useActiveWeb3React } from '../../hooks'
 import { useETHBalances, useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks'
 import { Text } from 'rebass'
 import { ChainId } from '@uniswap/sdk'
-import { useExpertModeManager } from '../../state/user/hooks'
+import { useExpertModeManager, useGetTheme } from '../../state/user/hooks'
 import { AutoColumn } from '../Column'
 import { LINK, sYFL, YFL, YFLUSD, yYFL } from '../../constants'
 import Loader from '../Loader'
@@ -403,6 +403,7 @@ export default function Navigation() {
   const [showThemes, setShowThemes] = useState(false)
   const [showLanguages, setShowLanguages] = useState(false)
   const [expertMode] = useExpertModeManager()
+  const currentTheme = useGetTheme()
   const [userBalances, fetchingUserBalances] = useTokenBalancesWithLoadingIndicator(account ?? undefined, [
     LINK,
     YFL,
@@ -660,7 +661,7 @@ export default function Navigation() {
               <SubNavigationElement>
                 <StyledNavLink
                   id={'swap-link'}
-                  to={'/swap/0x514910771af9ca656af840dff83e8264ecf986ca/ETH'}
+                  to={`/swap/${currentTheme}/0x514910771af9ca656af840dff83e8264ecf986ca/ETH`}
                   isActive={() => active === 'swap-link'}
                 >
                   <NavLabel>{LINK.symbol}</NavLabel>
