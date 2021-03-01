@@ -56,7 +56,7 @@ const LanguageIcon = styled(Globe)`
 
 const NavigationBody = styled.ul`
   width: 100%;
-  margin: 0 0 1.5rem;
+  margin: 0;
   padding: 1rem;
   list-style: none;
   display: block;
