@@ -428,5 +428,20 @@
   "tokensAdded": "Tokens added:",
   "tokensRemoved": "Tokens removed:",
   "tokensUpdated": "{{tokenCount}} tokens updated",
-  "acceptUpdate": "Accept update"
+  "acceptUpdate": "Accept update",
+  "wallet": "Wallet",
+  "network": "Network",
+  "settings": "Settings",
+  "allPools": "All Pools",
+  "inactivePools": "Inactive Pools",
+  "bridges": "Bridges",
+  "overview": "Overview",
+  "info": "Info",
+  "bonds": "Bonds",
+  "boardroom": "Boardroom",
+  "external": "External",
+  "governanceStaking": "Stake & Vote",
+  "charts": "Charts",
+  "themes": "Themes",
+  "languages": "Languages"
 }
