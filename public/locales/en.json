@@ -425,5 +425,7 @@
   "tokensAdded": "Tokens added:",
   "tokensRemoved": "Tokens removed:",
   "tokensUpdated": "{{tokenCount}} tokens updated",
-  "acceptUpdate": "Accept update"
+  "acceptUpdate": "Accept update",
+  "network": "Network",
+  "settings": "Settings"
 }

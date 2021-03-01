@@ -87,10 +87,6 @@ const NavigationElement = styled.li`
   margin: 0 0 0.5rem;
   flex-wrap: wrap;
   font-size: 16px;
-
-  & * {
-    color: ${({ theme }) => theme.textPrimary};
-  }
 `
 
 const SubNavigationElement = styled.li`
@@ -222,7 +218,7 @@ export default function Navigation() {
                 <Web3Status />
                 {chainId && NETWORK_LABELS[chainId] && (
                   <RowBetween>
-                    <Text>Network:</Text>
+                    <Text>{t('network')}:</Text>
                     <Text>{NETWORK_LABELS[chainId]}</Text>
                   </RowBetween>
                 )}
@@ -293,7 +289,12 @@ export default function Navigation() {
                 )}
               </AutoColumn>
             ) : (
-              <Web3Status />
+              <AutoColumn gap="8px">
+                <Web3Status />
+                <RowBetween>
+                  <Gas />
+                </RowBetween>
+              </AutoColumn>
             )}
           </SubNavigationBody>
         </NavigationElement>
@@ -309,7 +310,7 @@ export default function Navigation() {
                 <SettingsIcon />
               </NavigationIconWrapper>
             )}
-            Settings
+            {t('settings')}
           </NavTitle>
           <SubNavigationBody>
             <SettingsTab />
@@ -320,7 +321,7 @@ export default function Navigation() {
             <NavigationIconWrapper>
               <SwapSVG />
             </NavigationIconWrapper>
-            Swap
+            {t('swap')}
           </NavTitle>
           <SubNavigationBodyList>
             <SubNavigationElement>
@@ -329,7 +330,7 @@ export default function Navigation() {
                 to={'/swap/0x514910771af9ca656af840dff83e8264ecf986ca/ETH'}
                 isActive={() => active === 'swap-link'}
               >
-                <NavLabel>Chainlink</NavLabel>
+                <NavLabel>{LINK.symbol}</NavLabel>
               </StyledNavLink>
             </SubNavigationElement>
             <SubNavigationElement>
@@ -343,7 +344,7 @@ export default function Navigation() {
                 to={'/swap/0x7b760d06e401f85545f3b50c44bf5b05308b7b62'}
                 isActive={() => active === 'swap-yflusd'}
               >
-                <NavLabel>YFLink USD</NavLabel>
+                <NavLabel>{YFLUSD.symbol}</NavLabel>
               </StyledNavLink>
             </SubNavigationElement>
           </SubNavigationBodyList>
@@ -353,7 +354,7 @@ export default function Navigation() {
             <NavigationIconWrapper>
               <PoolSVG />
             </NavigationIconWrapper>
-            Liquidity
+            {t('liquidity')}
           </NavTitle>
           <SubNavigationBodyList>
             <SubNavigationElement>
@@ -378,7 +379,7 @@ export default function Navigation() {
             <NavigationIconWrapper>
               <StakeSVG />
             </NavigationIconWrapper>
-            LP Rewards
+            {t('staking')}
           </NavTitle>
           <SubNavigationBodyList>
             <SubNavigationElement>

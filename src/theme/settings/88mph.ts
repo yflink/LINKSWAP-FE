@@ -64,7 +64,7 @@ export function mphTheme() {
     buttonSelectBGActiveHover: mainColor,
     buttonSelectTextColorActiveHover: mainTextColor,
     buttonSecondaryBG: mainColor,
-    buttonSecondaryBorder: transparent,
+    buttonSecondaryBorder: modalBG,
     buttonSecondaryTextColor: infoText,
     buttonSecondaryBGActive: mainColor,
     buttonSecondaryBorderActive: mainColor,

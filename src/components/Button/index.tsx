@@ -115,26 +115,29 @@ export const ButtonGray = styled(Base)`
 
 export const ButtonSecondary = styled(Base)`
   background: ${({ theme }) => theme.buttonSecondaryBG};
+  border: 1px solid ${({ theme }) => theme.buttonSecondaryBorder};
   color: ${({ theme }) => theme.buttonSecondaryTextColor};
   font-size: 16px;
   border-radius: 6px;
   padding: ${({ padding }) => (padding ? padding : '10px')};
 
   &:focus {
-    box-shadow: 0 0 0 1pt ${({ theme }) => theme.buttonSecondaryBorderHover};
+    border: 1px solid ${({ theme }) => theme.buttonSecondaryBorderHover};
     background: ${({ theme }) => theme.buttonSecondaryBGHover};
     color: ${({ theme }) => theme.buttonSecondaryTextColorHover};
   }
   &:hover {
+    border: 1px solid ${({ theme }) => theme.buttonSecondaryBorderHover};
     background: ${({ theme }) => theme.buttonSecondaryBGHover};
     color: ${({ theme }) => theme.buttonSecondaryTextColorHover};
   }
   &:active {
-    box-shadow: 0 0 0 1pt ${({ theme }) => theme.buttonSecondaryBorderActive};
+    border: 1px solid ${({ theme }) => theme.buttonSecondaryBorderActive};
     background: ${({ theme }) => theme.buttonSecondaryBGActive};
     color: ${({ theme }) => theme.buttonSecondaryTextColorActive};
   }
   &:disabled {
+    border: 1px solid ${({ theme }) => theme.buttonBGDisabled};
     background: ${({ theme }) => theme.buttonBGDisabled};
     opacity: 50%;
     cursor: auto;
