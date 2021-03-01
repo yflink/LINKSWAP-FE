@@ -31,11 +31,15 @@ const MobilePopupInner = styled.div`
 
 const FixedPopupColumn = styled(AutoColumn)`
   position: fixed;
-  top: 102px;
-  right: 1rem;
+  top: 1rem;
+  right: 314px;
   max-width: 355px !important;
   width: 100%;
   z-index: 50;
+
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    right: 16px;
+  `};
 
   ${({ theme }) => theme.mediaWidth.upToSmall`
     display: none;

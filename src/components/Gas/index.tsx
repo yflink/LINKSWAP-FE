@@ -21,7 +21,7 @@ const StyledMenuButton = styled.button`
   position: relative;
   width: auto;
   border: none;
-  margin: 14px 0 0 0;
+  margin: 0;
   background: transparent;
   display: flex;
   align-items: center;
@@ -29,6 +29,10 @@ const StyledMenuButton = styled.button`
   padding: 0.25rem 0.5rem;
   border-radius: 2px;
   background: ${({ theme }) => theme.headerButtonBG};
+
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    margin: 12px 0 0;
+  `};
 
   :hover,
   :focus {

@@ -12,48 +12,50 @@ import { TYPE } from '../../theme'
 import { renBCH, renBTC, renDGB, renDOGE, renFIL, renLUNA, renZEC } from '../../constants'
 import BridgeCurrencyLogo from '../../components/BridgeLogo'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
+import { useNavigationActiveItemManager } from '../../state/navigation/hooks'
 
 export default function Ren() {
   const theme = useContext(ThemeContext)
   const { t } = useTranslation()
   const bridges = [
     {
-      url: 'ren/bch',
+      url: 'bridges/ren/bch',
       currency0: { symbol: 'BCH', decimals: renBCH.decimals },
       currency1: unwrappedToken(renBCH)
     },
     {
-      url: 'ren/btc',
+      url: 'bridges/ren/btc',
       currency0: { symbol: 'BTC', decimals: renBTC.decimals },
       currency1: unwrappedToken(renBTC)
     },
     {
-      url: 'ren/dgb',
+      url: 'bridges/ren/dgb',
       currency0: { symbol: 'DGB', decimals: renDGB.decimals },
       currency1: unwrappedToken(renDGB)
     },
     {
-      url: 'ren/doge',
+      url: 'bridges/ren/doge',
       currency0: { symbol: 'DOGE', decimals: renDOGE.decimals },
       currency1: unwrappedToken(renDOGE)
     },
     {
-      url: 'ren/fil',
+      url: 'bridges/ren/fil',
       currency0: { symbol: 'FIL', decimals: renFIL.decimals },
       currency1: unwrappedToken(renFIL)
     },
     {
-      url: 'ren/luna',
+      url: 'bridges/ren/luna',
       currency0: { symbol: 'LUNA', decimals: renLUNA.decimals },
       currency1: unwrappedToken(renLUNA)
     },
     {
-      url: 'ren/zec',
+      url: 'bridges/ren/zec',
       currency0: { symbol: 'ZEC', decimals: renZEC.decimals },
       currency1: unwrappedToken(renZEC)
     }
   ]
-
+  const newActive = useNavigationActiveItemManager()
+  newActive('bridges')
   return (
     <>
       <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.navigationBG, marginBottom: '16px' }}>

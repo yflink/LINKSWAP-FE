@@ -23,6 +23,7 @@ import AppBody from '../AppBody'
 import { Dots } from '../../components/swap/styleds'
 import { useTranslation } from 'react-i18next'
 import { AnalyticsWrapper, ExternalLinkIcon } from './styleds'
+import { useNavigationActiveItemManager } from '../../state/navigation/hooks'
 
 export default function Pool() {
   const theme = useContext(ThemeContext)
@@ -62,7 +63,8 @@ export default function Pool() {
   const hasV1Liquidity = false // useUserHasLiquidityInAllTokens()
 
   const tokenPairAddress = account ? 'https://info.linkswap.app/account/' + account : false
-
+  const newActive = useNavigationActiveItemManager()
+  newActive('liquidity-pool')
   const { t } = useTranslation()
   return (
     <>

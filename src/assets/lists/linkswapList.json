@@ -2,7 +2,7 @@
   "name": "LINKSWAP Token List",
   "logoURI": "https://logos.linkswap.app/0x28cb7e841ee97947a86b06fa4090c8451f64c0be.png",
   "keywords": ["linkswap", "link", "swap"],
-  "timestamp": "2020-02-26T00:00:00+00:00",
+  "timestamp": "2020-03-01T00:00:00+00:00",
   "tags":{
     "base":{"name":"base","description":"baseDescription"},
     "stablecoin":{"name":"stablecoin","description":"stablecoinDescription"},
@@ -329,11 +329,36 @@
       "symbol": "MPH",
       "decimals": 18,
       "logoURI": "https://logos.linkswap.app/0x8888801af4d980682e47f1a9036e589479e835c5.png"
+    },
+    {
+      "address": "0x0C49066C0808Ee8c673553B7cbd99BCC9ABf113d",
+      "chainId": 1,
+      "name": "Vesper Finance USDC",
+      "symbol": "vUSDC",
+      "decimals": 18,
+      "tags": ["stablecoin"],
+      "logoURI": "https://logos.linkswap.app/0x0c49066c0808ee8c673553b7cbd99bcc9abf113d.png"
+    },
+    {
+      "address": "0x103cc17C2B1586e5Cd9BaD308690bCd0BBe54D5e",
+      "chainId": 1,
+      "name": "Vesper Finance ETH",
+      "symbol": "vETH",
+      "decimals": 18,
+      "logoURI": "https://logos.linkswap.app/0x103cc17c2b1586e5cd9bad308690bcd0bbe54d5e.png"
+    },
+    {
+      "address": "0x4B2e76EbBc9f2923d83F5FBDe695D8733db1a17B",
+      "chainId": 1,
+      "name": "Vesper Finance BTC",
+      "symbol": "vBTC",
+      "decimals": 18,
+      "logoURI": "https://logos.linkswap.app/0x4b2e76ebbc9f2923d83f5fbde695d8733db1a17b.png"
     }
   ],
   "version": {
-    "major": 3,
-    "minor": 3,
+    "major": 4,
+    "minor": 0,
     "patch": 0
   }
 }

@@ -9,9 +9,6 @@ import { useETHBalances } from '../../state/wallet/hooks'
 import logo from '../../assets/svg/logo.png'
 
 import { YellowCard } from '../Card'
-import Theme from '../Theme'
-import Settings from '../Settings'
-import Language from '../Language'
 import Gas from '../Gas'
 
 import { RowBetween } from '../Row'
@@ -26,34 +23,27 @@ const HeaderFrame = styled.div`
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  flex-direction: column;
+  flex: 0 0 100%;
   width: 100%;
   top: 0;
   position: relative;
   z-index: 2;
   background: ${({ theme }) => theme.headerBG};
   color: ${({ theme }) => theme.headerTextColor};
+  padding: 1rem;
+
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    flex-wrap: wrap;
+  `};
 `
 
 const HeaderElement = styled.div`
   display: flex;
   align-items: flex-start;
-`
 
-const HeaderElementMobile = styled.div`
-  display: flex;
-  align-items: flex-start;
-  @media (max-width: 699px) {
-    display: none;
-  }
-`
-
-const HeaderElementWrap = styled.div`
-  display: flex;
-  align-items: flex-start;
-  ${({ theme }) => theme.mediaWidth.upToMedium`
-    margin: 0 0 0.5rem 0;
-`};
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    flex: 0 0 100%;
+  `};
 `
 
 const Logo = styled.img`
@@ -91,23 +81,6 @@ const TitleText = styled.h1`
   color: ${({ theme }) => theme.headerTextColor};
 `
 
-const MenuText = styled.h3`
-  margin: 0;
-  padding: 0;
-  font-family: 'Work Sans Thin', sans-serif;
-  text-transform: uppercase;
-  font-size: 18px;
-  font-weight: 400;
-  letter-spacing: 0.06em;
-  padding: 4px 0;
-  border-bottom: 2px solid transparent;
-  color: ${({ theme }) => theme.headerTextColor};
-
-  :hover {
-    border-bottom: 2px solid ${({ theme }) => theme.headerTextColor};
-  }
-`
-
 const AccountElement = styled.div<{ active: boolean }>`
   display: flex;
   flex-direction: row;
@@ -120,6 +93,15 @@ const AccountElement = styled.div<{ active: boolean }>`
   :focus {
     border: 1px solid blue;
   }
+
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    margin: 0 44px 0 0;
+  `};
+
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    margin: 1rem 0 0;
+    flex: 0;
+  `};
 `
 
 const TestnetWrapper = styled.div`
@@ -137,19 +119,23 @@ const NetworkCard = styled(YellowCard)`
 `
 
 const HeaderControls = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
+  display: none;
 
   ${({ theme }) => theme.mediaWidth.upToMedium`
-    flex-direction: column;
-    align-items: flex-end;
+    flex: 0;
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  `};
+
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    flex: 0 0 100%;
   `};
 `
 
 const BalanceText = styled(Text)`
   color: ${({ theme }) => theme.headerButtonIconColor}
-    ${({ theme }) => theme.mediaWidth.upToMedium`
+    ${({ theme }) => theme.mediaWidth.upToSmall`
     display: none;
   `};
 `
@@ -158,7 +144,7 @@ const NETWORK_LABELS: { [chainId in ChainId]: string | null } = {
   [ChainId.MAINNET]: null,
   [ChainId.RINKEBY]: 'Rinkeby',
   [ChainId.ROPSTEN]: 'Ropsten',
-  [ChainId.GÖRLI]: 'Görli',
+  [ChainId.GOERLI]: 'Görli',
   [ChainId.KOVAN]: 'Kovan'
 }
 
@@ -174,61 +160,35 @@ export default function Header() {
   useMphPools()
   return (
     <HeaderFrame>
-      <RowBetween style={{ alignItems: 'flex-start' }} padding="1rem">
-        <HeaderElement>
-          <LogoWrapper>
-            <Title href="https://yflink.io">
-              <Logo src={logo}></Logo>
-              <TitleText>YFLINK</TitleText>
-            </Title>{' '}
-            {hasSublogo && <SubLogo src={theme.logo}></SubLogo>}
-          </LogoWrapper>
-
-          {!isMobile && (
-            <HeaderElementMobile>
-              <Title style={{ marginInlineStart: 24 }} href="https://yflink.io/#/stake">
-                <MenuText>Stake & Vote</MenuText>
-              </Title>
-              <Title style={{ marginInlineStart: 24 }} href="https://info.linkswap.app">
-                <MenuText>Charts</MenuText>
-              </Title>
-              <Title style={{ marginInlineStart: 24 }} href="https://yflusd.linkswap.app">
-                <MenuText>YFLUSD</MenuText>
-              </Title>
-              <Title style={{ marginInlineStart: 24 }} href="/#/ren">
-                <MenuText>Ren Bridges</MenuText>
-              </Title>
-            </HeaderElementMobile>
-          )}
+      <HeaderElement>
+        <LogoWrapper>
+          <Title href="https://yflink.io">
+            <Logo src={logo} />
+            <TitleText>YFLINK</TitleText>
+          </Title>
+          {hasSublogo && <SubLogo src={theme.logo}></SubLogo>}
+        </LogoWrapper>
+      </HeaderElement>
+      <HeaderControls>
+        <HeaderElement style={{ flexWrap: 'wrap', flexGrow: 0 }}>
+          <RowBetween>
+            <TestnetWrapper>
+              {!isMobile && chainId && NETWORK_LABELS[chainId] && <NetworkCard>{NETWORK_LABELS[chainId]}</NetworkCard>}
+            </TestnetWrapper>
+            <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
+              {account && userEthBalance ? (
+                <BalanceText style={{ flexShrink: 0 }} pl="0.75rem" pr="0.5rem" fontWeight={500}>
+                  {userEthBalance?.toSignificant(4)} ETH
+                </BalanceText>
+              ) : null}
+              <Web3Status />
+            </AccountElement>
+          </RowBetween>
+          <RowBetween>
+            <Gas />
+          </RowBetween>
         </HeaderElement>
-        <HeaderControls style={{ flex: '0' }}>
-          <HeaderElementWrap>
-            <Theme />
-            <Language />
-            <Settings />
-          </HeaderElementWrap>
-          <HeaderElement style={{ flexWrap: 'wrap', flexGrow: 0 }}>
-            <RowBetween>
-              <TestnetWrapper>
-                {!isMobile && chainId && NETWORK_LABELS[chainId] && (
-                  <NetworkCard>{NETWORK_LABELS[chainId]}</NetworkCard>
-                )}
-              </TestnetWrapper>
-              <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
-                {account && userEthBalance ? (
-                  <BalanceText style={{ flexShrink: 0 }} pl="0.75rem" pr="0.5rem" fontWeight={500}>
-                    {userEthBalance?.toSignificant(4)} ETH
-                  </BalanceText>
-                ) : null}
-                <Web3Status />
-              </AccountElement>
-            </RowBetween>
-            <RowBetween>
-              <Gas />
-            </RowBetween>
-          </HeaderElement>
-        </HeaderControls>
-      </RowBetween>
+      </HeaderControls>
     </HeaderFrame>
   )
 }

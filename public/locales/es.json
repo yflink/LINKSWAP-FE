@@ -398,7 +398,7 @@
   "your88Deposits": "Tus depósitos en {{vaultName}}",
   "deposit88Description": "Después de depositar en el pool, recibe un token no fungible (NFT) ERC-721 que representa su depósito. Puede ver las posiciones representadas por el ERC-721 NFT enumeradas a continuación.",
   "deposit88WithdrawEarlyHead": "Disclaimer de retiro anticipado",
-  "deposit88WithdrawEarly": "Si el período de préstamo de uno de sus depósitos aún no ha terminado, puede optar por \ "retirar anticipadamente \". Luego, retirará su capital antes de la fecha de vencimiento al renunciar a sus intereses y recompensas MPH.",
+  "deposit88WithdrawEarly": "Si el período de préstamo de uno de sus depósitos aún no ha terminado, puede optar por \"retirar anticipadamente\". Luego, retirará su capital antes de la fecha de vencimiento al renunciar a sus intereses y recompensas MPH.",
   "depositing": "Depositando",
   "depositId": "deposit-id #{{id}}",
   "unlocksIn": "Desbloquea en {{time}}",
@@ -420,5 +420,13 @@
   "addParamsBase64": "Agregar parámetro (Base64 format)",
   "addParamsHex": "Agregar parámetro (Hex format)",
   "addMemo": "Agregue esta nota a su transacción",
-  "resume": "Reanudar {{action}}"
+  "resume": "Reanudar {{action}}",
+  "renCoin": "Ren",
+  "renCoinDescription": "Esta moneda es parte del ecosistema RenVM.",
+  "oldListUpdate": "La lista de tokens  \",{{listName}}\" se ha actualizado a {{versión}}.",
+  "listUpdate": "Hay una actualización disponible para la lista de tokens \"{{listName}} \" ({{oldListVersion}} a {{newListVersion}}).",
+  "tokensAdded": "Tokens añadidos:",
+  "tokensRemoved": "Tokens eliminados:",
+  "tokensUpdated": "{{tokenCount}} tokens actualizados",
+  "acceptUpdate": "Aceptar actualización"
 }

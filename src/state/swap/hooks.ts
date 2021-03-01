@@ -19,6 +19,7 @@ import useToggledVersion from '../../hooks/useToggledVersion'
 import { useUserSlippageTolerance } from '../user/hooks'
 import { computeSlippageAdjustedAmounts } from '../../utils/prices'
 import { useTranslation } from 'react-i18next'
+import { useNavigationActiveItemManager } from '../navigation/hooks'
 import { LINK } from '../../constants'
 
 export function useSwapState(): AppState['swap'] {
@@ -281,6 +282,8 @@ export function useDefaultsFromURLSearch():
   const { chainId } = useActiveWeb3React()
   const dispatch = useDispatch<AppDispatch>()
   const parsedQs = useParsedQueryString()
+  const newActive = useNavigationActiveItemManager()
+
   const [result, setResult] = useState<
     { inputCurrencyId: string | undefined; outputCurrencyId: string | undefined } | undefined
   >()
@@ -298,6 +301,14 @@ export function useDefaultsFromURLSearch():
         recipient: parsed.recipient
       })
     )
+
+    if (parsed[Field.INPUT].currencyId?.toLowerCase() === '0x514910771af9ca656af840dff83e8264ecf986ca') {
+      newActive('swap-link')
+    } else if (parsed[Field.INPUT].currencyId?.toLowerCase() === '0x7b760d06e401f85545f3b50c44bf5b05308b7b62') {
+      newActive('swap-yflusd')
+    } else {
+      newActive('swap')
+    }
 
     setResult({ inputCurrencyId: parsed[Field.INPUT].currencyId, outputCurrencyId: parsed[Field.OUTPUT].currencyId })
     // eslint-disable-next-line react-hooks/exhaustive-deps
