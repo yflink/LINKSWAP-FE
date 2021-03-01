@@ -3,17 +3,16 @@ import styled from 'styled-components'
 import { useGetTheme, useThemeManager } from '../../state/user/hooks'
 import ReactGA from 'react-ga'
 
-export const ThemeOptionBody = styled.div`
+export const ThemeOptionBody = styled.div<{ active?: boolean }>`
   width: 100%;
-  padding: 0.5rem 1rem;
   text-align: start;
-  font-size: 14px;
   display: block;
+  font-weight: ${({ active }) => (active ? 'bold' : 'normal')};
 
   :hover,
   :focus {
-    cursor: pointer;
-    background: ${({ theme }) => theme.modalSecondaryBG};
+    cursor: ${({ active }) => (active ? 'default' : 'pointer')};
+    text-decoration: ${({ active }) => (active ? 'none' : 'underline')};
   }
 `
 
@@ -31,7 +30,7 @@ export default function ThemeOptionHelper(props: { themeString: string; themeNam
   const isActive = props.themeString === currentTheme
 
   return (
-    <ThemeOptionBody style={isActive ? { fontWeight: 'bold' } : {}}>
+    <ThemeOptionBody active={isActive}>
       <ThemeOption
         onClick={() => {
           ReactGA.event({

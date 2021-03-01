@@ -48,6 +48,7 @@ import {
   useRenMintsLUNA,
   useRenMintsZEC
 } from '../../state/ren/hooks'
+import { useNavigationActiveItemManager } from '../../state/navigation/hooks'
 
 const NavigationWrapper = styled.div`
   display: flex;
@@ -359,6 +360,9 @@ export default function RenBridge({
     setSubmitting(false)
   }
 
+  const newActive = useNavigationActiveItemManager()
+  const acitveId = token.symbol ? `bridges-${token.symbol.toLowerCase()}` : 'bridges-rendoge'
+  newActive(acitveId)
   return (
     <>
       <BridgeWarningModal isOpen={!dismissBridgeWarning} onConfirm={handleConfirmBridgeWarning} />

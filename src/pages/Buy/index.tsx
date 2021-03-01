@@ -21,6 +21,8 @@ import { BuyFooter } from '../../components/Buy/footer'
 import CurrencyLogo from '../../components/CurrencyLogo'
 import { ETHER } from '@uniswap/sdk'
 import { WrappedTokenInfo } from '../../state/lists/hooks'
+import { useNavigationActiveItemManager } from '../../state/navigation/hooks'
+import useParsedQueryString from '../../hooks/useParsedQueryString'
 
 const InputPanel = styled.div`
   ${({ theme }) => theme.flexColumnNoWrap}
@@ -202,6 +204,24 @@ export default function Buy() {
     }
   }
 
+  const parsedQs = useParsedQueryString()
+  let newId = 'buy'
+  const newActive = useNavigationActiveItemManager()
+  if (typeof parsedQs['currency'] !== 'undefined' && typeof parsedQs['currency'] === 'string') {
+    if (parsedQs['currency'].toLowerCase() === 'link') {
+      newId = 'buy-link'
+      if (currency !== 'Chainlink') {
+        setCurrency('Chainlink')
+        setCurrencySymbol('LINK')
+      }
+    }
+  } else {
+    if (currency !== 'Ethereum') {
+      setCurrency('Ethereum')
+      setCurrencySymbol('ETH')
+    }
+  }
+  newActive(newId)
   return (
     <>
       <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.navigationBG, marginBottom: '16px' }}>

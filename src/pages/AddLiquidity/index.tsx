@@ -37,6 +37,7 @@ import { Dots, Wrapper } from '../Pool/styleds'
 import { ConfirmAddModalBottom } from './ConfirmAddModalBottom'
 import { currencyId } from '../../utils/currencyId'
 import { PoolPriceBar } from './PoolPriceBar'
+import { useNavigationActiveItemManager } from '../../state/navigation/hooks'
 
 export default function AddLiquidity({
   match: {
@@ -46,7 +47,6 @@ export default function AddLiquidity({
 }: RouteComponentProps<{ currencyIdA?: string; currencyIdB?: string }>) {
   const { account, chainId, library } = useActiveWeb3React()
   const theme = useContext(ThemeContext)
-
   const currencyA = useCurrency(currencyIdA)
   const currencyB = useCurrency(currencyIdB)
 
@@ -123,6 +123,8 @@ export default function AddLiquidity({
 
   const { t } = useTranslation()
 
+  const newActive = useNavigationActiveItemManager()
+  newActive('liquidity-add')
   async function onAdd() {
     if (!chainId || !library || !account) return
     const router = getRouterContract(chainId, library, account)

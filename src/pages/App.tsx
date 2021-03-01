@@ -26,8 +26,15 @@ import { CreatePairRedirectOldPathStructure, CreatePairRedirectDuplicateTokenIds
 import PreviewListing from './PreviewListing'
 import Analyze from './Analyze'
 import StakeOverview from './Stake'
-import { RedirectTo88mph, RedirectTo88mphWithdraw, RedirectToStake, RedirectToUnstake } from './Stake/redirects'
+import {
+  RedirectTo88mph,
+  RedirectTo88mphWithdraw,
+  RedirectToStake,
+  RedirectToStakeWithParam,
+  RedirectToUnstake
+} from './Stake/redirects'
 import { ExternalLink } from 'react-feather'
+import Navigation from '../components/Navigation'
 import { RedirectToRenBridge } from './Bridges/redirects'
 import Popups from '../components/Popups'
 
@@ -36,7 +43,7 @@ const AppWrapper = styled.div`
   flex-flow: column;
   align-items: flex-start;
   height: 100%;
-  min-height: calc(100vh - 190px);
+  min-height: calc(100vh - 220px);
   padding-bottom: 40px;
   background: ${({ theme }) => theme.layerBG};
   ${({ theme }) => theme.mediaWidth.upToMedium`
@@ -51,19 +58,22 @@ const HeaderWrapper = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
   width: 100%;
   justify-content: space-between;
-  z-index: 2;
+  z-index: 1;
 `
 
 const BodyWrapper = styled.div`
-  min-height: calc(100vh - 190px);
+  min-height: calc(100vh - 220px);
   display: flex;
   flex-direction: column;
-  width: 100%;
-  padding-top: 90px;
-  box-sizing: content-box;
+  width: calc(100% - 300px);
+  padding-top: 70px;
   align-items: center;
+  box-sizing: content-box;
   flex: 1;
-  z-index: 1;
+  z-index: 2;
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    width: 100%;
+  `};
   ${({ theme }) => theme.mediaWidth.upToSmall`
     padding: 0 0 16px;
   `};
@@ -77,7 +87,7 @@ const FooterWrapper = styled.div`
   bottom: 0;
   width: 100%;
   text-align: center;
-  z-index: 1;
+  z-index: 3;
   padding: 5px 0;
   background-color: ${({ theme }) => theme.footerBG};
 
@@ -90,7 +100,6 @@ const FooterWrapper = styled.div`
     }
   }
 `
-
 const NewWindowIcon = styled(ExternalLink)`
   display: inline-block;
   margin-inline-start: 5px;
@@ -112,13 +121,14 @@ export default function App() {
           <HeaderWrapper>
             <Header />
           </HeaderWrapper>
+          <Navigation />
           <BodyWrapper>
             <Popups />
             <Web3ReactManager>
               <Switch>
                 <Route exact strict path="/buy" component={Buy} />
                 <Route exact strict path="/swap" component={Swap} />
-                <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap} />
+                <Route exact strict path="/swap/:inputCurrency" component={RedirectToSwap} />
                 <Route exact strict path="/swap/:theme/:outputCurrency" component={RedirectThemeOutputToSwap} />
                 <Route
                   exact
@@ -139,12 +149,15 @@ export default function App() {
                 <Route exact strict path="/unstake" component={StakeOverview} />
                 <Route exact path="/manage/mph88/:vaultName" component={RedirectTo88mphWithdraw} />
                 <Route exact path="/stake/mph88/:vaultName" component={RedirectTo88mph} />
+                <Route exact path="/stake/:param" component={RedirectToStakeWithParam} />
                 <Route exact path="/stake/:currencyIdA/:currencyIdB" component={RedirectToStake} />
                 <Route exact path="/unstake/:currencyIdA/:currencyIdB" component={RedirectToUnstake} />
                 <Route exact path="/create/:currencyIdA" component={CreatePairRedirectOldPathStructure} />
                 <Route exact path="/create/:currencyIdA/:currencyIdB" component={CreatePairRedirectDuplicateTokenIds} />
                 <Route exact strict path="/previewlisting" component={PreviewListing} />
                 <Route exact strict path="/analyze" component={Analyze} />
+                <Route exact strict path="/bridges" component={Ren} />
+                <Route exact strict path="/bridges/ren/:bridgeName" component={RedirectToRenBridge} />
                 <Route exact strict path="/ren" component={Ren} />
                 <Route exact strict path="/ren/:bridgeName" component={RedirectToRenBridge} />
                 <Route component={RedirectPathToSwapOnly} />
