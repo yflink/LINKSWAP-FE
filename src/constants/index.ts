@@ -165,6 +165,40 @@ export const renLUNA = new Token(
   'RenVM Terra'
 )
 
+export const stETH = new Token(ChainId.MAINNET, '0xDFe66B14D37C77F4E9b180cEb433d1b164f0281D', 18, 'stETH', 'Staked ETH')
+
+export const ibETH = new Token(
+  ChainId.MAINNET,
+  '0x67B66C99D3Eb37Fa76Aa3Ed1ff33E8e39F0b9c7A',
+  18,
+  'ibETH',
+  'Interest Bearing ETH'
+)
+
+export const vUSDC = new Token(
+  ChainId.MAINNET,
+  '0x0C49066C0808Ee8c673553B7cbd99BCC9ABf113d',
+  18,
+  'vUSDC',
+  'Vesper Finance USDC'
+)
+
+export const vETH = new Token(
+  ChainId.MAINNET,
+  '0x103cc17C2B1586e5Cd9BaD308690bCd0BBe54D5e',
+  18,
+  'vETH',
+  'Vesper Finance ETH'
+)
+
+export const vBTC = new Token(
+  ChainId.MAINNET,
+  '0x4B2e76EbBc9f2923d83F5FBDe695D8733db1a17B',
+  18,
+  'vBTC',
+  'Vesper Finance BTC'
+)
+
 const WETH_ONLY: ChainTokenList = {
   [ChainId.MAINNET]: [WETH[ChainId.MAINNET]],
   [ChainId.ROPSTEN]: [WETH[ChainId.ROPSTEN]],
@@ -176,7 +210,7 @@ const WETH_ONLY: ChainTokenList = {
 // used to construct intermediary pairs for trading
 export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   ...WETH_ONLY,
-  [ChainId.MAINNET]: [WETH[ChainId.MAINNET], LINK, YFLUSD, USDC, USDT]
+  [ChainId.MAINNET]: [WETH[ChainId.MAINNET], LINK, YFLUSD, vETH, vUSDC, stETH, ibETH, USDC, USDT]
 }
 
 /**
