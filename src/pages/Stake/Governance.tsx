@@ -9,35 +9,62 @@ import { AutoColumn } from '../../components/Column'
 import { RowBetween } from '../../components/Row'
 import Question from '../../components/QuestionHelper'
 import { useNavigationActiveItemManager } from '../../state/navigation/hooks'
-import {numberToSignificant, numberToUsd} from '../../utils/numberUtils'
-import { ButtonSecondary } from '../../components/Button'
+import { numberToSignificant, numberToUsd } from '../../utils/numberUtils'
+import { ButtonLight, ButtonSecondary } from '../../components/Button'
 import { Link } from 'react-router-dom'
 import { useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks'
 import { YFL, yYFL } from '../../constants'
 import { useActiveWeb3React } from '../../hooks'
 import Loader from '../../components/Loader'
-import {getContract} from "../../utils";
-import {governancePool} from "../../components/ABI";
-import {getNetworkLibrary} from "../../connectors";
-import hexStringToNumber from "../../utils/hexStringToNumber";
-import {BigNumber} from "ethers";
+import { getContract } from '../../utils'
+import { governancePool } from '../../components/ABI'
+import { ETH_API_KEYS, getNetworkLibrary } from '../../connectors'
+import hexStringToNumber from '../../utils/hexStringToNumber'
+import { BigNumber } from 'ethers'
+import { useWalletModalToggle } from '../../state/application/hooks'
+import { useGetPriceBase } from '../../state/price/hooks'
+import moment from 'moment'
+import Countdown from '../../components/Countdown'
 
 const GovernanceBalance = styled.div`
   display: flex;
   flex: 0 0 100%;
   margin: 0 0 24px;
+  font-size: 14px;
+
+  div {
+    align-items: flex-start;
+  }
+
+  p {
+    line-height: 1.4;
+  }
 `
 
 const UserBalance = styled.div`
   display: flex;
   flex: 0 0 100%;
   margin: 0 0 12px;
+  font-size: 14px;
+
+  div {
+    align-items: flex-start;
+  }
+
+  p {
+    line-height: 1.4;
+  }
 `
 
 const Title = styled.p`
   font-size: 18px;
   margin: 12px 0 0;
   font-weight: 700;
+`
+
+const BalanceText = styled.p`
+  margin: 0;
+  text-align: right;
 `
 
 async function getGovBalance() {
@@ -78,6 +105,31 @@ async function getGovBalance() {
   }
 }
 
+async function getBlockCountDown(targetBlock: number) {
+  const ethAPIKey = ETH_API_KEYS[Math.floor(Math.random() * ETH_API_KEYS.length)]
+  try {
+    const url = `https://api.etherscan.io/api?module=block&action=getblockcountdown&blockno=${targetBlock}&apikey=${ethAPIKey}`
+    const response = await fetch(url, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      method: 'POST'
+    })
+
+    if (response.ok) {
+      const content = await response.json()
+      if (content.status === '0') {
+        return 0
+      } else {
+        return content.result.EstimateTimeInSec
+      }
+    }
+  } catch (e) {
+    console.log(e)
+  }
+}
+
 export default function StakeGovernance() {
   const { account } = useActiveWeb3React()
   const fakeAccount = '0x0000000000000000000000000000000000000000'
@@ -87,23 +139,38 @@ export default function StakeGovernance() {
   const [govBalanceFetching, setGovBalanceFetching] = useState(false)
   const [govBalance, setGovBalance] = useState(0)
   const [yyflPrice, setYyflPrice] = useState(0)
+  const toggleWalletModal = useWalletModalToggle()
   const { t } = useTranslation()
   const newActive = useNavigationActiveItemManager()
   newActive('stake-governance')
   const [userBalances, fetchingUserBalances] = useTokenBalancesWithLoadingIndicator(account ?? undefined, [YFL, yYFL])
   const [govBalances, fetchingGovBalances] = useTokenBalancesWithLoadingIndicator(governanceAddress ?? undefined, [YFL])
+  const [feeCountdownFetched, setFeeCountdownFetched] = useState(false)
+  const [feeCountdown, setFeeCountdown] = useState(0)
   const govContract = getContract(governanceAddress, governancePool, fakeLibrary, fakeAccount)
-
-
-
+  const priceObject = useGetPriceBase()
+  const yflPriceUsd = priceObject ? priceObject['yflPriceBase'] : 0
+  const yyflPriceUsd = priceObject && yyflPrice !== 0 ? priceObject['yflPriceBase'] * yyflPrice : 0
+  const now = moment().unix()
 
   if (!govBalanceFetching && govBalance === 0) {
     setGovBalanceFetching(true)
 
-      const getPricePerFullShareMethod: (...args: any) => Promise<BigNumber> = govContract.getPricePerFullShare
-      getPricePerFullShareMethod().then(response => {
-          setYyflPrice(hexStringToNumber(response.toHexString(), yYFL.decimals))
+    if (account) {
+      const earlyWithdrawalFeeExpiryMethod: (...args: any) => Promise<BigNumber> = govContract.earlyWithdrawalFeeExpiry
+      const args: Array<string> = [account]
+      earlyWithdrawalFeeExpiryMethod(...args).then(response => {
+        getBlockCountDown(hexStringToNumber(response.toHexString(), 0)).then(countdown => {
+          setFeeCountdown(now + Math.ceil(countdown))
+          setFeeCountdownFetched(true)
+        })
       })
+    }
+
+    const getPricePerFullShareMethod: (...args: any) => Promise<BigNumber> = govContract.getPricePerFullShare
+    getPricePerFullShareMethod().then(response => {
+      setYyflPrice(hexStringToNumber(response.toHexString(), yYFL.decimals))
+    })
 
     getGovBalance().then(result => {
       let govLpUsdBalance = 0
@@ -120,9 +187,6 @@ export default function StakeGovernance() {
       }
     })
   }
-
-
-  console.log(yyflPrice )
 
   return (
     <>
@@ -148,79 +212,100 @@ export default function StakeGovernance() {
         </BlueCard>
         <GovernanceBalance>
           <AutoColumn gap={'12px'} style={{ width: '100%' }}>
-            <Title>Governance Statistics</Title>
+            <Title>{t('stakeGovernanceStatistics')}</Title>
             <RowBetween>
-              <Text>Staked YFL:</Text>
+              <Text>{t('stakedCurrency', { currencySymbol: YFL.symbol })}:</Text>
               {fetchingGovBalances ? (
                 <Loader />
               ) : (
-                <Text>{govBalances[YFL.address]?.toSignificant(8) + ' ' + YFL.symbol}</Text>
+                <BalanceText>
+                  {govBalances[YFL.address]?.toSignificant(8) + ' ' + YFL.symbol}
+                  <br />
+                  {numberToUsd(Number(govBalances[YFL.address]?.toSignificant(8)) * yflPriceUsd)}
+                </BalanceText>
               )}
             </RowBetween>
             <RowBetween>
-              <Text>yYFL Price:</Text>
+              <Text>{t('currencyPrice', { currencySymbol: yYFL.symbol })}:</Text>
               {yyflPrice === 0 ? (
                 <Loader />
               ) : (
-                <Text>{numberToSignificant(yyflPrice, 4) + ' ' + YFL.symbol}</Text>
+                <BalanceText>
+                  {numberToSignificant(yyflPrice, 6) + ' ' + YFL.symbol}
+                  <br />
+                  {numberToUsd(yyflPriceUsd)}
+                </BalanceText>
               )}
             </RowBetween>
           </AutoColumn>
         </GovernanceBalance>
-        <UserBalance>
-          <AutoColumn gap={'12px'} style={{ width: '100%' }}>
-            <Title>Stake into Governance</Title>
-            <BlueCard style={{ margin: '0 0 12px' }}>
-              <Text fontSize="14px">
-                When you stake your YFL into Governance, you'll recieve yYFL for it. The yYFL price increases after each
-                reward distribution. Unstaking converts your yYFL back to your original amount of YFL staked plus
-                distributed rewards.
-              </Text>
-            </BlueCard>
-            <RowBetween>
-              <Text>Your YFLink Balance:</Text>
-              {fetchingUserBalances ? (
-                <Loader />
-              ) : (
-                <Text>{userBalances[YFL.address]?.toSignificant(4) + ' ' + YFL.symbol}</Text>
-              )}
-            </RowBetween>
-            <RowBetween>
-              <ButtonSecondary as={Link} width="100%" to="stake/single/gov">
-                {t('stake')}
-              </ButtonSecondary>
-            </RowBetween>
-          </AutoColumn>
-        </UserBalance>
-        <UserBalance>
-          <AutoColumn gap={'12px'} style={{ width: '100%' }}>
-            <Title>Unstake from Governance</Title>
-            <BlueCard style={{ margin: '0 0 12px' }}>
-              <Text fontSize="14px">
-                You can unstake your yYFL at any time. Your yYFL will be converted back to YFL. Note that there is a 1%
-                unstaking fee if you unstake before 172800 blocks (approximately 26 days) from your time of staking,
-                which will go to the treasury.
-              </Text>
-            </BlueCard>
-            <RowBetween>
-              <Text>Your Staked YFLink Balance:</Text>
-              {fetchingUserBalances ? (
-                <Loader />
-              ) : (
-                <Text>{userBalances[yYFL.address]?.toSignificant(4) + ' ' + yYFL.symbol}</Text>
-              )}
-            </RowBetween>
-            <RowBetween>
-              <Text>Unstake fee:</Text>
-              <Text>0%</Text>
-            </RowBetween>
-            <RowBetween>
-              <ButtonSecondary as={Link} width="100%" to="unstake/single/gov">
-                {t('unstake')}
-              </ButtonSecondary>
-            </RowBetween>
-          </AutoColumn>
-        </UserBalance>
+        {account ? (
+          <>
+            <UserBalance>
+              <AutoColumn gap={'12px'} style={{ width: '100%' }}>
+                <Title>{t('stakeGovernanceStake')}</Title>
+                <BlueCard style={{ margin: '0 0 12px' }}>
+                  <Text fontSize="14px">{t('stakeGovernanceStakeDescription')}</Text>
+                </BlueCard>
+                <RowBetween>
+                  <Text>{t('yourCurrencyBalance', { currencySymbol: YFL.symbol })}:</Text>
+                  {fetchingUserBalances ? (
+                    <Loader />
+                  ) : (
+                    <BalanceText>
+                      {userBalances[YFL.address]?.toSignificant(4) + ' ' + YFL.symbol}
+                      <br />({numberToUsd(Number(userBalances[YFL.address]?.toSignificant(8)) * yflPriceUsd)})
+                    </BalanceText>
+                  )}
+                </RowBetween>
+                <RowBetween>
+                  <ButtonSecondary as={Link} width="100%" to="stake/single/gov">
+                    {t('stake')}
+                  </ButtonSecondary>
+                </RowBetween>
+              </AutoColumn>
+            </UserBalance>
+            <UserBalance>
+              <AutoColumn gap={'12px'} style={{ width: '100%' }}>
+                <Title>{t('stakeGovernanceUnstake')}</Title>
+                <BlueCard style={{ margin: '0 0 12px' }}>
+                  <Text fontSize="14px">{t('stakeGovernanceUnstakeDescription')}</Text>
+                </BlueCard>
+                <RowBetween>
+                  <Text>{t('yourCurrencyBalance', { currencySymbol: yYFL.name })}:</Text>
+                  {fetchingUserBalances ? (
+                    <Loader />
+                  ) : (
+                    <BalanceText>
+                      {userBalances[yYFL.address]?.toSignificant(4) + ' ' + yYFL.symbol}
+                      <br />({numberToUsd(Number(userBalances[yYFL.address]?.toSignificant(8)) * yyflPriceUsd)})
+                    </BalanceText>
+                  )}
+                </RowBetween>
+                <RowBetween>
+                  <Text>{t('stakeGovernanceUnstakeFee')}:</Text>
+                  {!feeCountdownFetched ? (
+                    <Loader />
+                  ) : feeCountdown > 0 ? (
+                    <BalanceText>
+                      1% <br />
+                      <Countdown ends={feeCountdown} format="DD[d] HH[h] mm[m] ss[s]" string="setToZeroPercentIn" />
+                    </BalanceText>
+                  ) : (
+                    <Text>0%</Text>
+                  )}
+                </RowBetween>
+                <RowBetween>
+                  <ButtonSecondary as={Link} width="100%" to="unstake/single/gov">
+                    {t('unstake')}
+                  </ButtonSecondary>
+                </RowBetween>
+              </AutoColumn>
+            </UserBalance>
+          </>
+        ) : (
+          <ButtonSecondary onClick={toggleWalletModal}>{t('connectWallet')}</ButtonSecondary>
+        )}
       </AppBody>
     </>
   )
