@@ -96,12 +96,13 @@ const NavigationBody = styled.ul`
   width: 100%;
   margin: 0;
   padding: 1rem;
+  padding-inline-end: 2rem;
   list-style: none;
   display: block;
 
   ${({ theme }) => theme.mediaWidth.upToMedium`
     width: 100vw;
-    
+    padding: 1rem;
   `};
 `
 
