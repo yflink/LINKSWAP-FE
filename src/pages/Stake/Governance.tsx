@@ -9,13 +9,18 @@ import { AutoColumn } from '../../components/Column'
 import { RowBetween } from '../../components/Row'
 import Question from '../../components/QuestionHelper'
 import { useNavigationActiveItemManager } from '../../state/navigation/hooks'
-import { numberToUsd } from '../../utils/numberUtils'
+import {numberToSignificant, numberToUsd} from '../../utils/numberUtils'
 import { ButtonSecondary } from '../../components/Button'
 import { Link } from 'react-router-dom'
 import { useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks'
-import { LINK, sYFL, YFL, YFLUSD, yYFL } from '../../constants'
+import { YFL, yYFL } from '../../constants'
 import { useActiveWeb3React } from '../../hooks'
 import Loader from '../../components/Loader'
+import {getContract} from "../../utils";
+import {governancePool} from "../../components/ABI";
+import {getNetworkLibrary} from "../../connectors";
+import hexStringToNumber from "../../utils/hexStringToNumber";
+import {BigNumber} from "ethers";
 
 const GovernanceBalance = styled.div`
   display: flex;
@@ -75,18 +80,31 @@ async function getGovBalance() {
 
 export default function StakeGovernance() {
   const { account } = useActiveWeb3React()
+  const fakeAccount = '0x0000000000000000000000000000000000000000'
+  const fakeLibrary = getNetworkLibrary()
   const governanceAddress = '0x75D1aA733920b14fC74c9F6e6faB7ac1EcE8482E'
   const theme = useContext(ThemeContext)
   const [govBalanceFetching, setGovBalanceFetching] = useState(false)
   const [govBalance, setGovBalance] = useState(0)
+  const [yyflPrice, setYyflPrice] = useState(0)
   const { t } = useTranslation()
   const newActive = useNavigationActiveItemManager()
   newActive('stake-governance')
   const [userBalances, fetchingUserBalances] = useTokenBalancesWithLoadingIndicator(account ?? undefined, [YFL, yYFL])
   const [govBalances, fetchingGovBalances] = useTokenBalancesWithLoadingIndicator(governanceAddress ?? undefined, [YFL])
+  const govContract = getContract(governanceAddress, governancePool, fakeLibrary, fakeAccount)
+
+
+
 
   if (!govBalanceFetching && govBalance === 0) {
     setGovBalanceFetching(true)
+
+      const getPricePerFullShareMethod: (...args: any) => Promise<BigNumber> = govContract.getPricePerFullShare
+      getPricePerFullShareMethod().then(response => {
+          setYyflPrice(hexStringToNumber(response.toHexString(), yYFL.decimals))
+      })
+
     getGovBalance().then(result => {
       let govLpUsdBalance = 0
       if (result.length > 0) {
@@ -102,6 +120,9 @@ export default function StakeGovernance() {
       }
     })
   }
+
+
+  console.log(yyflPrice )
 
   return (
     <>
@@ -134,6 +155,14 @@ export default function StakeGovernance() {
                 <Loader />
               ) : (
                 <Text>{govBalances[YFL.address]?.toSignificant(8) + ' ' + YFL.symbol}</Text>
+              )}
+            </RowBetween>
+            <RowBetween>
+              <Text>yYFL Price:</Text>
+              {yyflPrice === 0 ? (
+                <Loader />
+              ) : (
+                <Text>{numberToSignificant(yyflPrice, 4) + ' ' + YFL.symbol}</Text>
               )}
             </RowBetween>
           </AutoColumn>

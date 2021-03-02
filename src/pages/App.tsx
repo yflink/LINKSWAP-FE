@@ -37,7 +37,7 @@ import { ExternalLink } from 'react-feather'
 import Navigation from '../components/Navigation'
 import { RedirectToRenBridge } from './Bridges/redirects'
 import Popups from '../components/Popups'
-import StakeGovernance from './Stake/governance'
+import StakeGovernance from './Stake/Governance'
 
 const AppWrapper = styled.div`
   display: flex;
