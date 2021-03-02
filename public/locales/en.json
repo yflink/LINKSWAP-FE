@@ -440,5 +440,8 @@
   "governanceStaking": "Stake & Vote",
   "charts": "Charts",
   "themes": "Themes",
-  "languages": "Languages"
+  "languages": "Languages",
+  "stakeGovernance": "Governance Staking",
+  "stakeGovernanceDescription": "Description",
+  "stakeGovernanceBalance": "Current Collected Fees Balance"
 }
