@@ -445,6 +445,7 @@
   "stakeGovernanceDescription": "Description",
   "stakeGovernanceStatistics": "Governance Statistics",
   "stakeGovernanceBalance": "Current Collected Fees Balance",
+  "stakeGovernanceBalanceDisclaimer": "The collected fees, will be converted into {{inputCurrency}} once a month, which increases the price of {{outputCurrency}}",
   "stakeGovernanceStake": "Stake into Governance",
   "stakeGovernanceStakeDescription": "When you stake your YFL into Governance, you'll recieve yYFL for it. The yYFL price increases after each reward distribution. Unstaking converts your yYFL back to your original amount of YFL staked plus distributed rewards.",
   "stakeGovernanceUnstake": "Unstake from Governance",

@@ -21,7 +21,7 @@ import { governancePool } from '../../components/ABI'
 import { ETH_API_KEYS, getNetworkLibrary } from '../../connectors'
 import hexStringToNumber from '../../utils/hexStringToNumber'
 import { BigNumber } from 'ethers'
-import { useWalletModalToggle } from '../../state/application/hooks'
+import { useBlockNumber, useWalletModalToggle } from '../../state/application/hooks'
 import { useGetPriceBase } from '../../state/price/hooks'
 import moment from 'moment'
 import Countdown from '../../components/Countdown'
@@ -152,6 +152,8 @@ export default function StakeGovernance() {
   const yflPriceUsd = priceObject ? priceObject['yflPriceBase'] : 0
   const yyflPriceUsd = priceObject && yyflPrice !== 0 ? priceObject['yflPriceBase'] * yyflPrice : 0
   const now = moment().unix()
+  const lastBlockNumber = useBlockNumber()
+  const lastMonthBlockNumber = lastBlockNumber ? lastBlockNumber - 200000 : 0
 
   if (!govBalanceFetching && govBalance === 0) {
     setGovBalanceFetching(true)
@@ -210,6 +212,9 @@ export default function StakeGovernance() {
             {numberToUsd(govBalance)}
           </Text>
         </BlueCard>
+        <Text fontSize="12px" color={theme.textSecondary}>
+          {t('stakeGovernanceBalanceDisclaimer', { inputCurrency: YFL.symbol, outputCurrency: yYFL.symbol })}
+        </Text>
         <GovernanceBalance>
           <AutoColumn gap={'12px'} style={{ width: '100%' }}>
             <Title>{t('stakeGovernanceStatistics')}</Title>
@@ -230,11 +235,7 @@ export default function StakeGovernance() {
               {yyflPrice === 0 ? (
                 <Loader />
               ) : (
-                <BalanceText>
-                  {numberToSignificant(yyflPrice, 6) + ' ' + YFL.symbol}
-                  <br />
-                  {numberToUsd(yyflPriceUsd)}
-                </BalanceText>
+                <BalanceText>{numberToSignificant(yyflPrice, 6) + ' ' + YFL.symbol}</BalanceText>
               )}
             </RowBetween>
           </AutoColumn>
@@ -259,9 +260,19 @@ export default function StakeGovernance() {
                   )}
                 </RowBetween>
                 <RowBetween>
-                  <ButtonSecondary as={Link} width="100%" to="stake/single/gov">
-                    {t('stake')}
-                  </ButtonSecondary>
+                  {Number(userBalances[YFL.address]?.toSignificant(1)) > 0 ? (
+                    <ButtonSecondary as={Link} width="100%" to="/stake/single/gov">
+                      {t('stake')}
+                    </ButtonSecondary>
+                  ) : (
+                    <ButtonSecondary
+                      as={Link}
+                      width="100%"
+                      to="/swap?outpuCurrency=0x28cb7e841ee97947a86b06fa4090c8451f64c0be"
+                    >
+                      {t('buyCurrency', { currency: YFL.symbol })}
+                    </ButtonSecondary>
+                  )}
                 </RowBetween>
               </AutoColumn>
             </UserBalance>
@@ -282,24 +293,28 @@ export default function StakeGovernance() {
                     </BalanceText>
                   )}
                 </RowBetween>
-                <RowBetween>
-                  <Text>{t('stakeGovernanceUnstakeFee')}:</Text>
-                  {!feeCountdownFetched ? (
-                    <Loader />
-                  ) : feeCountdown > 0 ? (
-                    <BalanceText>
-                      1% <br />
-                      <Countdown ends={feeCountdown} format="DD[d] HH[h] mm[m] ss[s]" string="setToZeroPercentIn" />
-                    </BalanceText>
-                  ) : (
-                    <Text>0%</Text>
-                  )}
-                </RowBetween>
-                <RowBetween>
-                  <ButtonSecondary as={Link} width="100%" to="unstake/single/gov">
-                    {t('unstake')}
-                  </ButtonSecondary>
-                </RowBetween>
+                {Number(userBalances[yYFL.address]?.toSignificant(1)) > 0 && (
+                  <RowBetween>
+                    <Text>{t('stakeGovernanceUnstakeFee')}:</Text>
+                    {!feeCountdownFetched ? (
+                      <Loader />
+                    ) : feeCountdown > 0 ? (
+                      <BalanceText>
+                        1% <br />
+                        <Countdown ends={feeCountdown} format="DD[d] HH[h] mm[m] ss[s]" string="setToZeroPercentIn" />
+                      </BalanceText>
+                    ) : (
+                      <Text>0%</Text>
+                    )}
+                  </RowBetween>
+                )}
+                {Number(userBalances[yYFL.address]?.toSignificant(1)) > 0 && (
+                  <RowBetween>
+                    <ButtonSecondary as={Link} width="100%" to="/unstake/single/gov">
+                      {t('unstake')}
+                    </ButtonSecondary>
+                  </RowBetween>
+                )}
               </AutoColumn>
             </UserBalance>
           </>
