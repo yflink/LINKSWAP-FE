@@ -9,8 +9,8 @@ import { AutoColumn } from '../../components/Column'
 import { RowBetween } from '../../components/Row'
 import Question from '../../components/QuestionHelper'
 import { useNavigationActiveItemManager } from '../../state/navigation/hooks'
-import { numberToSignificant, numberToUsd } from '../../utils/numberUtils'
-import { ButtonLight, ButtonSecondary } from '../../components/Button'
+import { numberToPercent, numberToSignificant, numberToUsd } from '../../utils/numberUtils'
+import { ButtonSecondary } from '../../components/Button'
 import { Link } from 'react-router-dom'
 import { useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks'
 import { YFL, yYFL } from '../../constants'
@@ -25,6 +25,7 @@ import { useBlockNumber, useWalletModalToggle } from '../../state/application/ho
 import { useGetPriceBase } from '../../state/price/hooks'
 import moment from 'moment'
 import Countdown from '../../components/Countdown'
+import Web3 from 'web3'
 
 const GovernanceBalance = styled.div`
   display: flex;
@@ -139,6 +140,8 @@ export default function StakeGovernance() {
   const [govBalanceFetching, setGovBalanceFetching] = useState(false)
   const [govBalance, setGovBalance] = useState(0)
   const [yyflPrice, setYyflPrice] = useState(0)
+  const [yyflPriceLastMonth, setYyflPriceLastMonth] = useState(0)
+  const [apy, setApy] = useState(0)
   const toggleWalletModal = useWalletModalToggle()
   const { t } = useTranslation()
   const newActive = useNavigationActiveItemManager()
@@ -190,6 +193,25 @@ export default function StakeGovernance() {
     })
   }
 
+  if (lastMonthBlockNumber !== 0 && yyflPriceLastMonth === 0) {
+    const web3 = new Web3(Web3.givenProvider)
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    // @ts-ignore
+    const LendingPoolContract = new web3.eth.Contract(governancePool, governanceAddress)
+    LendingPoolContract.methods
+      .getPricePerFullShare()
+      .call({}, lastMonthBlockNumber)
+      .then((response: any) => {
+        setYyflPriceLastMonth(hexStringToNumber(response.toHexString(), yYFL.decimals))
+      })
+  }
+
+  if (yyflPrice > 0 && yyflPriceLastMonth > 0 && apy === 0) {
+    const priceDifference = yyflPrice - yyflPriceLastMonth
+    const percentageDifference = (priceDifference / yyflPriceLastMonth) * 100
+    setApy(percentageDifference * 12)
+  }
+
   return (
     <>
       <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.navigationBG, marginBottom: '16px' }}>
@@ -238,16 +260,21 @@ export default function StakeGovernance() {
                 <BalanceText>{numberToSignificant(yyflPrice, 6) + ' ' + YFL.symbol}</BalanceText>
               )}
             </RowBetween>
+            <RowBetween>
+              <Text>{t('currentEstimatedAPY')}:</Text>
+              {apy === 0 ? <Loader /> : <BalanceText>{numberToPercent(apy)}</BalanceText>}
+            </RowBetween>
           </AutoColumn>
         </GovernanceBalance>
-        {account ? (
-          <>
-            <UserBalance>
-              <AutoColumn gap={'12px'} style={{ width: '100%' }}>
-                <Title>{t('stakeGovernanceStake')}</Title>
-                <BlueCard style={{ margin: '0 0 12px' }}>
-                  <Text fontSize="14px">{t('stakeGovernanceStakeDescription')}</Text>
-                </BlueCard>
+
+        <UserBalance>
+          <AutoColumn gap={'12px'} style={{ width: '100%' }}>
+            <Title>{t('stakeGovernanceStake')}</Title>
+            <BlueCard style={{ margin: '0 0 12px' }}>
+              <Text fontSize="14px">{t('stakeGovernanceStakeDescription')}</Text>
+            </BlueCard>
+            {account && (
+              <>
                 <RowBetween>
                   <Text>{t('yourCurrencyBalance', { currencySymbol: YFL.symbol })}:</Text>
                   {fetchingUserBalances ? (
@@ -274,8 +301,12 @@ export default function StakeGovernance() {
                     </ButtonSecondary>
                   )}
                 </RowBetween>
-              </AutoColumn>
-            </UserBalance>
+              </>
+            )}
+          </AutoColumn>
+        </UserBalance>
+        {account ? (
+          <>
             <UserBalance>
               <AutoColumn gap={'12px'} style={{ width: '100%' }}>
                 <Title>{t('stakeGovernanceUnstake')}</Title>

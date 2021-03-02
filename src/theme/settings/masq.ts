@@ -6,7 +6,7 @@ export function masqTheme() {
   const appBG = '#0c0812'
   const bodyBGColor = '#120e1b'
   const inputBGColor = '#181323'
-  const mainTextColor = '#b2b2b2'
+  const mainTextColor = '#EFEFEF'
   const mainTextColorHover = '#c2bebc'
   const transparent = 'transparent'
   const buttonBG = '#181323'
