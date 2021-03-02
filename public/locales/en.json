@@ -454,6 +454,7 @@
   "yourCurrencyBalance": "Your {{currencySymbol}} Balance",
   "stakedCurrency": "Staked {{currencySymbol}}",
   "currencyPrice": "{{currencySymbol}} Price",
-  "setToZeroPercentIn": "Set to 0% in {{time}}"
+  "setToZeroPercentIn": "Set to 0% in {{time}}",
+  "stakeGovernanceNoFee": "Set to 0%. Refresh your browser"
 
 }

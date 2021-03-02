@@ -301,7 +301,12 @@ export default function StakeGovernance() {
                     ) : feeCountdown > 0 ? (
                       <BalanceText>
                         1% <br />
-                        <Countdown ends={feeCountdown} format="DD[d] HH[h] mm[m] ss[s]" string="setToZeroPercentIn" />
+                        <Countdown
+                          ends={feeCountdown}
+                          format="DD[d] HH[h] mm[m] ss[s]"
+                          string="setToZeroPercentIn"
+                          endedString="stakeGovernanceNoFee"
+                        />
                       </BalanceText>
                     ) : (
                       <Text>0%</Text>
