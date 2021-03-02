@@ -193,8 +193,8 @@ export default function MphManage({
         <AppBody>
           <Tabs>
             <RowBetween style={{ padding: '1rem 0' }}>
-              <ActiveText>{t('your88Deposits', { vaultName: vaultName })}</ActiveText>
-              <QuestionHelper text={t('deposit88Description', { vaultName: vaultName })} />
+              <ActiveText>{t('your88Deposits', { vaultName: currency.symbol })}</ActiveText>
+              <QuestionHelper text={t('deposit88Description', { vaultName: currency.symbol })} />
             </RowBetween>
           </Tabs>
           <RowBetween>

@@ -532,11 +532,11 @@ export default function SingleStakingCard({
                 <RowBetween marginTop="10px">
                   <>
                     {information.poolType === 'mph88' ? (
-                      <ButtonSecondary as={Link} width="100%" to={`/stake/mph88/${urlSymbol}`}>
+                      <ButtonSecondary as={Link} width="100%" to={`/stake/mph88/${values.name}`}>
                         {t('stake')}
                       </ButtonSecondary>
                     ) : (
-                      <ButtonSecondary as={Link} width="100%" to={`/stake/single/${currencyId(currency0)}`}>
+                      <ButtonSecondary as={Link} width="100%" to={`/stake/single/${values.name}`}>
                         {t('stake')}
                       </ButtonSecondary>
                     )}
@@ -552,7 +552,7 @@ export default function SingleStakingCard({
                     {information.poolType === 'mph88' && (
                       <>
                         {information.userBalance > 0 ? (
-                          <ButtonSecondary as={Link} width="100%" to={`/manage/mph88/${urlSymbol}`}>
+                          <ButtonSecondary as={Link} width="100%" to={`/manage/mph88/${values.name}`}>
                             {t('manageDeposits')}
                           </ButtonSecondary>
                         ) : (
@@ -651,7 +651,7 @@ export default function SingleStakingCard({
                         as={Link}
                         width="48%"
                         style={{ marginInlineStart: '1%' }}
-                        to={`/unstake/single/${currencyId(currency0)}`}
+                        to={`/unstake/single/${values.name}`}
                       >
                         {t('unstake')}
                       </ButtonSecondary>

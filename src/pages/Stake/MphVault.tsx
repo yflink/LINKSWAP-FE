@@ -138,7 +138,7 @@ export default function MphVault({
   if (
     (parsedAmountA &&
       Number(parsedAmounts[Field.CURRENCY_A]?.toExact()) > Number(maxAmounts[Field.CURRENCY_A]?.toExact())) ||
-    Number(userBalance?.toSignificant(18)) === 0
+    Number(userBalance?.toSignificant(currency.decimals)) === 0
   ) {
     buttonString = t('insufficientCurrencyBalance', { inputCurrency: currencies[Field.CURRENCY_A]?.symbol })
     hasError = true
@@ -208,7 +208,7 @@ export default function MphVault({
         <AppBody>
           <Tabs>
             <RowBetween style={{ padding: '1rem 0' }}>
-              <ActiveText>{t('deposit88IntoVault', { vaultName: vaultName })}</ActiveText>
+              <ActiveText>{t('deposit88IntoVault', { vaultName: currency.symbol })}</ActiveText>
               <QuestionHelper text={t('deposit88IntoVaultDescription', { vaultName: vaultName })} />
             </RowBetween>
           </Tabs>
