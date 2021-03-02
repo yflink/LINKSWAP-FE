@@ -59,7 +59,7 @@ const HeaderWrapper = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
   width: 100%;
   justify-content: space-between;
-  z-index: 1;
+  z-index: 2;
 `
 
 const BodyWrapper = styled.div`
@@ -71,7 +71,7 @@ const BodyWrapper = styled.div`
   align-items: center;
   box-sizing: content-box;
   flex: 1;
-  z-index: 2;
+  z-index: 1;
   ${({ theme }) => theme.mediaWidth.upToMedium`
     width: 100%;
   `};
