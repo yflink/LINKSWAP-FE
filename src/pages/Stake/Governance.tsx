@@ -281,7 +281,7 @@ export default function StakeGovernance() {
                 <Loader />
               ) : (
                 <BalanceText>
-                  {govBalances[YFL.address]?.toSignificant(8) + ' ' + YFL.symbol}
+                  {Number(govBalances[YFL.address]?.toSignificant(8)).toLocaleString('en-US') + ' ' + YFL.symbol}
                   <br />
                   {numberToUsd(Number(govBalances[YFL.address]?.toSignificant(8)) * yflPriceUsd)}
                 </BalanceText>
