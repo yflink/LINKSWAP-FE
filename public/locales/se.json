@@ -469,6 +469,6 @@
   "unstakeAndClaimRewardsOnSingle": "Unstake all and Claim Rewards {{currencyASymbol}}",
   "projectDocumentation": "Project Documentation",
   "moreDetails": "More Details",
-  "stakeGovernanceTotalDistributed": "Total YFL distributed to Governance",
+  "stakeGovernanceTotalDistributed": "Total YFL distributed by now",
   "stakeGovernanceLastDistribution": "Last distribution: {{days}} days ago"
 }
