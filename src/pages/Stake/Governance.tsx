@@ -18,7 +18,7 @@ import { useActiveWeb3React } from '../../hooks'
 import Loader from '../../components/Loader'
 import { getContract } from '../../utils'
 import { governancePool } from '../../components/ABI'
-import { ETH_API_KEYS, getNetworkLibrary } from '../../connectors'
+import { ETH_API_KEYS, getNetworkLibrary, NETWORK_URL } from '../../connectors'
 import hexStringToNumber from '../../utils/hexStringToNumber'
 import { BigNumber } from 'ethers'
 import { useBlockNumber, useWalletModalToggle } from '../../state/application/hooks'
@@ -155,9 +155,36 @@ async function getBlockCountDown(targetBlock: number) {
     if (response.ok) {
       const content = await response.json()
       if (content.status === '0') {
-        return 0
+        return ['']
       } else {
         return content.result.EstimateTimeInSec
+      }
+    } else {
+      return ['']
+    }
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+async function getIncomingTransactions(senderAddress: string) {
+  const ethAPIKey = ETH_API_KEYS[Math.floor(Math.random() * ETH_API_KEYS.length)]
+  try {
+    const url = `https://api.etherscan.io/api?module=account&action=tokentx&contractaddress=0x28cb7e841ee97947a86b06fa4090c8451f64c0be&address=${senderAddress}&page=1&offset=100&sort=desc&apikey=${ethAPIKey}`
+    const response = await fetch(url, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      method: 'POST'
+    })
+
+    if (response.ok) {
+      const content = await response.json()
+      if (content.status === '0') {
+        return 0
+      } else {
+        return content.result
       }
     }
   } catch (e) {
@@ -176,6 +203,9 @@ export default function StakeGovernance() {
   const [yyflPrice, setYyflPrice] = useState(0)
   const [yyflPriceLastMonth, setYyflPriceLastMonth] = useState(0)
   const [apy, setApy] = useState(0)
+  const [receivedYFLManual, setReceivedYFLManual] = useState(0)
+  const [receivedYFLAuto, setReceivedYFLAuto] = useState(0)
+  const [daysSinceLastDistribution, setDaysSinceLastDistribution] = useState(0)
   const toggleWalletModal = useWalletModalToggle()
   const { t } = useTranslation()
   const newActive = useNavigationActiveItemManager()
@@ -208,6 +238,30 @@ export default function StakeGovernance() {
       })
     }
 
+    if (receivedYFLManual === 0) {
+      getIncomingTransactions('0x0389d755c1833c9b350d4e8b619eae16defc1cba').then(transactions => {
+        let YFLManual = 0
+        transactions.forEach(function(transaction: Record<string, any>) {
+          if (transaction.to === governanceAddress.toLowerCase()) {
+            YFLManual += Number(transaction.value)
+            setDaysSinceLastDistribution(moment().diff(moment.unix(transaction.timeStamp), 'days'))
+          }
+        })
+        setReceivedYFLManual(YFLManual)
+      })
+    }
+    if (receivedYFLAuto === 0) {
+      getIncomingTransactions('0xdecaf44d70f377b28b6165c20846b74c04d90088').then(transactions => {
+        let YFLAuto = 0
+        transactions.forEach(function(transaction: Record<string, any>) {
+          if (transaction.to === governanceAddress.toLowerCase()) {
+            YFLAuto += Number(transaction.value)
+          }
+        })
+        setReceivedYFLAuto(YFLAuto)
+      })
+    }
+
     const getPricePerFullShareMethod: (...args: any) => Promise<BigNumber> = govContract.getPricePerFullShare
     getPricePerFullShareMethod().then(response => {
       setYyflPrice(hexStringToNumber(response.toHexString(), yYFL.decimals))
@@ -230,7 +284,7 @@ export default function StakeGovernance() {
   }
 
   if (lastMonthBlockNumber !== 0 && yyflPriceLastMonth === 0) {
-    const web3 = new Web3(Web3.givenProvider)
+    const web3 = new Web3(new Web3.providers.HttpProvider(NETWORK_URL))
     // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
     // @ts-ignore
     const abstractContract = new web3.eth.Contract(governancePool, governanceAddress)
@@ -248,6 +302,8 @@ export default function StakeGovernance() {
     setApy(percentageDifference * 12)
   }
 
+  const totalReceivedYFL = (receivedYFLManual + receivedYFLAuto) / 1000000000000000000
+
   return (
     <>
       <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.navigationBG, marginBottom: '16px' }}>
@@ -258,10 +314,6 @@ export default function StakeGovernance() {
           <RowBetween>
             <Title>{t('stakeGovernance')}</Title>
             <Question text={t('stakeGovernanceDescription')} />
-          </RowBetween>
-          <RowBetween>
-            <Text>{t('currentEstimatedAPY')}:</Text>
-            {apy === 0 ? <Loader /> : <BalanceText>{numberToPercent(apy)}</BalanceText>}
           </RowBetween>
         </AutoColumn>
         <BlueCard style={{ margin: '12px 0' }}>
@@ -275,6 +327,40 @@ export default function StakeGovernance() {
         <Text fontSize="12px" color={theme.textSecondary}>
           {t('stakeGovernanceBalanceDisclaimer', { inputCurrency: YFL.symbol, outputCurrency: yYFL.symbol })}
         </Text>
+        {apy !== 0 && (
+          <>
+            <BlueCard style={{ margin: '24px 0 12px' }}>
+              <Text textAlign="center" fontSize={12} fontWeight={400}>
+                {t('currentEstimatedAPY')}
+              </Text>
+              <Text textAlign="center" fontSize={30} fontWeight={700}>
+                {numberToPercent(apy)}
+              </Text>
+            </BlueCard>
+            <Text fontSize="12px" color={theme.textSecondary}>
+              {t('currentEstimatedAPYDisclaimer')}
+            </Text>
+          </>
+        )}
+        {totalReceivedYFL > 1 && (
+          <>
+            <BlueCard style={{ margin: '24px 0 12px' }}>
+              <Text textAlign="center" fontSize={12} fontWeight={400}>
+                {t('stakeGovernanceTotalDistributed')}
+              </Text>
+              <Text textAlign="center" fontSize={30} fontWeight={700}>
+                {`${numberToSignificant(totalReceivedYFL, 5)} ${YFL.symbol}`}
+              </Text>
+              <Text textAlign="center" fontSize={12} fontWeight={400}>
+                ({numberToUsd(totalReceivedYFL * yflPriceUsd)})
+              </Text>
+            </BlueCard>
+            <Text fontSize="12px" color={theme.textSecondary}>
+              {t('stakeGovernanceLastDistribution', { days: daysSinceLastDistribution })}
+            </Text>
+          </>
+        )}
+
         <GovernanceBalance>
           <AutoColumn gap={'12px'} style={{ width: '100%' }}>
             <RowBetween style={{ marginTop: '24px' }}>

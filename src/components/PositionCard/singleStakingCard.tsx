@@ -20,7 +20,7 @@ import styled from 'styled-components'
 import Card from '../Card'
 import { YFLSVG, MPHSVG } from '../SVG'
 import { Link } from 'react-router-dom'
-import { getNetworkLibrary } from '../../connectors'
+import { getNetworkLibrary, NETWORK_URL } from '../../connectors'
 import { useTokenBalance } from '../../state/wallet/hooks'
 import { useGetMphPools } from '../../state/mph/hooks'
 import { useBlockNumber, useWalletModalToggle } from '../../state/application/hooks'
@@ -423,7 +423,7 @@ export default function SingleStakingCard({
     const getPricePerFullShareMethod: (...args: any) => Promise<BigNumber> = govContract.getPricePerFullShare
     getPricePerFullShareMethod().then(response => {
       setYYflPrice(hexStringToNumber(response.toHexString(), yYFL.decimals))
-      const web3 = new Web3(Web3.givenProvider)
+      const web3 = new Web3(new Web3.providers.HttpProvider(NETWORK_URL))
       // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
       const abstractContract = new web3.eth.Contract(governancePool, SINGLE_POOLS.GOV.rewardsAddress)
