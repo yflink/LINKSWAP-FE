@@ -428,5 +428,20 @@
   "tokensAdded": "Tokens añadidos:",
   "tokensRemoved": "Tokens eliminados:",
   "tokensUpdated": "{{tokenCount}} tokens actualizados",
-  "acceptUpdate": "Aceptar actualización"
+  "acceptUpdate": "Aceptar actualización",
+  "wallet": "Billetera",
+  "network": "Network",
+  "settings": "Ajustes",
+  "allPools": "Todos los Pools",
+  "inactivePools": "Pools Inactivos",
+  "bridges": "Puentes",
+  "overview": "Resumen",
+  "info": "Info",
+  "bonds": "Bonos",
+  "boardroom": "Boardroom",
+  "external": "Externo",
+  "governanceStaking": "Stake & Vote",
+  "charts": "Gráficos",
+  "themes": "Temas",
+  "languages": "Idiomas"
 }
