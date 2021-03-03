@@ -68,6 +68,11 @@ const BalanceText = styled.p`
   text-align: right;
 `
 
+const LinkedBalance = styled.a`
+  text-decoration: none;
+  color: ${({ theme }) => theme.appInfoBoxTextColor};
+`
+
 const VotingButton = styled.a`
   padding: 18px;
   width: 100%;
@@ -316,48 +321,42 @@ export default function StakeGovernance() {
             <Question text={t('stakeGovernanceDescription')} />
           </RowBetween>
         </AutoColumn>
+        {apy !== 0 && (
+          <>
+            <RowBetween style={{ margin: '12px 0 6px' }}>
+              <Text>{t('currentEstimatedAPY')}</Text>
+              <BalanceText>{numberToPercent(apy)}</BalanceText>
+            </RowBetween>
+          </>
+        )}
         <BlueCard style={{ margin: '12px 0' }}>
           <Text textAlign="center" fontSize={12} fontWeight={400}>
             {t('stakeGovernanceBalance')}
           </Text>
           <Text textAlign="center" fontSize={30} fontWeight={700}>
-            {numberToUsd(govBalance)}
+            <LinkedBalance
+              href="https://zapper.fi/dashboard?address=0x0389d755c1833c9b350d4e8b619eae16defc1cba"
+              title={t('stakeGovernanceBalance')}
+            >
+              {numberToUsd(govBalance)}
+            </LinkedBalance>
           </Text>
         </BlueCard>
         <Text fontSize="12px" color={theme.textSecondary}>
           {t('stakeGovernanceBalanceDisclaimer', { inputCurrency: YFL.symbol, outputCurrency: yYFL.symbol })}
         </Text>
-        {apy !== 0 && (
-          <>
-            <BlueCard style={{ margin: '24px 0 12px' }}>
-              <Text textAlign="center" fontSize={12} fontWeight={400}>
-                {t('currentEstimatedAPY')}
-              </Text>
-              <Text textAlign="center" fontSize={30} fontWeight={700}>
-                {numberToPercent(apy)}
-              </Text>
-            </BlueCard>
-            <Text fontSize="12px" color={theme.textSecondary}>
-              {t('currentEstimatedAPYDisclaimer')}
-            </Text>
-          </>
-        )}
+        <Text fontSize="12px" color={theme.textSecondary}>
+          {t('stakeGovernanceLastDistribution', { days: daysSinceLastDistribution })}
+        </Text>
         {totalReceivedYFL > 1 && (
           <>
-            <BlueCard style={{ margin: '24px 0 12px' }}>
-              <Text textAlign="center" fontSize={12} fontWeight={400}>
-                {t('stakeGovernanceTotalDistributed')}
-              </Text>
-              <Text textAlign="center" fontSize={30} fontWeight={700}>
+            <RowBetween style={{ margin: '12px 0 6px', alignItems: 'flex-start', lineHeight: '1.4' }}>
+              <Text> {t('stakeGovernanceTotalDistributed')}</Text>
+              <BalanceText>
                 {`${numberToSignificant(totalReceivedYFL, 5)} ${YFL.symbol}`}
-              </Text>
-              <Text textAlign="center" fontSize={12} fontWeight={400}>
-                ({numberToUsd(totalReceivedYFL * yflPriceUsd)})
-              </Text>
-            </BlueCard>
-            <Text fontSize="12px" color={theme.textSecondary}>
-              {t('stakeGovernanceLastDistribution', { days: daysSinceLastDistribution })}
-            </Text>
+                <br />({numberToUsd(totalReceivedYFL * yflPriceUsd)})
+              </BalanceText>
+            </RowBetween>
           </>
         )}
 
