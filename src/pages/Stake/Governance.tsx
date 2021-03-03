@@ -59,7 +59,7 @@ const UserBalance = styled.div`
 
 const Title = styled.p`
   font-size: 18px;
-  margin: 12px 0 0;
+  margin: 0;
   font-weight: 700;
 `
 
@@ -84,6 +84,7 @@ const VotingButton = styled.a`
   position: relative;
   background: ${({ theme }) => theme.buttonBG};
   color: ${({ theme }) => theme.buttonTextColor};
+  font-size: 16px;
   &:focus {
     box-shadow: 0 0 0 1pt ${({ theme }) => theme.buttonBGHover};
     background: ${({ theme }) => theme.buttonBGHover};
@@ -255,10 +256,12 @@ export default function StakeGovernance() {
       <AppBody>
         <AutoColumn gap={'12px'}>
           <RowBetween>
-            <Text color={theme.textPrimary} fontWeight={500}>
-              {t('stakeGovernance')}
-            </Text>
+            <Title>{t('stakeGovernance')}</Title>
             <Question text={t('stakeGovernanceDescription')} />
+          </RowBetween>
+          <RowBetween>
+            <Text>{t('currentEstimatedAPY')}:</Text>
+            {apy === 0 ? <Loader /> : <BalanceText>{numberToPercent(apy)}</BalanceText>}
           </RowBetween>
         </AutoColumn>
         <BlueCard style={{ margin: '12px 0' }}>
@@ -274,7 +277,9 @@ export default function StakeGovernance() {
         </Text>
         <GovernanceBalance>
           <AutoColumn gap={'12px'} style={{ width: '100%' }}>
-            <Title>{t('stakeGovernanceStatistics')}</Title>
+            <RowBetween style={{ marginTop: '24px' }}>
+              <Title>{t('stakeGovernanceStatistics')}</Title>
+            </RowBetween>
             <RowBetween>
               <Text>{t('stakedCurrency', { currencySymbol: YFL.symbol })}:</Text>
               {fetchingGovBalances ? (
@@ -295,19 +300,15 @@ export default function StakeGovernance() {
                 <BalanceText>{numberToSignificant(yyflPrice, 6) + ' ' + YFL.symbol}</BalanceText>
               )}
             </RowBetween>
-            <RowBetween>
-              <Text>{t('currentEstimatedAPY')}:</Text>
-              {apy === 0 ? <Loader /> : <BalanceText>{numberToPercent(apy)}</BalanceText>}
-            </RowBetween>
           </AutoColumn>
         </GovernanceBalance>
 
         <UserBalance>
           <AutoColumn gap={'12px'} style={{ width: '100%' }}>
-            <Title>{t('stakeGovernanceStake')}</Title>
-            <BlueCard style={{ margin: '0 0 12px' }}>
-              <Text fontSize="14px">{t('stakeGovernanceStakeDescription')}</Text>
-            </BlueCard>
+            <RowBetween style={{ marginTop: '24px' }}>
+              <Title>{t('stakeGovernanceStake')}</Title>
+              <Question text={t('stakeGovernanceStakeDescription')} />
+            </RowBetween>
             {account && (
               <>
                 <RowBetween>
@@ -345,11 +346,10 @@ export default function StakeGovernance() {
             {hasYyfl && (
               <UserBalance>
                 <AutoColumn gap={'12px'} style={{ width: '100%' }}>
-                  <Title>{t('stakeGovernanceVoting')}</Title>
-                  <BlueCard style={{ margin: '0 0 12px' }}>
-                    <Text fontSize="14px">{t('stakeGovernanceVotingDescription')}</Text>
-                  </BlueCard>
-
+                  <RowBetween style={{ marginTop: '24px' }}>
+                    <Title>{t('stakeGovernanceVoting')}</Title>
+                    <Question text={t('stakeGovernanceVotingDescription')} />
+                  </RowBetween>
                   <RowBetween>
                     <VotingButton href="https://yflink.io/#/stake">{t('stakeGovernanceVoting')}</VotingButton>
                   </RowBetween>
@@ -358,10 +358,10 @@ export default function StakeGovernance() {
             )}
             <UserBalance>
               <AutoColumn gap={'12px'} style={{ width: '100%' }}>
-                <Title>{t('stakeGovernanceUnstake')}</Title>
-                <BlueCard style={{ margin: '0 0 12px' }}>
-                  <Text fontSize="14px">{t('stakeGovernanceUnstakeDescription')}</Text>
-                </BlueCard>
+                <RowBetween style={{ marginTop: '24px' }}>
+                  <Title>{t('stakeGovernanceUnstake')}</Title>
+                  <Question text={t('stakeGovernanceUnstakeDescription')} />
+                </RowBetween>
                 <RowBetween>
                   <Text>{t('yourCurrencyBalance', { currencySymbol: yYFL.name })}:</Text>
                   {fetchingUserBalances ? (

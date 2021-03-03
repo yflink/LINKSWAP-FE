@@ -442,7 +442,7 @@
   "themes": "Themes",
   "languages": "Languages",
   "stakeGovernance": "Governance Staking",
-  "stakeGovernanceDescription": "Description",
+  "stakeGovernanceDescription": "Stake to earn rewards on LINKSWAP fees and exercise your power on the future of the YFLink by voting on proposals",
   "stakeGovernanceStatistics": "Governance Statistics",
   "stakeGovernanceBalance": "Current Collected Fees Balance",
   "stakeGovernanceBalanceDisclaimer": "The collected fees, will be converted into {{inputCurrency}} periodically and unnanounced, which increases the price of {{outputCurrency}}",
@@ -464,5 +464,7 @@
   "stakeSingleTokenAmount": "Stake {{amount}} {{currencyASymbol}}",
   "unstakeSingleToken": "Unstake {{currencyASymbol}}",
   "unStakeSingleTokenDescription": "By unstaking your {{currencyASymbol}} you will no longer be eligible to earn staking rewards",
-  "unstakeAndClaimRewardsOnSingle": "Unstake all and Claim Rewards {{currencyASymbol}}"
+  "unstakeAndClaimRewardsOnSingle": "Unstake all and Claim Rewards {{currencyASymbol}}",
+  "projectDocumentation": "Project Documentation",
+  "moreDetails": "More Details"
 }

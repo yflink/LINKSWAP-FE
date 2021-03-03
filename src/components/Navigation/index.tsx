@@ -971,6 +971,11 @@ export default function Navigation() {
             </NavTitle>
             <SubNavigationBodyList show={showExternal}>
               <SubNavigationElement>
+                <ExternalNavLink href="https://app.gitbook.com/@yflink/s/yflink/">
+                  <NavLabel>{t('projectDocumentation')}</NavLabel>
+                </ExternalNavLink>
+              </SubNavigationElement>
+              <SubNavigationElement>
                 <ExternalNavLink href="https://yflink.io/#/stake">
                   <NavLabel>{t('stakeGovernanceVoting')}</NavLabel>
                 </ExternalNavLink>
