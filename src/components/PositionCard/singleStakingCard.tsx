@@ -3,7 +3,7 @@ import { useGetTokenPrices } from '../../state/price/hooks'
 import React, { useState } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
-import { StakingRewards } from '../../components/ABI'
+import { governancePool, StakingRewards } from '../../components/ABI'
 import positionInformation from './positionInformation'
 import hexStringToNumber from '../../utils/hexStringToNumber'
 import { AutoColumn } from '../Column'
@@ -24,14 +24,16 @@ import { Link } from 'react-router-dom'
 import { getNetworkLibrary } from '../../connectors'
 import { useTokenBalance } from '../../state/wallet/hooks'
 import { useGetMphPools } from '../../state/mph/hooks'
-import { useWalletModalToggle } from '../../state/application/hooks'
+import { useBlockNumber, useWalletModalToggle } from '../../state/application/hooks'
 import { calculateGasMargin, getContract } from '../../utils'
 import { TransactionResponse } from '@ethersproject/providers'
 import { BigNumber } from '@ethersproject/bignumber'
 import ReactGA from 'react-ga'
 import { useTransactionAdder } from '../../state/transactions/hooks'
+import { SINGLE_POOLS, yYFL } from '../../constants'
+import Web3 from 'web3'
 
-const FullStakingCard = styled(Card)<{ highlight?: boolean; show?: boolean }>`
+const StakingCard = styled(Card)<{ highlight?: boolean; show?: boolean }>`
   font-size: 14px;
   line-height: 18px;
   background: ${({ theme }) => theme.appBoxBG};
@@ -166,7 +168,11 @@ export default function SingleStakingCard({
   })
   const [fetching, setFetching] = useState(false)
   const [subGraphFetching, setSubGraphFetching] = useState(false)
+  const [yYflPrice, setYYflPrice] = useState(1)
   const urlSymbol = values.tokens[0].symbol.replace(' ', '').toUpperCase()
+  const isGov = information.poolType === 'gov'
+  const lastBlockNumber = useBlockNumber()
+  const lastMonthBlockNumber = lastBlockNumber ? lastBlockNumber - 200000 : 0
 
   if (!fetching) {
     if (!!tokenPrices) {
@@ -212,14 +218,14 @@ export default function SingleStakingCard({
       })
     }
   } else {
-    if (tokenPrices && information.apy === 0) {
+    if (tokenPrices && information.stakePoolTotalDeposited === 0) {
       const token0id = values.tokens[0].address.toLowerCase()
       if (tokenPrices[token0id]) {
         information.poolTokenPrices[0] = Number(tokenPrices[token0id].price)
       }
     }
 
-    if (information.updated && information.apy === 0) {
+    if (information.updated && information.stakePoolTotalDeposited === 0) {
       if (information.rewardTokens[0] !== '' && information.rewardTokens[1] !== '' && tokenPrices) {
         const token0Address = information.rewardTokens[0].toLowerCase()
         const token1Address = information.rewardTokens[1].toLowerCase()
@@ -408,15 +414,40 @@ export default function SingleStakingCard({
       })
   }
 
+  if (isGov && lastMonthBlockNumber > 0 && !subGraphFetching) {
+    const govContract = getContract(SINGLE_POOLS.GOV.rewardsAddress, governancePool, fakeLibrary, fakeAccount)
+    const getPricePerFullShareMethod: (...args: any) => Promise<BigNumber> = govContract.getPricePerFullShare
+    getPricePerFullShareMethod().then(response => {
+      setYYflPrice(hexStringToNumber(response.toHexString(), yYFL.decimals))
+      const web3 = new Web3(Web3.givenProvider)
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // @ts-ignore
+      const abstractContract = new web3.eth.Contract(governancePool, SINGLE_POOLS.GOV.rewardsAddress)
+      abstractContract.methods
+        .getPricePerFullShare()
+        .call({}, lastMonthBlockNumber)
+        .then((response: any) => {
+          const yYFLPriceLastMonth = hexStringToNumber(response.toHexString(), yYFL.decimals)
+          const priceDifference = yYflPrice - yYFLPriceLastMonth
+          const percentageDifference = (priceDifference / yYFLPriceLastMonth) * 100
+          information.apy = percentageDifference * 12
+          setTimeout(function() {
+            setSubGraphFetching(true)
+          }, 500)
+        })
+    })
+  }
+
   if (
     (information.userBalance === 0 && showOwn) ||
     (information.isInactive && !showExpired) ||
-    (!information.isInactive && showExpired)
+    (!information.isInactive && showExpired) ||
+    information.totalSupply === 0
   ) {
     return null
   } else {
     return (
-      <FullStakingCard highlight={information.userBalance > 0} show={show}>
+      <StakingCard highlight={information.userBalance > 0} show={show}>
         {information.poolType === 'mph88' ? (
           <PlatformIcon>
             <MPHSVG />
@@ -455,7 +486,9 @@ export default function SingleStakingCard({
             <RowFixed>
               <SingleCurrencyLogo currency0={currencyA} margin={true} size={22} />
               <div style={{ display: 'flex', position: 'relative' }}>
-                <p style={{ fontWeight: 500, fontSize: 18, margin: '0 4px' }}>{currencyA.symbol}</p>
+                <p style={{ fontWeight: 500, fontSize: 18, margin: '0 4px' }}>
+                  {isGov ? t('stakeGovernance') : currencyA.symbol}
+                </p>
               </div>
             </RowFixed>
             {!show && (
@@ -486,7 +519,15 @@ export default function SingleStakingCard({
               {Number(balance?.toSignificant(1)) * 10000 > 1 && !information.isInactive && (
                 <RowBetween>
                   <Text>{t('stakableTokenAmount')}</Text>
-                  {Number(balance?.toSignificant(6))}
+                  {Number(balance?.toSignificant(6)) > 1000 ? (
+                    <Text>
+                      {Number(balance?.toSignificant(6)).toLocaleString('en-US')} {currencyA.symbol}
+                    </Text>
+                  ) : (
+                    <Text>
+                      {Number(balance?.toSignificant(6))} {currencyA.symbol}
+                    </Text>
+                  )}
                 </RowBetween>
               )}
               {information.userBalance > 0 && (
@@ -494,13 +535,39 @@ export default function SingleStakingCard({
                   {information.poolType === 'mph88' ? (
                     <RowBetween>
                       <Text>{t('deposits')}</Text>
-                      {numberToSignificant(information.userBalance)}
+                      <Text>{numberToSignificant(information.userBalance)}</Text>
                     </RowBetween>
                   ) : (
-                    <RowBetween>
-                      <Text>{t('stakedTokenAmount').toLocaleString('en-US')}</Text>
-                      {numberToSignificant(information.userBalance).toLocaleString('en-US')}
-                    </RowBetween>
+                    <>
+                      {!isGov ? (
+                        <RowBetween>
+                          <Text>{t('stakedTokenAmount').toLocaleString('en-US')}</Text>
+                          {numberToSignificant(information.userBalance, 1) > 1000 ? (
+                            <Text>
+                              {numberToSignificant(information.userBalance).toLocaleString('en-US')} {currencyA.symbol}
+                            </Text>
+                          ) : (
+                            <Text>
+                              {numberToSignificant(information.userBalance, 10)} {currencyA.symbol}
+                            </Text>
+                          )}
+                        </RowBetween>
+                      ) : (
+                        <RowBetween>
+                          <Text>{t('stakedTokenAmount').toLocaleString('en-US')}</Text>
+                          {numberToSignificant(information.userBalance, 1) > 1000 ? (
+                            <Text>
+                              {numberToSignificant(information.userBalance * yYflPrice).toLocaleString('en-US')}{' '}
+                              {currencyA.symbol}
+                            </Text>
+                          ) : (
+                            <Text>
+                              {numberToSignificant(information.userBalance * yYflPrice, 10)} {currencyA.symbol}
+                            </Text>
+                          )}
+                        </RowBetween>
+                      )}
+                    </>
                   )}
                 </>
               )}
@@ -536,7 +603,7 @@ export default function SingleStakingCard({
                         {t('stake')}
                       </ButtonSecondary>
                     ) : (
-                      <ButtonSecondary as={Link} width="100%" to={`/stake/single/${currencyId(currency0)}`}>
+                      <ButtonSecondary as={Link} width="100%" to={`/stake/single/${values.name.toLowerCase()}`}>
                         {t('stake')}
                       </ButtonSecondary>
                     )}
@@ -649,15 +716,15 @@ export default function SingleStakingCard({
                     {!show && information.userBalance > 0 && !information.isInactive && (
                       <ButtonSecondary
                         as={Link}
-                        width="48%"
+                        width={isGov ? '100%' : '48%'}
                         style={{ marginInlineStart: '1%' }}
-                        to={`/unstake/single/${currencyId(currency0)}`}
+                        to={`/unstake/single/${values.name.toLowerCase()}`}
                       >
                         {t('unstake')}
                       </ButtonSecondary>
                     )}
                   </RowBetween>
-                  {!show && information.userBalance > 0 && (
+                  {!show && !isGov && information.userBalance > 0 && (
                     <RowBetween marginTop="10px">
                       <ButtonSecondary
                         onClick={() => {
@@ -675,7 +742,7 @@ export default function SingleStakingCard({
             </AutoColumn>
           )}
         </AutoColumn>
-      </FullStakingCard>
+      </StakingCard>
     )
   }
 }

@@ -15,7 +15,7 @@ import { useActiveWeb3React } from '../../hooks'
 import { useETHBalances, useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks'
 import { Text } from 'rebass'
 import { ChainId } from '@uniswap/sdk'
-import { useExpertModeManager } from '../../state/user/hooks'
+import { useExpertModeManager, useGetTheme } from '../../state/user/hooks'
 import { AutoColumn } from '../Column'
 import { LINK, sYFL, YFL, YFLUSD, yYFL } from '../../constants'
 import Loader from '../Loader'
@@ -96,12 +96,13 @@ const NavigationBody = styled.ul`
   width: 100%;
   margin: 0;
   padding: 1rem;
+  padding-inline-end: 2rem;
   list-style: none;
   display: block;
 
   ${({ theme }) => theme.mediaWidth.upToMedium`
     width: 100vw;
-    
+    padding: 1rem;
   `};
 `
 
@@ -403,6 +404,7 @@ export default function Navigation() {
   const [showThemes, setShowThemes] = useState(false)
   const [showLanguages, setShowLanguages] = useState(false)
   const [expertMode] = useExpertModeManager()
+  const currentTheme = useGetTheme()
   const [userBalances, fetchingUserBalances] = useTokenBalancesWithLoadingIndicator(account ?? undefined, [
     LINK,
     YFL,
@@ -660,7 +662,7 @@ export default function Navigation() {
               <SubNavigationElement>
                 <StyledNavLink
                   id={'swap-link'}
-                  to={'/swap/0x514910771af9ca656af840dff83e8264ecf986ca/ETH'}
+                  to={`/swap/${currentTheme}/0x514910771af9ca656af840dff83e8264ecf986ca/ETH`}
                   isActive={() => active === 'swap-link'}
                 >
                   <NavLabel>{LINK.symbol}</NavLabel>
@@ -762,6 +764,11 @@ export default function Navigation() {
               <SubNavigationElement>
                 <StyledNavLink id={'stake'} to={'/stake'} isActive={() => active === 'stake'}>
                   <NavLabel>{t('allPools')}</NavLabel>
+                </StyledNavLink>
+              </SubNavigationElement>
+              <SubNavigationElement>
+                <StyledNavLink id={'stake'} to={'/stake/gov'} isActive={() => active === 'stake-governance'}>
+                  <NavLabel>{t('stakeGovernance')}</NavLabel>
                 </StyledNavLink>
               </SubNavigationElement>
               <SubNavigationElement>
@@ -926,17 +933,17 @@ export default function Navigation() {
             </NavTitle>
             <SubNavigationBodyList show={showYflusd}>
               <SubNavigationElement>
-                <ExternalNavLink target="_blank" href="https://yflusd.linkswap.app">
+                <ExternalNavLink href="https://yflusd.linkswap.app">
                   <NavLabel>Info</NavLabel>
                 </ExternalNavLink>
               </SubNavigationElement>
               <SubNavigationElement>
-                <ExternalNavLink target="_blank" href="https://yflusd.linkswap.app/bonds">
+                <ExternalNavLink href="https://yflusd.linkswap.app/bonds">
                   <NavLabel>{t('bonds')}</NavLabel>
                 </ExternalNavLink>
               </SubNavigationElement>
               <SubNavigationElement>
-                <ExternalNavLink target="_blank" href="https://yflusd.linkswap.app/boardroom">
+                <ExternalNavLink href="https://yflusd.linkswap.app/boardroom">
                   <NavLabel>{t('boardroom')}</NavLabel>
                 </ExternalNavLink>
               </SubNavigationElement>
@@ -964,12 +971,12 @@ export default function Navigation() {
             </NavTitle>
             <SubNavigationBodyList show={showExternal}>
               <SubNavigationElement>
-                <ExternalNavLink target="_blank" href="https://yflink.io/#/stake">
-                  <NavLabel>{t('governanceStaking')}</NavLabel>
+                <ExternalNavLink href="https://yflink.io/#/stake">
+                  <NavLabel>{t('stakeGovernanceVoting')}</NavLabel>
                 </ExternalNavLink>
               </SubNavigationElement>
               <SubNavigationElement>
-                <ExternalNavLink target="_blank" href="https://info.linkswap.app">
+                <ExternalNavLink href="https://info.linkswap.app">
                   <NavLabel>{t('charts')}</NavLabel>
                 </ExternalNavLink>
               </SubNavigationElement>

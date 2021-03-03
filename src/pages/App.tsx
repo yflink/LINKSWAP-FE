@@ -37,6 +37,7 @@ import { ExternalLink } from 'react-feather'
 import Navigation from '../components/Navigation'
 import { RedirectToRenBridge } from './Bridges/redirects'
 import Popups from '../components/Popups'
+import StakeGovernance from './Stake/Governance'
 
 const AppWrapper = styled.div`
   display: flex;
@@ -58,7 +59,7 @@ const HeaderWrapper = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
   width: 100%;
   justify-content: space-between;
-  z-index: 1;
+  z-index: 2;
 `
 
 const BodyWrapper = styled.div`
@@ -70,7 +71,7 @@ const BodyWrapper = styled.div`
   align-items: center;
   box-sizing: content-box;
   flex: 1;
-  z-index: 2;
+  z-index: 1;
   ${({ theme }) => theme.mediaWidth.upToMedium`
     width: 100%;
   `};
@@ -149,6 +150,7 @@ export default function App() {
                 <Route exact strict path="/unstake" component={StakeOverview} />
                 <Route exact path="/manage/mph88/:vaultName" component={RedirectTo88mphWithdraw} />
                 <Route exact path="/stake/mph88/:vaultName" component={RedirectTo88mph} />
+                <Route exact path="/stake/gov" component={StakeGovernance} />
                 <Route exact path="/stake/:param" component={RedirectToStakeWithParam} />
                 <Route exact path="/stake/:currencyIdA/:currencyIdB" component={RedirectToStake} />
                 <Route exact path="/unstake/:currencyIdA/:currencyIdB" component={RedirectToUnstake} />

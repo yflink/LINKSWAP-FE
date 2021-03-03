@@ -6,9 +6,8 @@ export function numberToUsd(value: number): string {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value)
 }
 
-export function numberToSignificant(value: any, significant?: number): any {
-  const significantSize = significant ? significant : 6
-  let returnValue = parseFloat(value).toPrecision(significantSize)
+export function numberToSignificant(value: any, decimals?: number): any {
+  let returnValue = parseFloat(value).toPrecision(decimals ?? 6)
   returnValue = returnValue.toString()
   return parseFloat(returnValue)
 }
