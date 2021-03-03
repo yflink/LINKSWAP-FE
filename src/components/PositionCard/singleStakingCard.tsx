@@ -13,7 +13,7 @@ import { RowBetween, RowFixed } from '../Row'
 import { SingleCurrencyLogo } from '../DoubleLogo'
 import { Text } from 'rebass'
 import { ChevronDown, ChevronUp } from 'react-feather'
-import { ButtonLight, ButtonSecondary } from '../Button'
+import { ButtonLight, ButtonPrimary, ButtonSecondary } from '../Button'
 import { currencyId } from '../../utils/currencyId'
 import Countdown from '../Countdown'
 import { ExternalButton, FixedHeightRow } from './index'
@@ -740,6 +740,13 @@ export default function SingleStakingCard({
                       >
                         {t('unstakeAndClaim')}
                       </ButtonSecondary>
+                    </RowBetween>
+                  )}
+                  {isGov && (
+                    <RowBetween marginTop="10px">
+                      <ButtonPrimary as={Link} width="100%" to="/stake/gov">
+                        {t('moreDetails')}
+                      </ButtonPrimary>
                     </RowBetween>
                   )}
                 </>
