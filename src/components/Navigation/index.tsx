@@ -976,7 +976,7 @@ export default function Navigation() {
                 </ExternalNavLink>
               </SubNavigationElement>
               <SubNavigationElement>
-                <ExternalNavLink href="https://yflink.io/#/stake">
+                <ExternalNavLink href="https://yflink.io/#/vote">
                   <NavLabel>{t('stakeGovernanceVoting')}</NavLabel>
                 </ExternalNavLink>
               </SubNavigationElement>
