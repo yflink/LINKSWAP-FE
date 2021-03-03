@@ -4,10 +4,9 @@ import hexStringToNumber from '../../utils/hexStringToNumber'
 import { governancePool, LINKSWAPLPToken, mphPool, StakingRewards, syflPool, syflSinglePool } from '../ABI'
 import { getContract } from '../../utils'
 import { BigNumber } from '@ethersproject/bignumber'
-import { sYFL, WETHER, YFL, YFLUSD } from '../../constants'
+import { sYFL, WETHER, YFLUSD } from '../../constants'
 import moment from 'moment'
 import { ETHER } from '@uniswap/sdk'
-import { useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks'
 
 async function getTokenPriceFromCoingecko(tokenAddress: string): Promise<any> {
   const url = `https://api.coingecko.com/api/v3/simple/token_price/ethereum?contract_addresses=${tokenAddress}&vs_currencies=usd`
