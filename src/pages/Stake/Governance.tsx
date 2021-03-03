@@ -10,10 +10,10 @@ import { RowBetween } from '../../components/Row'
 import Question from '../../components/QuestionHelper'
 import { useNavigationActiveItemManager } from '../../state/navigation/hooks'
 import { numberToPercent, numberToSignificant, numberToUsd } from '../../utils/numberUtils'
-import { ButtonSecondary } from '../../components/Button'
+import { ButtonPrimary, ButtonSecondary } from '../../components/Button'
 import { Link } from 'react-router-dom'
 import { useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks'
-import { YFL, yYFL } from '../../constants'
+import { SINGLE_POOLS, YFL, yYFL } from '../../constants'
 import { useActiveWeb3React } from '../../hooks'
 import Loader from '../../components/Loader'
 import { getContract } from '../../utils'
@@ -67,6 +67,39 @@ const BalanceText = styled.p`
   margin: 0;
   text-align: right;
 `
+
+const VotingButton = styled.a`
+  padding: 18px;
+  width: 100%;
+  font-weight: 500;
+  text-align: center;
+  border-radius: 6px;
+  outline: none;
+  border: 1px solid transparent;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  flex-wrap: nowrap;
+  align-items: center;
+  position: relative;
+  background: ${({ theme }) => theme.buttonBG};
+  color: ${({ theme }) => theme.buttonTextColor};
+  &:focus {
+    box-shadow: 0 0 0 1pt ${({ theme }) => theme.buttonBGHover};
+    background: ${({ theme }) => theme.buttonBGHover};
+    color: ${({ theme }) => theme.buttonTextColorHover};
+  }
+  &:hover {
+    background: ${({ theme }) => theme.buttonBGHover};
+    color: ${({ theme }) => theme.buttonTextColorHover};
+  }
+  &:active {
+    box-shadow: 0 0 0 1pt ${({ theme }) => theme.buttonBGActive};
+    background: ${({ theme }) => theme.buttonBGActive};
+    color: ${({ theme }) => theme.buttonTextColorActive};
+  }
+  }
+  `
 
 async function getGovBalance() {
   try {
@@ -135,7 +168,7 @@ export default function StakeGovernance() {
   const { account } = useActiveWeb3React()
   const fakeAccount = '0x0000000000000000000000000000000000000000'
   const fakeLibrary = getNetworkLibrary()
-  const governanceAddress = '0x75D1aA733920b14fC74c9F6e6faB7ac1EcE8482E'
+  const governanceAddress = SINGLE_POOLS.GOV.rewardsAddress
   const theme = useContext(ThemeContext)
   const [govBalanceFetching, setGovBalanceFetching] = useState(false)
   const [govBalance, setGovBalance] = useState(0)
@@ -157,6 +190,8 @@ export default function StakeGovernance() {
   const now = moment().unix()
   const lastBlockNumber = useBlockNumber()
   const lastMonthBlockNumber = lastBlockNumber ? lastBlockNumber - 200000 : 0
+  const hasYfl = Number(userBalances[YFL.address]?.toSignificant(1)) > 0
+  const hasYyfl = Number(userBalances[yYFL.address]?.toSignificant(1)) > 0
 
   if (!govBalanceFetching && govBalance === 0) {
     setGovBalanceFetching(true)
@@ -197,8 +232,8 @@ export default function StakeGovernance() {
     const web3 = new Web3(Web3.givenProvider)
     // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
     // @ts-ignore
-    const LendingPoolContract = new web3.eth.Contract(governancePool, governanceAddress)
-    LendingPoolContract.methods
+    const abstractContract = new web3.eth.Contract(governancePool, governanceAddress)
+    abstractContract.methods
       .getPricePerFullShare()
       .call({}, lastMonthBlockNumber)
       .then((response: any) => {
@@ -287,7 +322,7 @@ export default function StakeGovernance() {
                   )}
                 </RowBetween>
                 <RowBetween>
-                  {Number(userBalances[YFL.address]?.toSignificant(1)) > 0 ? (
+                  {hasYfl ? (
                     <ButtonSecondary as={Link} width="100%" to="/stake/single/gov">
                       {t('stake')}
                     </ButtonSecondary>
@@ -307,6 +342,20 @@ export default function StakeGovernance() {
         </UserBalance>
         {account ? (
           <>
+            {hasYyfl && (
+              <UserBalance>
+                <AutoColumn gap={'12px'} style={{ width: '100%' }}>
+                  <Title>{t('stakeGovernanceVoting')}</Title>
+                  <BlueCard style={{ margin: '0 0 12px' }}>
+                    <Text fontSize="14px">{t('stakeGovernanceVotingDescription')}</Text>
+                  </BlueCard>
+
+                  <RowBetween>
+                    <VotingButton href="https://yflink.io/#/stake">{t('stakeGovernanceVoting')}</VotingButton>
+                  </RowBetween>
+                </AutoColumn>
+              </UserBalance>
+            )}
             <UserBalance>
               <AutoColumn gap={'12px'} style={{ width: '100%' }}>
                 <Title>{t('stakeGovernanceUnstake')}</Title>
@@ -319,17 +368,21 @@ export default function StakeGovernance() {
                     <Loader />
                   ) : (
                     <BalanceText>
+                      {numberToSignificant(Number(userBalances[yYFL.address]?.toSignificant(18)) * yyflPrice, 4) +
+                        ' ' +
+                        YFL.symbol}
+                      <br />
                       {userBalances[yYFL.address]?.toSignificant(4) + ' ' + yYFL.symbol}
                       <br />({numberToUsd(Number(userBalances[yYFL.address]?.toSignificant(8)) * yyflPriceUsd)})
                     </BalanceText>
                   )}
                 </RowBetween>
-                {Number(userBalances[yYFL.address]?.toSignificant(1)) > 0 && (
+                {hasYyfl && (
                   <RowBetween>
                     <Text>{t('stakeGovernanceUnstakeFee')}:</Text>
                     {!feeCountdownFetched ? (
                       <Loader />
-                    ) : feeCountdown > 0 ? (
+                    ) : feeCountdown > now ? (
                       <BalanceText>
                         1% <br />
                         <Countdown
@@ -344,7 +397,7 @@ export default function StakeGovernance() {
                     )}
                   </RowBetween>
                 )}
-                {Number(userBalances[yYFL.address]?.toSignificant(1)) > 0 && (
+                {hasYyfl && (
                   <RowBetween>
                     <ButtonSecondary as={Link} width="100%" to="/unstake/single/gov">
                       {t('unstake')}

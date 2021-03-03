@@ -436,6 +436,14 @@ export const UNI_POOLS = {
 }
 
 export const SINGLE_POOLS: Record<string, any> = {
+  GOV: {
+    rewardsAddress: '0x75D1aA733920b14fC74c9F6e6faB7ac1EcE8482E',
+    tokens: [YFL, WETHER],
+    stakedToken: yYFL,
+    balance: 0,
+    abi: 'governancePool',
+    type: 'gov'
+  },
   ALINKV1: {
     rewardsAddress: '0x904f81eff3c35877865810cca9a63f2d9cb7d4dd',
     poolAddress: '0x904f81eff3c35877865810cca9a63f2d9cb7d4dd',

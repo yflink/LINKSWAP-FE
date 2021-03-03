@@ -12,13 +12,13 @@ import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import { SwapPoolTabs } from '../../components/NavigationTabs'
 import { RowBetween } from '../../components/Row'
 import { useTranslation } from 'react-i18next'
-import { ACTIVE_REWARD_POOLS, UNI_POOLS } from '../../constants'
+import { ACTIVE_REWARD_POOLS, SINGLE_POOLS, UNI_POOLS, YFL } from '../../constants'
 import { useActiveWeb3React } from '../../hooks'
 import { useCurrency, useToken } from '../../hooks/Tokens'
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { Field } from '../../state/mint/actions'
-import { mphPool, StakingRewards, syflPool } from '../../components/ABI'
+import { governancePool, mphPool, StakingRewards, syflPool } from '../../components/ABI'
 import { useDerivedMintInfo, useMintActionHandlers, useMintState } from '../../state/mint/hooks'
 import { toV2LiquidityToken } from '../../state/user/hooks'
 import { calculateGasMargin, getContract } from '../../utils'
@@ -31,6 +31,7 @@ import ReactGA from 'react-ga'
 import FullStakingCard from '../../components/PositionCard/fullStakingCard'
 import { useCurrencyBalance } from '../../state/wallet/hooks'
 import { useTransactionAdder } from '../../state/transactions/hooks'
+import SingleStakingCard from '../../components/PositionCard/singleStakingCard'
 
 const Tabs = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -113,6 +114,8 @@ export default function StakeIntoPool({
   let tokenA = useToken(currencyIdA)
   let tokenB = useToken(currencyIdB)
   const isUni = currencyIdA === 'UNI'
+  const isSingle = currencyIdA === 'single'
+  const isGov = currencyIdB === 'gov'
 
   if (!tokenA) {
     tokenA = chainId ? WETH[chainId] : WETH['1']
@@ -122,8 +125,8 @@ export default function StakeIntoPool({
     tokenB = chainId ? WETH[chainId] : WETH['1']
   }
 
-  let currencyAsymbol = 'ETH'
-  let currencyBsymbol = 'ETH'
+  const [currencyAsymbol, setCurrencyAsymbol] = useState('ETH')
+  const [currencyBsymbol, setCurrencyBsymbol] = useState('ETH')
 
   if (tokenA && tokenB) {
     let liquidityTokenAddress = ''
@@ -137,22 +140,34 @@ export default function StakeIntoPool({
             liquidityToken = entry[1].liquidityToken
             liquidityTokenAddress = liquidityToken.address
             setPool(entry[1])
-            currencyAsymbol = entry[1].tokens[0].symbol
-            currencyBsymbol = entry[1].tokens[1].symbol
+            setCurrencyAsymbol(entry[1].tokens[0].symbol)
+            setCurrencyBsymbol(entry[1].tokens[1].symbol)
             return
           }
         })
       }
-    }
-    if (!isUni) {
+    } else if (isSingle) {
+      liquidityToken = YFL
+      liquidityTokenAddress = YFL.address
+      const singlePool = SINGLE_POOLS[currencyIdB?.toUpperCase() ?? 'ETH']
+      if (!found) {
+        if (typeof singlePool !== 'undefined') {
+          setFound(true)
+          setPool(singlePool)
+          liquidityToken = singlePool.tokens[0]
+          setCurrencyAsymbol(liquidityToken.symbol)
+          liquidityTokenAddress = liquidityToken.address
+        }
+      }
+    } else {
       liquidityToken = toV2LiquidityToken([tokenA, tokenB])
       liquidityTokenAddress = liquidityToken.address
       if (!found) {
         ACTIVE_REWARD_POOLS.forEach((pool: any) => {
           if (pool.address === liquidityTokenAddress) {
             setFound(true)
-            currencyAsymbol = tokenA?.symbol ?? 'ETH'
-            currencyBsymbol = tokenB?.symbol ?? 'ETH'
+            setCurrencyAsymbol(tokenA?.symbol ?? 'ETH')
+            setCurrencyBsymbol(tokenB?.symbol ?? 'ETH')
             setPool(pool)
             return
           }
@@ -167,7 +182,9 @@ export default function StakeIntoPool({
         name: String(liquidityToken.name),
         symbol: String(liquidityToken.symbol),
         decimals: Number(liquidityToken.decimals),
-        logoURI: 'https://logos.linkswap.app/lslp.png'
+        logoURI: isSingle
+          ? `https://logos.linkswap.app/${liquidityToken.address.toLowerCase()}.png`
+          : 'https://logos.linkswap.app/lslp.png'
       },
       []
     )
@@ -208,6 +225,9 @@ export default function StakeIntoPool({
     case 'mphPool':
       currentAbi = mphPool
       break
+    case 'governancePool':
+      currentAbi = governancePool
+      break
     default:
       currentAbi = StakingRewards
   }
@@ -242,13 +262,50 @@ export default function StakeIntoPool({
         }).then(response => {
           setStaking(true)
           setBalance(Number(selectedCurrencyBalance?.toSignificant(6)))
-          addTransaction(response, {
-            summary: t('stakeLPTokenAmount', {
-              currencyASymbol: currencyAsymbol,
-              currencyBSymbol: currencyBsymbol,
-              amount: parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)
+          if (isSingle) {
+            if (isGov) {
+              addTransaction(response, {
+                summary: t('stakeGovernance')
+              })
+            } else {
+              addTransaction(response, {
+                summary: t('stakeSingleTokenAmount', {
+                  currencyASymbol: currencyAsymbol,
+                  amount: parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)
+                })
+              })
+            }
+          } else {
+            addTransaction(response, {
+              summary: t('stakeLPTokenAmount', {
+                currencyASymbol: currencyAsymbol,
+                currencyBSymbol: currencyBsymbol,
+                amount: parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)
+              })
             })
-          })
+          }
+
+          if (isSingle) {
+            if (isGov) {
+              ReactGA.event({
+                category: 'Staking',
+                action: 'UnstkeAndClaimRewards',
+                label: currencyAsymbol
+              })
+            } else {
+              ReactGA.event({
+                category: 'Staking',
+                action: 'UnstakeFromGov',
+                label: currencyAsymbol
+              })
+            }
+          } else {
+            ReactGA.event({
+              category: 'Staking',
+              action: 'UnstkeAndClaimRewards',
+              label: currencyAsymbol + ' | ' + currencyBsymbol
+            })
+          }
 
           ReactGA.event({
             category: 'Staking',
@@ -278,7 +335,7 @@ export default function StakeIntoPool({
     hasError = false
   }
 
-  if (!isUni) {
+  if (!isUni && !isSingle) {
     const passedCurrencyA = currencyIdA === 'ETH' ? (chainId ? WETH[chainId] : WETH['1']) : currencyA
     const passedCurrencyB = currencyIdB === 'ETH' ? (chainId ? WETH[chainId] : WETH['1']) : currencyB
 
@@ -311,20 +368,35 @@ export default function StakeIntoPool({
         </Card>
         <AppBody>
           <Tabs>
-            <RowBetween style={{ padding: '1rem 0' }}>
-              <ActiveText>
-                {t('stakeLPToken', {
-                  currencyASymbol: currencyA?.symbol,
-                  currencyBSymbol: currencyB?.symbol
-                })}
-              </ActiveText>
-              <QuestionHelper
-                text={t('stakeLPTokenDescription', {
-                  currencyASymbol: currencyA?.symbol,
-                  currencyBSymbol: currencyB?.symbol
-                })}
-              />
-            </RowBetween>
+            {!isSingle ? (
+              <RowBetween style={{ padding: '1rem 0' }}>
+                <ActiveText>
+                  {t('stakeLPToken', {
+                    currencyASymbol: currencyA?.symbol,
+                    currencyBSymbol: currencyB?.symbol
+                  })}
+                </ActiveText>
+                <QuestionHelper
+                  text={t('stakeLPTokenDescription', {
+                    currencyASymbol: currencyA?.symbol,
+                    currencyBSymbol: currencyB?.symbol
+                  })}
+                />
+              </RowBetween>
+            ) : (
+              <RowBetween style={{ padding: '1rem 0' }}>
+                <ActiveText>
+                  {t('stakeSingleToken', {
+                    currencyASymbol: currencyA?.symbol
+                  })}
+                </ActiveText>
+                <QuestionHelper
+                  text={t('stakeSingleDescription', {
+                    currencyASymbol: currencyA?.symbol
+                  })}
+                />
+              </RowBetween>
+            )}
           </Tabs>
           <Wrapper>
             <AutoColumn gap="20px">
@@ -376,7 +448,7 @@ export default function StakeIntoPool({
                   </Text>
                 </ButtonPrimary>
               )}
-              {hasError && (
+              {hasError && !isSingle && (
                 <>
                   {isUni ? (
                     <ExternalButton target="_blank" href={pool.liquidityUrl}>
@@ -397,10 +469,22 @@ export default function StakeIntoPool({
             </AutoColumn>
           )}
         </AppBodyDark>
-        {account && rewardsContractAddress && wrappedLiquidityToken && (
-          <AutoColumn style={{ marginTop: '1rem', maxWidth: '420px', width: '100%' }}>
-            <FullStakingCard values={stakingValues} show={true} index={0} />
-          </AutoColumn>
+        {!isSingle ? (
+          <>
+            {account && rewardsContractAddress && wrappedLiquidityToken && (
+              <AutoColumn style={{ marginTop: '1rem', maxWidth: '420px', width: '100%' }}>
+                <FullStakingCard values={stakingValues} show={true} index={0} />
+              </AutoColumn>
+            )}
+          </>
+        ) : (
+          <>
+            {account && rewardsContractAddress && wrappedLiquidityToken && (
+              <AutoColumn style={{ marginTop: '1rem', maxWidth: '420px', width: '100%' }}>
+                <SingleStakingCard values={stakingValues} show={true} index={0} />
+              </AutoColumn>
+            )}
+          </>
         )}
       </>
     )
