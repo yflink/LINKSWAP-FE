@@ -170,7 +170,7 @@ async function getBlockCountDown(targetBlock: number) {
 async function getIncomingTransactions(senderAddress: string) {
   const ethAPIKey = ETH_API_KEYS[Math.floor(Math.random() * ETH_API_KEYS.length)]
   try {
-    const url = `https://api.etherscan.io/api?module=account&action=tokentx&contractaddress=0x28cb7e841ee97947a86b06fa4090c8451f64c0be&address=${senderAddress}&page=1&offset=100&sort=desc&apikey=${ethAPIKey}`
+    const url = `https://api.etherscan.io/api?module=account&action=tokentx&contractaddress=0x28cb7e841ee97947a86b06fa4090c8451f64c0be&address=${senderAddress}&startblock=0&endblock=999999999&sort=desc&apikey=${ethAPIKey}`
     const response = await fetch(url, {
       headers: {
         Accept: 'application/json',
