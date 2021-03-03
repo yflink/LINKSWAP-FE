@@ -1,5 +1,5 @@
 import { useActiveWeb3React } from '../../hooks'
-import { useGetTokenPrices } from '../../state/price/hooks'
+import { useGetPriceBase, useGetTokenPrices } from '../../state/price/hooks'
 import React, { useState } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
@@ -30,7 +30,7 @@ import { TransactionResponse } from '@ethersproject/providers'
 import { BigNumber } from '@ethersproject/bignumber'
 import ReactGA from 'react-ga'
 import { useTransactionAdder } from '../../state/transactions/hooks'
-import { SINGLE_POOLS, yYFL } from '../../constants'
+import { SINGLE_POOLS, YFL, yYFL } from '../../constants'
 import Web3 from 'web3'
 
 const StakingCard = styled(Card)<{ highlight?: boolean; show?: boolean }>`
@@ -173,6 +173,7 @@ export default function SingleStakingCard({
   const isGov = information.poolType === 'gov'
   const lastBlockNumber = useBlockNumber()
   const lastMonthBlockNumber = lastBlockNumber ? lastBlockNumber - 200000 : 0
+  const priceObject = useGetPriceBase()
 
   if (!fetching) {
     if (!!tokenPrices) {
@@ -218,10 +219,14 @@ export default function SingleStakingCard({
       })
     }
   } else {
-    if (tokenPrices && information.stakePoolTotalDeposited === 0) {
-      const token0id = values.tokens[0].address.toLowerCase()
-      if (tokenPrices[token0id]) {
-        information.poolTokenPrices[0] = Number(tokenPrices[token0id].price)
+    if (isGov && priceObject) {
+      information.poolTokenPrices[0] = priceObject['yflPriceBase']
+    } else {
+      if (tokenPrices && information.stakePoolTotalDeposited === 0) {
+        const token0id = values.tokens[0].address.toLowerCase()
+        if (tokenPrices[token0id]) {
+          information.poolTokenPrices[0] = Number(tokenPrices[token0id].price)
+        }
       }
     }
 
