@@ -41,13 +41,13 @@ export function drcTheme() {
     appCurrencyInputTextColorActiveHover: mainTextColor,
 
     //Buttons
-    buttonBG: mainColor,
+    buttonBG: mainButtonColor,
     buttonTextColor: mainTextColor,
-    buttonBGHover: mainColorHover,
+    buttonBGHover: mainButtonColorHover,
     buttonTextColorHover: mainTextColorHover,
-    buttonBGActive: mainColor,
+    buttonBGActive: mainButtonColor,
     buttonTextColorActive: mainTextColor,
-    buttonBGActiveHover: mainColor,
+    buttonBGActiveHover: mainButtonColorHover,
     buttonTextColorActiveHover: mainTextColor,
     buttonBGDisabled: buttonBG,
     buttonTextColorDisabled: mainTextColor,
