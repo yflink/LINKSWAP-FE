@@ -167,7 +167,7 @@ export default function SingleStakingCard({
   })
   const [fetching, setFetching] = useState(false)
   const [subGraphFetching, setSubGraphFetching] = useState(false)
-  const [yYflPrice, setYYflPrice] = useState(1)
+  const [yyflPrice, setYyflPrice] = useState(1)
   const urlSymbol = values.tokens[0].symbol.replace(' ', '').toUpperCase()
   const isGov = information.poolType === 'gov'
   const startDate = moment('11-27-2020', 'MM-DD-YYYY')
@@ -422,7 +422,7 @@ export default function SingleStakingCard({
     const govContract = getContract(SINGLE_POOLS.GOV.rewardsAddress, governancePool, fakeLibrary, fakeAccount)
     const getPricePerFullShareMethod: (...args: any) => Promise<BigNumber> = govContract.getPricePerFullShare
     getPricePerFullShareMethod().then(response => {
-      const yyflPrice = hexStringToNumber(response.toHexString(), yYFL.decimals)
+      setYyflPrice(hexStringToNumber(response.toHexString(), yYFL.decimals)
       const daysSinceStart = moment().diff(startDate, 'days')
       const priceDifference = yyflPrice - yflStartPrice
       const percentageDifference = (priceDifference / ((yflStartPrice + yyflPrice) / 2)) * 100
