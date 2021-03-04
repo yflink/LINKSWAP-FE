@@ -18,14 +18,13 @@ import { useActiveWeb3React } from '../../hooks'
 import Loader from '../../components/Loader'
 import { getContract } from '../../utils'
 import { governancePool } from '../../components/ABI'
-import { ETH_API_KEYS, getNetworkLibrary, NETWORK_URL } from '../../connectors'
+import { ETH_API_KEYS, getNetworkLibrary } from '../../connectors'
 import hexStringToNumber from '../../utils/hexStringToNumber'
 import { BigNumber } from 'ethers'
-import { useBlockNumber, useWalletModalToggle } from '../../state/application/hooks'
+import { useWalletModalToggle } from '../../state/application/hooks'
 import { useGetPriceBase } from '../../state/price/hooks'
 import moment from 'moment'
 import Countdown from '../../components/Countdown'
-import Web3 from 'web3'
 
 const GovernanceBalance = styled.div`
   display: flex;
@@ -206,7 +205,6 @@ export default function StakeGovernance() {
   const [govBalanceFetching, setGovBalanceFetching] = useState(false)
   const [govBalance, setGovBalance] = useState(0)
   const [yyflPrice, setYyflPrice] = useState(0)
-  const [yyflPriceLastMonth, setYyflPriceLastMonth] = useState(0)
   const [apy, setApy] = useState(0)
   const [receivedYFLManual, setReceivedYFLManual] = useState(0)
   const [receivedYFLAuto, setReceivedYFLAuto] = useState(0)
@@ -224,8 +222,8 @@ export default function StakeGovernance() {
   const yflPriceUsd = priceObject ? priceObject['yflPriceBase'] : 0
   const yyflPriceUsd = priceObject && yyflPrice !== 0 ? priceObject['yflPriceBase'] * yyflPrice : 0
   const now = moment().unix()
-  const lastBlockNumber = useBlockNumber()
-  const lastMonthBlockNumber = lastBlockNumber ? lastBlockNumber - 200000 : 0
+  const startDate = moment('11-27-2020', 'MM-DD-YYYY')
+  const yflStartPrice = 1
   const hasYfl = Number(userBalances[YFL.address]?.toSignificant(1)) > 0
   const hasYyfl = Number(userBalances[yYFL.address]?.toSignificant(1)) > 0
 
@@ -288,23 +286,12 @@ export default function StakeGovernance() {
     })
   }
 
-  if (lastMonthBlockNumber !== 0 && yyflPriceLastMonth === 0) {
-    const web3 = new Web3(new Web3.providers.HttpProvider(NETWORK_URL))
-    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-    // @ts-ignore
-    const abstractContract = new web3.eth.Contract(governancePool, governanceAddress)
-    abstractContract.methods
-      .getPricePerFullShare()
-      .call({}, lastMonthBlockNumber)
-      .then((response: any) => {
-        setYyflPriceLastMonth(hexStringToNumber(response.toHexString(), yYFL.decimals))
-      })
-  }
-
-  if (yyflPrice > 0 && yyflPriceLastMonth > 0 && apy === 0) {
-    const priceDifference = yyflPrice - yyflPriceLastMonth
-    const percentageDifference = (priceDifference / yyflPriceLastMonth) * 100
-    setApy(percentageDifference * 12)
+  if (yyflPrice > 0 && apy === 0) {
+    const daysSinceStart = moment().diff(startDate, 'days')
+    const priceDifference = yyflPrice - yflStartPrice
+    const percentageDifference = (priceDifference / ((yflStartPrice + yyflPrice) / 2)) * 100
+    const dailyPercentage = percentageDifference / daysSinceStart
+    setApy(dailyPercentage * 365)
   }
 
   const totalReceivedYFL = (receivedYFLManual + receivedYFLAuto) / 1000000000000000000
@@ -321,14 +308,6 @@ export default function StakeGovernance() {
             <Question text={t('stakeGovernanceDescription')} />
           </RowBetween>
         </AutoColumn>
-        {apy !== 0 && (
-          <>
-            <RowBetween style={{ margin: '12px 0 6px' }}>
-              <Text>{t('currentEstimatedAPY')}</Text>
-              <BalanceText>{numberToPercent(apy)}</BalanceText>
-            </RowBetween>
-          </>
-        )}
         <BlueCard style={{ margin: '12px 0' }}>
           <Text textAlign="center" fontSize={12} fontWeight={400}>
             {t('stakeGovernanceBalance')}
@@ -348,18 +327,21 @@ export default function StakeGovernance() {
         <Text fontSize="12px" color={theme.textSecondary}>
           {t('stakeGovernanceLastDistribution', { days: daysSinceLastDistribution })}
         </Text>
-        {totalReceivedYFL > 1 && (
+        {apy !== 0 && (
           <>
-            <RowBetween style={{ margin: '12px 0 6px', alignItems: 'flex-start', lineHeight: '1.4' }}>
-              <Text> {t('stakeGovernanceTotalDistributed')}</Text>
-              <BalanceText>
-                {`${numberToSignificant(totalReceivedYFL, 5)} ${YFL.symbol}`}
-                <br />({numberToUsd(totalReceivedYFL * yflPriceUsd)})
-              </BalanceText>
-            </RowBetween>
+            <BlueCard style={{ margin: '24px 0 12px' }}>
+              <Text textAlign="center" fontSize={12} fontWeight={400}>
+                {t('currentEstimatedAPY')}
+              </Text>
+              <Text textAlign="center" fontSize={30} fontWeight={700}>
+                {numberToPercent(apy)}
+              </Text>
+            </BlueCard>
+            <Text fontSize="12px" color={theme.textSecondary}>
+              {t('currentEstimatedAPYDisclaimer')}
+            </Text>
           </>
         )}
-
         <GovernanceBalance>
           <AutoColumn gap={'12px'} style={{ width: '100%' }}>
             <RowBetween style={{ marginTop: '24px' }}>
@@ -385,6 +367,15 @@ export default function StakeGovernance() {
                 <BalanceText>{numberToSignificant(yyflPrice, 6) + ' ' + YFL.symbol}</BalanceText>
               )}
             </RowBetween>
+            {totalReceivedYFL > 1 && (
+              <RowBetween style={{ margin: '12px 0 6px', alignItems: 'flex-start', lineHeight: '1.4' }}>
+                <Text> {t('stakeGovernanceTotalDistributed')}</Text>
+                <BalanceText>
+                  {`${numberToSignificant(totalReceivedYFL, 5)} ${YFL.symbol}`}
+                  <br />({numberToUsd(totalReceivedYFL * yflPriceUsd)})
+                </BalanceText>
+              </RowBetween>
+            )}
           </AutoColumn>
         </GovernanceBalance>
 
