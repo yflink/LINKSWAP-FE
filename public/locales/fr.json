@@ -413,7 +413,7 @@
   "setToZeroPercentIn": "Set to 0% in {{time}}",
   "stakeGovernanceNoFee": "Set to 0%. Refresh your browser",
   "currentEstimatedAPY": "Current estimated APY",
-  "currentEstimatedAPYDisclaimer": "Current estimated APY is based on 30-day vault performance",
+  "currentEstimatedAPYDisclaimer": "Current estimated APY is based on total vault performance since its creation {{days}} days ago",
   "stakeGovernanceVoting": "Governance Voting",
   "stakeGovernanceVotingDescription": "With your staked YFL in the Governance Vault you can vote on community proposals that determine the direction of the LINKSWAP protocol.",
   "stakeSingleToken": "Stake {{currencyASymbol}}",
@@ -424,6 +424,6 @@
   "unstakeAndClaimRewardsOnSingle": "Unstake all and Claim Rewards {{currencyASymbol}}",
   "projectDocumentation": "Project Documentation",
   "moreDetails": "More Details",
-  "stakeGovernanceTotalDistributed": "Total YFL distributed by now",
+  "stakeGovernanceTotalDistributed": "Total YFL distributed since launch",
   "stakeGovernanceLastDistribution": "Last distribution: {{days}} days ago"
 }
