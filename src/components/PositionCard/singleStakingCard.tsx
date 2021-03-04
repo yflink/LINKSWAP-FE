@@ -167,11 +167,12 @@ export default function SingleStakingCard({
   })
   const [fetching, setFetching] = useState(false)
   const [subGraphFetching, setSubGraphFetching] = useState(false)
-  const [yYflPrice, setYYflPrice] = useState(1)
+  const [yyflPrice, setYyflPrice] = useState(1)
   const urlSymbol = values.tokens[0].symbol.replace(' ', '').toUpperCase()
   const isGov = information.poolType === 'gov'
   const lastBlockNumber = useBlockNumber()
-  const lastMonthBlockNumber = lastBlockNumber ? lastBlockNumber - 200000 : 0
+  const numberOfDaysForApy = 60
+  const lastMonthBlockNumber = lastBlockNumber ? lastBlockNumber - numberOfDaysForApy * 6408 : 0
   const priceObject = useGetPriceBase()
 
   if (!fetching) {
@@ -422,7 +423,7 @@ export default function SingleStakingCard({
     const govContract = getContract(SINGLE_POOLS.GOV.rewardsAddress, governancePool, fakeLibrary, fakeAccount)
     const getPricePerFullShareMethod: (...args: any) => Promise<BigNumber> = govContract.getPricePerFullShare
     getPricePerFullShareMethod().then(response => {
-      setYYflPrice(hexStringToNumber(response.toHexString(), yYFL.decimals))
+      setYyflPrice(hexStringToNumber(response.toHexString(), yYFL.decimals))
       const web3 = new Web3(new Web3.providers.HttpProvider(NETWORK_URL))
       // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
@@ -431,10 +432,11 @@ export default function SingleStakingCard({
         .getPricePerFullShare()
         .call({}, lastMonthBlockNumber)
         .then((response: any) => {
-          const yYFLPriceLastMonth = hexStringToNumber(response.toHexString(), yYFL.decimals)
-          const priceDifference = yYflPrice - yYFLPriceLastMonth
-          const percentageDifference = (priceDifference / yYFLPriceLastMonth) * 100
-          information.apy = percentageDifference * 12
+          const yyflPriceLastMonth = hexStringToNumber(response.toHexString(), yYFL.decimals)
+          const priceDifference = yyflPrice - yyflPriceLastMonth
+          const percentageDifference = (priceDifference / ((yyflPriceLastMonth + yyflPrice) / 2)) * 100
+          const dailyPercentage = percentageDifference / numberOfDaysForApy
+          information.apy = dailyPercentage * 365
           setTimeout(function() {
             setSubGraphFetching(true)
           }, 500)
@@ -561,12 +563,12 @@ export default function SingleStakingCard({
                           <Text>{t('stakedTokenAmount').toLocaleString('en-US')}</Text>
                           {numberToSignificant(information.userBalance, 1) > 1000 ? (
                             <Text>
-                              {numberToSignificant(information.userBalance * yYflPrice).toLocaleString('en-US')}{' '}
+                              {numberToSignificant(information.userBalance * yyflPrice).toLocaleString('en-US')}{' '}
                               {currencyA.symbol}
                             </Text>
                           ) : (
                             <Text>
-                              {numberToSignificant(information.userBalance * yYflPrice, 10)} {currencyA.symbol}
+                              {numberToSignificant(information.userBalance * yyflPrice, 10)} {currencyA.symbol}
                             </Text>
                           )}
                         </RowBetween>
