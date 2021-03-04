@@ -403,7 +403,7 @@
   "stakeGovernanceBalance": "Current Collected Fees Balance",
   "stakeGovernanceBalanceDisclaimer": "Collected fees will be converted to {{inputCurrency}} periodically and unannounced",
   "stakeGovernanceStake": "Stake into Governance",
-  "stakeGovernanceStakeDescription": "When you stake your YFL into Governance, you'll recieve yYFL for it. The yYFL price increases after each reward distribution. Unstaking converts your yYFL back to your original amount of YFL staked plus distributed rewards.",
+  "stakeGovernanceStakeDescription": "When you stake your YFL into the Governance valt, you'll recieve yYFL. This represents your staking share. The yYFL price increases after each reward distribution. Unstaking converts your yYFL back to your original amount of YFL staked plus distributed rewards.",
   "stakeGovernanceUnstake": "Unstake from Governance",
   "stakeGovernanceUnstakeFee": "Unstake fee",
   "stakeGovernanceUnstakeDescription": "You can unstake your yYFL at any time. Your yYFL will be converted back to YFL. Note that there is a 1% unstaking fee if you unstake before 172,800 blocks (approximately 26 days) from your time of staking, which will go to the treasury.",
