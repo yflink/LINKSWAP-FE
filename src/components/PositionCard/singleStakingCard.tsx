@@ -20,17 +20,17 @@ import styled from 'styled-components'
 import Card from '../Card'
 import { YFLSVG, MPHSVG } from '../SVG'
 import { Link } from 'react-router-dom'
-import { getNetworkLibrary } from '../../connectors'
+import { getNetworkLibrary, NETWORK_URL } from '../../connectors'
 import { useTokenBalance } from '../../state/wallet/hooks'
 import { useGetMphPools } from '../../state/mph/hooks'
-import { useWalletModalToggle } from '../../state/application/hooks'
+import { useBlockNumber, useWalletModalToggle } from '../../state/application/hooks'
 import { calculateGasMargin, getContract } from '../../utils'
 import { TransactionResponse } from '@ethersproject/providers'
 import { BigNumber } from '@ethersproject/bignumber'
 import ReactGA from 'react-ga'
 import { useTransactionAdder } from '../../state/transactions/hooks'
 import { SINGLE_POOLS, yYFL } from '../../constants'
-import moment from 'moment'
+import Web3 from 'web3'
 
 const StakingCard = styled(Card)<{ highlight?: boolean; show?: boolean }>`
   font-size: 14px;
@@ -170,8 +170,9 @@ export default function SingleStakingCard({
   const [yyflPrice, setYyflPrice] = useState(1)
   const urlSymbol = values.tokens[0].symbol.replace(' ', '').toUpperCase()
   const isGov = information.poolType === 'gov'
-  const startDate = moment('11-27-2020', 'MM-DD-YYYY')
-  const yflStartPrice = 1
+  const lastBlockNumber = useBlockNumber()
+  const numberOfDaysForApy = 60
+  const lastMonthBlockNumber = lastBlockNumber ? lastBlockNumber - numberOfDaysForApy * 6408 : 0
   const priceObject = useGetPriceBase()
 
   if (!fetching) {
@@ -418,20 +419,28 @@ export default function SingleStakingCard({
       })
   }
 
-  if (isGov && !subGraphFetching) {
+  if (isGov && lastMonthBlockNumber > 0 && !subGraphFetching) {
     const govContract = getContract(SINGLE_POOLS.GOV.rewardsAddress, governancePool, fakeLibrary, fakeAccount)
     const getPricePerFullShareMethod: (...args: any) => Promise<BigNumber> = govContract.getPricePerFullShare
     getPricePerFullShareMethod().then(response => {
       setYyflPrice(hexStringToNumber(response.toHexString(), yYFL.decimals))
-
-      const daysSinceStart = moment().diff(startDate, 'days')
-      const priceDifference = yyflPrice - yflStartPrice
-      const percentageDifference = (priceDifference / ((yflStartPrice + yyflPrice) / 2)) * 100
-      const dailyPercentage = percentageDifference / daysSinceStart
-      information.apy = dailyPercentage * 365
-      setTimeout(() => {
-        setSubGraphFetching(true)
-      }, 500)
+      const web3 = new Web3(new Web3.providers.HttpProvider(NETWORK_URL))
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // @ts-ignore
+      const abstractContract = new web3.eth.Contract(governancePool, SINGLE_POOLS.GOV.rewardsAddress)
+      abstractContract.methods
+        .getPricePerFullShare()
+        .call({}, lastMonthBlockNumber)
+        .then((response: any) => {
+          const yyflPriceLastMonth = hexStringToNumber(response.toHexString(), yYFL.decimals)
+          const priceDifference = yyflPrice - yyflPriceLastMonth
+          const percentageDifference = (priceDifference / ((yyflPriceLastMonth + yyflPrice) / 2)) * 100
+          const dailyPercentage = percentageDifference / numberOfDaysForApy
+          information.apy = dailyPercentage * 365
+          setTimeout(function() {
+            setSubGraphFetching(true)
+          }, 500)
+        })
     })
   }
 
