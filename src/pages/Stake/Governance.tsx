@@ -223,6 +223,7 @@ export default function StakeGovernance() {
   const yyflPriceUsd = priceObject && yyflPrice !== 0 ? priceObject['yflPriceBase'] * yyflPrice : 0
   const now = moment().unix()
   const startDate = moment('11-27-2020', 'MM-DD-YYYY')
+  const daysSinceStart = moment().diff(startDate, 'days')
   const yflStartPrice = 1
   const hasYfl = Number(userBalances[YFL.address]?.toSignificant(1)) > 0
   const hasYyfl = Number(userBalances[yYFL.address]?.toSignificant(1)) > 0
@@ -287,7 +288,6 @@ export default function StakeGovernance() {
   }
 
   if (yyflPrice > 0 && apy === 0) {
-    const daysSinceStart = moment().diff(startDate, 'days')
     const priceDifference = yyflPrice - yflStartPrice
     const percentageDifference = (priceDifference / ((yflStartPrice + yyflPrice) / 2)) * 100
     const dailyPercentage = percentageDifference / daysSinceStart
@@ -338,7 +338,7 @@ export default function StakeGovernance() {
               </Text>
             </BlueCard>
             <Text fontSize="12px" color={theme.textSecondary}>
-              {t('currentEstimatedAPYDisclaimer')}
+              {t('currentEstimatedAPYDisclaimer', { days: daysSinceStart })}
             </Text>
           </>
         )}
@@ -368,7 +368,7 @@ export default function StakeGovernance() {
               )}
             </RowBetween>
             {totalReceivedYFL > 1 && (
-              <RowBetween style={{ margin: '12px 0 6px', alignItems: 'flex-start', lineHeight: '1.4' }}>
+              <RowBetween style={{ margin: '12px 0 0', alignItems: 'flex-start', lineHeight: '1.4' }}>
                 <Text> {t('stakeGovernanceTotalDistributed')}</Text>
                 <BalanceText>
                   {`${numberToSignificant(totalReceivedYFL, 5)} ${YFL.symbol}`}
