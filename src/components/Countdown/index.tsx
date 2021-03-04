@@ -8,8 +8,9 @@ interface CountdownProps {
   ends: number
   format: string
   string: string
+  endedString?: string
 }
-export default function Countdown({ ends, format, string }: CountdownProps) {
+export default function Countdown({ ends, format, string, endedString }: CountdownProps) {
   const remaining = useCountdown(ends)
   const { t } = useTranslation()
   const duration = moment.duration(remaining, 'seconds')
@@ -21,6 +22,6 @@ export default function Countdown({ ends, format, string }: CountdownProps) {
   }
 
   let display = ends === 0 ? t('notStarted') : t(string, { time: duration.format(format, 0, options) })
-  display = !!remaining && remaining >= 0 ? display : t('expired')
+  display = !!remaining && remaining >= 0 ? display : endedString ? t(endedString) : t('expired')
   return <span>{display}</span>
 }

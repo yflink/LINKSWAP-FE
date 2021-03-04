@@ -1,7 +1,7 @@
 import { unwrappedToken } from '../../utils/wrappedCurrency'
 import { getNetworkLibrary } from '../../connectors'
 import hexStringToNumber from '../../utils/hexStringToNumber'
-import { LINKSWAPLPToken, mphPool, StakingRewards, syflPool, syflSinglePool } from '../ABI'
+import { governancePool, LINKSWAPLPToken, mphPool, StakingRewards, syflPool, syflSinglePool } from '../ABI'
 import { getContract } from '../../utils'
 import { BigNumber } from '@ethersproject/bignumber'
 import { sYFL, WETHER, YFLUSD } from '../../constants'
@@ -56,15 +56,19 @@ export default async function positionInformation(
     case 'syflSinglePool':
       abi = syflSinglePool
       break
+    case 'governancePool':
+      abi = governancePool
+      break
     case 'mphPool':
       abi = mphPool
       break
     default:
       abi = StakingRewards
   }
+  const isGov = position.type === 'gov'
   positionOutput.abi = abi
   positionOutput.poolType = position.type
-  positionOutput.infinitePeriod = position.type === 'mph88'
+  positionOutput.infinitePeriod = position.type === 'mph88' || isGov
   const rewardsContract =
     !chainId || !library || !account
       ? getContract(position.rewardsAddress, abi, fakeLibrary, fakeAccount)
@@ -76,7 +80,7 @@ export default async function positionInformation(
   const isDefault = position.abi === 'StakingRewards'
 
   try {
-    if (positionOutput.poolType === 'mph88') {
+    if (positionOutput.poolType === 'mph88' || isGov) {
       positionOutput.isInactive = false
       positionOutput.updated = true
     } else {
@@ -108,7 +112,7 @@ export default async function positionInformation(
   }
 
   try {
-    if (positionOutput.poolType === 'mph88') {
+    if (positionOutput.poolType === 'mph88' || isGov) {
     } else {
       if (isDefault) {
         const getRewardTokensMethod: (...args: any) => Promise<string> = rewardsContract.rewardTokens
@@ -121,15 +125,14 @@ export default async function positionInformation(
         })
       } else {
         if (position.type === 'single') {
-          if (position.abi !== 'syflSinglePool') {
-            positionOutput.rewardTokens[0] = position.tokens[0].address
-          } else {
+          if (position.abi === 'syflSinglePool') {
             positionOutput.rewardTokens[0] = YFLUSD.address
+          } else {
+            positionOutput.rewardTokens[0] = position.tokens[0].address
           }
         } else {
           positionOutput.rewardTokens[0] = sYFL.address
         }
-
         positionOutput.rewardTokens[1] = '0x0000000000000000000000000000000000000000'
       }
     }
@@ -138,7 +141,7 @@ export default async function positionInformation(
   }
 
   try {
-    if (positionOutput.poolType === 'mph88') {
+    if (positionOutput.poolType === 'mph88' || isGov) {
     } else {
       const getRewardTokenRatesMethod: (...args: any) => Promise<BigNumber> = rewardsContract.rewardRate
       if (isDefault) {
@@ -161,7 +164,7 @@ export default async function positionInformation(
   }
 
   try {
-    if (positionOutput.poolType === 'mph88') {
+    if (positionOutput.poolType === 'mph88' || isGov) {
     } else {
       const getTotalLPSupplyMethod: (...args: any) => Promise<BigNumber> = lpContract.totalSupply
       getTotalLPSupplyMethod().then(response => {
@@ -216,7 +219,7 @@ export default async function positionInformation(
     }
 
     try {
-      if (positionOutput.poolType === 'mph88') {
+      if (positionOutput.poolType === 'mph88' || isGov) {
       } else {
         const getUserRewardsMethod: (...args: any) => Promise<any> = rewardsContract.earned
         if (isDefault) {

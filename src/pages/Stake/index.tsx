@@ -74,9 +74,9 @@ export default function StakeOverview({
     const allStakePools: any[] = []
     if (Boolean(allRewardPools)) {
       if (!singlePoolsAdded) {
-        for (const singlePoolObjectKey in SINGLE_POOLS) {
-          const singlePoolObject = SINGLE_POOLS[singlePoolObjectKey]
-          singlePoolObject.name = singlePoolObjectKey
+        for (const singlePoolKey in SINGLE_POOLS) {
+          const singlePoolObject = SINGLE_POOLS[singlePoolKey]
+          singlePoolObject.name = singlePoolKey
           allStakePools.push(singlePoolObject)
         }
         setAllRewardPools(allStakePools)

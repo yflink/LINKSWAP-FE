@@ -767,6 +767,11 @@ export default function Navigation() {
                 </StyledNavLink>
               </SubNavigationElement>
               <SubNavigationElement>
+                <StyledNavLink id={'stake'} to={'/stake/gov'} isActive={() => active === 'stake-governance'}>
+                  <NavLabel>{t('stakeGovernance')}</NavLabel>
+                </StyledNavLink>
+              </SubNavigationElement>
+              <SubNavigationElement>
                 <StyledNavLink id={'stake-yours'} to={'/stake/yours'} isActive={() => active === 'stake-yours'}>
                   <NavLabel>{t('myPositions')}</NavLabel>
                 </StyledNavLink>
@@ -966,8 +971,13 @@ export default function Navigation() {
             </NavTitle>
             <SubNavigationBodyList show={showExternal}>
               <SubNavigationElement>
-                <ExternalNavLink href="https://yflink.io/#/stake">
-                  <NavLabel>{t('governanceStaking')}</NavLabel>
+                <ExternalNavLink href="https://app.gitbook.com/@yflink/s/yflink/">
+                  <NavLabel>{t('projectDocumentation')}</NavLabel>
+                </ExternalNavLink>
+              </SubNavigationElement>
+              <SubNavigationElement>
+                <ExternalNavLink href="https://yflink.io/#/vote">
+                  <NavLabel>{t('stakeGovernanceVoting')}</NavLabel>
                 </ExternalNavLink>
               </SubNavigationElement>
               <SubNavigationElement>
