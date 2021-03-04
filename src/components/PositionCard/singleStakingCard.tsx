@@ -422,7 +422,8 @@ export default function SingleStakingCard({
     const govContract = getContract(SINGLE_POOLS.GOV.rewardsAddress, governancePool, fakeLibrary, fakeAccount)
     const getPricePerFullShareMethod: (...args: any) => Promise<BigNumber> = govContract.getPricePerFullShare
     getPricePerFullShareMethod().then(response => {
-      setYyflPrice(hexStringToNumber(response.toHexString(), yYFL.decimals)
+      setYyflPrice(hexStringToNumber(response.toHexString(), yYFL.decimals))
+
       const daysSinceStart = moment().diff(startDate, 'days')
       const priceDifference = yyflPrice - yflStartPrice
       const percentageDifference = (priceDifference / ((yflStartPrice + yyflPrice) / 2)) * 100
@@ -553,12 +554,12 @@ export default function SingleStakingCard({
                           <Text>{t('stakedTokenAmount').toLocaleString('en-US')}</Text>
                           {numberToSignificant(information.userBalance, 1) > 1000 ? (
                             <Text>
-                              {numberToSignificant(information.userBalance * yYflPrice).toLocaleString('en-US')}{' '}
+                              {numberToSignificant(information.userBalance * yyflPrice).toLocaleString('en-US')}{' '}
                               {currencyA.symbol}
                             </Text>
                           ) : (
                             <Text>
-                              {numberToSignificant(information.userBalance * yYflPrice, 10)} {currencyA.symbol}
+                              {numberToSignificant(information.userBalance * yyflPrice, 10)} {currencyA.symbol}
                             </Text>
                           )}
                         </RowBetween>
