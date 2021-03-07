@@ -529,7 +529,7 @@ export default function FullStakingCard({
                   )}
                 </>
               )}
-              {Number(balance?.toSignificant(1)) > 0 && !show && (
+              {Number(balance?.toSignificant(1)) > 0 && !show && !information.isInactive && (
                 <RowBetween marginTop="10px">
                   <>
                     {information.poolType === 'uni' ? (
