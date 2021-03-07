@@ -315,6 +315,12 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
 
 export const ACTIVE_REWARD_POOLS = [
   {
+    address: '0x21dee38170F1e1F26baFf2C30C0fc8F8362b6961',
+    rewardsAddress: '0x05C75D74197F44425059d71C4679E8Ae1D8F83f9',
+    abi: 'StakingRewards',
+    type: 'default'
+  },
+  {
     address: '0x195734d862DFb5380eeDa0ACD8acf697eA95D370',
     rewardsAddress: '0x6DddCc7F963C65b18FdDD842e6553528f014aDeA',
     abi: 'syflPool',
@@ -393,12 +399,6 @@ export const ACTIVE_REWARD_POOLS = [
     type: 'default'
   },
   {
-    address: '0x21dee38170F1e1F26baFf2C30C0fc8F8362b6961',
-    rewardsAddress: '0xBfe0D843D3DA0953EcEf08Fc231033D4B140a085',
-    abi: 'StakingRewards',
-    type: 'default'
-  },
-  {
     address: '0x40F1068495Ba9921d6C18cF1aC25f718dF8cE69D',
     rewardsAddress: '0x0E6FA9f95a428F185752b60D38c62184854bB9e1',
     abi: 'StakingRewards',
@@ -410,6 +410,12 @@ export const INACTIVE_REWARD_POOLS = [
   {
     address: '0x7e5A536F3d79791E283940ec379CEE10C9C40e86',
     rewardsAddress: '0x72368fB97dab2B94A5664EbeEbF504EF482fF149',
+    abi: 'StakingRewards',
+    type: 'default'
+  },
+  {
+    address: '0x21dee38170F1e1F26baFf2C30C0fc8F8362b6961',
+    rewardsAddress: '0xBfe0D843D3DA0953EcEf08Fc231033D4B140a085',
     abi: 'StakingRewards',
     type: 'default'
   }

@@ -343,7 +343,7 @@ export default function Unstake({
                   })}
                 </ActiveText>
                 <QuestionHelper
-                  text={t('unStakeSingleTokenDescription', {
+                  text={t('unstakeSingleTokenDescription', {
                     currencyASymbol: currencyAsymbol
                   })}
                 />
