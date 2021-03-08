@@ -823,6 +823,11 @@ export default function Navigation() {
                 </StyledNavLink>
               </SubNavigationElement>
               <SubNavigationElement>
+                <StyledNavLink id={'bridges'} to={'/ren'} isActive={() => active === 'bridges-ren'}>
+                  <NavLabel>{t('bridgesRen')}</NavLabel>
+                </StyledNavLink>
+              </SubNavigationElement>
+              <SubNavigationElement>
                 <StyledNavLink
                   id={'bridges-renbch'}
                   to={'/bridges/ren/bch'}

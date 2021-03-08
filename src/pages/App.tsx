@@ -38,6 +38,7 @@ import Navigation from '../components/Navigation'
 import { RedirectToRenBridge } from './Bridges/redirects'
 import Popups from '../components/Popups'
 import StakeGovernance from './Stake/Governance'
+import Bridges from './Bridges'
 
 const AppWrapper = styled.div`
   display: flex;
@@ -158,7 +159,7 @@ export default function App() {
                 <Route exact path="/create/:currencyIdA/:currencyIdB" component={CreatePairRedirectDuplicateTokenIds} />
                 <Route exact strict path="/previewlisting" component={PreviewListing} />
                 <Route exact strict path="/analyze" component={Analyze} />
-                <Route exact strict path="/bridges" component={Ren} />
+                <Route exact strict path="/bridges" component={Bridges} />
                 <Route exact strict path="/bridges/ren/:bridgeName" component={RedirectToRenBridge} />
                 <Route exact strict path="/ren" component={Ren} />
                 <Route exact strict path="/ren/:bridgeName" component={RedirectToRenBridge} />

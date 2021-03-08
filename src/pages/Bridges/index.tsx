@@ -9,12 +9,12 @@ import { AutoColumn } from '../../components/Column'
 import { RowBetween } from '../../components/Row'
 import Question from '../../components/QuestionHelper'
 import { TYPE } from '../../theme'
-import { renBCH, renBTC, renDOGE, renFIL, renZEC } from '../../constants'
+import { renBCH, renBTC, renDOGE, renFIL, renZEC, WETHER } from '../../constants'
 import BridgeCurrencyLogo from '../../components/BridgeLogo'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
 import { useNavigationActiveItemManager } from '../../state/navigation/hooks'
 
-export default function Ren() {
+export default function Bridges() {
   const theme = useContext(ThemeContext)
   const { t } = useTranslation()
   const bridges = [
@@ -47,10 +47,16 @@ export default function Ren() {
       currency0: { symbol: 'ZEC', decimals: renZEC.decimals },
       currency1: unwrappedToken(renZEC),
       type: 'ren'
+    },
+    {
+      url: 'bridges/ren/zec',
+      currency0: { symbol: 'SCRT', decimals: 18 },
+      currency1: unwrappedToken(WETHER),
+      type: 'scrt'
     }
   ]
   const newActive = useNavigationActiveItemManager()
-  newActive('bridges-ren')
+  newActive('bridges')
   return (
     <>
       <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.navigationBG, marginBottom: '16px' }}>
@@ -60,9 +66,9 @@ export default function Ren() {
         <AutoColumn gap={'12px'}>
           <RowBetween>
             <Text color={theme.textPrimary} fontWeight={500}>
-              {t('bridgesRen')}
+              {t('bridgesAll')}
             </Text>
-            <Question text={t('bridgesRenDescription')} />
+            <Question text={t('bridgesDescription')} />
           </RowBetween>
         </AutoColumn>
         <BlueCard style={{ margin: '12px 0 12px' }}>
