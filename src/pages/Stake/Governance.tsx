@@ -13,7 +13,7 @@ import { numberToPercent, numberToSignificant, numberToUsd } from '../../utils/n
 import { ButtonSecondary } from '../../components/Button'
 import { Link } from 'react-router-dom'
 import { useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks'
-import { SINGLE_POOLS, YFL, yYFL } from '../../constants'
+import { MARKETCAPS, SINGLE_POOLS, YFL, yYFL } from '../../constants'
 import { useActiveWeb3React } from '../../hooks'
 import Loader from '../../components/Loader'
 import { getContract } from '../../utils'
@@ -231,9 +231,10 @@ export default function StakeGovernance() {
   const startDate = moment('11-27-2020', 'MM-DD-YYYY')
   const daysSinceStart = moment().diff(startDate, 'days')
   const yflStartPrice = 1
-
   const hasYfl = Number(userBalances[YFL.address]?.toSignificant(1)) > 0
   const hasYyfl = Number(userBalances[yYFL.address]?.toSignificant(1)) > 0
+  const totalStaked = Number(govBalances[YFL.address]?.toSignificant(8))
+  const percentageStakedTVL = totalStaked / (MARKETCAPS.YFL * 0.01)
 
   if (!govBalanceFetching && govBalance === 0) {
     setGovBalanceFetching(true)
@@ -381,9 +382,11 @@ export default function StakeGovernance() {
                 <Loader />
               ) : (
                 <BalanceText>
-                  {Number(govBalances[YFL.address]?.toSignificant(8)).toLocaleString('en-US') + ' ' + YFL.symbol}
+                  {totalStaked.toLocaleString('en-US') + ' ' + YFL.symbol}
                   <br />
                   {numberToUsd(Number(govBalances[YFL.address]?.toSignificant(8)) * yflPriceUsd)}
+                  <br />
+                  {t('stakeOfTotalSupply', { percent: numberToPercent(percentageStakedTVL) })}
                 </BalanceText>
               )}
             </RowBetween>

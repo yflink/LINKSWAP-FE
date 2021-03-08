@@ -264,6 +264,10 @@ export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } 
   ]
 }
 
+export const MARKETCAPS = {
+  YFL: 47173
+}
+
 export interface WalletInfo {
   connector?: AbstractConnector
   name: string

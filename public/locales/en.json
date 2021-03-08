@@ -471,5 +471,6 @@
   "projectDocumentation": "Project Documentation",
   "moreDetails": "More Details",
   "stakeGovernanceTotalDistributed": "Total YFL distributed since launch",
-  "stakeGovernanceLastDistribution": "Last distribution: {{days}} days ago"
+  "stakeGovernanceLastDistribution": "Last distribution: {{days}} days ago",
+  "stakeOfTotalSupply": "{{percent}} of Total Supply"
 }
