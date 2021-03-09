@@ -256,6 +256,7 @@ export default function StakeGovernance() {
         transactions.forEach(function(transaction: Record<string, any>) {
           if (transaction.to === governanceAddress.toLowerCase()) {
             YFLManual += Number(transaction.value)
+            setDaysSinceLastDistribution(moment().diff(moment.unix(transaction.timeStamp), 'days'))
           }
         })
         setReceivedYFLManual(YFLManual)
@@ -267,7 +268,6 @@ export default function StakeGovernance() {
         transactions.forEach(function(transaction: Record<string, any>) {
           if (transaction.to === governanceAddress.toLowerCase()) {
             YFLAuto += Number(transaction.value)
-            setDaysSinceLastDistribution(moment().diff(moment.unix(transaction.timeStamp), 'days'))
           }
         })
         setReceivedYFLAuto(YFLAuto)
