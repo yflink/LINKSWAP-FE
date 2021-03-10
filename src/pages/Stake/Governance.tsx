@@ -211,6 +211,7 @@ export default function StakeGovernance() {
   const [totalApy, setTotalApy] = useState(0)
   const [receivedYFLManual, setReceivedYFLManual] = useState(0)
   const [receivedYFLAuto, setReceivedYFLAuto] = useState(0)
+  const [receivedYFLLinkpad, setReceivedYFLLinkpad] = useState(0)
   const [daysSinceLastDistribution, setDaysSinceLastDistribution] = useState(0)
   const toggleWalletModal = useWalletModalToggle()
   const { t } = useTranslation()
@@ -260,6 +261,17 @@ export default function StakeGovernance() {
           }
         })
         setReceivedYFLManual(YFLManual)
+      })
+    }
+    if (receivedYFLLinkpad === 0) {
+      getIncomingTransactions('0xbdde61544cc567cd658fc6cc2fee28acceb419fd').then(transactions => {
+        let YFLLinkpad = 0
+        transactions.forEach(function(transaction: Record<string, any>) {
+          if (transaction.to === governanceAddress.toLowerCase()) {
+            YFLLinkpad += Number(transaction.value)
+          }
+        })
+        setReceivedYFLLinkpad(YFLLinkpad)
       })
     }
     if (receivedYFLAuto === 0) {
@@ -322,7 +334,7 @@ export default function StakeGovernance() {
     setTotalApy(dailyTotalPercentage * 365)
   }
 
-  const totalReceivedYFL = (receivedYFLManual + receivedYFLAuto) / 1000000000000000000
+  const totalReceivedYFL = (receivedYFLManual + receivedYFLLinkpad + receivedYFLAuto) / 1000000000000000000
 
   return (
     <>
