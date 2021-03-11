@@ -1,7 +1,7 @@
 import { Filecoin } from '@renproject/chains-filecoin'
 import { Terra } from '@renproject/chains-terra'
 import { Ethereum } from '@renproject/chains-ethereum'
-import { Bitcoin, BitcoinCash, Dogecoin, Zcash } from '@renproject/chains-bitcoin'
+import { Bitcoin, BitcoinCash, DigiByte, Dogecoin, Zcash } from '@renproject/chains-bitcoin'
 import { LockChain, LogLevel, MintChain, SimpleLogger, TxStatus } from '@renproject/interfaces'
 import RenJS from '@renproject/ren'
 import { LockAndMintDeposit } from '@renproject/ren/build/main/lockAndMint'
@@ -67,6 +67,9 @@ export const startMint = async (
       break
     case Asset.LUNA:
       from = Terra()
+      break
+    case Asset.DGB:
+      from = DigiByte()
       break
     case Asset.DOGE:
       from = Dogecoin()

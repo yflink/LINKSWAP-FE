@@ -9,7 +9,7 @@ import { AutoColumn } from '../../components/Column'
 import { RowBetween } from '../../components/Row'
 import Question from '../../components/QuestionHelper'
 import { TYPE } from '../../theme'
-import { renBCH, renBTC, renDOGE, renFIL, renZEC, WETHER } from '../../constants'
+import { renBCH, renBTC, renDGB, renDOGE, renFIL, renZEC, WETHER } from '../../constants'
 import BridgeCurrencyLogo from '../../components/BridgeLogo'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
 import { useNavigationActiveItemManager } from '../../state/navigation/hooks'
@@ -31,6 +31,12 @@ export default function Bridges() {
       type: 'ren'
     },
     {
+      url: 'bridges/ren/dgb',
+      currency0: { symbol: 'DGB', decimals: renDGB.decimals },
+      currency1: unwrappedToken(renDGB),
+      type: 'ren'
+    },
+    {
       url: 'bridges/ren/doge',
       currency0: { symbol: 'DOGE', decimals: renDOGE.decimals },
       currency1: unwrappedToken(renDOGE),
@@ -47,12 +53,6 @@ export default function Bridges() {
       currency0: { symbol: 'ZEC', decimals: renZEC.decimals },
       currency1: unwrappedToken(renZEC),
       type: 'ren'
-    },
-    {
-      url: 'bridges/ren/zec',
-      currency0: { symbol: 'SCRT', decimals: 18 },
-      currency1: unwrappedToken(WETHER),
-      type: 'scrt'
     }
   ]
   const newActive = useNavigationActiveItemManager()

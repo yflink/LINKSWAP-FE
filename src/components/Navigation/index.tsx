@@ -823,11 +823,6 @@ export default function Navigation() {
                 </StyledNavLink>
               </SubNavigationElement>
               <SubNavigationElement>
-                <StyledNavLink id={'bridges'} to={'/ren'} isActive={() => active === 'bridges-ren'}>
-                  <NavLabel>{t('bridgesRen')}</NavLabel>
-                </StyledNavLink>
-              </SubNavigationElement>
-              <SubNavigationElement>
                 <StyledNavLink
                   id={'bridges-renbch'}
                   to={'/bridges/ren/bch'}
@@ -843,6 +838,15 @@ export default function Navigation() {
                   isActive={() => active === 'bridges-renbtc'}
                 >
                   <NavLabel>renBTC</NavLabel>
+                </StyledNavLink>
+              </SubNavigationElement>
+              <SubNavigationElement>
+                <StyledNavLink
+                  id={'bridges-rendgb'}
+                  to={'/bridges/ren/dgb'}
+                  isActive={() => active === 'bridges-rendgb'}
+                >
+                  <NavLabel>renDGB</NavLabel>
                 </StyledNavLink>
               </SubNavigationElement>
               <SubNavigationElement>
