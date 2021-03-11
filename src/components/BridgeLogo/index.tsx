@@ -82,9 +82,21 @@ const ArrowRightIcon = styled(ArrowRight)`
 const CurrencySymbol = styled.div`
   margin: 0 10px;
   font-size: 16px;
+  width: 65px;
+
+  &:first-of-type {
+    text-align: end;
+    width: 50px;
+  }
 
   ${({ theme }) => theme.mediaWidth.upToSmall`
     font-size: 13px;
+    width: 45px;
+  
+    &:first-of-type {
+      text-align: end;
+      width: 35px;
+    }
   `};
 `
 
@@ -111,7 +123,15 @@ export default function BridgeCurrencyLogo({ bridge, size = 40 }: BridgeCurrency
         <ArrowRightIcon />
         <CurrencySymbol>{bridge.currency1.symbol}</CurrencySymbol>
       </InfoWrapper>
-      {bridge.currency1 && <CurrencyLogo currency={bridge.currency1} size={size.toString() + 'px'} />}
+      {bridge.currency1 && bridge.currency1.symbol !== 'ERC-20' ? (
+        <CurrencyLogo currency={bridge.currency1} size={size.toString() + 'px'} />
+      ) : (
+        <StyledLogo
+          src={'https://logos.linkswap.app/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.png'}
+          alt="ERC-20 Token"
+          size={size.toString() + 'px'}
+        />
+      )}
     </Wrapper>
   )
 }

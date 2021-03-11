@@ -51,7 +51,7 @@ export default function Bridges() {
     {
       url: 'bridges/ren/zec',
       currency0: { symbol: 'SCRT', decimals: 18 },
-      currency1: unwrappedToken(WETHER),
+      currency1: { symbol: 'ERC-20', decimals: 18 },
       type: 'scrt'
     }
   ]
