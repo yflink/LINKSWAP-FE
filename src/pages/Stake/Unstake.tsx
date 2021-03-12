@@ -197,16 +197,10 @@ export default function Unstake({
     if (!chainId || !library || !account || !parsedAmountA) return
     const router = getContract(rewardsContractAddress, currentAbi, library, account)
     const isDefault = currentAbi === StakingRewards
-    const estimate = isDefault
-      ? router.estimateGas.unstakeAndClaimRewards
-      : isGov
-      ? router.estimateGas.withdraw
-      : router.estimateGas.exit
+    const estimate = isDefault ? router.estimateGas.unstakeAndClaimRewards : router.estimateGas.withdraw
     const method: (...args: any) => Promise<TransactionResponse> = isDefault
       ? router.unstakeAndClaimRewards
-      : isGov
-      ? router.withdraw
-      : router.exit
+      : router.withdraw
     const args: Array<string> = isDefault || isGov ? [parsedAmountA.raw.toString()] : []
 
     const value: BigNumber | null = null
@@ -225,7 +219,7 @@ export default function Unstake({
               })
             } else {
               addTransaction(response, {
-                summary: t('unstakeAndClaimRewardsOnSingle', {
+                summary: t('unstakeOnSinglePool', {
                   currencyASymbol: currencyAsymbol,
                   amount: parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)
                 })
