@@ -17,7 +17,7 @@ import { useActiveWeb3React } from '../../hooks'
 import { useCurrency, useToken } from '../../hooks/Tokens'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { Field } from '../../state/mint/actions'
-import { governancePool, mphPool, StakingRewards, syflPool } from '../../components/ABI'
+import { governancePool, mphPool, singlePool, StakingRewards, syflPool } from '../../components/ABI'
 import { useDerivedMintInfo, useMintActionHandlers, useMintState } from '../../state/mint/hooks'
 import { toV2LiquidityToken } from '../../state/user/hooks'
 import { calculateGasMargin, getContract } from '../../utils'
@@ -103,9 +103,9 @@ export default function Unstake({
         })
       }
     } else if (isSingle) {
-      liquidityToken = YFL
-      liquidityTokenAddress = YFL.address
       const singlePool = SINGLE_POOLS[currencyIdB?.toUpperCase() ?? 'ETH']
+      liquidityToken = typeof singlePool !== 'undefined' ? singlePool.tokens[0] : YFL
+      liquidityTokenAddress = liquidityToken.address
       if (!found) {
         if (typeof singlePool !== 'undefined') {
           setFound(true)
@@ -170,6 +170,9 @@ export default function Unstake({
   const rewardsContractAddress = pool.rewardsAddress
   let currentAbi: any
   switch (pool.abi) {
+    case 'singlePool':
+      currentAbi = singlePool
+      break
     case 'syflPool':
       currentAbi = syflPool
       break

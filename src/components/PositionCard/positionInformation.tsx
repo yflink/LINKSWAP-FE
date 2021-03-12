@@ -1,7 +1,7 @@
 import { unwrappedToken } from '../../utils/wrappedCurrency'
 import { getNetworkLibrary } from '../../connectors'
 import hexStringToNumber from '../../utils/hexStringToNumber'
-import { governancePool, LINKSWAPLPToken, mphPool, StakingRewards, syflPool, syflSinglePool } from '../ABI'
+import { governancePool, LINKSWAPLPToken, mphPool, StakingRewards, syflPool, singlePool } from '../ABI'
 import { getContract } from '../../utils'
 import { BigNumber } from '@ethersproject/bignumber'
 import { sYFL, WETHER, YFLUSD } from '../../constants'
@@ -53,8 +53,8 @@ export default async function positionInformation(
     case 'syflPool':
       abi = syflPool
       break
-    case 'syflSinglePool':
-      abi = syflSinglePool
+    case 'singlePool':
+      abi = singlePool
       break
     case 'governancePool':
       abi = governancePool
@@ -125,8 +125,12 @@ export default async function positionInformation(
         })
       } else {
         if (position.type === 'single') {
-          if (position.abi === 'syflSinglePool') {
-            positionOutput.rewardTokens[0] = YFLUSD.address
+          if (position.abi === 'singlePool') {
+            if(typeof(position.rewardsToken) !== 'undefined') {
+              positionOutput.rewardTokens[0] = position.rewardsToken.address
+            } else {
+              positionOutput.rewardTokens[0] = YFLUSD.address
+            }
           } else {
             positionOutput.rewardTokens[0] = position.tokens[0].address
           }
