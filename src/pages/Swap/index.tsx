@@ -550,14 +550,6 @@ export default function Swap() {
             {isExpertMode && swapErrorMessage ? <SwapCallbackError error={swapErrorMessage} /> : null}
             <div style={{ marginTop: 12 }}>
               <Text textAlign="center" fontSize={14} style={{ padding: '.5rem 0 .5rem 0' }}>
-                {t('notSeeingAPair')}
-                <StyledInternalLink id="import-pool-link" to={'create'}>
-                  {t('createNewPool')}
-                </StyledInternalLink>
-              </Text>
-            </div>
-            <div style={{ marginTop: 12 }}>
-              <Text textAlign="center" fontSize={14} style={{ padding: '.5rem 0 .5rem 0' }}>
                 {copied === currentURL ? (
                   <CopiedToClipboard>
                     <CheckIcon /> {t('copied')}
