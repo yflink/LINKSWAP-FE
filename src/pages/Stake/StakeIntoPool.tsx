@@ -1,12 +1,12 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
 import { TokenAmount, WETH } from '@uniswap/sdk'
-import React, { useContext, useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { Link, RouteComponentProps } from 'react-router-dom'
 import { Text } from 'rebass'
-import styled, { ThemeContext } from 'styled-components'
+import styled from 'styled-components'
 import { ButtonLight, ButtonPrimary } from '../../components/Button'
-import Card from '../../components/Card'
+import { NavigationCard } from '../../components/Card'
 import { AutoColumn } from '../../components/Column'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import { SwapPoolTabs } from '../../components/NavigationTabs'
@@ -95,7 +95,6 @@ export default function StakeIntoPool({
   const [balance, setBalance] = useState(0)
   const [staking, setStaking] = useState(false)
   const { account, chainId, library } = useActiveWeb3React()
-  const theme = useContext(ThemeContext)
   const currencyA = useCurrency(currencyIdA)
   const currencyB = useCurrency(currencyIdB)
   const [pool, setPool] = useState({
@@ -363,9 +362,9 @@ export default function StakeIntoPool({
   } else {
     return (
       <>
-        <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.navigationBG, marginBottom: '16px' }}>
+        <NavigationCard>
           <SwapPoolTabs active={'stake'} />
-        </Card>
+        </NavigationCard>
         <AppBody>
           <Tabs>
             {!isSingle ? (

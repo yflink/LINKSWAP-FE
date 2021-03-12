@@ -6,7 +6,7 @@ import { Text } from 'rebass'
 import { ThemeContext } from 'styled-components'
 import AddressInputPanel from '../../components/AddressInputPanel'
 import { ButtonError, ButtonPrimary, ButtonConfirmed, ButtonSecondary } from '../../components/Button'
-import Card, { GreyCard } from '../../components/Card'
+import Card, { GreyCard, NavigationCard } from '../../components/Card'
 import { AutoColumn } from '../../components/Column'
 import ConfirmSwapModal from '../../components/swap/ConfirmSwapModal'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
@@ -45,7 +45,7 @@ import {
   useSwapState
 } from '../../state/swap/hooks'
 import { useExpertModeManager, useGetTheme, useUserDeadline, useUserSlippageTolerance } from '../../state/user/hooks'
-import { LinkStyledButton, StyledInternalLink, TYPE } from '../../theme'
+import { LinkStyledButton, TYPE } from '../../theme'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import { computeTradePriceBreakdown, warningSeverity } from '../../utils/prices'
 import AppBody from '../AppBody'
@@ -332,9 +332,9 @@ export default function Swap() {
         tokens={urlLoadedTokens}
         onConfirm={handleConfirmTokenWarning}
       />
-      <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.navigationBG, marginBottom: '16px' }}>
+      <NavigationCard>
         <SwapPoolTabs active={'swap'} />
-      </Card>
+      </NavigationCard>
       <AppBody>
         <Wrapper id="swap-page">
           <ConfirmSwapModal

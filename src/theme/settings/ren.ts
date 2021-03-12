@@ -1,18 +1,9 @@
-import { border } from 'polished'
-
 export function renTheme() {
   const white = '#FFF'
   const black = '#333'
-  const grey50 = '#fafafa'
-  //const grey100 = '#f5f5f5'
-  const grey200 = '#eeeeee'
   const grey300 = '#e0e0e0'
-  const grey400 = '#bdbdbd'
   const grey500 = '#9e9e9e'
   const grey600 = '#757575'
-  const grey700 = '#616161'
-  const grey800 = '#424242'
-  const grey900 = '#212121'
   const transparent = 'transparent'
 
   const backgroundColor = '#f2f2f2'
