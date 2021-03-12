@@ -465,6 +465,15 @@ export const SINGLE_POOLS: Record<string, any> = {
     abi: 'mphPool',
     type: 'mph88'
   },
+  MASQMASQ: {
+    rewardsAddress: '0x2ea013f9f0f8191276a65091e2d47c6e82104773',
+    tokens: [MASQ, WETHER],
+    stakedToken: MASQ,
+    rewardsToken: MASQ,
+    balance: 0,
+    abi: 'singlePool',
+    type: 'single'
+  },
   YFLYFLUSD: {
     rewardsAddress: '0x5f35334ef7E38EBE1f94d31E6fC3d78b477f4f91',
     tokens: [YFL, WETHER],
