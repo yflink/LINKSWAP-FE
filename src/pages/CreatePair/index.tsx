@@ -10,13 +10,12 @@ import { RouteComponentProps } from 'react-router-dom'
 import { Text } from 'rebass'
 import styled, { ThemeContext } from 'styled-components'
 import { ButtonGray, ButtonPrimary } from '../../components/Button'
-import Card, { BlueCard, LightCard, OutlineCard } from '../../components/Card'
+import { BlueCard, LightCard, NavigationCard, OutlineCard } from '../../components/Card'
 import { AutoColumn, ColumnCenter } from '../../components/Column'
 import TransactionConfirmationModal, { ConfirmationModalContent } from '../../components/TransactionConfirmationModal'
 import CurrencyInputPanel, { CurrencyDoubleInputPanel } from '../../components/CurrencyInputPanel'
 import DoubleCurrencyLogo from '../../components/DoubleLogo'
 import { SwapPoolTabs, CreateTabs } from '../../components/NavigationTabs'
-// import { MinimalPositionCard } from '../../components/PositionCard'
 import Row, { RowFlat } from '../../components/Row'
 import ToggleSwitch from '../../components/ToggleSwitch'
 import CurrencyLogo from '../../components/CurrencyLogo'
@@ -25,13 +24,8 @@ import { Input as NumericalInput } from '../../components/NumericalInput'
 import './slider.css'
 import './steps.css'
 import rateIcon from '../../assets/svg/rate.svg'
-
-// import { ROUTER_ADDRESS } from '../../constants'
-// import { PairState } from '../../data/Reserves'
 import { useActiveWeb3React } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
-// import { useApproveCallback } from '../../hooks/useApproveCallback'
-// import { useWalletModalToggle } from '../../state/application/hooks'
 import { Field } from '../../state/mint/actions'
 import { useDerivedMintInfo, useMintActionHandlers, useMintState } from '../../state/mint/hooks'
 
@@ -43,9 +37,7 @@ import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import { wrappedCurrency } from '../../utils/wrappedCurrency'
 import AppBody, { AppBodyDark } from '../AppBody'
 import { Wrapper } from '../Pool/styleds'
-// import { ConfirmAddModalBottom } from '../AddLiquidity/ConfirmAddModalBottom'
 import { currencyId } from '../../utils/currencyId'
-// import { PoolPriceBar } from './PoolPriceBar'
 import { WrappedTokenInfo } from '../../state/lists/hooks'
 import { useTranslation } from 'react-i18next'
 
@@ -375,9 +367,9 @@ export default function CreateNewPool({
 
   return (
     <>
-      <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.navigationBG, marginBottom: '16px' }}>
+      <NavigationCard>
         <SwapPoolTabs active={'create'} />
-      </Card>
+      </NavigationCard>
       <AppBody>
         <CreateTabs />
         <div style={{ display: 'flex', justifyContent: 'center' }}>

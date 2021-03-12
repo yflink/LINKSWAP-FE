@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { Text } from 'rebass'
-import Card, { BlueCard } from '../../components/Card'
+import { BlueCard, NavigationCard } from '../../components/Card'
 import { SwapPoolTabs } from '../../components/NavigationTabs'
 import AppBody from '../AppBody'
 import { ThemeContext } from 'styled-components'
@@ -65,9 +65,9 @@ export default function Ren() {
   newActive('bridges-ren')
   return (
     <>
-      <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.navigationBG, marginBottom: '16px' }}>
+      <NavigationCard>
         <SwapPoolTabs active={'none'} />
-      </Card>
+      </NavigationCard>
       <AppBody>
         <AutoColumn gap={'12px'}>
           <RowBetween>

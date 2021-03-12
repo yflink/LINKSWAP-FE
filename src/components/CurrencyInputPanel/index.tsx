@@ -35,18 +35,13 @@ const CurrencySelect = styled.button<{
     if (selected) {
       return theme.appCurrencyInputBGActive
     } else {
-      if (primary) {
-        return theme.appCurrencyInputBG
-      } else {
-        return theme.appCurrencyInputBGActive
-      }
+      return theme.appCurrencyInputBG
     }
   }};
   color: ${({ selected, theme }) =>
     selected ? theme.appCurrencyInputTextColorActive : theme.appCurrencyInputTextColor};
   border-radius: ${({ left, right, middle }) =>
     left ? '6px 0px 0px 6px' : right ? '0px 6px 6px 0px' : middle ? '0px' : '6px'};
-  box-shadow: ${({ selected }) => (selected ? 'none' : '0px 6px 10px rgba(0, 0, 0, 0.075)')};
   outline: none;
   cursor: pointer;
   user-select: none;
@@ -62,11 +57,7 @@ const CurrencySelect = styled.button<{
       if (selected) {
         return theme.appCurrencyInputBGActive
       } else {
-        if (primary) {
-          return theme.appCurrencyInputBGHover
-        } else {
-          return theme.appCurrencyInputBGActiveHover
-        }
+        return theme.appCurrencyInputBGHover
       }
     }};
   }

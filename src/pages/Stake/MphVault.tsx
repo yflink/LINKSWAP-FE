@@ -1,7 +1,7 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
-import styled, { ThemeContext } from 'styled-components'
-import Card, { BlueCard } from '../../components/Card'
+import styled from 'styled-components'
+import { BlueCard, NavigationCard } from '../../components/Card'
 import { AutoColumn } from '../../components/Column'
 import { SwapPoolTabs } from '../../components/NavigationTabs'
 import { RowBetween } from '../../components/Row'
@@ -98,7 +98,6 @@ export default function MphVault({
 }: RouteComponentProps<{ vaultName?: string }>) {
   const { account, chainId, library } = useActiveWeb3React()
   const { t } = useTranslation()
-  const theme = useContext(ThemeContext)
   const [depositing, setDepositing] = useState(false)
   const [duration, setDuration] = useState(7)
   const currentVaultName = vaultName ? vaultName.toUpperCase() : 'NONE'
@@ -202,9 +201,9 @@ export default function MphVault({
   } else {
     return (
       <>
-        <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.navigationBG, marginBottom: '16px' }}>
+        <NavigationCard>
           <SwapPoolTabs active={'stake'} />
-        </Card>
+        </NavigationCard>
         <AppBody>
           <Tabs>
             <RowBetween style={{ padding: '1rem 0' }}>

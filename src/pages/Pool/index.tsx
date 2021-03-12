@@ -4,7 +4,7 @@ import { Pair } from '@uniswap/sdk'
 import { Link } from 'react-router-dom'
 import { SwapPoolTabs } from '../../components/NavigationTabs'
 
-import Card from '../../components/Card'
+import { NavigationCard } from '../../components/Card'
 
 import Question from '../../components/QuestionHelper'
 import FullPositionCard from '../../components/PositionCard'
@@ -68,9 +68,9 @@ export default function Pool() {
   const { t } = useTranslation()
   return (
     <>
-      <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.navigationBG, marginBottom: '16px' }}>
+      <NavigationCard>
         <SwapPoolTabs active={'pool'} />
-      </Card>
+      </NavigationCard>
       <AppBody>
         <AutoColumn gap="lg" justify="center">
           <ButtonPrimary id="join-pool-button" as={Link} style={{ padding: 16 }} to="/add/ETH">
