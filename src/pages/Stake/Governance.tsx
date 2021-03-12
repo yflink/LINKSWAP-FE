@@ -483,7 +483,7 @@ export default function StakeGovernance() {
                     <Question text={t('stakeGovernanceVotingDescription')} />
                   </RowBetween>
                   <RowBetween>
-                    <VotingButton href="https://yflink.io/#/stake">{t('stakeGovernanceVoting')}</VotingButton>
+                    <VotingButton href="https://snapshot.page/#/yflink">{t('stakeGovernanceVoting')}</VotingButton>
                   </RowBetween>
                 </AutoColumn>
               </UserBalance>
