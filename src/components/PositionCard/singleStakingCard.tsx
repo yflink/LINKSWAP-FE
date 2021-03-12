@@ -168,7 +168,6 @@ export default function SingleStakingCard({
   const [fetching, setFetching] = useState(false)
   const [subGraphFetching, setSubGraphFetching] = useState(false)
   const [yyflPrice, setYyflPrice] = useState(1)
-  const urlSymbol = values.tokens[0].symbol.replace(' ', '').toUpperCase()
   const isGov = information.poolType === 'gov'
   const lastBlockNumber = useBlockNumber()
   const numberOfDaysForApy = 60
@@ -444,6 +443,8 @@ export default function SingleStakingCard({
     })
   }
 
+  console.log(information)
+
   if (
     (information.userBalance === 0 && showOwn) ||
     (information.isInactive && !showExpired) ||
@@ -583,29 +584,28 @@ export default function SingleStakingCard({
                   {numberToUsd(information.userShareUsd)} ({numberToPercent(information.userShare)})
                 </RowBetween>
               )}
-              {information.rewardInfo[0].userReward > 0 ||
-                (information.rewardInfo[1].userReward > 0 && (
-                  <RowBetween style={{ alignItems: 'flex-start' }}>
-                    <Text>{t('claimableRewards')}</Text>
-                    <Text style={{ textAlign: 'end' }}>
-                      {information.rewardInfo[0].userReward > 0 && (
-                        <div>
-                          {numberToSignificant(information.rewardInfo[0].userReward)} {information.rewardInfo[0].symbol}
-                        </div>
-                      )}
-                      {information.rewardInfo[1].userReward > 0 && (
-                        <div>
-                          {numberToSignificant(information.rewardInfo[1].userReward)} {information.rewardInfo[1].symbol}
-                        </div>
-                      )}
-                    </Text>
-                  </RowBetween>
-                ))}
+              {(information.rewardInfo[0].userReward > 0 || information.rewardInfo[1].userReward > 0) && (
+                <RowBetween style={{ alignItems: 'flex-start' }}>
+                  <Text>{t('claimableRewards')}</Text>
+                  <Text style={{ textAlign: 'end' }}>
+                    {information.rewardInfo[0].userReward > 0 && (
+                      <div>
+                        {numberToSignificant(information.rewardInfo[0].userReward)} {information.rewardInfo[0].symbol}
+                      </div>
+                    )}
+                    {information.rewardInfo[1].userReward > 0 && (
+                      <div>
+                        {numberToSignificant(information.rewardInfo[1].userReward)} {information.rewardInfo[1].symbol}
+                      </div>
+                    )}
+                  </Text>
+                </RowBetween>
+              )}
               {Number(balance?.toSignificant(1)) * 10000 > 1 && !show && !information.isInactive && (
                 <RowBetween marginTop="10px">
                   <>
                     {information.poolType === 'mph88' ? (
-                      <ButtonSecondary as={Link} width="100%" to={`/stake/mph88/${urlSymbol}`}>
+                      <ButtonSecondary as={Link} width="100%" to={`/stake/mph88/${values.name.toLowerCase()}`}>
                         {t('stake')}
                       </ButtonSecondary>
                     ) : (
@@ -625,7 +625,7 @@ export default function SingleStakingCard({
                     {information.poolType === 'mph88' && (
                       <>
                         {information.userBalance > 0 ? (
-                          <ButtonSecondary as={Link} width="100%" to={`/manage/mph88/${urlSymbol}`}>
+                          <ButtonSecondary as={Link} width="100%" to={`/manage/mph88/${values.name.toLowerCase()}`}>
                             {t('manageDeposits')}
                           </ButtonSecondary>
                         ) : (

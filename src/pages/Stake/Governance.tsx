@@ -13,7 +13,7 @@ import { numberToPercent, numberToSignificant, numberToUsd } from '../../utils/n
 import { ButtonSecondary } from '../../components/Button'
 import { Link } from 'react-router-dom'
 import { useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks'
-import { SINGLE_POOLS, YFL, yYFL } from '../../constants'
+import { MARKETCAPS, SINGLE_POOLS, YFL, yYFL } from '../../constants'
 import { useActiveWeb3React } from '../../hooks'
 import Loader from '../../components/Loader'
 import { getContract } from '../../utils'
@@ -211,6 +211,7 @@ export default function StakeGovernance() {
   const [totalApy, setTotalApy] = useState(0)
   const [receivedYFLManual, setReceivedYFLManual] = useState(0)
   const [receivedYFLAuto, setReceivedYFLAuto] = useState(0)
+  const [receivedYFLLinkpad, setReceivedYFLLinkpad] = useState(0)
   const [daysSinceLastDistribution, setDaysSinceLastDistribution] = useState(0)
   const toggleWalletModal = useWalletModalToggle()
   const { t } = useTranslation()
@@ -231,9 +232,10 @@ export default function StakeGovernance() {
   const startDate = moment('11-27-2020', 'MM-DD-YYYY')
   const daysSinceStart = moment().diff(startDate, 'days')
   const yflStartPrice = 1
-
   const hasYfl = Number(userBalances[YFL.address]?.toSignificant(1)) > 0
   const hasYyfl = Number(userBalances[yYFL.address]?.toSignificant(1)) > 0
+  const totalStaked = Number(govBalances[YFL.address]?.toSignificant(8))
+  const percentageStakedTVL = totalStaked / (MARKETCAPS.YFL * 0.01)
 
   if (!govBalanceFetching && govBalance === 0) {
     setGovBalanceFetching(true)
@@ -259,6 +261,17 @@ export default function StakeGovernance() {
           }
         })
         setReceivedYFLManual(YFLManual)
+      })
+    }
+    if (receivedYFLLinkpad === 0) {
+      getIncomingTransactions('0xbdde61544cc567cd658fc6cc2fee28acceb419fd').then(transactions => {
+        let YFLLinkpad = 0
+        transactions.forEach(function(transaction: Record<string, any>) {
+          if (transaction.to === governanceAddress.toLowerCase()) {
+            YFLLinkpad += Number(transaction.value)
+          }
+        })
+        setReceivedYFLLinkpad(YFLLinkpad)
       })
     }
     if (receivedYFLAuto === 0) {
@@ -321,7 +334,7 @@ export default function StakeGovernance() {
     setTotalApy(dailyTotalPercentage * 365)
   }
 
-  const totalReceivedYFL = (receivedYFLManual + receivedYFLAuto) / 1000000000000000000
+  const totalReceivedYFL = (receivedYFLManual + receivedYFLLinkpad + receivedYFLAuto) / 1000000000000000000
 
   return (
     <>
@@ -381,9 +394,11 @@ export default function StakeGovernance() {
                 <Loader />
               ) : (
                 <BalanceText>
-                  {Number(govBalances[YFL.address]?.toSignificant(8)).toLocaleString('en-US') + ' ' + YFL.symbol}
+                  {totalStaked.toLocaleString('en-US') + ' ' + YFL.symbol}
                   <br />
                   {numberToUsd(Number(govBalances[YFL.address]?.toSignificant(8)) * yflPriceUsd)}
+                  <br />
+                  {t('stakeOfTotalSupply', { percent: numberToPercent(percentageStakedTVL) })}
                 </BalanceText>
               )}
             </RowBetween>

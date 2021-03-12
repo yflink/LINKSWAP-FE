@@ -211,7 +211,7 @@ const WETH_ONLY: ChainTokenList = {
 // used to construct intermediary pairs for trading
 export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   ...WETH_ONLY,
-  [ChainId.MAINNET]: [WETH[ChainId.MAINNET], LINK, YFLUSD, vETH, vUSDC, stETH, ibETH, USDC, USDT]
+  [ChainId.MAINNET]: [WETH[ChainId.MAINNET], LINK, YFLUSD, vETH, vUSDC, stETH, ibETH, YFL]
 }
 
 /**
@@ -233,7 +233,7 @@ export const SUGGESTED_BASES: ChainTokenList = {
 // used to construct the list of all pairs we consider by default in the frontend
 export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   ...WETH_ONLY,
-  [ChainId.MAINNET]: [WETH[ChainId.MAINNET], LINK, YFLUSD, DAI, USDC, USDT]
+  [ChainId.MAINNET]: [WETH[ChainId.MAINNET], LINK, YFLUSD, vETH, vUSDC, stETH, ibETH, YFL]
 }
 
 export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } = {
@@ -262,6 +262,10 @@ export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } 
     [renDOGE, LINK],
     [MPH, LINK]
   ]
+}
+
+export const MARKETCAPS = {
+  YFL: 47173
 }
 
 export interface WalletInfo {
@@ -314,6 +318,12 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
 }
 
 export const ACTIVE_REWARD_POOLS = [
+  {
+    address: '0x21dee38170F1e1F26baFf2C30C0fc8F8362b6961',
+    rewardsAddress: '0x05C75D74197F44425059d71C4679E8Ae1D8F83f9',
+    abi: 'StakingRewards',
+    type: 'default'
+  },
   {
     address: '0x195734d862DFb5380eeDa0ACD8acf697eA95D370',
     rewardsAddress: '0x6DddCc7F963C65b18FdDD842e6553528f014aDeA',
@@ -393,12 +403,6 @@ export const ACTIVE_REWARD_POOLS = [
     type: 'default'
   },
   {
-    address: '0x21dee38170F1e1F26baFf2C30C0fc8F8362b6961',
-    rewardsAddress: '0xBfe0D843D3DA0953EcEf08Fc231033D4B140a085',
-    abi: 'StakingRewards',
-    type: 'default'
-  },
-  {
     address: '0x40F1068495Ba9921d6C18cF1aC25f718dF8cE69D',
     rewardsAddress: '0x0E6FA9f95a428F185752b60D38c62184854bB9e1',
     abi: 'StakingRewards',
@@ -410,6 +414,12 @@ export const INACTIVE_REWARD_POOLS = [
   {
     address: '0x7e5A536F3d79791E283940ec379CEE10C9C40e86',
     rewardsAddress: '0x72368fB97dab2B94A5664EbeEbF504EF482fF149',
+    abi: 'StakingRewards',
+    type: 'default'
+  },
+  {
+    address: '0x21dee38170F1e1F26baFf2C30C0fc8F8362b6961',
+    rewardsAddress: '0xBfe0D843D3DA0953EcEf08Fc231033D4B140a085',
     abi: 'StakingRewards',
     type: 'default'
   }
@@ -459,48 +469,54 @@ export const SINGLE_POOLS: Record<string, any> = {
     rewardsAddress: '0x5f35334ef7E38EBE1f94d31E6fC3d78b477f4f91',
     tokens: [YFL, WETHER],
     stakedToken: YFL,
+    rewardsToken: YFLUSD,
     balance: 0,
-    abi: 'syflSinglePool',
+    abi: 'singlePool',
     type: 'single'
   },
   LINKYFLUSD: {
     rewardsAddress: '0x4043D9BF3bC91893604c0281Dac857e6F24824a1',
     tokens: [LINK, WETHER],
     stakedToken: LINK,
+    rewardsToken: YFLUSD,
     balance: 0,
-    abi: 'syflSinglePool',
+    abi: 'singlePool',
     type: 'single'
   },
   BONKYFLUSD: {
     rewardsAddress: '0xA54550653b6F5D55CB8D258a3Ed7c653eb186cC0',
     tokens: [BONK, WETHER],
     stakedToken: BONK,
+    rewardsToken: YFLUSD,
     balance: 0,
-    abi: 'syflSinglePool',
+    abi: 'singlePool',
     type: 'single'
   },
   DOKIYFLUSD: {
     rewardsAddress: '0xFa60fFae050Edda279399209f3BBc0AC59327c88',
     tokens: [DOKI, WETHER],
     stakedToken: DOKI,
+    rewardsToken: YFLUSD,
     balance: 0,
-    abi: 'syflSinglePool',
+    abi: 'singlePool',
     type: 'single'
   },
   SYAXYFLUSD: {
     rewardsAddress: '0xEB94b4a6700F5b5DaDB9ecb2973bEACB71A17bCD',
     tokens: [SYAX, WETHER],
     stakedToken: SYAX,
+    rewardsToken: YFLUSD,
     balance: 0,
-    abi: 'syflSinglePool',
+    abi: 'singlePool',
     type: 'single'
   },
   MASQYFLUSD: {
     rewardsAddress: '0x77eAddB37d116D0272fda5d6441e4423950C8427',
     tokens: [MASQ, WETHER],
     stakedToken: MASQ,
+    rewardsToken: YFLUSD,
     balance: 0,
-    abi: 'syflSinglePool',
+    abi: 'singlePool',
     type: 'single'
   }
 }

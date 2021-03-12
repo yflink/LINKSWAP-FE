@@ -284,9 +284,9 @@
 	"stakeLPToken": "سهام گذاری در{{currencyASymbol}}  | {{currencyBSymbol}} توکن LP",
 	"stakeLPTokenAmount": "سهام گذاری در {{currencyASymbol}} {{amount}}  | {{currencyBSymbol}} توکن LP",
 	"stakeLPTokenDescription": "با سهام گذاری توکن تامین کننده نقدینگی LINKSWAP (LSLP){{currencyASymbol}}  | {{currencyBSymbol}} خود، شما قادر خواهید بود جوایز سهام گذاری را دریافت کنید",
-	"unStakeLPToken": "لغو سهام گذاری در{{currencyASymbol}}  | {{currencyBSymbol}} توکن LP",
-	"unStakeLPTokenAmount": " لغو سهام گذاری در {{currencyASymbol}} {{amount}} | {{currencyBSymbol}} توکن LP",
-	"unStakeLPTokenDescription": " با لغو سهام گذاری توکن تامین کننده نقدینگی LINKSWAP (LSLP){{currencyASymbol}}  | {{currencyBSymbol}} خود، شما دیگرقادر نخواهید بود جوایز سهام گذاری را دریافت کنید",
+	"unstakeLPToken": "لغو سهام گذاری در{{currencyASymbol}}  | {{currencyBSymbol}} توکن LP",
+	"unstakeLPTokenAmount": " لغو سهام گذاری در {{currencyASymbol}} {{amount}} | {{currencyBSymbol}} توکن LP",
+	"unstakeLPTokenDescription": " با لغو سهام گذاری توکن تامین کننده نقدینگی LINKSWAP (LSLP){{currencyASymbol}}  | {{currencyBSymbol}} خود، شما دیگرقادر نخواهید بود جوایز سهام گذاری را دریافت کنید",
 	"myStakedPosition": "وضعیت سهام گذاری شما",
 	"stakePools": "پول های جایزه LP",
 	"stakePoolsDescription": " در توکن تامین کننده نقدینگی LINKSWAP (LSLP) خود سهام گذاری کنید، و روزانه جوایز دریافت کنید",
@@ -469,10 +469,11 @@
   "stakeSingleTokenDescription": "By staking your {{currencyASymbol}} you will be eligible to earn staking rewards",
   "stakeSingleTokenAmount": "Stake {{amount}} {{currencyASymbol}}",
   "unstakeSingleToken": "Unstake {{currencyASymbol}}",
-  "unStakeSingleTokenDescription": "By unstaking your {{currencyASymbol}} you will no longer be eligible to earn staking rewards",
+  "unstakeSingleTokenDescription": "By unstaking your {{currencyASymbol}} you will no longer be eligible to earn staking rewards",
   "unstakeAndClaimRewardsOnSingle": "Unstake all and Claim Rewards {{currencyASymbol}}",
   "projectDocumentation": "Project Documentation",
   "moreDetails": "More Details",
   "stakeGovernanceTotalDistributed": "Total YFL distributed since launch",
-  "stakeGovernanceLastDistribution": "Last distribution: {{days}} days ago"
+  "stakeGovernanceLastDistribution": "Last distribution: {{days}} days ago",
+  "stakeOfTotalSupply": "{{percent}} of Total Supply"
 }

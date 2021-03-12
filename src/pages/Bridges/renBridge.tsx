@@ -49,7 +49,6 @@ import {
   useRenMintsZEC
 } from '../../state/ren/hooks'
 import { useNavigationActiveItemManager } from '../../state/navigation/hooks'
-import { NETWORK_URL } from '../../connectors'
 
 const NavigationWrapper = styled.div`
   display: flex;
@@ -254,7 +253,7 @@ export default function RenBridge({
   const renJS = useMemo(() => new RenJS(RenNetwork.Mainnet, {}), [])
   const balance = useTokenBalances(account ?? undefined, [token])
   const userBalance = balance[token.address]
-  const web3 = new Web3(new Web3.providers.HttpProvider(NETWORK_URL))
+  const web3 = new Web3(Web3.givenProvider)
   const provider = web3.currentProvider
   const { independentField, typedValue } = useMintState()
   const { dependentField, currencies, parsedAmounts, noLiquidity, currencyBalances } = useDerivedMintInfo(

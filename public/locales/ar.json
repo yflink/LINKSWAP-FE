@@ -285,9 +285,9 @@
 	"stakeLPToken": "ربط حصة {{currencyASymbol}} | {{currencyBSymbol}} LP Token",
 	"stakeLPTokenAmount": "ربط حصة {{amount}} {{currencyASymbol}} | {{currencyBSymbol}} LP Token",
 	"stakeLPTokenDescription": "عن طريق وضع {{currencyASymbol}} | {{currencyBSymbol}} LINKSWAP مزود السيولة Token (LSLP) ستكون مؤهلاً لكسب مكافآت ربط الحصة",
-	"unStakeLPToken": "فك الحصة {{currencyASymbol}} | {{currencyBSymbol}} Token LP",
-	"unStakeLPTokenAmount": "فك {{amount}} {{currencyASymbol}} | {{currencyBSymbol}} Token LP",
-	"unStakeLPTokenDescription": "فك حصة {{currencyASymbol}} | {{currencyBSymbol}} LINKSWAP مزود السيولة Token (LSLP) لن تكون مؤهلاً بعد الآن لكسب مكافآت ربط الحصة",
+	"unstakeLPToken": "فك الحصة {{currencyASymbol}} | {{currencyBSymbol}} Token LP",
+	"unstakeLPTokenAmount": "فك {{amount}} {{currencyASymbol}} | {{currencyBSymbol}} Token LP",
+	"unstakeLPTokenDescription": "فك حصة {{currencyASymbol}} | {{currencyBSymbol}} LINKSWAP مزود السيولة Token (LSLP) لن تكون مؤهلاً بعد الآن لكسب مكافآت ربط الحصة",
 	"myStakedPosition": "الحصص المربوطة",
 	"stakePools": "مكافآت مَجمع السيولة (Pool)LP",
 	"stakePoolsDescription": "احصل على Token مزود السيولة LINKSWAP (LSLP) واكسب مكافآت يومية",
@@ -469,10 +469,11 @@
   "stakeSingleTokenDescription": "By staking your {{currencyASymbol}} you will be eligible to earn staking rewards",
   "stakeSingleTokenAmount": "Stake {{amount}} {{currencyASymbol}}",
   "unstakeSingleToken": "Unstake {{currencyASymbol}}",
-  "unStakeSingleTokenDescription": "By unstaking your {{currencyASymbol}} you will no longer be eligible to earn staking rewards",
+  "unstakeSingleTokenDescription": "By unstaking your {{currencyASymbol}} you will no longer be eligible to earn staking rewards",
   "unstakeAndClaimRewardsOnSingle": "Unstake all and Claim Rewards {{currencyASymbol}}",
   "projectDocumentation": "Project Documentation",
   "moreDetails": "More Details",
   "stakeGovernanceTotalDistributed": "Total YFL distributed since launch",
-  "stakeGovernanceLastDistribution": "Last distribution: {{days}} days ago"
+  "stakeGovernanceLastDistribution": "Last distribution: {{days}} days ago",
+  "stakeOfTotalSupply": "{{percent}} of Total Supply"
 }

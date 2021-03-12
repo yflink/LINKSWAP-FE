@@ -279,9 +279,9 @@
   "stakeLPToken": "Stake {{currencyASymbol}} | {{currencyBSymbol}} LP Token",
   "stakeLPTokenAmount": "Stake {{amount}} {{currencyASymbol}} | {{currencyBSymbol}} LP Token",
   "stakeLPTokenDescription": "Ставя {{currencyASymbol}} | {{currencyBSymbol}} Токен поставщика ликвидности LINKSWAP (LSLP), вы будете иметь право на получение вознаграждения за размещение ставок",
-  "unStakeLPToken": "Unstake {{currencyASymbol}} | {{currencyBSymbol}} LP токен",
-  "unStakeLPTokenAmount": "Unstake {{amount}} {{currencyASymbol}} | {{currencyBSymbol}} LP токен",
-  "unStakeLPTokenDescription": "Убрав {{currencyASymbol}} | {{currencyBSymbol}} токен LINKSWAP (LSLP) вы больше не сможете получать вознаграждения за размещение ставок",
+  "unstakeLPToken": "Unstake {{currencyASymbol}} | {{currencyBSymbol}} LP токен",
+  "unstakeLPTokenAmount": "Unstake {{amount}} {{currencyASymbol}} | {{currencyBSymbol}} LP токен",
+  "unstakeLPTokenDescription": "Убрав {{currencyASymbol}} | {{currencyBSymbol}} токен LINKSWAP (LSLP) вы больше не сможете получать вознаграждения за размещение ставок",
   "myStakedPosition": "Ваша ставка",
   "stakePools": "Пулы вознаграждений LP",
   "stakePoolsDescription": "Ставьте свой токен LINKSWAP (LSLP) и получайте ежедневные награды",
@@ -463,10 +463,11 @@
   "stakeSingleTokenDescription": "By staking your {{currencyASymbol}} you will be eligible to earn staking rewards",
   "stakeSingleTokenAmount": "Stake {{amount}} {{currencyASymbol}}",
   "unstakeSingleToken": "Unstake {{currencyASymbol}}",
-  "unStakeSingleTokenDescription": "By unstaking your {{currencyASymbol}} you will no longer be eligible to earn staking rewards",
+  "unstakeSingleTokenDescription": "By unstaking your {{currencyASymbol}} you will no longer be eligible to earn staking rewards",
   "unstakeAndClaimRewardsOnSingle": "Unstake all and Claim Rewards {{currencyASymbol}}",
   "projectDocumentation": "Project Documentation",
   "moreDetails": "More Details",
   "stakeGovernanceTotalDistributed": "Total YFL distributed since launch",
-  "stakeGovernanceLastDistribution": "Last distribution: {{days}} days ago"
+  "stakeGovernanceLastDistribution": "Last distribution: {{days}} days ago",
+  "stakeOfTotalSupply": "{{percent}} of Total Supply"
 }
