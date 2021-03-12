@@ -14,12 +14,6 @@ import { BurnDetails, DepositDetails } from './useTransactionStorage'
 import { Asset, Chain } from './assets'
 
 export const logLevel = LogLevel.Log
-
-/*******************************************************************************
- * MINTING
- ******************************************************************************/
-
-// Map a mint chain name and mint parameters to a MintChain object.
 export const getMintChainObject = (
   mintChain: Chain,
   mintChainProvider: any,
@@ -182,10 +176,6 @@ export const submitDeposit = async (
   onStatus(DepositStatus.DONE)
 }
 
-/*******************************************************************************
- * BURNING
- ******************************************************************************/
-
 export enum BurnStatus {
   BURNT = 'Burnt',
   DONE = 'Done',
@@ -218,6 +208,9 @@ export const startBurn = async (
       break
     case Asset.LUNA:
       to = Terra().Address(recipientAddress)
+      break
+    case Asset.DGB:
+      to = DigiByte().Address(recipientAddress)
       break
     case Asset.DOGE:
       to = Dogecoin().Address(recipientAddress)
