@@ -116,8 +116,8 @@ export function renTheme() {
     modalButtonText: black,
     modalShadow: 'rgba(0, 0, 0, 0.4)',
     modalInputBG: transparent,
-    modalInputBorder: black,
-    modalInputBorderFocus: borderColor,
+    modalInputBorder: borderColor,
+    modalInputBorderFocus: mainColor,
     modalFooterBG: white,
 
     //Navigation
