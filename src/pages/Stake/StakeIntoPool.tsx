@@ -18,7 +18,7 @@ import { useCurrency, useToken } from '../../hooks/Tokens'
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { Field } from '../../state/mint/actions'
-import { governancePool, mphPool, StakingRewards, syflPool } from '../../components/ABI'
+import { governancePool, mphPool, singlePool, StakingRewards, syflPool } from '../../components/ABI'
 import { useDerivedMintInfo, useMintActionHandlers, useMintState } from '../../state/mint/hooks'
 import { toV2LiquidityToken } from '../../state/user/hooks'
 import { calculateGasMargin, getContract } from '../../utils'
@@ -146,16 +146,14 @@ export default function StakeIntoPool({
         })
       }
     } else if (isSingle) {
-      liquidityToken = YFL
-      liquidityTokenAddress = YFL.address
       const singlePool = SINGLE_POOLS[currencyIdB?.toUpperCase() ?? 'ETH']
+      liquidityToken = typeof singlePool !== 'undefined' ? singlePool.tokens[0] : YFL
+      liquidityTokenAddress = liquidityToken.address
       if (!found) {
         if (typeof singlePool !== 'undefined') {
           setFound(true)
           setPool(singlePool)
-          liquidityToken = singlePool.tokens[0]
           setCurrencyAsymbol(liquidityToken.symbol)
-          liquidityTokenAddress = liquidityToken.address
         }
       }
     } else {
@@ -218,6 +216,9 @@ export default function StakeIntoPool({
   const rewardsContractAddress = pool.rewardsAddress
   let currentAbi: any
   switch (pool.abi) {
+    case 'singlePool':
+      currentAbi = singlePool
+      break
     case 'syflPool':
       currentAbi = syflPool
       break
@@ -386,12 +387,12 @@ export default function StakeIntoPool({
               <RowBetween style={{ padding: '1rem 0' }}>
                 <ActiveText>
                   {t('stakeSingleToken', {
-                    currencyASymbol: currencyA?.symbol
+                    currencyASymbol: currencyAsymbol
                   })}
                 </ActiveText>
                 <QuestionHelper
                   text={t('stakeSingleDescription', {
-                    currencyASymbol: currencyA?.symbol
+                    currencyASymbol: currencyAsymbol
                   })}
                 />
               </RowBetween>

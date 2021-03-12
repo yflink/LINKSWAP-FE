@@ -469,48 +469,54 @@ export const SINGLE_POOLS: Record<string, any> = {
     rewardsAddress: '0x5f35334ef7E38EBE1f94d31E6fC3d78b477f4f91',
     tokens: [YFL, WETHER],
     stakedToken: YFL,
+    rewardsToken: YFLUSD,
     balance: 0,
-    abi: 'syflSinglePool',
+    abi: 'singlePool',
     type: 'single'
   },
   LINKYFLUSD: {
     rewardsAddress: '0x4043D9BF3bC91893604c0281Dac857e6F24824a1',
     tokens: [LINK, WETHER],
     stakedToken: LINK,
+    rewardsToken: YFLUSD,
     balance: 0,
-    abi: 'syflSinglePool',
+    abi: 'singlePool',
     type: 'single'
   },
   BONKYFLUSD: {
     rewardsAddress: '0xA54550653b6F5D55CB8D258a3Ed7c653eb186cC0',
     tokens: [BONK, WETHER],
     stakedToken: BONK,
+    rewardsToken: YFLUSD,
     balance: 0,
-    abi: 'syflSinglePool',
+    abi: 'singlePool',
     type: 'single'
   },
   DOKIYFLUSD: {
     rewardsAddress: '0xFa60fFae050Edda279399209f3BBc0AC59327c88',
     tokens: [DOKI, WETHER],
     stakedToken: DOKI,
+    rewardsToken: YFLUSD,
     balance: 0,
-    abi: 'syflSinglePool',
+    abi: 'singlePool',
     type: 'single'
   },
   SYAXYFLUSD: {
     rewardsAddress: '0xEB94b4a6700F5b5DaDB9ecb2973bEACB71A17bCD',
     tokens: [SYAX, WETHER],
     stakedToken: SYAX,
+    rewardsToken: YFLUSD,
     balance: 0,
-    abi: 'syflSinglePool',
+    abi: 'singlePool',
     type: 'single'
   },
   MASQYFLUSD: {
     rewardsAddress: '0x77eAddB37d116D0272fda5d6441e4423950C8427',
     tokens: [MASQ, WETHER],
     stakedToken: MASQ,
+    rewardsToken: YFLUSD,
     balance: 0,
-    abi: 'syflSinglePool',
+    abi: 'singlePool',
     type: 'single'
   }
 }
