@@ -39,6 +39,7 @@ import { RedirectToRenBridge } from './Bridges/redirects'
 import Popups from '../components/Popups'
 import StakeGovernance from './Stake/Governance'
 import Bridges from './Bridges'
+import Scrt from './Bridges/scrt'
 
 const AppWrapper = styled.div`
   display: flex;
@@ -72,9 +73,11 @@ const BodyWrapper = styled.div`
   align-items: center;
   box-sizing: content-box;
   flex: 1;
-  z-index: 1;
+  z-index: 3;
+
   ${({ theme }) => theme.mediaWidth.upToMedium`
     width: 100%;
+    z-index: 1;
   `};
   ${({ theme }) => theme.mediaWidth.upToSmall`
     padding: 0 0 16px;
@@ -163,6 +166,7 @@ export default function App() {
                 <Route exact strict path="/bridges/ren/:bridgeName" component={RedirectToRenBridge} />
                 <Route exact strict path="/ren" component={Ren} />
                 <Route exact strict path="/ren/:bridgeName" component={RedirectToRenBridge} />
+                <Route exact strict path="/scrt" component={Scrt} />
                 <Route component={RedirectPathToSwapOnly} />
               </Switch>
             </Web3ReactManager>

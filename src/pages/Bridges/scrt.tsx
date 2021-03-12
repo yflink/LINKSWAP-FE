@@ -14,44 +14,16 @@ import BridgeCurrencyLogo from '../../components/BridgeLogo'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
 import { useNavigationActiveItemManager } from '../../state/navigation/hooks'
 
-export default function Bridges() {
+export default function Scrt() {
   const theme = useContext(ThemeContext)
   const { t } = useTranslation()
   const bridges = [
-    {
-      url: 'bridges/ren/bch',
-      currency0: { symbol: 'BCH', decimals: renBCH.decimals },
-      currency1: unwrappedToken(renBCH),
-      inverse: false,
-      type: 'ren'
-    },
-    {
-      url: 'bridges/ren/btc',
-      currency0: { symbol: 'BTC', decimals: renBTC.decimals },
-      currency1: unwrappedToken(renBTC),
-      inverse: false,
-      type: 'ren'
-    },
-    {
-      url: 'bridges/ren/doge',
-      currency0: { symbol: 'DOGE', decimals: renDOGE.decimals },
-      currency1: unwrappedToken(renDOGE),
-      inverse: false,
-      type: 'ren'
-    },
     {
       url: 'bridges/scrt/eth',
       currency0: unwrappedToken(WETHER),
       currency1: { symbol: 'secretETH', decimals: 18 },
       inverse: true,
       type: 'scrt'
-    },
-    {
-      url: 'bridges/ren/fil',
-      currency0: { symbol: 'FIL', decimals: renFIL.decimals },
-      currency1: unwrappedToken(renFIL),
-      inverse: false,
-      type: 'ren'
     },
     {
       url: 'bridges/scrt/link',
@@ -66,17 +38,10 @@ export default function Bridges() {
       currency1: { symbol: 'secretYFL', decimals: 18 },
       inverse: true,
       type: 'scrt'
-    },
-    {
-      url: 'bridges/ren/zec',
-      currency0: { symbol: 'ZEC', decimals: renZEC.decimals },
-      currency1: unwrappedToken(renZEC),
-      inverse: false,
-      type: 'ren'
     }
   ]
   const newActive = useNavigationActiveItemManager()
-  newActive('bridges')
+  newActive('bridges-scrt')
   return (
     <>
       <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.navigationBG, marginBottom: '16px' }}>
@@ -86,14 +51,14 @@ export default function Bridges() {
         <AutoColumn gap={'12px'}>
           <RowBetween>
             <Text color={theme.textPrimary} fontWeight={500}>
-              {t('bridgesAll')}
+              {t('bridgesScrt')}
             </Text>
-            <Question text={t('bridgesDescription')} />
+            <Question text={t('bridgesScrtDescription')} />
           </RowBetween>
         </AutoColumn>
         <BlueCard style={{ margin: '12px 0 12px' }}>
           <TYPE.link textAlign="center" fontWeight={400}>
-            {t('renDescription')}
+            {t('scrtDescription')}
           </TYPE.link>
         </BlueCard>
         <AutoColumn gap={'12px'}>

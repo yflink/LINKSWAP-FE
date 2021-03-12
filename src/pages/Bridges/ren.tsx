@@ -22,30 +22,35 @@ export default function Ren() {
       url: 'bridges/ren/bch',
       currency0: { symbol: 'BCH', decimals: renBCH.decimals },
       currency1: unwrappedToken(renBCH),
+      inverse: false,
       type: 'ren'
     },
     {
       url: 'bridges/ren/btc',
       currency0: { symbol: 'BTC', decimals: renBTC.decimals },
       currency1: unwrappedToken(renBTC),
+      inverse: false,
       type: 'ren'
     },
     {
       url: 'bridges/ren/doge',
       currency0: { symbol: 'DOGE', decimals: renDOGE.decimals },
       currency1: unwrappedToken(renDOGE),
+      inverse: false,
       type: 'ren'
     },
     {
       url: 'bridges/ren/fil',
       currency0: { symbol: 'FIL', decimals: renFIL.decimals },
       currency1: unwrappedToken(renFIL),
+      inverse: false,
       type: 'ren'
     },
     {
       url: 'bridges/ren/zec',
       currency0: { symbol: 'ZEC', decimals: renZEC.decimals },
       currency1: unwrappedToken(renZEC),
+      inverse: false,
       type: 'ren'
     }
   ]

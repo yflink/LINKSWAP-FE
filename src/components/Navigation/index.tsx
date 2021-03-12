@@ -823,8 +823,13 @@ export default function Navigation() {
                 </StyledNavLink>
               </SubNavigationElement>
               <SubNavigationElement>
-                <StyledNavLink id={'bridges'} to={'/ren'} isActive={() => active === 'bridges-ren'}>
+                <StyledNavLink id={'bridges-ren'} to={'/ren'} isActive={() => active === 'bridges-ren'}>
                   <NavLabel>{t('bridgesRen')}</NavLabel>
+                </StyledNavLink>
+              </SubNavigationElement>
+              <SubNavigationElement>
+                <StyledNavLink id={'bridges-scrt'} to={'/scrt'} isActive={() => active === 'bridges-scrt'}>
+                  <NavLabel>{t('bridgesScrt')}</NavLabel>
                 </StyledNavLink>
               </SubNavigationElement>
               <SubNavigationElement>
@@ -870,6 +875,33 @@ export default function Navigation() {
                   isActive={() => active === 'bridges-renzec'}
                 >
                   <NavLabel>renZEC</NavLabel>
+                </StyledNavLink>
+              </SubNavigationElement>
+              <SubNavigationElement>
+                <StyledNavLink
+                  id={'bridges-scrteth'}
+                  to={'/bridges/scrt/eth'}
+                  isActive={() => active === 'bridges-scrteth'}
+                >
+                  <NavLabel>secretETH</NavLabel>
+                </StyledNavLink>
+              </SubNavigationElement>
+              <SubNavigationElement>
+                <StyledNavLink
+                  id={'bridges-scrtlink'}
+                  to={'/bridges/scrt/link'}
+                  isActive={() => active === 'bridges-scrtlink'}
+                >
+                  <NavLabel>secretLINK</NavLabel>
+                </StyledNavLink>
+              </SubNavigationElement>
+              <SubNavigationElement>
+                <StyledNavLink
+                  id={'bridges-scrtyfl'}
+                  to={'/bridges/scrt/yfl'}
+                  isActive={() => active === 'bridges-scrtyfl'}
+                >
+                  <NavLabel>secretYFL</NavLabel>
                 </StyledNavLink>
               </SubNavigationElement>
             </SubNavigationBodyList>

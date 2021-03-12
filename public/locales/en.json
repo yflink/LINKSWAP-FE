@@ -473,5 +473,9 @@
   "stakeGovernanceTotalDistributed": "Total YFL distributed since launch",
   "stakeGovernanceLastDistribution": "Last distribution: {{days}} days ago",
   "stakeOfTotalSupply": "{{percent}} of Total Supply",
-  "bridgesAll": "All Bridges"
+  "bridgesAll": "All Bridges",
+  "bridgesDescription": "Transfer crypto currencies between different blockchains, with our bridge implementations",
+  "bridgesScrt": "All Secret Bridges",
+  "bridgesScrtDescription": "Transfer crypto currencies between the Secret blockchain and the Ethereum blockchain",
+  "scrtDescription": "Choose a bridge and transfer your crypto currencies between the Secret (SNIP20) blockchain and the Ethereum (ERC20) blockchain"
 }
