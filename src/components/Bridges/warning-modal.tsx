@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useContext, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Modal from '../Modal'
 import { AutoColumn } from '../Column'
@@ -6,7 +6,7 @@ import { AutoRow, RowBetween } from '../Row'
 import { TYPE } from '../../theme'
 import { ButtonError } from '../Button'
 import { AlertTriangle } from 'react-feather'
-import styled from 'styled-components'
+import styled, { ThemeContext } from 'styled-components'
 
 const WarningContainer = styled.div`
   max-width: 420px;
@@ -14,7 +14,7 @@ const WarningContainer = styled.div`
   padding: 1rem;
   background: rgba(242, 150, 2, 0.05);
   border: 1px solid #f3841e;
-  border-radius: 6px;
+  border-radius: ${({ theme }) => theme.borderRadius};
   overflow: auto;
 `
 
@@ -27,6 +27,7 @@ export default function BridgeWarningModal({ isOpen, onConfirm }: { isOpen: bool
   const toggleUnderstand = useCallback(() => setUnderstandChecked(uc => !uc), [])
   const handleDismiss = useCallback(() => null, [])
   const { t } = useTranslation()
+  const theme = useContext(ThemeContext)
 
   return (
     <Modal isOpen={isOpen} onDismiss={handleDismiss} maxHeight={90}>
@@ -60,7 +61,7 @@ export default function BridgeWarningModal({ isOpen, onConfirm }: { isOpen: bool
               padding="0.5rem 1rem"
               className="token-dismiss-button"
               style={{
-                borderRadius: '10px'
+                borderRadius: theme.borderRadius
               }}
               onClick={() => {
                 onConfirm()

@@ -35,7 +35,7 @@ import SingleStakingCard from '../../components/PositionCard/singleStakingCard'
 const Tabs = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
   align-items: center;
-  border-radius: 6px;
+  border-radius: ${({ theme }) => theme.borderRadius};
   justify-content: space-evenly;
 `
 

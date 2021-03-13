@@ -83,6 +83,7 @@ export function renTheme() {
     layerBGTablet: transparent,
     layerBGMobile: transparent,
     bodyBGColor: backgroundColor,
+    borderRadius: '20px',
     linkColor: mainColor,
     linkColorHover: mainColor,
     lineColor: borderColor,

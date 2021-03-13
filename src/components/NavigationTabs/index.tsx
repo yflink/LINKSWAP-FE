@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next'
 const Tabs = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
   align-items: center;
-  border-radius: 6px;
+  border-radius: ${({ theme }) => theme.borderRadius};
   justify-content: space-evenly;
   margin-inline-start: 16px;
   margin-inline-end: 16px;
@@ -28,7 +28,7 @@ const StyledNavLink = styled(NavLink).attrs({
   align-items: center;
   justify-content: center;
   height: 3rem;
-  border-radius: 6px;
+  border-radius: ${({ theme }) => theme.borderRadius};
   outline: none;
   cursor: pointer;
   text-decoration: none;

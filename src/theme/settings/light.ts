@@ -84,6 +84,7 @@ export function lightTheme() {
     layerBGTablet: transparent,
     layerBGMobile: transparent,
     bodyBGColor: bodyBGColor,
+    borderRadius: '6px',
     linkColor: mainColor,
     linkColorHover: mainColor,
     lineColor: buttonBG,

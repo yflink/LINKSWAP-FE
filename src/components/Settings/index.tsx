@@ -53,7 +53,7 @@ const ModalContentWrapper = styled.div`
   justify-content: center;
   padding: 2rem 0;
   background: ${({ theme }) => theme.modalSecondaryBG};
-  border-radius: 6px;
+  border-radius: ${({ theme }) => theme.borderRadius};
 `
 
 export default function SettingsTab() {

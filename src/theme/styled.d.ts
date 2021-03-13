@@ -70,6 +70,7 @@ export interface Colors {
   bodyBGTablet: string
   bodyBGMobile: string
   bodyBGColor: Color
+  borderRadius: string
   layerBG: string
   layerBGTablet: string
   layerBGMobile: string

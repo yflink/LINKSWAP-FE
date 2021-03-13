@@ -89,6 +89,7 @@ export function dogeTheme() {
     layerBGTablet: 'transparent url("../images/themes/doge/doge.png") left bottom / auto 500px  no-repeat',
     layerBGMobile: transparent,
     bodyBGColor: bodyBGColor,
+    borderRadius: '6px',
     linkColor: mainColor,
     linkColorHover: mainColor,
     lineColor: mainColor,

@@ -474,7 +474,7 @@ export default function CreateNewPool({
         ) : step === 1 ? (
           <Wrapper>
             <AutoColumn>
-              <div style={{ backgroundColor: theme.appBoxBG, padding: '12px', borderRadius: '6px' }}>
+              <div style={{ backgroundColor: theme.appBoxBG, padding: '12px', borderRadius: theme.borderRadius }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
                   <Text fontSize={12}>1 {currencies[Field.CURRENCY_A]!.symbol} =</Text>
                   <img
@@ -482,7 +482,7 @@ export default function CreateNewPool({
                     alt={t('rate')}
                     style={{
                       backgroundColor: theme.appBoxBG,
-                      borderRadius: 6,
+                      borderRadius: theme.borderRadius,
                       padding: 6,
                       width: 36,
                       height: 28,

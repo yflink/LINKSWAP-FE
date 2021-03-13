@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next'
 
 const BaseWrapper = styled.div<{ disable?: boolean }>`
   border: 1px solid ${({ theme, disable }) => (disable ? 'transparent' : theme.modalLines)};
-  border-radius: 6px;
+  border-radius: ${({ theme }) => theme.borderRadius};
   display: flex;
   padding: 6px;
 

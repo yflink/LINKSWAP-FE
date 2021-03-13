@@ -11,7 +11,7 @@ const Wrapper = styled(NavLink)`
   flex-direction: row;
   align-items: center;
   padding: 12px 20px;
-  border-radius: 6px;
+  border-radius: ${({ theme }) => theme.borderRadius};
   floex: 0 0 100%;
   width: 100%;
   justify-content: space-between;
