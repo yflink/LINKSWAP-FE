@@ -40,16 +40,28 @@ const CurrencySelect = styled.button<{
   }};
   color: ${({ selected, theme }) =>
     selected ? theme.appCurrencyInputTextColorActive : theme.appCurrencyInputTextColor};
-  border-radius: ${({ left, right, middle }) =>
-    left ? '6px 0px 0px 6px' : right ? '0px 6px 6px 0px' : middle ? '0px' : '6px'};
+  border-radius: ${({ left, right, middle, theme }) =>
+    left
+      ? `${theme.borderRadius} 0px 0px ${theme.borderRadius}`
+      : right
+      ? `0px ${theme.borderRadius} ${theme.borderRadius} 0px`
+      : middle
+      ? '0px'
+      : theme.borderRadius};
   outline: none;
   cursor: pointer;
   user-select: none;
   border: none;
   padding: 5px 0.5rem;
   [dir='rtl'] & {
-    border-radius: ${({ left, right, middle }) =>
-      left ? '0px 6px 6px 0px' : right ? '6px 0px 0px 6px' : middle ? '0px' : '6px'};
+    border-radius: ${({ left, right, middle, theme }) =>
+      left
+        ? `0px ${theme.borderRadius} ${theme.borderRadius} 0px`
+        : right
+        ? `${theme.borderRadius} 0px 0px ${theme.borderRadius}`
+        : middle
+        ? '0px'
+        : theme.borderRadius};
   }
   :focus,
   :hover {
@@ -90,7 +102,7 @@ const InputPanel = styled.div<{ hideInput?: boolean }>`
 `
 
 const Container = styled.div<{ hideInput: boolean }>`
-  border-radius: ${({ hideInput }) => (hideInput ? '6px' : '6px')};
+  border-radius: ${({ theme }) => theme.borderRadius};
   border: 1px solid ${({ theme }) => theme.appCurrencyInputBG};
   background: ${({ theme }) => theme.appCurrencyInputBG};
 `
@@ -231,7 +243,10 @@ export default function CurrencyInputPanel({
                 </RowBetween>
               </LabelRow>
             )}
-            <InputRow style={hideInput ? { padding: '0', borderRadius: '8px' } : {}} selected={disableCurrencySelect}>
+            <InputRow
+              style={hideInput ? { padding: '0', borderRadius: theme.borderRadius } : {}}
+              selected={disableCurrencySelect}
+            >
               {!hideInput && (
                 <>
                   <NumericalInput
@@ -438,7 +453,10 @@ export function CurrencyDoubleInputPanel({
                 </RowBetween>
               </LabelRow>
             )}
-            <InputRow style={hideInput ? { padding: '0', borderRadius: '8px' } : {}} selected={disableCurrencySelect}>
+            <InputRow
+              style={hideInput ? { padding: '0', borderRadius: theme.borderRadius } : {}}
+              selected={disableCurrencySelect}
+            >
               {!hideInput && (
                 <>
                   <NumericalInput

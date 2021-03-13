@@ -34,7 +34,7 @@ const AnalyticsWrapper = styled.div`
   position: relative;
   margin: 1rem 0 0;
   padding: 0.5rem;
-  border-radius: 6px;
+  border-radius: ${({ theme }) => theme.borderRadius};
   font-size: 14px;
   line-height: 14px;
   border: 1px solid ${({ theme }) => theme.textSecondary};

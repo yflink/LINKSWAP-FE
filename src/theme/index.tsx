@@ -81,7 +81,6 @@ export function theme(theme: string): DefaultTheme {
       md: 12,
       lg: 24
     },
-
     //shadows
     shadow1: '#000',
 

@@ -36,7 +36,7 @@ import SingleStakingCard from '../../components/PositionCard/singleStakingCard'
 const Tabs = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
   align-items: center;
-  border-radius: 6px;
+  border-radius: ${({ theme }) => theme.borderRadius};
   justify-content: space-evenly;
 `
 
@@ -49,7 +49,7 @@ export const ExternalButton = styled.a`
   padding: 18px;
   font-weight: 500;
   text-align: center;
-  border-radius: 6px;
+  border-radius: ${({ theme }) => theme.borderRadius};
   outline: none;
   border: 1px solid transparent;
   color: white;

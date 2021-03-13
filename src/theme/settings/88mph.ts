@@ -89,6 +89,7 @@ export function mphTheme() {
     layerBGTablet: 'transparent no-repeat 2% 80% url("../images/themes/88mph/88mph_logo_tablet.png")',
     layerBGMobile: transparent,
     bodyBGColor: bodyBGColor,
+    borderRadius: '12px',
     linkColor: mainColor,
     linkColorHover: mainColor,
     lineColor: mainColor,

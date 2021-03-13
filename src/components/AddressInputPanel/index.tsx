@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next'
 const InputPanel = styled.div`
   ${({ theme }) => theme.flexColumnNoWrap}
   position: relative;
-  border-radius: 6px;
+  border-radius: ${({ theme }) => theme.borderRadius};
   background-color: ${({ theme }) => theme.modalBG};
   z-index: 1;
   width: 100%;

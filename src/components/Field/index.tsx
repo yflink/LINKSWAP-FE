@@ -34,7 +34,7 @@ const StyledInput = styled.input<{ error?: boolean }>`
   background: transparent;
   border: none;
   outline: none;
-  border-radius: 6px;
+  border-radius: ${({ theme }) => theme.borderRadius};
   color: ${({ theme }) => theme.appCurrencyInputTextColor};
   border-style: solid;
   border: 1px solid ${({ theme }) => theme.appCurrencyInputBG};

@@ -32,7 +32,7 @@ import { useTransactionAdder } from '../../state/transactions/hooks'
 const Tabs = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
   align-items: center;
-  border-radius: 6px;
+  border-radius: ${({ theme }) => theme.borderRadius};
   justify-content: space-evenly;
 `
 
@@ -44,7 +44,7 @@ const ActiveText = styled.div`
 const CustomInput = styled(NumericalInput)`
   background-color: ${({ theme }) => theme.appCurrencyInputBG};
   padding: 6px 10px;
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.borderRadius};
   flex: 0 0 60px
   font-size: 16px;
 `
@@ -70,7 +70,7 @@ const DurationSelect = styled.div<{ isActive?: boolean }>`
   padding: 6px 10px;
   font-weight: 500;
   text-align: center;
-  border-radius: 6px;
+  border-radius: ${({ theme }) => theme.borderRadius};
 
   &:hover {
     background-color: ${({ theme, isActive }) => (isActive ? theme.buttonBGHover : theme.buttonSecondaryBGHover)};

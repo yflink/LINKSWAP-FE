@@ -78,7 +78,7 @@ const VotingButton = styled.a`
   width: 100%;
   font-weight: 500;
   text-align: center;
-  border-radius: 6px;
+  border-radius: ${({ theme }) => theme.borderRadius};
   outline: none;
   border: 1px solid transparent;
   text-decoration: none;

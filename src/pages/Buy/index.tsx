@@ -51,7 +51,7 @@ const Container = styled.div`
   border: 1px solid ${({ theme }) => theme.appCurrencyInputBG};
   background: ${({ theme }) => theme.appCurrencyInputBG};
   overflow: hidden;
-  border-radius: 6px;
+  border-radius: ${({ theme }) => theme.borderRadius};
   width: 100%;
   margin: 0 0 12px;
 `
@@ -96,7 +96,12 @@ const CurrencySelect = styled.button<{ selected: boolean; primary?: boolean; lef
   }};
   color: ${({ selected, theme }) =>
     selected ? theme.appCurrencyInputTextColorActive : theme.appCurrencyInputTextColor};
-  border-radius: ${({ left, right }) => (left ? '6px 0px 0px 6px' : right ? '0px 6px 6px 0px' : '6px')};
+  border-radius: ${({ left, right, theme }) =>
+    left
+      ? `${theme.borderRadius} 0px 0px ${theme.borderRadius}`
+      : right
+      ? `0px ${theme.borderRadius} ${theme.borderRadius} 0px`
+      : theme.borderRadius};
   box-shadow: ${({ selected }) => (selected ? 'none' : '0px 6px 10px rgba(0, 0, 0, 0.075)')};
   outline: none;
   cursor: pointer;
@@ -104,7 +109,12 @@ const CurrencySelect = styled.button<{ selected: boolean; primary?: boolean; lef
   border: none;
   padding: 0 0.5rem;
   [dir='rtl'] & {
-    border-radius: ${({ left, right }) => (left ? '0px 6px 6px 0px' : right ? '6px 0px 0px 6px' : '6px')};
+    border-radius: ${({ left, right, theme }) =>
+      left
+        ? `0px ${theme.borderRadius} ${theme.borderRadius} 0px`
+        : right
+        ? `${theme.borderRadius} 0px 0px ${theme.borderRadius}`
+        : theme.borderRadius};
   }
   :focus,
   :hover {

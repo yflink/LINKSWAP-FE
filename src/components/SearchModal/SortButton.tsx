@@ -7,7 +7,7 @@ export const FilterWrapper = styled(RowFixed)`
   padding: 8px;
   background: ${({ theme }) => theme.modalSecondaryBG};
   color: ${({ theme }) => theme.textPrimary};
-  border-radius: 6px;
+  border-radius: ${({ theme }) => theme.borderRadius};
   user-select: none;
   & > * {
     user-select: none;

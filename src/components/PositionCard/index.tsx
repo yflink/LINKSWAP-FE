@@ -64,7 +64,7 @@ const AnalyticsWrapper = styled.div`
   position: relative;
   margin: 8px 0 0;
   padding: 0.5rem;
-  border-radius: 6px;
+  border-radius: ${({ theme }) => theme.borderRadius};
   font-size: 14px;
   line-height: 14px;
   border: 1px solid ${({ theme }) => theme.textSecondary};
@@ -92,7 +92,7 @@ export const ExternalButton = styled.a`
   background: ${({ theme }) => theme.buttonSecondaryBG};
   color: ${({ theme }) => theme.buttonSecondaryTextColor};
   font-size: 16px;
-  border-radius: 6px;
+  border-radius: ${({ theme }) => theme.borderRadius};
   padding: 10px;
   width: 100%;
   text-decoration: none;
