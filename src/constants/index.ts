@@ -166,6 +166,29 @@ export const renLUNA = new Token(
   'RenVM Terra'
 )
 
+//secretTokens
+export const secretETH = new Token(
+  ChainId.MAINNET,
+  '0x3832d2F059E55934220881F831bE501D180671A7',
+  18,
+  'secretETH',
+  'Secret Ethereum'
+)
+export const secretLINK = new Token(
+  ChainId.MAINNET,
+  '0x3832d2F059E55934220881F831bE501D180671A7',
+  18,
+  'secretLINK',
+  'Secret Chainlink'
+)
+export const secretYFL = new Token(
+  ChainId.MAINNET,
+  '0xD5147bc8e386d91Cc5DBE72099DAC6C9b99276F5',
+  18,
+  'secretYFL',
+  'Secret YFLink'
+)
+
 export const stETH = new Token(ChainId.MAINNET, '0xDFe66B14D37C77F4E9b180cEb433d1b164f0281D', 18, 'stETH', 'Staked ETH')
 
 export const ibETH = new Token(

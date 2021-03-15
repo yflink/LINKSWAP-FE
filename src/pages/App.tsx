@@ -35,7 +35,7 @@ import {
 } from './Stake/redirects'
 import { ExternalLink } from 'react-feather'
 import Navigation from '../components/Navigation'
-import { RedirectToRenBridge } from './Bridges/redirects'
+import { RedirectToRenBridge, RedirectToScrtBridge } from './Bridges/redirects'
 import Popups from '../components/Popups'
 import StakeGovernance from './Stake/Governance'
 import Bridges from './Bridges'
@@ -167,6 +167,8 @@ export default function App() {
                 <Route exact strict path="/ren" component={Ren} />
                 <Route exact strict path="/ren/:bridgeName" component={RedirectToRenBridge} />
                 <Route exact strict path="/scrt" component={Scrt} />
+                <Route exact strict path="/scrt/:bridgeName" component={RedirectToScrtBridge} />
+                <Route exact strict path="/bridges/scrt/:bridgeName" component={RedirectToScrtBridge} />
                 <Route component={RedirectPathToSwapOnly} />
               </Switch>
             </Web3ReactManager>

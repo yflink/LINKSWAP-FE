@@ -514,7 +514,7 @@ export default function RenBridge({
               </AutoColumn>
             ) : (
               <AutoColumn gap={'12px'}>
-                <BlueCard style={{ margin: '12px 0 12px' }}>
+                <BlueCard style={{ margin: '12px 0 24px' }}>
                   <TYPE.link textAlign="center" fontWeight={400}>
                     {t('burnDescription', { inputCurrency: outputCurrency, outputCurrency: inputCurrency })}
                   </TYPE.link>
