@@ -191,7 +191,7 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
               <RowFixed>
                 <DoubleCurrencyLogo currency0={currencyA} currency1={currencyB} margin={true} size={22} />
                 {!currency0 || !currency1 ? (
-                  <Text fontWeight={500} fontSize={20}>
+                  <Text fontWeight={500} fontSize={16}>
                     <Dots>{t('loading')}</Dots>
                   </Text>
                 ) : (
@@ -203,7 +203,7 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
                 )}
               </RowFixed>
               <RowFixed>
-                <Text fontWeight={500} fontSize={20}>
+                <Text fontWeight={500} fontSize={16}>
                   {userPoolBalance ? userPoolBalance.toSignificant(4) : '-'}
                 </Text>
               </RowFixed>
@@ -214,7 +214,7 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
                   <Text style={{ marginBottom: 4 }}>
                     {token0Deposited ? (
                       <RowFixed>
-                        <Text fontSize={20} fontWeight={500}>
+                        <Text fontSize={16} fontWeight={500}>
                           {token0Deposited?.toSignificant(6)}
                         </Text>
                       </RowFixed>
@@ -231,7 +231,7 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
                   <Text style={{ marginBottom: 4 }}>
                     {token1Deposited ? (
                       <RowFixed>
-                        <Text fontSize={20} fontWeight={500}>
+                        <Text fontSize={16} fontWeight={500}>
                           {token1Deposited?.toSignificant(6)}
                         </Text>
                       </RowFixed>
@@ -345,7 +345,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
           <RowFixed style={{ position: 'relative' }}>
             <DoubleCurrencyLogo currency0={currencyA} currency1={currencyB} margin={true} size={22} />
             {!currency0 || !currency1 ? (
-              <Text fontWeight={500} fontSize={20}>
+              <Text fontWeight={500} fontSize={16}>
                 <Dots>{t('loading')}</Dots>
               </Text>
             ) : (
@@ -484,7 +484,7 @@ export function StakingPositionCard({ currencys, balance, token }: StakingPositi
             <RowFixed>
               <DoubleCurrencyLogo currency0={currencys[0]} currency1={currencys[1]} margin={true} size={22} />
               {!currencys[0] || !currencys[1] ? (
-                <Text fontWeight={500} fontSize={20}>
+                <Text fontWeight={500} fontSize={16}>
                   <Dots>{t('loading')}</Dots>
                 </Text>
               ) : (
@@ -496,7 +496,7 @@ export function StakingPositionCard({ currencys, balance, token }: StakingPositi
               )}
             </RowFixed>
             <RowFixed>
-              <Text fontWeight={500} fontSize={20}>
+              <Text fontWeight={500} fontSize={16}>
                 {balance === 0 ? 0 : balance.toFixed(6)}
               </Text>
             </RowFixed>

@@ -63,7 +63,7 @@ const Navigation = styled.button<{ selected: boolean; primary?: boolean; left?: 
   align-items: center;
   justify-content: center;
   height: 48px;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 500;
   background: ${({ selected, primary, theme }) => {
     if (selected) {

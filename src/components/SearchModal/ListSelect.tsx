@@ -340,7 +340,7 @@ export function ListSelect({ onDismiss, onBack }: { onDismiss: () => void; onBac
           <div>
             <ArrowLeft style={{ cursor: 'pointer' }} onClick={onBack} />
           </div>
-          <Text fontWeight={500} fontSize={20}>
+          <Text fontWeight={500} fontSize={16}>
             {t('manageLists')}
           </Text>
           <CloseIcon onClick={onDismiss} />

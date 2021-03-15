@@ -415,7 +415,7 @@ export default function Analyze() {
                 disabled={!isValid || (priceImpactSeverity > 3 && !isExpertMode) || !!swapCallbackError}
                 error={isValid && priceImpactSeverity > 2 && !swapCallbackError}
               >
-                <Text fontSize={20} fontWeight={500}>
+                <Text fontSize={16} fontWeight={500}>
                   {swapInputError
                     ? swapInputError
                     : priceImpactSeverity > 3 && !isExpertMode

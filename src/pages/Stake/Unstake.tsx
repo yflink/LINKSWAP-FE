@@ -377,20 +377,17 @@ export default function Unstake({
           ) : (
             <AutoColumn gap={'md'}>
               {unstaking ? (
-                <ButtonPrimary style={{ fontSize: '20px' }} disabled={true}>
+                <ButtonPrimary disabled={true}>
                   <Dots>{t('unstaking')}</Dots>
                 </ButtonPrimary>
               ) : (
                 <ButtonPrimary
-                  style={{ fontSize: '20px' }}
                   onClick={() => {
                     unstakeAndClaimRewards(rewardsContractAddress)
                   }}
                   disabled={hasError || !parsedAmountA}
                 >
-                  <Text fontSize={20} fontWeight={500}>
-                    {buttonString}
-                  </Text>
+                  {buttonString}
                 </ButtonPrimary>
               )}
             </AutoColumn>
