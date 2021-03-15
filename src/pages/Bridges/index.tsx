@@ -14,7 +14,7 @@ import BridgeCurrencyLogo from '../../components/BridgeLogo'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
 import { useNavigationActiveItemManager } from '../../state/navigation/hooks'
 
-export default function Ren() {
+export default function Bridges() {
   const theme = useContext(ThemeContext)
   const { t } = useTranslation()
   const bridges = [
@@ -56,7 +56,7 @@ export default function Ren() {
     }
   ]
   const newActive = useNavigationActiveItemManager()
-  newActive('bridges-ren')
+  newActive('bridges')
   return (
     <>
       <NavigationCard>
@@ -66,9 +66,9 @@ export default function Ren() {
         <AutoColumn gap={'12px'}>
           <RowBetween>
             <Text color={theme.textPrimary} fontWeight={500}>
-              {t('bridgesRen')}
+              {t('bridgesAll')}
             </Text>
-            <Question text={t('bridgesRenDescription')} />
+            <Question text={t('bridgesDescription')} />
           </RowBetween>
         </AutoColumn>
         <BlueCard style={{ margin: '12px 0 12px' }}>

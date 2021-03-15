@@ -28,33 +28,39 @@ const CurrencySelect = styled.button<{
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  height: 52px;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 500;
   background: ${({ selected, primary, theme }) => {
     if (selected) {
       return theme.appCurrencyInputBGActive
     } else {
-      if (primary) {
-        return theme.appCurrencyInputBG
-      } else {
-        return theme.appCurrencyInputBGActive
-      }
+      return theme.appCurrencyInputBG
     }
   }};
   color: ${({ selected, theme }) =>
     selected ? theme.appCurrencyInputTextColorActive : theme.appCurrencyInputTextColor};
-  border-radius: ${({ left, right, middle }) =>
-    left ? '6px 0px 0px 6px' : right ? '0px 6px 6px 0px' : middle ? '0px' : '6px'};
-  box-shadow: ${({ selected }) => (selected ? 'none' : '0px 6px 10px rgba(0, 0, 0, 0.075)')};
+  border-radius: ${({ left, right, middle, theme }) =>
+    left
+      ? `${theme.borderRadius} 0px 0px ${theme.borderRadius}`
+      : right
+      ? `0px ${theme.borderRadius} ${theme.borderRadius} 0px`
+      : middle
+      ? '0px'
+      : theme.borderRadius};
   outline: none;
   cursor: pointer;
   user-select: none;
   border: none;
-  padding: 5px 0.5rem;
+  padding: 12px;
   [dir='rtl'] & {
-    border-radius: ${({ left, right, middle }) =>
-      left ? '0px 6px 6px 0px' : right ? '6px 0px 0px 6px' : middle ? '0px' : '6px'};
+    border-radius: ${({ left, right, middle, theme }) =>
+      left
+        ? `0px ${theme.borderRadius} ${theme.borderRadius} 0px`
+        : right
+        ? `${theme.borderRadius} 0px 0px ${theme.borderRadius}`
+        : middle
+        ? '0px'
+        : theme.borderRadius};
   }
   :focus,
   :hover {
@@ -62,11 +68,7 @@ const CurrencySelect = styled.button<{
       if (selected) {
         return theme.appCurrencyInputBGActive
       } else {
-        if (primary) {
-          return theme.appCurrencyInputBGHover
-        } else {
-          return theme.appCurrencyInputBGActiveHover
-        }
+        return theme.appCurrencyInputBGHover
       }
     }};
   }
@@ -99,17 +101,17 @@ const InputPanel = styled.div<{ hideInput?: boolean }>`
 `
 
 const Container = styled.div<{ hideInput: boolean }>`
-  border-radius: ${({ hideInput }) => (hideInput ? '6px' : '6px')};
+  border-radius: ${({ theme }) => theme.borderRadius};
   border: 1px solid ${({ theme }) => theme.appCurrencyInputBG};
   background: ${({ theme }) => theme.appCurrencyInputBG};
 `
 
-const StyledTokenName = styled.div<{ inline?: boolean }>`
-  font-size: ${({ inline }) => (inline ? '20px' : '12px')};
-  margin-inline-start: ${({ inline }) => (inline ? '0.4rem' : 0)};
-  width: ${({ inline }) => (inline ? 'auto' : '100%')};
-  display: ${({ inline }) => (inline ? 'inline-block' : 'block')};
-  text-align: ${({ inline }) => (inline ? 'left' : 'center')};
+const StyledTokenName = styled.div`
+  font-size: 20px;
+  margin-inline-start: 0.4rem;
+  width: auto;
+  display: inline-block;
+  text-align: left;
 `
 
 const StyledBalanceMax = styled.button`
@@ -204,7 +206,7 @@ export default function CurrencyInputPanel({
           }}
         >
           {currency ? <CurrencyLogo currency={currency} position="button" /> : null}
-          <StyledTokenName className="token-symbol-container" inline={true}>
+          <StyledTokenName className="token-symbol-container">
             {(currency && currency.symbol && currency.symbol.length > 20
               ? currency.symbol.slice(0, 4) +
                 '...' +
@@ -240,7 +242,10 @@ export default function CurrencyInputPanel({
                 </RowBetween>
               </LabelRow>
             )}
-            <InputRow style={hideInput ? { padding: '0', borderRadius: '8px' } : {}} selected={disableCurrencySelect}>
+            <InputRow
+              style={hideInput ? { padding: '0', borderRadius: theme.borderRadius } : {}}
+              selected={disableCurrencySelect}
+            >
               {!hideInput && (
                 <>
                   <NumericalInput
@@ -447,7 +452,10 @@ export function CurrencyDoubleInputPanel({
                 </RowBetween>
               </LabelRow>
             )}
-            <InputRow style={hideInput ? { padding: '0', borderRadius: '8px' } : {}} selected={disableCurrencySelect}>
+            <InputRow
+              style={hideInput ? { padding: '0', borderRadius: theme.borderRadius } : {}}
+              selected={disableCurrencySelect}
+            >
               {!hideInput && (
                 <>
                   <NumericalInput

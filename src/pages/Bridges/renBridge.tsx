@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useMemo, useState } from 'react'
 import { Text } from 'rebass'
-import Card, { BlueCard } from '../../components/Card'
+import { BlueCard, NavigationCard } from '../../components/Card'
 import { SwapPoolTabs } from '../../components/NavigationTabs'
 import AppBody from '../AppBody'
 import styled, { ThemeContext } from 'styled-components'
@@ -63,7 +63,7 @@ const Navigation = styled.button<{ selected: boolean; primary?: boolean; left?: 
   align-items: center;
   justify-content: center;
   height: 48px;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 500;
   background: ${({ selected, primary, theme }) => {
     if (selected) {
@@ -78,7 +78,12 @@ const Navigation = styled.button<{ selected: boolean; primary?: boolean; left?: 
   }};
   color: ${({ selected, theme }) =>
     selected ? theme.appCurrencyInputTextColorActive : theme.appCurrencyInputTextColor};
-  border-radius: ${({ left, right }) => (left ? '6px 0px 0px 6px' : right ? '0px 6px 6px 0px' : '6px')};
+  border-radius: ${({ left, right, theme }) =>
+    left
+      ? `${theme.borderRadius} 0px 0px ${theme.borderRadius} `
+      : right
+      ? `0px ${theme.borderRadius} ${theme.borderRadius} 0px`
+      : theme.borderRadius};
   box-shadow: ${({ selected }) => (selected ? 'none' : '0px 6px 10px rgba(0, 0, 0, 0.075)')};
   outline: none;
   cursor: pointer;
@@ -86,7 +91,12 @@ const Navigation = styled.button<{ selected: boolean; primary?: boolean; left?: 
   border: none;
   padding: 0 0.5rem;
   [dir='rtl'] & {
-    border-radius: ${({ left, right }) => (left ? '0px 6px 6px 0px' : right ? '6px 0px 0px 6px' : '6px')};
+    border-radius: ${({ left, right, theme }) =>
+      left
+        ? `0px ${theme.borderRadius} ${theme.borderRadius} 0px`
+        : right
+        ? `${theme.borderRadius} 0px 0px ${theme.borderRadius} `
+        : theme.borderRadius};
   }
   :focus,
   :hover {
@@ -110,7 +120,7 @@ const Input = styled.input<{ error?: boolean }>`
   flex: 1 1 auto;
   width: 0;
   padding: 1rem;
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.borderRadius};
   background: ${({ theme }) => theme.appCurrencyInputBG};
   transition: color 300ms ${({ error }) => (error ? 'step-end' : 'step-start')};
   color: ${({ error, theme }) => (error ? theme.red1 : theme.textPrimary)};
@@ -366,13 +376,13 @@ export default function RenBridge({
   return (
     <>
       <BridgeWarningModal isOpen={!dismissBridgeWarning} onConfirm={handleConfirmBridgeWarning} />
-      <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.navigationBG, marginBottom: '16px' }}>
+      <NavigationCard>
         <SwapPoolTabs active={'none'} />
-      </Card>
+      </NavigationCard>
       <AppBody>
         <AutoColumn gap={'12px'}>
           <BackButton>
-            <HistoryLink to="bridges">
+            <HistoryLink to="/ren">
               <ArrowLeft /> {t('bridgesRen')}
             </HistoryLink>
           </BackButton>

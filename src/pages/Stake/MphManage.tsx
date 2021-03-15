@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import styled, { ThemeContext } from 'styled-components'
-import Card, { BlueCard, LightCard } from '../../components/Card'
+import Card, { BlueCard, LightCard, NavigationCard } from '../../components/Card'
 import { AutoColumn } from '../../components/Column'
 import { SwapPoolTabs } from '../../components/NavigationTabs'
 import { RowBetween, RowFixed } from '../../components/Row'
@@ -32,7 +32,7 @@ import moment from 'moment'
 const Tabs = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
   align-items: center;
-  border-radius: 6px;
+  border-radius: ${({ theme }) => theme.borderRadius};
   justify-content: space-evenly;
 `
 
@@ -187,9 +187,9 @@ export default function MphManage({
   } else {
     return (
       <>
-        <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.navigationBG, marginBottom: '16px' }}>
+        <NavigationCard>
           <SwapPoolTabs active={'stake'} />
-        </Card>
+        </NavigationCard>
         <AppBody>
           <Tabs>
             <RowBetween style={{ padding: '1rem 0' }}>

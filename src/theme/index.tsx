@@ -81,7 +81,6 @@ export function theme(theme: string): DefaultTheme {
       md: 12,
       lg: 24
     },
-
     //shadows
     shadow1: '#000',
 
@@ -129,7 +128,7 @@ export const TYPE = {
     return <TextWrapper fontWeight={600} fontSize={24} {...props} />
   },
   mediumHeader(props: TextProps) {
-    return <TextWrapper fontWeight={500} fontSize={20} {...props} />
+    return <TextWrapper fontWeight={500} fontSize={16} {...props} />
   },
   subHeader(props: TextProps) {
     return <TextWrapper fontWeight={400} fontSize={14} {...props} />

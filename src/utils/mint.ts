@@ -1,7 +1,7 @@
 import { Filecoin } from '@renproject/chains-filecoin'
 import { Terra } from '@renproject/chains-terra'
 import { Ethereum } from '@renproject/chains-ethereum'
-import { Bitcoin, BitcoinCash, Dogecoin, Zcash } from '@renproject/chains-bitcoin'
+import { Bitcoin, BitcoinCash, DigiByte, Dogecoin, Zcash } from '@renproject/chains-bitcoin'
 import { LockChain, LogLevel, MintChain, SimpleLogger, TxStatus } from '@renproject/interfaces'
 import RenJS from '@renproject/ren'
 import { LockAndMintDeposit } from '@renproject/ren/build/main/lockAndMint'
@@ -14,12 +14,6 @@ import { BurnDetails, DepositDetails } from './useTransactionStorage'
 import { Asset, Chain } from './assets'
 
 export const logLevel = LogLevel.Log
-
-/*******************************************************************************
- * MINTING
- ******************************************************************************/
-
-// Map a mint chain name and mint parameters to a MintChain object.
 export const getMintChainObject = (
   mintChain: Chain,
   mintChainProvider: any,
@@ -67,6 +61,9 @@ export const startMint = async (
       break
     case Asset.LUNA:
       from = Terra()
+      break
+    case Asset.DGB:
+      from = DigiByte()
       break
     case Asset.DOGE:
       from = Dogecoin()
@@ -179,10 +176,6 @@ export const submitDeposit = async (
   onStatus(DepositStatus.DONE)
 }
 
-/*******************************************************************************
- * BURNING
- ******************************************************************************/
-
 export enum BurnStatus {
   BURNT = 'Burnt',
   DONE = 'Done',
@@ -215,6 +208,9 @@ export const startBurn = async (
       break
     case Asset.LUNA:
       to = Terra().Address(recipientAddress)
+      break
+    case Asset.DGB:
+      to = DigiByte().Address(recipientAddress)
       break
     case Asset.DOGE:
       to = Dogecoin().Address(recipientAddress)

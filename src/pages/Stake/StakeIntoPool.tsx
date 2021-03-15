@@ -1,12 +1,12 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
 import { TokenAmount, WETH } from '@uniswap/sdk'
-import React, { useContext, useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { Link, RouteComponentProps } from 'react-router-dom'
 import { Text } from 'rebass'
-import styled, { ThemeContext } from 'styled-components'
+import styled from 'styled-components'
 import { ButtonLight, ButtonPrimary } from '../../components/Button'
-import Card from '../../components/Card'
+import { NavigationCard } from '../../components/Card'
 import { AutoColumn } from '../../components/Column'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import { SwapPoolTabs } from '../../components/NavigationTabs'
@@ -36,7 +36,7 @@ import SingleStakingCard from '../../components/PositionCard/singleStakingCard'
 const Tabs = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
   align-items: center;
-  border-radius: 6px;
+  border-radius: ${({ theme }) => theme.borderRadius};
   justify-content: space-evenly;
 `
 
@@ -49,7 +49,7 @@ export const ExternalButton = styled.a`
   padding: 18px;
   font-weight: 500;
   text-align: center;
-  border-radius: 6px;
+  border-radius: ${({ theme }) => theme.borderRadius};
   outline: none;
   border: 1px solid transparent;
   color: white;
@@ -60,7 +60,7 @@ export const ExternalButton = styled.a`
   align-items: center;
   cursor: pointer;
   position: relative;
-  font-size: 20px;
+  font-size: 16px;
   z-index: 1;
   &:disabled {
     cursor: auto;
@@ -95,7 +95,6 @@ export default function StakeIntoPool({
   const [balance, setBalance] = useState(0)
   const [staking, setStaking] = useState(false)
   const { account, chainId, library } = useActiveWeb3React()
-  const theme = useContext(ThemeContext)
   const currencyA = useCurrency(currencyIdA)
   const currencyB = useCurrency(currencyIdB)
   const [pool, setPool] = useState({
@@ -364,9 +363,9 @@ export default function StakeIntoPool({
   } else {
     return (
       <>
-        <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.navigationBG, marginBottom: '16px' }}>
+        <NavigationCard>
           <SwapPoolTabs active={'stake'} />
-        </Card>
+        </NavigationCard>
         <AppBody>
           <Tabs>
             {!isSingle ? (
@@ -423,30 +422,22 @@ export default function StakeIntoPool({
             <AutoColumn gap={'md'}>
               {approvalA === ApprovalState.NOT_APPROVED || approvalA === ApprovalState.PENDING ? (
                 <RowBetween>
-                  <ButtonPrimary
-                    style={{ fontSize: '20px' }}
-                    onClick={approveACallback}
-                    disabled={approvalA === ApprovalState.PENDING}
-                    width="100%"
-                  >
+                  <ButtonPrimary onClick={approveACallback} disabled={approvalA === ApprovalState.PENDING} width="100%">
                     {approvalA === ApprovalState.PENDING ? <Dots>{t('approving')}</Dots> : t('approve')}
                   </ButtonPrimary>
                 </RowBetween>
               ) : staking ? (
-                <ButtonPrimary style={{ fontSize: '20px' }} disabled={true}>
+                <ButtonPrimary disabled={true}>
                   <Dots>{t('staking')}</Dots>
                 </ButtonPrimary>
               ) : (
                 <ButtonPrimary
-                  style={{ fontSize: '20px' }}
                   onClick={() => {
                     onAdd(rewardsContractAddress)
                   }}
                   disabled={approvalA !== ApprovalState.APPROVED || hasError}
                 >
-                  <Text fontSize={20} fontWeight={500}>
-                    {buttonString}
-                  </Text>
+                  {buttonString}
                 </ButtonPrimary>
               )}
               {hasError && !isSingle && (
@@ -456,12 +447,7 @@ export default function StakeIntoPool({
                       {t('addLiquidity')}
                     </ExternalButton>
                   ) : (
-                    <ButtonPrimary
-                      style={{ fontSize: '20px' }}
-                      as={Link}
-                      to={`/add/${currencyIdA}/${currencyIdB}`}
-                      width="100%"
-                    >
+                    <ButtonPrimary as={Link} to={`/add/${currencyIdA}/${currencyIdB}`} width="100%">
                       {t('addLiquidity')}
                     </ButtonPrimary>
                   )}

@@ -118,9 +118,7 @@ export default function SwapModalFooter({
           style={{ margin: '10px 0 0 0' }}
           id="confirm-swap-or-send"
         >
-          <Text fontSize={20} fontWeight={500}>
-            {severity > 2 ? t('swapAnyway') : t('confirmSwap')}
-          </Text>
+          {severity > 2 ? t('swapAnyway') : t('confirmSwap')}
         </ButtonError>
 
         {swapErrorMessage ? <SwapCallbackError error={swapErrorMessage} /> : null}

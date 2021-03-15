@@ -1,7 +1,7 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
-import styled, { ThemeContext } from 'styled-components'
-import Card, { BlueCard } from '../../components/Card'
+import styled from 'styled-components'
+import { BlueCard, NavigationCard } from '../../components/Card'
 import { AutoColumn } from '../../components/Column'
 import { SwapPoolTabs } from '../../components/NavigationTabs'
 import { RowBetween } from '../../components/Row'
@@ -32,7 +32,7 @@ import { useTransactionAdder } from '../../state/transactions/hooks'
 const Tabs = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
   align-items: center;
-  border-radius: 6px;
+  border-radius: ${({ theme }) => theme.borderRadius};
   justify-content: space-evenly;
 `
 
@@ -44,7 +44,7 @@ const ActiveText = styled.div`
 const CustomInput = styled(NumericalInput)`
   background-color: ${({ theme }) => theme.appCurrencyInputBG};
   padding: 6px 10px;
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.borderRadius};
   flex: 0 0 60px
   font-size: 16px;
 `
@@ -70,7 +70,7 @@ const DurationSelect = styled.div<{ isActive?: boolean }>`
   padding: 6px 10px;
   font-weight: 500;
   text-align: center;
-  border-radius: 6px;
+  border-radius: ${({ theme }) => theme.borderRadius};
 
   &:hover {
     background-color: ${({ theme, isActive }) => (isActive ? theme.buttonBGHover : theme.buttonSecondaryBGHover)};
@@ -98,7 +98,6 @@ export default function MphVault({
 }: RouteComponentProps<{ vaultName?: string }>) {
   const { account, chainId, library } = useActiveWeb3React()
   const { t } = useTranslation()
-  const theme = useContext(ThemeContext)
   const [depositing, setDepositing] = useState(false)
   const [duration, setDuration] = useState(7)
   const currentVaultName = vaultName ? vaultName.toUpperCase() : 'NONE'
@@ -202,9 +201,9 @@ export default function MphVault({
   } else {
     return (
       <>
-        <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.navigationBG, marginBottom: '16px' }}>
+        <NavigationCard>
           <SwapPoolTabs active={'stake'} />
-        </Card>
+        </NavigationCard>
         <AppBody>
           <Tabs>
             <RowBetween style={{ padding: '1rem 0' }}>
@@ -270,7 +269,6 @@ export default function MphVault({
                   {approvalA === ApprovalState.NOT_APPROVED || approvalA === ApprovalState.PENDING ? (
                     <RowBetween>
                       <ButtonPrimary
-                        style={{ fontSize: '20px' }}
                         onClick={approveACallback}
                         disabled={approvalA === ApprovalState.PENDING}
                         width="100%"
@@ -279,20 +277,17 @@ export default function MphVault({
                       </ButtonPrimary>
                     </RowBetween>
                   ) : depositing ? (
-                    <ButtonPrimary style={{ fontSize: '20px' }} disabled={true}>
+                    <ButtonPrimary disabled={true}>
                       <Dots>{t('depositing')}</Dots>
                     </ButtonPrimary>
                   ) : (
                     <ButtonPrimary
-                      style={{ fontSize: '20px' }}
                       onClick={() => {
                         onDeposit()
                       }}
                       disabled={approvalA !== ApprovalState.APPROVED || hasError}
                     >
-                      <Text fontSize={20} fontWeight={500}>
-                        {buttonString}
-                      </Text>
+                      {buttonString}
                     </ButtonPrimary>
                   )}
                 </AutoColumn>

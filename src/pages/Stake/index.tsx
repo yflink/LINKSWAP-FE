@@ -1,7 +1,7 @@
 import React, { useContext, useMemo, useState } from 'react'
 import { ThemeContext } from 'styled-components'
 import { SwapPoolTabs } from '../../components/NavigationTabs'
-import Card from '../../components/Card'
+import { NavigationCard } from '../../components/Card'
 import Question from '../../components/QuestionHelper'
 import { useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks'
 import { TYPE } from '../../theme'
@@ -149,9 +149,9 @@ export default function StakeOverview({
   const { t } = useTranslation()
   return (
     <>
-      <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.navigationBG, marginBottom: '16px' }}>
+      <NavigationCard>
         <SwapPoolTabs active={'stake'} />
-      </Card>
+      </NavigationCard>
       <AppBody>
         <AutoColumn gap="lg" justify="center">
           <AutoColumn gap="12px" style={{ width: '100%' }}>

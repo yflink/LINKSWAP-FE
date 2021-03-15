@@ -25,7 +25,7 @@ const LoadingMessage = styled.div<{ error?: boolean }>`
   ${({ theme }) => theme.flexRowNoWrap};
   align-items: center;
   justify-content: flex-start;
-  border-radius: 6px;
+  border-radius: ${({ theme }) => theme.borderRadius};
   margin-bottom: 20px;
   color: ${({ theme, error }) => (error ? theme.red1 : 'inherit')};
   border: 1px solid ${({ theme, error }) => (error ? theme.red1 : theme.textDisabled)};
@@ -42,7 +42,7 @@ const ErrorGroup = styled.div`
 `
 
 const ErrorButton = styled.div`
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.borderRadius};
   font-size: 12px;
   color: ${({ theme }) => theme.textPrimary};
   background: ${({ theme }) => theme.lineColor};

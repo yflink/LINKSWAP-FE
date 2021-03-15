@@ -462,7 +462,7 @@ export default function FullStakingCard({
             <RowFixed>
               <DoubleCurrencyLogo currency0={currencyA} currency1={currencyB} margin={true} size={22} />
               {!information.updated ? (
-                <Text fontWeight={500} fontSize={20}>
+                <Text fontWeight={500} fontSize={16}>
                   <Dots>{t('loading')}</Dots>
                 </Text>
               ) : (

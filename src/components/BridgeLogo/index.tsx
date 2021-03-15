@@ -1,8 +1,7 @@
-import { Currency } from '@uniswap/sdk'
 import React from 'react'
 import styled from 'styled-components'
 import { ArrowLeft, ArrowRight } from 'react-feather'
-import { RENSVG } from '../SVG'
+import { RENSVG, SCRTSVG } from '../SVG'
 import CurrencyLogo from '../CurrencyLogo'
 import { NavLink } from 'react-router-dom'
 
@@ -12,7 +11,7 @@ const Wrapper = styled(NavLink)`
   flex-direction: row;
   align-items: center;
   padding: 12px 20px;
-  border-radius: 6px;
+  border-radius: ${({ theme }) => theme.borderRadius};
   floex: 0 0 100%;
   width: 100%;
   justify-content: space-between;
@@ -90,29 +89,28 @@ const CurrencySymbol = styled.div`
 
 interface BridgeCurrencyLogoProps {
   size?: number
-  currency0?: any
-  currency1?: Currency | any
-  url: string
+  bridge: Record<string, any>
 }
 
-export default function BridgeCurrencyLogo({ currency0, currency1, size = 40, url }: BridgeCurrencyLogoProps) {
+export default function BridgeCurrencyLogo({ bridge, size = 40 }: BridgeCurrencyLogoProps) {
   return (
-    <Wrapper to={url}>
+    <Wrapper to={bridge.url}>
       <StyledLogo
-        src={`https://logos.linkswap.app/${currency0.symbol.toLowerCase()}.png`}
-        alt={currency0.symbol}
+        src={`https://logos.linkswap.app/${bridge.currency0.symbol.toLowerCase()}.png`}
+        alt={bridge.currency0.symbol}
         size={size.toString() + 'px'}
       />
       <InfoWrapper>
-        <CurrencySymbol>{currency0.symbol}</CurrencySymbol>
+        <CurrencySymbol>{bridge.currency0.symbol}</CurrencySymbol>
         <ArrowLeftIcon />
         <PlatformIcon>
-          <RENSVG />
+          {bridge.type === 'ren' && <RENSVG />}
+          {bridge.type === 'scrt' && <SCRTSVG />}
         </PlatformIcon>
         <ArrowRightIcon />
-        <CurrencySymbol>{currency1.symbol}</CurrencySymbol>
+        <CurrencySymbol>{bridge.currency1.symbol}</CurrencySymbol>
       </InfoWrapper>
-      {currency1 && <CurrencyLogo currency={currency1} size={size.toString() + 'px'} />}
+      {bridge.currency1 && <CurrencyLogo currency={bridge.currency1} size={size.toString() + 'px'} />}
     </Wrapper>
   )
 }

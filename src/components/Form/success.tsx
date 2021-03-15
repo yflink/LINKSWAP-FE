@@ -24,9 +24,7 @@ export function FormSuccess() {
       </Row>
       <RowBetween>
         <ButtonPrimary as={Link} style={{ padding: 16 }} to="/swap">
-          <Text fontWeight={500} fontSize={20}>
-            {t('startSwapping')}
-          </Text>
+          {t('startSwapping')}
         </ButtonPrimary>
       </RowBetween>
     </AutoColumn>

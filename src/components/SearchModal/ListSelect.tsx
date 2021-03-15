@@ -1,10 +1,10 @@
-import React, { memo, useCallback, useMemo, useRef, useState } from 'react'
+import React, { memo, useCallback, useContext, useMemo, useRef, useState } from 'react'
 import { ArrowLeft } from 'react-feather'
 import ReactGA from 'react-ga'
 import { usePopper } from 'react-popper'
 import { useDispatch, useSelector } from 'react-redux'
 import { Text } from 'rebass'
-import styled from 'styled-components'
+import styled, { ThemeContext } from 'styled-components'
 import { ReactComponent as DropDown } from '../../assets/images/dropdown.svg'
 import { useFetchListCallback } from '../../hooks/useFetchListCallback'
 import { useOnClickOutside } from '../../hooks/useOnClickOutside'
@@ -152,6 +152,7 @@ const ListRow = memo(function ListRow({ listUrl, onBack }: { listUrl: string; on
     }
   }, [dispatch, listUrl])
 
+  const theme = useContext(ThemeContext)
   if (!list) return null
 
   return (
@@ -186,7 +187,7 @@ const ListRow = memo(function ListRow({ listUrl, onBack }: { listUrl: string; on
           style={{
             width: '2rem',
             padding: '.8rem .35rem',
-            borderRadius: '12px',
+            borderRadius: theme.borderRadius,
             fontSize: '14px',
             marginInlineEnd: '0.5rem'
           }}
@@ -214,7 +215,13 @@ const ListRow = memo(function ListRow({ listUrl, onBack }: { listUrl: string; on
         <ButtonPrimary
           disabled={true}
           className="select-button"
-          style={{ width: '5rem', minWidth: '5rem', padding: '0.5rem .35rem', borderRadius: '12px', fontSize: '14px' }}
+          style={{
+            width: '5rem',
+            minWidth: '5rem',
+            padding: '0.5rem .35rem',
+            borderRadius: theme.borderRadius,
+            fontSize: '14px'
+          }}
         >
           {t('selected')}
         </ButtonPrimary>
@@ -226,7 +233,7 @@ const ListRow = memo(function ListRow({ listUrl, onBack }: { listUrl: string; on
               width: '5rem',
               minWidth: '4.5rem',
               padding: '0.5rem .35rem',
-              borderRadius: '12px',
+              borderRadius: theme.borderRadius,
               fontSize: '14px'
             }}
             onClick={selectThisList}
@@ -242,7 +249,7 @@ const ListRow = memo(function ListRow({ listUrl, onBack }: { listUrl: string; on
 const AddListButton = styled(ButtonSecondary)`
   flex: 0;
   margin-inline-start: 1rem;
-  border-radius: 6px;
+  border-radius: ${({ theme }) => theme.borderRadius};
   padding: 10px 18px;
 `
 
@@ -323,6 +330,7 @@ export function ListSelect({ onDismiss, onBack }: { onDismiss: () => void; onBac
       })
   }, [lists])
 
+  const theme = useContext(ThemeContext)
   const { t } = useTranslation()
 
   return (
@@ -332,7 +340,7 @@ export function ListSelect({ onDismiss, onBack }: { onDismiss: () => void; onBac
           <div>
             <ArrowLeft style={{ cursor: 'pointer' }} onClick={onBack} />
           </div>
-          <Text fontWeight={500} fontSize={20}>
+          <Text fontWeight={500} fontSize={16}>
             {t('manageLists')}
           </Text>
           <CloseIcon onClick={onDismiss} />
@@ -356,7 +364,7 @@ export function ListSelect({ onDismiss, onBack }: { onDismiss: () => void; onBac
             value={listUrlInput}
             onChange={handleInput}
             onKeyDown={handleEnterKey}
-            style={{ height: '2.75rem', borderRadius: 12, padding: '12px', flex: 1, minWidth: 0 }}
+            style={{ height: '2.75rem', borderRadius: theme.borderRadius, padding: '12px', flex: 1, minWidth: 0 }}
           />
           <AddListButton onClick={handleAddList} disabled={!validUrl} style={{ width: 'auto', flex: '0 0 auto' }}>
             {t('add')}

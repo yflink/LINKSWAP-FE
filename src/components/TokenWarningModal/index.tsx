@@ -1,7 +1,7 @@
 import { Token } from '@uniswap/sdk'
 import { transparentize } from 'polished'
-import React, { useCallback, useMemo, useState } from 'react'
-import styled from 'styled-components'
+import React, { useCallback, useContext, useMemo, useState } from 'react'
+import styled, { ThemeContext } from 'styled-components'
 import { useActiveWeb3React } from '../../hooks'
 import { useAllTokens } from '../../hooks/Tokens'
 import { ExternalLink, TYPE } from '../../theme'
@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next'
 const Wrapper = styled.div<{ error: boolean }>`
   background: ${({ theme }) => transparentize(0.6, theme.buttonBG)};
   padding: 0.75rem;
-  border-radius: 6px;
+  border-radius: ${({ theme }) => theme.borderRadius};
 `
 
 const WarningContainer = styled.div`
@@ -26,7 +26,7 @@ const WarningContainer = styled.div`
   padding: 1rem;
   background: rgba(242, 150, 2, 0.05);
   border: 1px solid #f3841e;
-  border-radius: 6px;
+  border-radius: ${({ theme }) => theme.borderRadius};
   overflow: auto;
 `
 
@@ -101,6 +101,7 @@ export default function TokenWarningModal({
   const toggleUnderstand = useCallback(() => setUnderstandChecked(uc => !uc), [])
   const handleDismiss = useCallback(() => null, [])
   const { t } = useTranslation()
+  const theme = useContext(ThemeContext)
 
   return (
     <Modal isOpen={isOpen} onDismiss={handleDismiss} maxHeight={90}>
@@ -137,7 +138,7 @@ export default function TokenWarningModal({
               padding="0.5rem 1rem"
               className="token-dismiss-button"
               style={{
-                borderRadius: '10px'
+                borderRadius: theme.borderRadius
               }}
               onClick={() => {
                 onConfirm()

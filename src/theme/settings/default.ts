@@ -84,6 +84,7 @@ export function defaultTheme() {
     layerBGTablet: transparent,
     layerBGMobile: transparent,
     bodyBGColor: bodyBGColor,
+    borderRadius: '6px',
     linkColor: mainColor,
     linkColorHover: mainColor,
     lineColor: '#5F656D',

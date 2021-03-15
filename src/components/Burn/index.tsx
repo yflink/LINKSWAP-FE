@@ -99,32 +99,6 @@ export const BurnObject: React.FC<Props> = ({ txHash, burn, status, confirmation
           {txHash}
         </Text>
       </RowBetween>
-      <RowBetween>
-        <Text fontSize="14px">{t('status')}:</Text>
-        <Text fontSize="14px">
-          {status === BurnStatus.BURNT ? (
-            <>
-              <Loader />
-            </>
-          ) : (
-            { status }
-          )}
-        </Text>
-      </RowBetween>
-      <RowBetween>
-        <Text fontSize="14px">{t('renVMStatus')}:</Text>
-        <Text fontSize="14px">{renVMStatus}</Text>
-      </RowBetween>
-      {status === BurnStatus.BURNT && confirmations !== null ? (
-        <RowBetween>
-          <Text fontSize="14px">{t('confirmations')}:</Text>
-          <Text fontSize="14px">
-            {confirmations}
-            {targetConfs ? <>/{targetConfs}</> : <></>}
-          </Text>
-        </RowBetween>
-      ) : null}
-
       {burnDetails && burnDetails.transaction ? (
         <RowBetween>
           <Text fontSize="14px">{t('fromTx', { from: from.name })}:</Text>
