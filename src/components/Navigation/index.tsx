@@ -888,25 +888,25 @@ export default function Navigation() {
               </SubNavigationElement>
               <SubNavigationElement>
                 <StyledNavLink
-                  id={'bridges-scrteth'}
+                  id={'bridges-secreteth'}
                   to={'/bridges/scrt/eth'}
-                  isActive={() => active === 'bridges-scrteth'}
+                  isActive={() => active === 'bridges-secreteth'}
                 >
                   <NavLabel>secretETH</NavLabel>
                 </StyledNavLink>
               </SubNavigationElement>
               <SubNavigationElement>
                 <StyledNavLink
-                  id={'bridges-scrtlink'}
+                  id={'bridges-secretlink'}
                   to={'/bridges/scrt/link'}
-                  isActive={() => active === 'bridges-scrtlink'}
+                  isActive={() => active === 'bridges-secretlink'}
                 >
                   <NavLabel>secretLINK</NavLabel>
                 </StyledNavLink>
               </SubNavigationElement>
               <SubNavigationElement>
                 <StyledNavLink
-                  id={'bridges-scrtyfl'}
+                  id={'bridges-secretyfl'}
                   to={'/bridges/scrt/yfl'}
                   isActive={() => active === 'bridges-scrtyfl'}
                 >

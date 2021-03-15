@@ -477,5 +477,11 @@
   "bridgesDescription": "Transfer crypto currencies between different blockchains, with our bridge implementations",
   "bridgesScrt": "All Secret Bridges",
   "bridgesScrtDescription": "Transfer crypto currencies between the Secret blockchain and the Ethereum blockchain",
-  "scrtDescription": "Choose a bridge and transfer your crypto currencies between the Secret (SNIP20) blockchain and the Ethereum (ERC20) blockchain"
+  "scrtDescription": "Choose a bridge and transfer your crypto currencies between the Secret (SNIP20) blockchain and the Ethereum (ERC20) blockchain",
+    "mintScrtDescription": "You can mint {{outputCurrency}} by sending {{inputCurrency}} to your Keplr Wallet trough the Secret Bridge",
+    "burnScrtDescription": "By sending {{inputCurrency}} to your Metamask Wallet through the Secret Bridge you burn the corresponding {{inputCurrency}} amount. You'll receive {{outputCurrency}} once the transaction succeeded.",
+  "bridgeScrt": "{{inputCurrency}} Bridge",
+  "yourTokenBalance": "Your {{currency}} balance: {{balance}} {{currency}}",
+  "connectKeplrWallet": "Connect Keplr Wallet",
+  "walletConnectDisclaimerScrtMintKeplr": "To mint <1>{{outputCurrency}}</1> you need to connect your <3>Keplr Wallet</3> and select the \"Secret Network\"."
 }

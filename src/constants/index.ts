@@ -169,21 +169,21 @@ export const renLUNA = new Token(
 //secretTokens
 export const secretETH = new Token(
   ChainId.MAINNET,
-  '0x3832d2F059E55934220881F831bE501D180671A7',
+  '0x3506424f91fd33084466f402d5d97f05f8e3b4af',
   18,
   'secretETH',
   'Secret Ethereum'
 )
 export const secretLINK = new Token(
   ChainId.MAINNET,
-  '0x3832d2F059E55934220881F831bE501D180671A7',
+  'secret1xcrf2vvxcz8dhtgzgsd0zmzlf9g320ea2rhdjw',
   18,
   'secretLINK',
-  'Secret Chainlink'
+  'Secret ChainLink Token'
 )
 export const secretYFL = new Token(
   ChainId.MAINNET,
-  '0xD5147bc8e386d91Cc5DBE72099DAC6C9b99276F5',
+  '0x3506424f91fd33084466f402d5d97f05f8e3b4af',
   18,
   'secretYFL',
   'Secret YFLink'

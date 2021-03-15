@@ -1,14 +1,14 @@
 import React, { useContext, useState } from 'react'
-import { Text } from 'rebass'
+import { Link, Text } from 'rebass'
 import { BlueCard, NavigationCard } from '../../components/Card'
 import { SwapPoolTabs } from '../../components/NavigationTabs'
 import AppBody from '../AppBody'
 import styled, { ThemeContext } from 'styled-components'
 import { Loading } from '@renproject/react-components'
 import { useWeb3React } from '@web3-react/core'
-import { ButtonLight } from '../../components/Button'
+import { ButtonLight, ButtonPrimary, ButtonSecondary } from '../../components/Button'
 import { useWalletModalToggle } from '../../state/application/hooks'
-import { useTranslation } from 'react-i18next'
+import { Trans, useTranslation } from 'react-i18next'
 import { AutoColumn } from '../../components/Column'
 import { RowBetween } from '../../components/Row'
 import Question from '../../components/QuestionHelper'
@@ -24,14 +24,28 @@ import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import { Link as HistoryLink, RouteComponentProps } from 'react-router-dom'
 import { ArrowLeft } from 'react-feather'
 import { useNavigationActiveItemManager } from '../../state/navigation/hooks'
-import { useCurrency } from '../../hooks/Tokens'
-import { wrappedCurrency } from '../../utils/wrappedCurrency'
 
 const NavigationWrapper = styled.div`
   display: flex;
   align-items: space-between;
   width: 100%;
   margin: 12px 0;
+`
+
+const KeplrHint = styled.div`
+  color: ${({ theme }) => theme.textSecondary};
+  font-size: 14px;
+  line-height: 1.2;
+
+  a {
+    color: ${({ theme }) => theme.textHighlight};
+    text-decoration: none;
+
+    :hover,
+    :focus {
+      text-decoration: underline;
+    }
+  }
 `
 
 const Navigation = styled.button<{ selected: boolean; primary?: boolean; left?: boolean; right?: boolean }>`
@@ -153,10 +167,9 @@ export default function ScrtBridge({
   const inputCurrency = bridgeName ? bridgeName.toUpperCase() : 'YFL'
   const outputCurrency = 'secret' + inputCurrency
   let tokens: Token[]
-  const WETH = wrappedCurrency(ETHER, 1)
   switch (inputCurrency) {
     case 'ETH':
-      tokens = [WETH ?? WETHER, secretETH]
+      tokens = [WETHER, secretETH]
       break
     case 'LINK':
       tokens = [LINK, secretLINK]
@@ -171,11 +184,16 @@ export default function ScrtBridge({
   const { t } = useTranslation()
   const balances = useTokenBalances(account ?? undefined, tokens)
   const userBalance = action === 'mint' ? balances[tokens[0].address] : balances[tokens[1].address]
+  const outputBalance = action === 'mint' ? balances[tokens[1].address] : balances[tokens[0].address]
   const web3 = new Web3(Web3.givenProvider)
   const provider = web3.currentProvider
   const { independentField, typedValue } = useMintState()
   const { dependentField, currencies, parsedAmounts, noLiquidity, currencyBalances } = useDerivedMintInfo(
-    action === 'mint' ? tokens[0] ?? undefined : tokens[1] ?? undefined,
+    action === 'mint'
+      ? inputCurrency === 'ETH'
+        ? ETHER ?? undefined
+        : tokens[0] ?? undefined
+      : tokens[1] ?? undefined,
     undefined
   )
   const { onFieldAInput } = useMintActionHandlers(noLiquidity)
@@ -208,20 +226,20 @@ export default function ScrtBridge({
         <AutoColumn gap={'12px'}>
           <BackButton>
             <HistoryLink to="/scrt">
-              <ArrowLeft /> {t('bridgesSecret')}
+              <ArrowLeft /> {t('bridgesScrt')}
             </HistoryLink>
           </BackButton>
           <RowBetween>
             <Text color={theme.textPrimary} fontWeight={500}>
-              {t('bridgeSecret', { inputCurrency: outputCurrency })}
+              {t('bridgeScrt', { inputCurrency: outputCurrency })}
             </Text>
             <Question
-              text={t('bridgeSecretDescription', { inputCurrency: inputCurrency, outputCurrency: outputCurrency })}
+              text={t('bridgeScrtDescription', { inputCurrency: inputCurrency, outputCurrency: outputCurrency })}
             />
           </RowBetween>
           <RowBetween>
             <Text>
-              {t('yourSecretBalance', { currency: outputCurrency, balance: userBalance?.toSignificant(4) ?? 0 })}
+              {t('yourTokenBalance', { currency: outputCurrency, balance: outputBalance?.toSignificant(4) ?? 0 })}
             </Text>
           </RowBetween>
           <NavigationWrapper>
@@ -256,7 +274,7 @@ export default function ScrtBridge({
           <>
             {action === 'mint' ? (
               <AutoColumn gap={'12px'}>
-                <BlueCard style={{ margin: '12px 0 24px' }}>
+                <BlueCard style={{ margin: '12px 0 0' }}>
                   <TYPE.link textAlign="center" fontWeight={400}>
                     {t('mintScrtDescription', { inputCurrency: inputCurrency, outputCurrency: outputCurrency })}
                   </TYPE.link>
@@ -272,13 +290,23 @@ export default function ScrtBridge({
                   }}
                   showMaxButton={!atMaxAmounts[Field.CURRENCY_A]}
                   currency={currencies[Field.CURRENCY_A]}
-                  id="burn-token-input"
+                  id="mint-token-input"
                   showCommonBases
                 />
+                <KeplrHint>
+                  <Trans i18nKey="walletConnectDisclaimerScrtMintKeplr">
+                    To mint <strong>{{ outputCurrency }}</strong> you need to connect your
+                    <Link href="https://wallet.keplr.app/" target="_blank">
+                      Keplr Wallet
+                    </Link>
+                    and select the &quot;Secret Network&quot;
+                  </Trans>
+                </KeplrHint>
+                <ButtonSecondary>{t('connectKeplrWallet')}</ButtonSecondary>
               </AutoColumn>
             ) : (
               <AutoColumn gap={'12px'}>
-                <BlueCard style={{ margin: '12px 0 24px' }}>
+                <BlueCard style={{ margin: '12px 0' }}>
                   <TYPE.link textAlign="center" fontWeight={400}>
                     {t('burnScrtDescription', { inputCurrency: outputCurrency, outputCurrency: inputCurrency })}
                   </TYPE.link>
