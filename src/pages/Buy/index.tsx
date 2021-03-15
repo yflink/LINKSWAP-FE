@@ -81,7 +81,7 @@ const CurrencySelect = styled.button<{ selected: boolean; primary?: boolean; lef
   align-items: center;
   justify-content: center;
   height: 48px;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 500;
   background: ${({ selected, primary, theme }) => {
     if (selected) {
@@ -132,9 +132,9 @@ const CurrencySelect = styled.button<{ selected: boolean; primary?: boolean; lef
   }
 `
 
-const StyledTokenName = styled.div<{ active?: boolean }>`
+const StyledTokenName = styled.div`
   margin: 0 0.25rem 0 0.75rem;
-  font-size: ${({ active }) => (active ? '20px' : '20px')};
+  font-size: 20px;
 `
 
 export default function Buy() {
@@ -339,9 +339,7 @@ export default function Buy() {
                     <ButtonLight onClick={toggleWalletModal}>{t('connectWallet')}</ButtonLight>
                   ) : (
                     <ButtonPrimary disabled={Boolean(disableBuy)} id="submit" style={{ padding: 16 }}>
-                      <Text fontWeight={500} fontSize={20}>
-                        {t('buyCurrency', { currency: currency })}
-                      </Text>
+                      {t('buyCurrency', { currency: currency })}
                     </ButtonPrimary>
                   )}
                 </Row>

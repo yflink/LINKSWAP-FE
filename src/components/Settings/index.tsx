@@ -77,17 +77,17 @@ export default function SettingsTab() {
           <AutoColumn gap="8px">
             <RowBetween style={{ padding: '0 2rem' }}>
               <div />
-              <Text fontWeight={500} fontSize={20}>
+              <Text fontWeight={500} fontSize={16}>
                 {t('areYouSure')}
               </Text>
               <StyledCloseIcon onClick={() => setShowConfirmation(false)} />
             </RowBetween>
             <Break />
             <AutoColumn gap="lg" style={{ padding: '0 2rem' }}>
-              <Text fontWeight={500} fontSize={20}>
+              <Text fontWeight={500} fontSize={16}>
                 {t('expertModeDisclaimer')}
               </Text>
-              <Text fontWeight={600} fontSize={20}>
+              <Text fontWeight={600} fontSize={16}>
                 {t('useOnOwnBehalf')}
               </Text>
               <ButtonError
@@ -100,7 +100,7 @@ export default function SettingsTab() {
                   }
                 }}
               >
-                <Text fontSize={20} fontWeight={500} id="confirm-expert-mode">
+                <Text fontSize={16} fontWeight={500} id="confirm-expert-mode">
                   {t('expertModeOn')}
                 </Text>
               </ButtonError>

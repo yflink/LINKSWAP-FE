@@ -269,7 +269,6 @@ export default function MphVault({
                   {approvalA === ApprovalState.NOT_APPROVED || approvalA === ApprovalState.PENDING ? (
                     <RowBetween>
                       <ButtonPrimary
-                        style={{ fontSize: '20px' }}
                         onClick={approveACallback}
                         disabled={approvalA === ApprovalState.PENDING}
                         width="100%"
@@ -278,20 +277,17 @@ export default function MphVault({
                       </ButtonPrimary>
                     </RowBetween>
                   ) : depositing ? (
-                    <ButtonPrimary style={{ fontSize: '20px' }} disabled={true}>
+                    <ButtonPrimary disabled={true}>
                       <Dots>{t('depositing')}</Dots>
                     </ButtonPrimary>
                   ) : (
                     <ButtonPrimary
-                      style={{ fontSize: '20px' }}
                       onClick={() => {
                         onDeposit()
                       }}
                       disabled={approvalA !== ApprovalState.APPROVED || hasError}
                     >
-                      <Text fontSize={20} fontWeight={500}>
-                        {buttonString}
-                      </Text>
+                      {buttonString}
                     </ButtonPrimary>
                   )}
                 </AutoColumn>

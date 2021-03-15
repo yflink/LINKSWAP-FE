@@ -60,7 +60,7 @@ export const ExternalButton = styled.a`
   align-items: center;
   cursor: pointer;
   position: relative;
-  font-size: 20px;
+  font-size: 16px;
   z-index: 1;
   &:disabled {
     cursor: auto;
@@ -422,30 +422,22 @@ export default function StakeIntoPool({
             <AutoColumn gap={'md'}>
               {approvalA === ApprovalState.NOT_APPROVED || approvalA === ApprovalState.PENDING ? (
                 <RowBetween>
-                  <ButtonPrimary
-                    style={{ fontSize: '20px' }}
-                    onClick={approveACallback}
-                    disabled={approvalA === ApprovalState.PENDING}
-                    width="100%"
-                  >
+                  <ButtonPrimary onClick={approveACallback} disabled={approvalA === ApprovalState.PENDING} width="100%">
                     {approvalA === ApprovalState.PENDING ? <Dots>{t('approving')}</Dots> : t('approve')}
                   </ButtonPrimary>
                 </RowBetween>
               ) : staking ? (
-                <ButtonPrimary style={{ fontSize: '20px' }} disabled={true}>
+                <ButtonPrimary disabled={true}>
                   <Dots>{t('staking')}</Dots>
                 </ButtonPrimary>
               ) : (
                 <ButtonPrimary
-                  style={{ fontSize: '20px' }}
                   onClick={() => {
                     onAdd(rewardsContractAddress)
                   }}
                   disabled={approvalA !== ApprovalState.APPROVED || hasError}
                 >
-                  <Text fontSize={20} fontWeight={500}>
-                    {buttonString}
-                  </Text>
+                  {buttonString}
                 </ButtonPrimary>
               )}
               {hasError && !isSingle && (
@@ -455,12 +447,7 @@ export default function StakeIntoPool({
                       {t('addLiquidity')}
                     </ExternalButton>
                   ) : (
-                    <ButtonPrimary
-                      style={{ fontSize: '20px' }}
-                      as={Link}
-                      to={`/add/${currencyIdA}/${currencyIdB}`}
-                      width="100%"
-                    >
+                    <ButtonPrimary as={Link} to={`/add/${currencyIdA}/${currencyIdB}`} width="100%">
                       {t('addLiquidity')}
                     </ButtonPrimary>
                   )}

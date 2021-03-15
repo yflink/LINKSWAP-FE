@@ -507,13 +507,11 @@ export default function Swap() {
                   }
                   error={isValid && priceImpactSeverity > 2}
                 >
-                  <Text fontSize={16} fontWeight={500}>
-                    {priceImpactSeverity > 3 && !isExpertMode
-                      ? t('priceImpactHigh')
-                      : priceImpactSeverity > 2
-                      ? t('swapAnyway')
-                      : t('swap')}
-                  </Text>
+                  {priceImpactSeverity > 3 && !isExpertMode
+                    ? t('priceImpactHigh')
+                    : priceImpactSeverity > 2
+                    ? t('swapAnyway')
+                    : t('swap')}
                 </ButtonError>
               </RowBetween>
             ) : (
@@ -535,15 +533,13 @@ export default function Swap() {
                 disabled={!isValid || (priceImpactSeverity > 3 && !isExpertMode) || !!swapCallbackError}
                 error={isValid && priceImpactSeverity > 2 && !swapCallbackError}
               >
-                <Text fontSize={20} fontWeight={500}>
-                  {swapInputError
-                    ? swapInputError
-                    : priceImpactSeverity > 3 && !isExpertMode
-                    ? t('priceImpactTooHigh')
-                    : priceImpactSeverity > 2
-                    ? t('swapAnyway')
-                    : t('swap')}
-                </Text>
+                {swapInputError
+                  ? swapInputError
+                  : priceImpactSeverity > 3 && !isExpertMode
+                  ? t('priceImpactTooHigh')
+                  : priceImpactSeverity > 2
+                  ? t('swapAnyway')
+                  : t('swap')}
               </ButtonError>
             )}
             {showApproveFlow && <ProgressSteps steps={[approval === ApprovalState.APPROVED]} />}

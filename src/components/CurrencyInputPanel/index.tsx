@@ -28,8 +28,7 @@ const CurrencySelect = styled.button<{
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  height: 52px;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 500;
   background: ${({ selected, primary, theme }) => {
     if (selected) {
@@ -52,7 +51,7 @@ const CurrencySelect = styled.button<{
   cursor: pointer;
   user-select: none;
   border: none;
-  padding: 5px 0.5rem;
+  padding: 12px;
   [dir='rtl'] & {
     border-radius: ${({ left, right, middle, theme }) =>
       left
@@ -107,12 +106,12 @@ const Container = styled.div<{ hideInput: boolean }>`
   background: ${({ theme }) => theme.appCurrencyInputBG};
 `
 
-const StyledTokenName = styled.div<{ inline?: boolean }>`
-  font-size: ${({ inline }) => (inline ? '20px' : '12px')};
-  margin-inline-start: ${({ inline }) => (inline ? '0.4rem' : 0)};
-  width: ${({ inline }) => (inline ? 'auto' : '100%')};
-  display: ${({ inline }) => (inline ? 'inline-block' : 'block')};
-  text-align: ${({ inline }) => (inline ? 'left' : 'center')};
+const StyledTokenName = styled.div`
+  font-size: 20px;
+  margin-inline-start: 0.4rem;
+  width: auto;
+  display: inline-block;
+  text-align: left;
 `
 
 const StyledBalanceMax = styled.button`
@@ -207,7 +206,7 @@ export default function CurrencyInputPanel({
           }}
         >
           {currency ? <CurrencyLogo currency={currency} position="button" /> : null}
-          <StyledTokenName className="token-symbol-container" inline={true}>
+          <StyledTokenName className="token-symbol-container">
             {(currency && currency.symbol && currency.symbol.length > 20
               ? currency.symbol.slice(0, 4) +
                 '...' +
