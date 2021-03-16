@@ -153,6 +153,7 @@ export default function Buy() {
   const theme = useContext(ThemeContext)
   const { account } = useActiveWeb3React()
   const [amount, setAmount] = useState('')
+  const [currencyChanged, setCurrencyChanged] = useState(false)
   const [currency, setCurrency] = useState('Ethereum')
   const [currencySymbol, setCurrencySymbol] = useState('ETH')
   const ethDestination = account ? 'ethereum:' + account : ''
@@ -217,18 +218,20 @@ export default function Buy() {
   const parsedQs = useParsedQueryString()
   let newId = 'buy'
   const newActive = useNavigationActiveItemManager()
-  if (typeof parsedQs['currency'] !== 'undefined' && typeof parsedQs['currency'] === 'string') {
-    if (parsedQs['currency'].toLowerCase() === 'link') {
-      newId = 'buy-link'
-      if (currency !== 'Chainlink') {
-        setCurrency('Chainlink')
-        setCurrencySymbol('LINK')
+  if (!currencyChanged) {
+    if (typeof parsedQs['currency'] !== 'undefined' && typeof parsedQs['currency'] === 'string') {
+      if (parsedQs['currency'].toLowerCase() === 'link') {
+        newId = 'buy-link'
+        if (currency !== 'Chainlink') {
+          setCurrency('Chainlink')
+          setCurrencySymbol('LINK')
+        }
       }
-    }
-  } else {
-    if (currency !== 'Ethereum') {
-      setCurrency('Ethereum')
-      setCurrencySymbol('ETH')
+    } else {
+      if (currency !== 'Ethereum') {
+        setCurrency('Ethereum')
+        setCurrencySymbol('ETH')
+      }
     }
   }
   newActive(newId)
@@ -248,6 +251,7 @@ export default function Buy() {
                 left
                 className="open-currency-select-button"
                 onClick={() => {
+                  setCurrencyChanged(true)
                   setCurrency('Ethereum')
                   setCurrencySymbol('ETH')
                 }}
@@ -262,6 +266,7 @@ export default function Buy() {
                 right
                 className="open-currency-select-button"
                 onClick={() => {
+                  setCurrencyChanged(true)
                   setCurrency('Chainlink')
                   setCurrencySymbol('LINK')
                 }}
