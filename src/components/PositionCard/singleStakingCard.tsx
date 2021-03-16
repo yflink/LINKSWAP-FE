@@ -7,7 +7,7 @@ import { governancePool, StakingRewards } from '../../components/ABI'
 import positionInformation from './positionInformation'
 import hexStringToNumber from '../../utils/hexStringToNumber'
 import { AutoColumn } from '../Column'
-import { numberToPercent, numberToSignificant, numberToUsd } from '../../utils/numberUtils'
+import { displayNumber, numberToPercent, numberToSignificant, numberToUsd } from '../../utils/numberUtils'
 import { Dots } from '../swap/styleds'
 import { RowBetween, RowFixed } from '../Row'
 import { SingleCurrencyLogo } from '../DoubleLogo'
@@ -138,6 +138,7 @@ export default function SingleStakingCard({
     totalLPSupply: 0,
     poolType: values.type,
     apy: 0,
+    notStarted: false,
     userShare: 0,
     lpTokenPrice: 0,
     stakePoolTotalDeposited: 0,
@@ -443,13 +444,10 @@ export default function SingleStakingCard({
     })
   }
 
-  console.log(information)
-
   if (
     (information.userBalance === 0 && showOwn) ||
     (information.isInactive && !showExpired) ||
-    (!information.isInactive && showExpired) ||
-    information.totalSupply === 0
+    (!information.isInactive && showExpired)
   ) {
     return null
   } else {
@@ -486,7 +484,7 @@ export default function SingleStakingCard({
                     )}
                   </>
                 ) : (
-                  <>{information.poolType !== 'mph88' && <Dots>{t('loading')}</Dots>}</>
+                  <>{information.poolType !== 'mph88' && !information.notStarted && <Dots>{t('loading')}</Dots>}</>
                 )}
               </div>
             )}
@@ -526,15 +524,9 @@ export default function SingleStakingCard({
               {Number(balance?.toSignificant(1)) * 10000 > 1 && !information.isInactive && (
                 <RowBetween>
                   <Text>{t('stakableTokenAmount')}</Text>
-                  {Number(balance?.toSignificant(6)) > 1000 ? (
-                    <Text>
-                      {Number(balance?.toSignificant(6)).toLocaleString('en-US')} {currencyA.symbol}
-                    </Text>
-                  ) : (
-                    <Text>
-                      {Number(balance?.toSignificant(6))} {currencyA.symbol}
-                    </Text>
-                  )}
+                  <Text>
+                    {displayNumber(balance?.toSignificant(6))} {currencyA.symbol}
+                  </Text>
                 </RowBetween>
               )}
               {information.userBalance > 0 && (
@@ -657,34 +649,36 @@ export default function SingleStakingCard({
                   <Text>{numberToUsd(information.stakePoolTotalDeposited)}</Text>
                 </RowBetween>
               )}
-              {(information.userRewards[0] !== '' || information.userRewards[1] !== '') && !information.isInactive && (
-                <RowBetween style={{ alignItems: 'flex-start' }}>
-                  <Text>{t('stakePoolRewards')}</Text>
-                  <Text style={{ textAlign: 'end' }}>
-                    {information.rewardInfo[0]['rate'] > 0 && (
-                      <div>
-                        {t('stakeRewardPerDay', {
-                          rate: information.rewardInfo[0].rate,
-                          currencySymbol: information.rewardInfo[0].symbol
-                        })}
-                      </div>
-                    )}
-                    {information.rewardInfo.length > 1 && information.rewardInfo[1]['rate'] > 0 && (
-                      <div style={{ textAlign: 'end' }}>
-                        {t('stakeRewardPerDay', {
-                          rate: information.rewardInfo[1].rate,
-                          currencySymbol: information.rewardInfo[1].symbol
-                        })}
-                      </div>
-                    )}
-                    {information.apy > 0 && !information.isInactive && information.poolType !== 'mph88' && (
-                      <div style={{ textAlign: 'end', marginTop: '8px' }}>
-                        {t('apy', { apy: numberToPercent(information.apy) })}
-                      </div>
-                    )}
-                  </Text>
-                </RowBetween>
-              )}
+              {(information.userRewards[0] !== '' || information.userRewards[1] !== '') &&
+                !information.isInactive &&
+                !information.notStarted && (
+                  <RowBetween style={{ alignItems: 'flex-start' }}>
+                    <Text>{t('stakePoolRewards')}</Text>
+                    <Text style={{ textAlign: 'end' }}>
+                      {information.rewardInfo[0]['rate'] > 0 && (
+                        <div>
+                          {t('stakeRewardPerDay', {
+                            rate: displayNumber(information.rewardInfo[0].rate),
+                            currencySymbol: information.rewardInfo[0].symbol
+                          })}
+                        </div>
+                      )}
+                      {information.rewardInfo.length > 1 && information.rewardInfo[1]['rate'] > 0 && (
+                        <div style={{ textAlign: 'end' }}>
+                          {t('stakeRewardPerDay', {
+                            rate: displayNumber(information.rewardInfo[1].rate),
+                            currencySymbol: information.rewardInfo[1].symbol
+                          })}
+                        </div>
+                      )}
+                      {information.apy > 0 && !information.isInactive && information.poolType !== 'mph88' && (
+                        <div style={{ textAlign: 'end', marginTop: '8px' }}>
+                          {t('apy', { apy: numberToPercent(information.apy) })}
+                        </div>
+                      )}
+                    </Text>
+                  </RowBetween>
+                )}
               {information.apy > 0 && !information.isInactive && information.poolType === 'mph88' && (
                 <>
                   <RowBetween>
@@ -699,8 +693,14 @@ export default function SingleStakingCard({
               )}
               {!information.infinitePeriod && (
                 <RowBetween>
-                  <Text>{t('timeRemaining')}</Text>
-                  <Countdown ends={information.periodFinish} format="DD[d] HH[h] mm[m] ss[s]" string="endsIn" />
+                  {information.notStarted ? (
+                    <Text>{t('notStarted')}</Text>
+                  ) : (
+                    <>
+                      <Text>{t('timeRemaining')}</Text>
+                      <Countdown ends={information.periodFinish} format="DD[d] HH[h] mm[m] ss[s]" string="endsIn" />
+                    </>
+                  )}
                 </RowBetween>
               )}
               {information.poolType !== 'mph88' && (

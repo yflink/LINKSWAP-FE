@@ -1,5 +1,6 @@
 export function numberToPercent(value: number): string {
-  return parseFloat(value.toFixed(2)) + '%'
+  const convertedValue = parseFloat(value.toFixed(2))
+  return new Intl.NumberFormat('en-US').format(convertedValue) + '%'
 }
 
 export function numberToUsd(value: number): string {
@@ -9,5 +10,9 @@ export function numberToUsd(value: number): string {
 export function numberToSignificant(value: any, decimals?: number): any {
   let returnValue = parseFloat(value).toPrecision(decimals ?? 6)
   returnValue = returnValue.toString()
-  return parseFloat(returnValue)
+  return new Intl.NumberFormat('en-US').format(parseFloat(returnValue))
+}
+
+export function displayNumber(value: any): string {
+  return new Intl.NumberFormat('en-US').format(parseFloat(value))
 }

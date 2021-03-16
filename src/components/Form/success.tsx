@@ -5,7 +5,6 @@ import { TYPE } from '../../theme'
 import { BlueCard } from '../Card'
 import Row, { RowBetween } from '../Row'
 import { ButtonPrimary } from '../Button'
-import { Text } from 'rebass'
 import { Link } from 'react-router-dom'
 
 export function FormSuccess() {
