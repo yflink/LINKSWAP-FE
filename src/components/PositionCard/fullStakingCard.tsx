@@ -105,6 +105,7 @@ export default function FullStakingCard({
     totalLPSupply: 0,
     poolType: values.type,
     apy: 0,
+    notStarted: false,
     userShare: 0,
     lpTokenPrice: 0,
     stakePoolTotalDeposited: 0,
@@ -455,7 +456,7 @@ export default function FullStakingCard({
                 {information.apy > 0 ? (
                   <p style={{ margin: 0 }}>{t('apy', { apy: numberToPercent(information.apy) })}</p>
                 ) : (
-                  <Dots>{t('loading')}</Dots>
+                  <>{!information.notStarted && <Dots>{t('loading')}</Dots>}</>
                 )}
               </div>
             )}
@@ -569,7 +570,7 @@ export default function FullStakingCard({
                   <Text>{numberToUsd(information.stakePoolTotalDeposited)}</Text>
                 </RowBetween>
               )}
-              {information.rewardInfo.length > 0 && !information.isInactive && (
+              {!information.notStarted && information.rewardInfo.length > 0 && !information.isInactive && (
                 <RowBetween style={{ alignItems: 'flex-start' }}>
                   <Text>{t('stakePoolRewards')}</Text>
                   <Text style={{ textAlign: 'end' }}>
@@ -598,11 +599,21 @@ export default function FullStakingCard({
                 </RowBetween>
               )}
               <RowBetween>
-                <Text>{t('timeRemaining')}</Text>
-                {information.poolType === 'syflPool' && isYFLUSD ? (
-                  <Countdown ends={information.periodFinish} format="DD[d] HH[h] mm[m] ss[s]" string="emissionDropIn" />
+                {information.notStarted ? (
+                  <Text>{t('notStarted')}</Text>
                 ) : (
-                  <Countdown ends={information.periodFinish} format="DD[d] HH[h] mm[m] ss[s]" string="endsIn" />
+                  <>
+                    <Text>{t('timeRemaining')}</Text>
+                    {information.poolType === 'syflPool' && isYFLUSD ? (
+                      <Countdown
+                        ends={information.periodFinish}
+                        format="DD[d] HH[h] mm[m] ss[s]"
+                        string="emissionDropIn"
+                      />
+                    ) : (
+                      <Countdown ends={information.periodFinish} format="DD[d] HH[h] mm[m] ss[s]" string="endsIn" />
+                    )}
+                  </>
                 )}
               </RowBetween>
               <RowBetween marginTop="10px">

@@ -6,7 +6,6 @@ import CryptoJS from 'crypto-js'
 import { WYRE_SK } from '../../connectors'
 import { FormSuccess } from './success'
 import { FormError } from './error'
-import { isMobile } from 'react-device-detect'
 
 const FormBody = styled.form`
   width: 100%;
@@ -171,7 +170,7 @@ export class Form extends React.Component<FormProps, FormState> {
         this.setState({ errors })
       } else {
         if (responseBody.url) {
-            window.open(responseBody.url, '_self')
+          window.open(responseBody.url, '_self')
         } else {
           errors['url'] = 'wrongUrl'
         }
