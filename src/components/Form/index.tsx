@@ -171,14 +171,7 @@ export class Form extends React.Component<FormProps, FormState> {
         this.setState({ errors })
       } else {
         if (responseBody.url) {
-          if (isMobile) {
             window.open(responseBody.url, '_self')
-          } else {
-            const win = window.open(responseBody.url, '_blank')
-            // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-            // @ts-ignore
-            win.focus()
-          }
         } else {
           errors['url'] = 'wrongUrl'
         }

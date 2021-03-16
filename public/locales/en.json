@@ -473,6 +473,7 @@
   "stakeGovernanceTotalDistributed": "Total YFL distributed since launch",
   "stakeGovernanceLastDistribution": "Last distribution: {{days}} days ago",
   "stakeOfTotalSupply": "{{percent}} of Total Supply",
+  "unstakeOnSinglePool": "Unstake {{amount}} {{currencyASymbol}} from {{currencyASymbol}} Pool",
   "bridgesAll": "All Bridges",
   "bridgesDescription": "Transfer crypto currencies between different blockchains, with our bridge implementations",
   "bridgesScrt": "All Secret Bridges",

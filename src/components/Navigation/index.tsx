@@ -1022,7 +1022,7 @@ export default function Navigation() {
                 </ExternalNavLink>
               </SubNavigationElement>
               <SubNavigationElement>
-                <ExternalNavLink href="https://yflink.io/#/vote">
+                <ExternalNavLink href="https://snapshot.page/#/yflink">
                   <NavLabel>{t('stakeGovernanceVoting')}</NavLabel>
                 </ExternalNavLink>
               </SubNavigationElement>
