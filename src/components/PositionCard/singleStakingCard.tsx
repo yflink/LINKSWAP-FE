@@ -7,7 +7,7 @@ import { governancePool, StakingRewards } from '../../components/ABI'
 import positionInformation from './positionInformation'
 import hexStringToNumber from '../../utils/hexStringToNumber'
 import { AutoColumn } from '../Column'
-import { numberToPercent, numberToSignificant, numberToUsd } from '../../utils/numberUtils'
+import { displayNumber, numberToPercent, numberToSignificant, numberToUsd } from '../../utils/numberUtils'
 import { Dots } from '../swap/styleds'
 import { RowBetween, RowFixed } from '../Row'
 import { SingleCurrencyLogo } from '../DoubleLogo'
@@ -524,15 +524,9 @@ export default function SingleStakingCard({
               {Number(balance?.toSignificant(1)) * 10000 > 1 && !information.isInactive && (
                 <RowBetween>
                   <Text>{t('stakableTokenAmount')}</Text>
-                  {Number(balance?.toSignificant(6)) > 1000 ? (
-                    <Text>
-                      {Number(balance?.toSignificant(6)).toLocaleString('en-US')} {currencyA.symbol}
-                    </Text>
-                  ) : (
-                    <Text>
-                      {Number(balance?.toSignificant(6))} {currencyA.symbol}
-                    </Text>
-                  )}
+                  <Text>
+                    {displayNumber(balance?.toSignificant(6))} {currencyA.symbol}
+                  </Text>
                 </RowBetween>
               )}
               {information.userBalance > 0 && (
@@ -664,7 +658,7 @@ export default function SingleStakingCard({
                       {information.rewardInfo[0]['rate'] > 0 && (
                         <div>
                           {t('stakeRewardPerDay', {
-                            rate: information.rewardInfo[0].rate,
+                            rate: displayNumber(information.rewardInfo[0].rate),
                             currencySymbol: information.rewardInfo[0].symbol
                           })}
                         </div>
@@ -672,7 +666,7 @@ export default function SingleStakingCard({
                       {information.rewardInfo.length > 1 && information.rewardInfo[1]['rate'] > 0 && (
                         <div style={{ textAlign: 'end' }}>
                           {t('stakeRewardPerDay', {
-                            rate: information.rewardInfo[1].rate,
+                            rate: displayNumber(information.rewardInfo[1].rate),
                             currencySymbol: information.rewardInfo[1].symbol
                           })}
                         </div>

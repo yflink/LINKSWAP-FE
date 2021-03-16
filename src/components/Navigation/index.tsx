@@ -21,6 +21,7 @@ import { LINK, sYFL, YFL, YFLUSD, yYFL } from '../../constants'
 import Loader from '../Loader'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
+import { displayNumber } from '../../utils/numberUtils'
 
 const NavigationWrapper = styled.nav<{ active?: boolean }>`
   height: 100vh;
@@ -527,7 +528,7 @@ export default function Navigation() {
                   {userEthBalance && (
                     <RowBetween>
                       <Text>Ethereum:</Text>
-                      <Text>{userEthBalance?.toSignificant(4)} ETH</Text>
+                      <Text>{displayNumber(userEthBalance?.toSignificant(6))} ETH</Text>
                     </RowBetween>
                   )}
                   {userBalances && (
@@ -537,7 +538,9 @@ export default function Navigation() {
                         {fetchingUserBalances ? (
                           <Loader />
                         ) : (
-                          <BalanceText>{userBalances[LINK.address]?.toSignificant(4) + ' ' + LINK.symbol}</BalanceText>
+                          <BalanceText>
+                            {displayNumber(userBalances[LINK.address]?.toSignificant(6)) + ' ' + LINK.symbol}
+                          </BalanceText>
                         )}
                       </RowBetween>
                       <RowBetween>
@@ -545,7 +548,9 @@ export default function Navigation() {
                         {fetchingUserBalances ? (
                           <Loader />
                         ) : (
-                          <BalanceText>{userBalances[YFL.address]?.toSignificant(4) + ' ' + YFL.symbol}</BalanceText>
+                          <BalanceText>
+                            {displayNumber(userBalances[YFL.address]?.toSignificant(6)) + ' ' + YFL.symbol}
+                          </BalanceText>
                         )}
                       </RowBetween>
 
@@ -556,7 +561,7 @@ export default function Navigation() {
                             <Loader />
                           ) : (
                             <BalanceText>
-                              {userBalances[YFLUSD.address]?.toSignificant(4) + ' ' + YFLUSD.symbol}
+                              {displayNumber(userBalances[YFLUSD.address]?.toSignificant(6)) + ' ' + YFLUSD.symbol}
                             </BalanceText>
                           )}
                         </RowBetween>
@@ -568,7 +573,7 @@ export default function Navigation() {
                             <Loader />
                           ) : (
                             <BalanceText>
-                              {userBalances[sYFL.address]?.toSignificant(4) + ' ' + sYFL.symbol}
+                              {displayNumber(userBalances[sYFL.address]?.toSignificant(6)) + ' ' + sYFL.symbol}
                             </BalanceText>
                           )}
                         </RowBetween>
@@ -580,7 +585,7 @@ export default function Navigation() {
                             <Loader />
                           ) : (
                             <BalanceText>
-                              {userBalances[yYFL.address]?.toSignificant(4) + ' ' + yYFL.symbol}
+                              {displayNumber(userBalances[yYFL.address]?.toSignificant(6)) + ' ' + yYFL.symbol}
                             </BalanceText>
                           )}
                         </RowBetween>
