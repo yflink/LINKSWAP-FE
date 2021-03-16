@@ -9,7 +9,7 @@ import { AutoColumn } from '../../components/Column'
 import { RowBetween } from '../../components/Row'
 import Question from '../../components/QuestionHelper'
 import { useNavigationActiveItemManager } from '../../state/navigation/hooks'
-import { numberToPercent, numberToSignificant, numberToUsd } from '../../utils/numberUtils'
+import { displayNumber, numberToPercent, numberToSignificant, numberToUsd } from '../../utils/numberUtils'
 import { ButtonSecondary } from '../../components/Button'
 import { Link } from 'react-router-dom'
 import { useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks'
@@ -394,7 +394,7 @@ export default function StakeGovernance() {
                 <Loader />
               ) : (
                 <BalanceText>
-                  {totalStaked.toLocaleString('en-US') + ' ' + YFL.symbol}
+                  {displayNumber(totalStaked) + ' ' + YFL.symbol}
                   <br />
                   {numberToUsd(Number(govBalances[YFL.address]?.toSignificant(8)) * yflPriceUsd)}
                   <br />

@@ -540,10 +540,10 @@ export default function SingleStakingCard({
                     <>
                       {!isGov ? (
                         <RowBetween>
-                          <Text>{t('stakedTokenAmount').toLocaleString('en-US')}</Text>
+                          <Text>{t('stakedTokenAmount')}</Text>
                           {numberToSignificant(information.userBalance, 1) > 1000 ? (
                             <Text>
-                              {numberToSignificant(information.userBalance).toLocaleString('en-US')} {currencyA.symbol}
+                              {numberToSignificant(information.userBalance)} {currencyA.symbol}
                             </Text>
                           ) : (
                             <Text>
@@ -553,11 +553,10 @@ export default function SingleStakingCard({
                         </RowBetween>
                       ) : (
                         <RowBetween>
-                          <Text>{t('stakedTokenAmount').toLocaleString('en-US')}</Text>
+                          <Text>{t('stakedTokenAmount')}</Text>
                           {numberToSignificant(information.userBalance, 1) > 1000 ? (
                             <Text>
-                              {numberToSignificant(information.userBalance * yyflPrice).toLocaleString('en-US')}{' '}
-                              {currencyA.symbol}
+                              {numberToSignificant(information.userBalance * yyflPrice)} {currencyA.symbol}
                             </Text>
                           ) : (
                             <Text>
