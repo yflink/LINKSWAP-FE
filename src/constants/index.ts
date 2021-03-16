@@ -167,27 +167,33 @@ export const renLUNA = new Token(
 )
 
 //secretTokens
-export const secretETH = new Token(
-  ChainId.MAINNET,
-  '0x3506424f91fd33084466f402d5d97f05f8e3b4af',
-  18,
-  'secretETH',
-  'Secret Ethereum'
-)
-export const secretLINK = new Token(
-  ChainId.MAINNET,
-  'secret1xcrf2vvxcz8dhtgzgsd0zmzlf9g320ea2rhdjw',
-  18,
-  'secretLINK',
-  'Secret ChainLink Token'
-)
-export const secretYFL = new Token(
-  ChainId.MAINNET,
-  '0x3506424f91fd33084466f402d5d97f05f8e3b4af',
-  18,
-  'secretYFL',
-  'Secret YFLink'
-)
+export const secretETH = {
+  address: 'secret1wuzzjsdhthpvuyeeyhfq2ftsn3mvwf9rxy6ykw',
+  decimals: 18,
+  symbol: 'secretETH',
+  name: 'Secret Ethereum'
+}
+
+export const secretLINK = {
+  address: 'secret1xcrf2vvxcz8dhtgzgsd0zmzlf9g320ea2rhdjw',
+  decimals: 18,
+  symbol: 'secretLINK',
+  name: 'Secret ChainLink Token'
+}
+
+export const secretYFL = {
+  address: '0x3506424f91fd33084466f402d5d97f05f8e3b4af',
+  decimals: 18,
+  symbol: 'secretYFL',
+  name: 'Secret YFLink'
+}
+
+export const secretSCRT = {
+  address: 'secret1k0jntykt7e4g3y88ltc60czgjuqdy4c9e8fzek',
+  decimals: 18,
+  symbol: 'secretSCRT',
+  name: 'Secret Secret Token'
+}
 
 export const stETH = new Token(ChainId.MAINNET, '0xDFe66B14D37C77F4E9b180cEb433d1b164f0281D', 18, 'stETH', 'Staked ETH')
 
@@ -541,6 +547,15 @@ export const SINGLE_POOLS: Record<string, any> = {
     balance: 0,
     abi: 'singlePool',
     type: 'single'
+  },
+  SCRTLINK: {
+    rewardsAddress: 'secret1wuzzjsdhthpvuyeeyhfq2ftsn3mvwf9rxy6ykw',
+    tokens: [secretLINK, WETHER],
+    stakedToken: secretLINK,
+    rewardsToken: secretSCRT,
+    balance: 0,
+    abi: 'scrtPool',
+    type: 'scrt'
   }
 }
 

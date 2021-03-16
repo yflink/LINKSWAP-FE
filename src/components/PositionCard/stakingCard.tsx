@@ -1,8 +1,9 @@
 import React from 'react'
-import FullStakingCard from '../PositionCard/fullStakingCard'
+import FullStakingCard from './fullStakingCard'
 import SingleStakingCard from './singleStakingCard'
+import ScrtStakingCard from './scrtStakingCard'
 
-interface IStakingCard {
+interface StakingCardInterface {
   type: string
   values: any[]
   showOwn?: boolean | false
@@ -10,13 +11,19 @@ interface IStakingCard {
   index: number
 }
 
-export default function StakingCard({ type, values, showOwn, showExpired, index }: IStakingCard) {
+export default function StakingCard({ type, values, showOwn, showExpired, index }: StakingCardInterface) {
   return (
     <>
       {type === 'mph88' || type === 'single' || type === 'gov' ? (
         <SingleStakingCard values={values} showOwn={showOwn} showExpired={showExpired} index={index} />
       ) : (
-        <FullStakingCard values={values} showOwn={showOwn} showExpired={showExpired} index={index} />
+        <>
+          {type === 'scrt' ? (
+            <ScrtStakingCard values={values} showOwn={showOwn} showExpired={showExpired} index={index} />
+          ) : (
+            <FullStakingCard values={values} showOwn={showOwn} showExpired={showExpired} index={index} />
+          )}
+        </>
       )}
     </>
   )

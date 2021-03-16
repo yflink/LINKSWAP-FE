@@ -166,7 +166,15 @@ export default function ScrtBridge({
   const [action, setAction] = useState('mint')
   const inputCurrency = bridgeName ? bridgeName.toUpperCase() : 'YFL'
   const outputCurrency = 'secret' + inputCurrency
-  let tokens: Token[]
+  let tokens: [
+    Token,
+    {
+      address: string
+      decimals: number
+      symbol: string
+      name: string
+    }
+  ]
   switch (inputCurrency) {
     case 'ETH':
       tokens = [WETHER, secretETH]
@@ -182,18 +190,14 @@ export default function ScrtBridge({
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const toggleWalletModal = useWalletModalToggle()
   const { t } = useTranslation()
-  const balances = useTokenBalances(account ?? undefined, tokens)
-  const userBalance = action === 'mint' ? balances[tokens[0].address] : balances[tokens[1].address]
-  const outputBalance = action === 'mint' ? balances[tokens[1].address] : balances[tokens[0].address]
+  const balances = useTokenBalances(account ?? undefined, [tokens[0]])
+  const userBalance = action === 'mint' ? balances[tokens[0].address] : undefined
+  const outputBalance = action === 'mint' ? undefined : balances[tokens[0].address]
   const web3 = new Web3(Web3.givenProvider)
   const provider = web3.currentProvider
   const { independentField, typedValue } = useMintState()
   const { dependentField, currencies, parsedAmounts, noLiquidity, currencyBalances } = useDerivedMintInfo(
-    action === 'mint'
-      ? inputCurrency === 'ETH'
-        ? ETHER ?? undefined
-        : tokens[0] ?? undefined
-      : tokens[1] ?? undefined,
+    action === 'mint' ? (inputCurrency === 'ETH' ? ETHER ?? undefined : tokens[0] ?? undefined) : undefined,
     undefined
   )
   const { onFieldAInput } = useMintActionHandlers(noLiquidity)
