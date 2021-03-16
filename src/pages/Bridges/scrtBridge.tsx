@@ -6,7 +6,7 @@ import AppBody from '../AppBody'
 import styled, { ThemeContext } from 'styled-components'
 import { Loading } from '@renproject/react-components'
 import { useWeb3React } from '@web3-react/core'
-import { ButtonLight, ButtonPrimary, ButtonSecondary } from '../../components/Button'
+import { ButtonLight, ButtonSecondary } from '../../components/Button'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { Trans, useTranslation } from 'react-i18next'
 import { AutoColumn } from '../../components/Column'
@@ -24,6 +24,7 @@ import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import { Link as HistoryLink, RouteComponentProps } from 'react-router-dom'
 import { ArrowLeft } from 'react-feather'
 import { useNavigationActiveItemManager } from '../../state/navigation/hooks'
+import { useGetKplrConnect, useKeplrConnect } from '../../state/keplr/hooks'
 
 const NavigationWrapper = styled.div`
   display: flex;
@@ -195,6 +196,8 @@ export default function ScrtBridge({
   const outputBalance = action === 'mint' ? undefined : balances[tokens[0].address]
   const web3 = new Web3(Web3.givenProvider)
   const provider = web3.currentProvider
+  const keplrWalletConnect = useKeplrConnect()
+  const keplrWallet = useGetKplrConnect()
   const { independentField, typedValue } = useMintState()
   const { dependentField, currencies, parsedAmounts, noLiquidity, currencyBalances } = useDerivedMintInfo(
     action === 'mint' ? (inputCurrency === 'ETH' ? ETHER ?? undefined : tokens[0] ?? undefined) : undefined,
@@ -217,6 +220,8 @@ export default function ScrtBridge({
       [field]: maxAmounts[field]?.equalTo(parsedAmounts[field] ?? '0')
     }
   }, {})
+
+  console.log(keplrWallet)
 
   const newActive = useNavigationActiveItemManager()
   const acitveId = tokens[1].symbol ? `bridges-${tokens[1].symbol.toLowerCase()}` : 'bridges-secretyfl'
@@ -306,7 +311,7 @@ export default function ScrtBridge({
                     and select the &quot;Secret Network&quot;
                   </Trans>
                 </KeplrHint>
-                <ButtonSecondary>{t('connectKeplrWallet')}</ButtonSecondary>
+                <ButtonSecondary onClick={keplrWalletConnect}>{t('connectKeplrWallet')}</ButtonSecondary>
               </AutoColumn>
             ) : (
               <AutoColumn gap={'12px'}>
