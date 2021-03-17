@@ -92,6 +92,7 @@ export default async function positionInformation(
         const remaining = positionOutput.periodFinish > 0 ? moment(then - now).unix() : 1
         positionOutput.isInactive = remaining < 1
         positionOutput.updated = true
+        positionOutput.notStarted = remaining === 1
       })
     }
   } catch (e) {
@@ -126,7 +127,7 @@ export default async function positionInformation(
       } else {
         if (position.type === 'single') {
           if (position.abi === 'singlePool') {
-            if(typeof(position.rewardsToken) !== 'undefined') {
+            if (typeof position.rewardsToken !== 'undefined') {
               positionOutput.rewardTokens[0] = position.rewardsToken.address
             } else {
               positionOutput.rewardTokens[0] = YFLUSD.address

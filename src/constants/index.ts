@@ -454,6 +454,15 @@ export const SINGLE_POOLS: Record<string, any> = {
     abi: 'governancePool',
     type: 'gov'
   },
+  MASQMASQ: {
+    rewardsAddress: '0x75A43cFA0C104B021D4359B01a6dd611795e55c0',
+    tokens: [MASQ, WETHER],
+    stakedToken: MASQ,
+    rewardsToken: MASQ,
+    balance: 0,
+    abi: 'singlePool',
+    type: 'single'
+  },
   ALINKV1: {
     rewardsAddress: '0x904f81eff3c35877865810cca9a63f2d9cb7d4dd',
     poolAddress: '0x904f81eff3c35877865810cca9a63f2d9cb7d4dd',
@@ -505,15 +514,6 @@ export const SINGLE_POOLS: Record<string, any> = {
     rewardsAddress: '0xEB94b4a6700F5b5DaDB9ecb2973bEACB71A17bCD',
     tokens: [SYAX, WETHER],
     stakedToken: SYAX,
-    rewardsToken: YFLUSD,
-    balance: 0,
-    abi: 'singlePool',
-    type: 'single'
-  },
-  MASQYFLUSD: {
-    rewardsAddress: '0x77eAddB37d116D0272fda5d6441e4423950C8427',
-    tokens: [MASQ, WETHER],
-    stakedToken: MASQ,
     rewardsToken: YFLUSD,
     balance: 0,
     abi: 'singlePool',

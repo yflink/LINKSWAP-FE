@@ -259,7 +259,7 @@ export default function MphManage({
                           <AutoColumn gap="8px">
                             <RowBetween>
                               <Text>{t('depositedTokens')}</Text>
-                              {numberToSignificant(userPosition.amount).toLocaleString('en-US')} {currency.symbol}
+                              {numberToSignificant(userPosition.amount)} {currency.symbol}
                             </RowBetween>
                             {vaultStats.tokenPrice !== 0 && (
                               <RowBetween>
