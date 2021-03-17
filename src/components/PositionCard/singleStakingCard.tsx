@@ -613,7 +613,7 @@ export default function SingleStakingCard({
                   <ButtonLight onClick={toggleWalletModal}>{t('connectWallet')}</ButtonLight>
                 ) : (
                   <>
-                    {information.poolType === 'mph88' && (
+                    {information.poolType === 'mph88' ? (
                       <>
                         {information.userBalance > 0 ? (
                           <ButtonSecondary as={Link} width="100%" to={`/manage/mph88/${values.name.toLowerCase()}`}>
@@ -623,6 +623,18 @@ export default function SingleStakingCard({
                           <ExternalButton href={values.liquidityUrl}>
                             {t('getToken', { currencySymbol: currency0.symbol })}
                           </ExternalButton>
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        {information.userBalance === 0 && (
+                          <ButtonSecondary
+                            as={Link}
+                            width="100%"
+                            to={`/swap?outputCurrency=${values.stakedToken.address}`}
+                          >
+                            {t('getToken', { currencySymbol: currencyA.symbol })}
+                          </ButtonSecondary>
                         )}
                       </>
                     )}
