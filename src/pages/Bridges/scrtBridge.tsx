@@ -25,6 +25,7 @@ import { Link as HistoryLink, RouteComponentProps } from 'react-router-dom'
 import { ArrowLeft } from 'react-feather'
 import { useNavigationActiveItemManager } from '../../state/navigation/hooks'
 import { useGetKplrConnect, useKeplrConnect } from '../../state/keplr/hooks'
+import KeplrConnect, { getKeplr, getKeplrClient } from '../../components/KeplrConnect'
 
 const NavigationWrapper = styled.div`
   display: flex;
@@ -187,6 +188,8 @@ export default function ScrtBridge({
       tokens = [YFL, secretYFL]
   }
   const { account } = useWeb3React()
+  const { keplrConnected, keplrAccount } = useGetKplrConnect()
+  const keplrClient = keplrConnected ? getKeplrClient(keplrAccount) : undefined
   const theme = useContext(ThemeContext)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const toggleWalletModal = useWalletModalToggle()
@@ -194,10 +197,6 @@ export default function ScrtBridge({
   const balances = useTokenBalances(account ?? undefined, [tokens[0]])
   const userBalance = action === 'mint' ? balances[tokens[0].address] : undefined
   const outputBalance = action === 'mint' ? undefined : balances[tokens[0].address]
-  const web3 = new Web3(Web3.givenProvider)
-  const provider = web3.currentProvider
-  const keplrWalletConnect = useKeplrConnect()
-  const keplrWallet = useGetKplrConnect()
   const { independentField, typedValue } = useMintState()
   const { dependentField, currencies, parsedAmounts, noLiquidity, currencyBalances } = useDerivedMintInfo(
     action === 'mint' ? (inputCurrency === 'ETH' ? ETHER ?? undefined : tokens[0] ?? undefined) : undefined,
@@ -226,6 +225,8 @@ export default function ScrtBridge({
   useEffect(() => {
     newActive(acitveId)
   })
+
+  console.log(keplrClient)
 
   return (
     <>
@@ -303,16 +304,22 @@ export default function ScrtBridge({
                   id="mint-token-input"
                   showCommonBases
                 />
-                <KeplrHint>
-                  <Trans i18nKey="walletConnectDisclaimerScrtMintKeplr">
-                    To mint <strong>{{ outputCurrency }}</strong> you need to connect your
-                    <Link href="https://wallet.keplr.app/" target="_blank">
-                      Keplr Wallet
-                    </Link>
-                    and select the &quot;Secret Network&quot;
-                  </Trans>
-                </KeplrHint>
-                <ButtonSecondary onClick={keplrWalletConnect}>{t('connectKeplrWallet')}</ButtonSecondary>
+                {keplrConnected ? (
+                  <Text>{keplrAccount}</Text>
+                ) : (
+                  <>
+                    <KeplrHint>
+                      <Trans i18nKey="walletConnectDisclaimerScrtMintKeplr">
+                        To mint <strong>{{ outputCurrency }}</strong> you need to connect your
+                        <Link href="https://wallet.keplr.app/" target="_blank">
+                          Keplr Wallet
+                        </Link>
+                        and select the &quot;Secret Network&quot;
+                      </Trans>
+                    </KeplrHint>
+                    <KeplrConnect />
+                  </>
+                )}
               </AutoColumn>
             ) : (
               <AutoColumn gap={'12px'}>

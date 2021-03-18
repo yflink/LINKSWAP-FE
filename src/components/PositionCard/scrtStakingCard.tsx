@@ -11,6 +11,7 @@ import styled from 'styled-components'
 import Card from '../Card'
 import { SCRTSVG } from '../SVG'
 import { useWalletModalToggle } from '../../state/application/hooks'
+import KeplrConnect from '../KeplrConnect'
 const StakingCard = styled(Card)<{ highlight?: boolean; show?: boolean }>`
   font-size: 14px;
   line-height: 18px;
@@ -107,7 +108,7 @@ export default function ScrtStakingCard({
         {showMore && (
           <AutoColumn gap="8px">
             <RowBetween marginTop="10px">
-              <ButtonLight onClick={toggleWalletModal}>{t('connectKeplrWallet')}</ButtonLight>
+              <KeplrConnect />
             </RowBetween>
             <RowBetween>
               <Text style={{ margin: '12px 0 0' }} fontSize="16px" fontWeight={600}>

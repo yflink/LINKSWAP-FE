@@ -1,24 +1,19 @@
 import { createReducer } from '@reduxjs/toolkit'
 import { connectKeplr } from './actions'
-import { SigningCosmWasmClient } from 'secretjs'
 
 export interface KeplrState {
   keplrConnected: boolean
-  keplrWallet: any
-  keplrOfflineSigner: any
-  secretjs?: SigningCosmWasmClient
-  isKeplrWallet: boolean
+  keplrAccount: string | undefined
 }
 
-const initialState: KeplrState = {
+export const initialState: KeplrState = {
   keplrConnected: false,
-  keplrWallet: {},
-  keplrOfflineSigner: {},
-  isKeplrWallet: false
+  keplrAccount: undefined
 }
 
 export default createReducer(initialState, builder =>
-  builder.addCase(connectKeplr, state => {
-    state.keplrConnected = !state.keplrConnected
+  builder.addCase(connectKeplr, (state, action) => {
+    state.keplrConnected = action.payload.keplrConnected
+    state.keplrAccount = action.payload.keplrAccount
   })
 )

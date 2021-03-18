@@ -5,6 +5,7 @@
   "private": true,
   "devDependencies": {
     "@ethersproject/experimental": "^5.0.7",
+    "@keplr-wallet/types": "^0.8.0",
     "@popperjs/core": "^2.6.0",
     "@reach/dialog": "^0.10.3",
     "@reach/portal": "^0.10.3",
