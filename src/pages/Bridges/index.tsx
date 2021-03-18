@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Text } from 'rebass'
 import { BlueCard, NavigationCard } from '../../components/Card'
 import { SwapPoolTabs } from '../../components/NavigationTabs'
@@ -83,7 +83,10 @@ export default function Bridges() {
     }
   ]
   const newActive = useNavigationActiveItemManager()
-  newActive('bridges')
+  useEffect(() => {
+    newActive('bridges')
+  })
+
   return (
     <>
       <NavigationCard>

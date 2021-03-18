@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Text } from 'rebass'
 import Card, { BlueCard } from '../../components/Card'
 import { SwapPoolTabs } from '../../components/NavigationTabs'
@@ -41,7 +41,9 @@ export default function Scrt() {
     }
   ]
   const newActive = useNavigationActiveItemManager()
-  newActive('bridges-scrt')
+  useEffect(() => {
+    newActive('bridges-scrt')
+  })
   return (
     <>
       <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.navigationBG, marginBottom: '16px' }}>

@@ -302,13 +302,15 @@ export function useDefaultsFromURLSearch():
       })
     )
 
+    let activeId
     if (parsed[Field.INPUT].currencyId?.toLowerCase() === '0x514910771af9ca656af840dff83e8264ecf986ca') {
-      newActive('swap-link')
+      activeId = 'swap-link'
     } else if (parsed[Field.INPUT].currencyId?.toLowerCase() === '0x7b760d06e401f85545f3b50c44bf5b05308b7b62') {
-      newActive('swap-yflusd')
+      activeId = 'swap-yflusd'
     } else {
-      newActive('swap')
+      activeId = 'swap'
     }
+    newActive(activeId)
 
     setResult({ inputCurrencyId: parsed[Field.INPUT].currencyId, outputCurrencyId: parsed[Field.OUTPUT].currencyId })
     // eslint-disable-next-line react-hooks/exhaustive-deps

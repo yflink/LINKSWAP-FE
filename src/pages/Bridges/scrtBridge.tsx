@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Link, Text } from 'rebass'
 import { BlueCard, NavigationCard } from '../../components/Card'
 import { SwapPoolTabs } from '../../components/NavigationTabs'
@@ -221,11 +221,12 @@ export default function ScrtBridge({
     }
   }, {})
 
-  console.log(keplrWallet)
-
   const newActive = useNavigationActiveItemManager()
   const acitveId = tokens[1].symbol ? `bridges-${tokens[1].symbol.toLowerCase()}` : 'bridges-secretyfl'
-  newActive(acitveId)
+  useEffect(() => {
+    newActive(acitveId)
+  })
+
   return (
     <>
       <NavigationCard>

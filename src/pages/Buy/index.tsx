@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import styled, { ThemeContext } from 'styled-components'
 import { SwapPoolTabs } from '../../components/NavigationTabs'
 import Card from '../../components/Card'
@@ -234,7 +234,9 @@ export default function Buy() {
       }
     }
   }
-  newActive(newId)
+  useEffect(() => {
+    newActive(newId)
+  })
   return (
     <>
       <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.navigationBG, marginBottom: '16px' }}>

@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { ThemeContext } from 'styled-components'
 import { SwapPoolTabs } from '../../components/NavigationTabs'
 import { NavigationCard } from '../../components/Card'
@@ -145,7 +145,10 @@ export default function StakeOverview({
       activeId = 'stake-inactive'
     }
   }
-  newActive(activeId)
+
+  useEffect(() => {
+    newActive(activeId)
+  })
   const { t } = useTranslation()
   return (
     <>

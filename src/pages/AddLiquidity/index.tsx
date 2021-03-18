@@ -1,7 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
 import { Currency, currencyEquals, ETHER, TokenAmount, WETH } from '@uniswap/sdk'
-import React, { useCallback, useContext, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { Plus } from 'react-feather'
 import ReactGA from 'react-ga'
 import { RouteComponentProps } from 'react-router-dom'
@@ -124,7 +124,10 @@ export default function AddLiquidity({
   const { t } = useTranslation()
 
   const newActive = useNavigationActiveItemManager()
-  newActive('liquidity-add')
+  useEffect(() => {
+    newActive('liquidity-add')
+  })
+
   async function onAdd() {
     if (!chainId || !library || !account) return
     const router = getRouterContract(chainId, library, account)
