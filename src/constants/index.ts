@@ -320,7 +320,7 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
 
 export const ACTIVE_REWARD_POOLS = [
   {
-    address: '0xcac7092de2d6af9dfad327dc0ebef4e099b2777e',
+    address: '0xCac7092dE2D6aF9DFad327dc0EBEF4e099b2777e',
     rewardsAddress: '0xB74071fBdc9574981bf85f5abd7967e3d3C20387',
     abi: 'StakingRewards',
     type: 'default'
