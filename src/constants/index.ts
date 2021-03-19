@@ -211,7 +211,7 @@ const WETH_ONLY: ChainTokenList = {
 // used to construct intermediary pairs for trading
 export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   ...WETH_ONLY,
-  [ChainId.MAINNET]: [WETH[ChainId.MAINNET], LINK, YFLUSD, vETH, vUSDC, stETH, ibETH, YFL]
+  [ChainId.MAINNET]: [WETH[ChainId.MAINNET], LINK, YFLUSD, YFL]
 }
 
 /**
@@ -260,7 +260,8 @@ export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } 
     [DRC, WETHER],
     [renDOGE, WETHER],
     [renDOGE, LINK],
-    [MPH, LINK]
+    [MPH, LINK],
+    [renDGB, WETHER]
   ]
 }
 
@@ -318,6 +319,12 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
 }
 
 export const ACTIVE_REWARD_POOLS = [
+  {
+    address: '0xcac7092de2d6af9dfad327dc0ebef4e099b2777e',
+    rewardsAddress: '0xB74071fBdc9574981bf85f5abd7967e3d3C20387',
+    abi: 'StakingRewards',
+    type: 'default'
+  },
   {
     address: '0x21dee38170F1e1F26baFf2C30C0fc8F8362b6961',
     rewardsAddress: '0x05C75D74197F44425059d71C4679E8Ae1D8F83f9',

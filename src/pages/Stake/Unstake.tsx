@@ -11,7 +11,7 @@ import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import { SwapPoolTabs } from '../../components/NavigationTabs'
 import { RowBetween } from '../../components/Row'
 import { useTranslation } from 'react-i18next'
-import { ACTIVE_REWARD_POOLS, LINK, SINGLE_POOLS, sYFL, UNI_POOLS, YFL, YFLUSD, yYFL } from '../../constants'
+import { ACTIVE_REWARD_POOLS, SINGLE_POOLS, UNI_POOLS, YFL, yYFL } from '../../constants'
 import { useActiveWeb3React } from '../../hooks'
 import { useCurrency, useToken } from '../../hooks/Tokens'
 import { useWalletModalToggle } from '../../state/application/hooks'
@@ -299,9 +299,9 @@ export default function Unstake({
         }
       })
     }
-  }, [account, liquidityToken, chainId, library, currentAbi, pool.rewardsAddress, found])
+  }, [account, liquidityToken, chainId, library, currentAbi, pool.rewardsAddress, found, isGov])
 
-  if (userBalance === 0) {
+  if (userBalance === 0 && !fetchingyYflBalance) {
     if (typeof yYflBalance[yYFL.address] !== 'undefined') {
       const currentYYflBalance = yYflBalance[yYFL.address]?.toSignificant(6) ?? 0
       setUserBalance(Number(currentYYflBalance))
