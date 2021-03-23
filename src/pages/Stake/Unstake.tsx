@@ -11,7 +11,7 @@ import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import { SwapPoolTabs } from '../../components/NavigationTabs'
 import { RowBetween } from '../../components/Row'
 import { useTranslation } from 'react-i18next'
-import { ACTIVE_REWARD_POOLS, SINGLE_POOLS, UNI_POOLS, YFL } from '../../constants'
+import { ACTIVE_REWARD_POOLS, SINGLE_POOLS, UNI_POOLS, YFL, yYFL } from '../../constants'
 import { useActiveWeb3React } from '../../hooks'
 import { useCurrency, useToken } from '../../hooks/Tokens'
 import { useWalletModalToggle } from '../../state/application/hooks'
@@ -26,7 +26,7 @@ import QuestionHelper from '../../components/QuestionHelper'
 import { WrappedTokenInfo } from '../../state/lists/hooks'
 import ReactGA from 'react-ga'
 import FullStakingCard from '../../components/PositionCard/fullStakingCard'
-import { useCurrencyBalance } from '../../state/wallet/hooks'
+import { useCurrencyBalance, useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks'
 import { useTransactionAdder } from '../../state/transactions/hooks'
 import hexStringToNumber from '../../utils/hexStringToNumber'
 import SingleStakingCard from '../../components/PositionCard/singleStakingCard'
@@ -186,6 +186,7 @@ export default function Unstake({
 
   const addTransaction = useTransactionAdder()
   const { t } = useTranslation()
+  const [yYflBalance, fetchingyYflBalance] = useTokenBalancesWithLoadingIndicator(account ?? undefined, [yYFL])
 
   const { [Field.CURRENCY_A]: parsedAmountA } = parsedAmounts
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, liquidityToken ?? undefined)
@@ -287,16 +288,25 @@ export default function Unstake({
   const stakingValues = pool
 
   useMemo(() => {
-    if (!found || !chainId || !library || !account || !liquidityToken) return
-    const rewardsContract = getContract(pool.rewardsAddress, currentAbi, library, account)
-    const method: (...args: any) => Promise<BigNumber> = rewardsContract.balanceOf
-    const args: Array<string | string[] | number> = [account]
-    method(...args).then(response => {
-      if (BigNumber.isBigNumber(response)) {
-        setUserBalance(hexStringToNumber(response.toHexString(), liquidityToken.decimals))
-      }
-    })
-  }, [account, liquidityToken, chainId, library, currentAbi, pool.rewardsAddress, found])
+    if (!isGov) {
+      if (!found || !chainId || !library || !account || !liquidityToken) return
+      const rewardsContract = getContract(pool.rewardsAddress, currentAbi, library, account)
+      const method: (...args: any) => Promise<BigNumber> = rewardsContract.balanceOf
+      const args: Array<string | string[] | number> = [account]
+      method(...args).then(response => {
+        if (BigNumber.isBigNumber(response)) {
+          setUserBalance(hexStringToNumber(response.toHexString(), liquidityToken.decimals))
+        }
+      })
+    }
+  }, [account, liquidityToken, chainId, library, currentAbi, pool.rewardsAddress, found, isGov])
+
+  if (userBalance === 0 && !fetchingyYflBalance) {
+    if (typeof yYflBalance[yYFL.address] !== 'undefined') {
+      const currentYYflBalance = yYflBalance[yYFL.address]?.toSignificant(6) ?? 0
+      setUserBalance(Number(currentYYflBalance))
+    }
+  }
 
   useMemo(() => {
     if (balance !== userBalance) {
@@ -354,7 +364,7 @@ export default function Unstake({
                 value={formattedAmounts[Field.CURRENCY_A]}
                 onUserInput={onFieldAInput}
                 onMax={() => {
-                  onFieldAInput(String(userBalance) ?? '')
+                  onFieldAInput(userBalance.toPrecision(6) ?? '')
                 }}
                 showMaxButton={!atMaxAmounts[Field.CURRENCY_A]}
                 currency={currencies[Field.CURRENCY_A]}
