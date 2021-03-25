@@ -182,7 +182,7 @@ export const secretLINK = {
 }
 
 export const secretYFL = {
-  address: '0x3506424f91fd33084466f402d5d97f05f8e3b4af',
+  address: 'secret1jk0tw00vs23n8jwqdzrxtln6ww2a3k6em7s0p2',
   decimals: 18,
   symbol: 'secretYFL',
   name: 'Secret YFLink'

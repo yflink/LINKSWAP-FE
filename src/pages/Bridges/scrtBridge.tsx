@@ -6,7 +6,7 @@ import AppBody from '../AppBody'
 import styled, { ThemeContext } from 'styled-components'
 import { Loading } from '@renproject/react-components'
 import { useWeb3React } from '@web3-react/core'
-import { ButtonLight, ButtonSecondary } from '../../components/Button'
+import { ButtonLight } from '../../components/Button'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { Trans, useTranslation } from 'react-i18next'
 import { AutoColumn } from '../../components/Column'
@@ -14,7 +14,6 @@ import { RowBetween } from '../../components/Row'
 import Question from '../../components/QuestionHelper'
 import { useTokenBalances } from '../../state/wallet/hooks'
 import { LINK, secretETH, secretLINK, secretYFL, WETHER, YFL } from '../../constants'
-import Web3 from 'web3'
 import { TYPE } from '../../theme'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import { Field } from '../../state/mint/actions'
@@ -24,8 +23,9 @@ import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import { Link as HistoryLink, RouteComponentProps } from 'react-router-dom'
 import { ArrowLeft } from 'react-feather'
 import { useNavigationActiveItemManager } from '../../state/navigation/hooks'
-import { useGetKplrConnect, useKeplrConnect } from '../../state/keplr/hooks'
-import KeplrConnect, { getKeplr, getKeplrClient } from '../../components/KeplrConnect'
+import { useGetKplrConnect } from '../../state/keplr/hooks'
+import KeplrConnect, { getKeplrClient } from '../../components/KeplrConnect'
+import { shortenScrtAddress } from '../../utils/scrtWallet'
 
 const NavigationWrapper = styled.div`
   display: flex;
@@ -305,7 +305,14 @@ export default function ScrtBridge({
                   showCommonBases
                 />
                 {keplrConnected ? (
-                  <Text>{keplrAccount}</Text>
+                  <RowBetween>
+                    <Text>
+                      <strong>{t('scrtAddress')}</strong>
+                      <br />
+                      <span style={{ wordBreak: 'break-all', fontSize: '14px' }}>{keplrAccount}</span>
+                    </Text>
+                    <Question text={t('scrtAddressDescription')} />
+                  </RowBetween>
                 ) : (
                   <>
                     <KeplrHint>

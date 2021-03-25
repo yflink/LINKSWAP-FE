@@ -484,5 +484,8 @@
   "bridgeScrt": "{{inputCurrency}} Bridge",
   "yourTokenBalance": "Your {{currency}} balance: {{balance}} {{currency}}",
   "connectKeplrWallet": "Connect Keplr Wallet",
-  "walletConnectDisclaimerScrtMintKeplr": "To mint <1>{{outputCurrency}}</1> you need to connect your <3>Keplr Wallet</3> and select the \"Secret Network\"."
+  "walletConnectDisclaimerScrtMintKeplr": "To mint <1>{{outputCurrency}}</1> you need to connect your <3>Keplr Wallet</3> and select the \"Secret Network\".",
+  "scrtAddress": "Recipient address:",
+  "scrtAddressDescription": "Your wallet address detected from the connected Keplr wallet, will be used as the recipient of the minted SNIP-20 tokens."
+
 }
