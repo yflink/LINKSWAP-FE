@@ -874,6 +874,15 @@ export default function Navigation() {
               </SubNavigationElement>
               <SubNavigationElement>
                 <StyledNavLink
+                  id={'bridges-renluna'}
+                  to={'/bridges/ren/luna'}
+                  isActive={() => active === 'bridges-renluna'}
+                >
+                  <NavLabel>renLUNA</NavLabel>
+                </StyledNavLink>
+              </SubNavigationElement>
+              <SubNavigationElement>
+                <StyledNavLink
                   id={'bridges-renzec'}
                   to={'/bridges/ren/zec'}
                   isActive={() => active === 'bridges-renzec'}
