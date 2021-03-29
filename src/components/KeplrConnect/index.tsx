@@ -39,12 +39,15 @@ export async function getKeplr(): Promise<Keplr | undefined> {
 export default function KeplrConnect() {
   const { t } = useTranslation()
   const newKeplrConnect = useKeplrConnect()
+  let keplerInstalled
 
   async function keplrWalletConnect() {
     const { keplr, getOfflineSigner } = window
     if (!keplr) {
+      keplerInstalled = false
       alert('Please install keplr extension')
     } else {
+      keplerInstalled = true
       const chainId = 'secret-2'
       await keplr.enable(chainId)
       const offlineSigner = getOfflineSigner ? getOfflineSigner(chainId) : undefined
@@ -54,5 +57,13 @@ export default function KeplrConnect() {
     }
   }
 
-  return <ButtonSecondary onClick={keplrWalletConnect}>{t('connectKeplrWallet')}</ButtonSecondary>
+  return (
+    <>
+      {keplerInstalled ? (
+        <ButtonSecondary onClick={keplrWalletConnect}>{t('connectKeplrWallet')}</ButtonSecondary>
+      ) : (
+        <ButtonSecondary onClick={keplrWalletConnect}>{t('installKeplr')}</ButtonSecondary>
+      )}
+    </>
+  )
 }

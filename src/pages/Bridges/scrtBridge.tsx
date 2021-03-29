@@ -6,7 +6,7 @@ import AppBody from '../AppBody'
 import styled, { ThemeContext } from 'styled-components'
 import { Loading } from '@renproject/react-components'
 import { useWeb3React } from '@web3-react/core'
-import { ButtonLight } from '../../components/Button'
+import { ButtonLight, ButtonPrimary } from '../../components/Button'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { Trans, useTranslation } from 'react-i18next'
 import { AutoColumn } from '../../components/Column'
@@ -26,6 +26,9 @@ import { useNavigationActiveItemManager } from '../../state/navigation/hooks'
 import { useGetKplrConnect } from '../../state/keplr/hooks'
 import KeplrConnect, { getKeplrClient } from '../../components/KeplrConnect'
 import { shortenScrtAddress } from '../../utils/scrtWallet'
+import BigNumber from 'bignumber.js'
+import { startBurn } from '../../utils/mint'
+import { defaultMintChain } from '../../utils/assets'
 
 const NavigationWrapper = styled.div`
   display: flex;
@@ -226,7 +229,9 @@ export default function ScrtBridge({
     newActive(acitveId)
   })
 
-  console.log(keplrClient)
+  async function mintTokens() {
+    console.log('mintTokens')
+  }
 
   return (
     <>
@@ -301,18 +306,40 @@ export default function ScrtBridge({
                   }}
                   showMaxButton={!atMaxAmounts[Field.CURRENCY_A]}
                   currency={currencies[Field.CURRENCY_A]}
-                  id="mint-token-input"
+                  id={`mint-${currencies[Field.CURRENCY_A]?.symbol}-src-token`}
                   showCommonBases
                 />
                 {keplrConnected ? (
-                  <RowBetween>
-                    <Text>
-                      <strong>{t('scrtAddress')}</strong>
-                      <br />
-                      <span style={{ wordBreak: 'break-all', fontSize: '14px' }}>{keplrAccount}</span>
-                    </Text>
-                    <Question text={t('scrtAddressDescription')} />
-                  </RowBetween>
+                  <>
+                    <RowBetween>
+                      <Text>
+                        <strong>{t('scrtAddress')}</strong>
+                        <br />
+                        <span style={{ wordBreak: 'break-all', fontSize: '14px' }}>{keplrAccount}</span>
+                      </Text>
+                      <Question text={t('scrtAddressDescription')} />
+                    </RowBetween>
+                    {formattedAmounts[Field.CURRENCY_A] ? (
+                      <>
+                        {Number(formattedAmounts[Field.CURRENCY_A]) >
+                        Number(maxAmounts[Field.CURRENCY_A]?.toExact()) ? (
+                          <ButtonPrimary disabled={true}>
+                            {t('insufficientCurrencyBalance', { inputCurrency: currencies[Field.CURRENCY_A]?.symbol })}
+                          </ButtonPrimary>
+                        ) : (
+                          <ButtonPrimary
+                            onClick={() => {
+                              mintTokens()
+                            }}
+                          >
+                            {t('mint')}
+                          </ButtonPrimary>
+                        )}
+                      </>
+                    ) : (
+                      <ButtonPrimary disabled={true}>{t('enterAmount')}</ButtonPrimary>
+                    )}
+                  </>
                 ) : (
                   <>
                     <KeplrHint>
