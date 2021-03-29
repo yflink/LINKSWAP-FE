@@ -37,11 +37,6 @@ export default function Ren() {
       type: 'ren'
     },
     {
-      url: 'bridges/ren/dgb',
-      currency0: { symbol: 'DGB', decimals: renDGB.decimals },
-      currency1: unwrappedToken(renDGB)
-    },
-    {
       url: 'bridges/ren/doge',
       currency0: { symbol: 'DOGE', decimals: renDOGE.decimals },
       currency1: unwrappedToken(renDOGE),
@@ -56,7 +51,8 @@ export default function Ren() {
     {
       url: 'bridges/ren/luna',
       currency0: { symbol: 'LUNA', decimals: renLUNA.decimals },
-      currency1: unwrappedToken(renLUNA)
+      currency1: unwrappedToken(renLUNA),
+      type: 'ren'
     },
     {
       url: 'bridges/ren/zec',

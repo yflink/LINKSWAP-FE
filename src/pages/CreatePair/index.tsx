@@ -299,7 +299,7 @@ export default function CreateNewPool({
     [onFieldAInput, onFieldBInput, rate]
   )
 
-  let error = false
+  let error: any = false
   if (Number(formattedAmounts[Field.CURRENCY_A]) > Number(maxAmounts[Field.CURRENCY_A]?.toExact()) && step === 2) {
     error = t('insufficientCurrencyBalance', { inputCurrency: currencyA?.symbol })
   }

@@ -9,7 +9,7 @@ import { AutoColumn } from '../../components/Column'
 import { RowBetween } from '../../components/Row'
 import Question from '../../components/QuestionHelper'
 import { TYPE } from '../../theme'
-import { renBCH, renBTC, renDGB, renDOGE, renFIL, renZEC } from '../../constants'
+import { renBCH, renBTC, renDGB, renDOGE, renFIL, renLUNA, renZEC } from '../../constants'
 import BridgeCurrencyLogo from '../../components/BridgeLogo'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
 import { useNavigationActiveItemManager } from '../../state/navigation/hooks'
@@ -46,6 +46,12 @@ export default function Bridges() {
       url: 'bridges/ren/fil',
       currency0: { symbol: 'FIL', decimals: renFIL.decimals },
       currency1: unwrappedToken(renFIL),
+      type: 'ren'
+    },
+    {
+      url: 'bridges/ren/luna',
+      currency0: { symbol: 'LUNA', decimals: renLUNA.decimals },
+      currency1: unwrappedToken(renLUNA),
       type: 'ren'
     },
     {
