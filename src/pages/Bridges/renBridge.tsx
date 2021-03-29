@@ -425,7 +425,7 @@ export default function RenBridge({
         {!account ? (
           <AutoColumn gap={'12px'}>
             <Text>{t('walletConnectDisclaimerBridge')}</Text>
-            <ButtonLight onClick={toggleWalletModal}>{t('connectWallet')}</ButtonLight>
+            <ButtonSecondary onClick={toggleWalletModal}>{t('connectWallet')}</ButtonSecondary>
           </AutoColumn>
         ) : (
           <>
