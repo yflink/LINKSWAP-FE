@@ -27,7 +27,7 @@ const FormErrorInnerAlertTriangle = styled.div`
   align-items: center;
   justify-content: center;
   margin-inline-end: 12px;
-  border-radius: 6px;
+  border-radius: ${({ theme }) => theme.borderRadius};
   min-width: 48px;
   height: 48px;
 `

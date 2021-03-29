@@ -51,7 +51,7 @@ const Container = styled.div`
   border: 1px solid ${({ theme }) => theme.appCurrencyInputBG};
   background: ${({ theme }) => theme.appCurrencyInputBG};
   overflow: hidden;
-  border-radius: 6px;
+  border-radius: ${({ theme }) => theme.borderRadius};
   width: 100%;
   margin: 0 0 12px;
 `
@@ -81,7 +81,7 @@ const CurrencySelect = styled.button<{ selected: boolean; primary?: boolean; lef
   align-items: center;
   justify-content: center;
   height: 48px;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 500;
   background: ${({ selected, primary, theme }) => {
     if (selected) {
@@ -96,7 +96,12 @@ const CurrencySelect = styled.button<{ selected: boolean; primary?: boolean; lef
   }};
   color: ${({ selected, theme }) =>
     selected ? theme.appCurrencyInputTextColorActive : theme.appCurrencyInputTextColor};
-  border-radius: ${({ left, right }) => (left ? '6px 0px 0px 6px' : right ? '0px 6px 6px 0px' : '6px')};
+  border-radius: ${({ left, right, theme }) =>
+    left
+      ? `${theme.borderRadius} 0px 0px ${theme.borderRadius}`
+      : right
+      ? `0px ${theme.borderRadius} ${theme.borderRadius} 0px`
+      : theme.borderRadius};
   box-shadow: ${({ selected }) => (selected ? 'none' : '0px 6px 10px rgba(0, 0, 0, 0.075)')};
   outline: none;
   cursor: pointer;
@@ -104,7 +109,12 @@ const CurrencySelect = styled.button<{ selected: boolean; primary?: boolean; lef
   border: none;
   padding: 0 0.5rem;
   [dir='rtl'] & {
-    border-radius: ${({ left, right }) => (left ? '0px 6px 6px 0px' : right ? '6px 0px 0px 6px' : '6px')};
+    border-radius: ${({ left, right, theme }) =>
+      left
+        ? `0px ${theme.borderRadius} ${theme.borderRadius} 0px`
+        : right
+        ? `${theme.borderRadius} 0px 0px ${theme.borderRadius}`
+        : theme.borderRadius};
   }
   :focus,
   :hover {
@@ -122,9 +132,9 @@ const CurrencySelect = styled.button<{ selected: boolean; primary?: boolean; lef
   }
 `
 
-const StyledTokenName = styled.div<{ active?: boolean }>`
+const StyledTokenName = styled.div`
   margin: 0 0.25rem 0 0.75rem;
-  font-size: ${({ active }) => (active ? '20px' : '20px')};
+  font-size: 20px;
 `
 
 export default function Buy() {
@@ -143,6 +153,7 @@ export default function Buy() {
   const theme = useContext(ThemeContext)
   const { account } = useActiveWeb3React()
   const [amount, setAmount] = useState('')
+  const [currencyChanged, setCurrencyChanged] = useState(false)
   const [currency, setCurrency] = useState('Ethereum')
   const [currencySymbol, setCurrencySymbol] = useState('ETH')
   const ethDestination = account ? 'ethereum:' + account : ''
@@ -207,18 +218,20 @@ export default function Buy() {
   const parsedQs = useParsedQueryString()
   let newId = 'buy'
   const newActive = useNavigationActiveItemManager()
-  if (typeof parsedQs['currency'] !== 'undefined' && typeof parsedQs['currency'] === 'string') {
-    if (parsedQs['currency'].toLowerCase() === 'link') {
-      newId = 'buy-link'
-      if (currency !== 'Chainlink') {
-        setCurrency('Chainlink')
-        setCurrencySymbol('LINK')
+  if (!currencyChanged) {
+    if (typeof parsedQs['currency'] !== 'undefined' && typeof parsedQs['currency'] === 'string') {
+      if (parsedQs['currency'].toLowerCase() === 'link') {
+        newId = 'buy-link'
+        if (currency !== 'Chainlink') {
+          setCurrency('Chainlink')
+          setCurrencySymbol('LINK')
+        }
       }
-    }
-  } else {
-    if (currency !== 'Ethereum') {
-      setCurrency('Ethereum')
-      setCurrencySymbol('ETH')
+    } else {
+      if (currency !== 'Ethereum') {
+        setCurrency('Ethereum')
+        setCurrencySymbol('ETH')
+      }
     }
   }
   newActive(newId)
@@ -238,6 +251,7 @@ export default function Buy() {
                 left
                 className="open-currency-select-button"
                 onClick={() => {
+                  setCurrencyChanged(true)
                   setCurrency('Ethereum')
                   setCurrencySymbol('ETH')
                 }}
@@ -252,6 +266,7 @@ export default function Buy() {
                 right
                 className="open-currency-select-button"
                 onClick={() => {
+                  setCurrencyChanged(true)
                   setCurrency('Chainlink')
                   setCurrencySymbol('LINK')
                 }}
@@ -329,9 +344,7 @@ export default function Buy() {
                     <ButtonLight onClick={toggleWalletModal}>{t('connectWallet')}</ButtonLight>
                   ) : (
                     <ButtonPrimary disabled={Boolean(disableBuy)} id="submit" style={{ padding: 16 }}>
-                      <Text fontWeight={500} fontSize={20}>
-                        {t('buyCurrency', { currency: currency })}
-                      </Text>
+                      {t('buyCurrency', { currency: currency })}
                     </ButtonPrimary>
                   )}
                 </Row>

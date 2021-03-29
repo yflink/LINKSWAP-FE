@@ -12,11 +12,11 @@ const Base = styled(RebassButton)<{
   borderRadius?: string
   altDisabledStyle?: boolean
 }>`
-  padding: ${({ padding }) => (padding ? padding : '18px')};
+  padding: ${({ padding }) => (padding ? padding : '10px')};
   width: ${({ width }) => (width ? width : '100%')};
   font-weight: 500;
   text-align: center;
-  border-radius: 6px;
+  border-radius: ${({ theme }) => theme.borderRadius};
   border-radius: ${({ borderRadius }) => borderRadius && borderRadius};
   outline: none;
   border: 1px solid transparent;
@@ -41,7 +41,8 @@ const Base = styled(RebassButton)<{
 export const ButtonPrimary = styled(Base)`
   background: ${({ theme }) => theme.buttonBG};
   color: ${({ theme }) => theme.buttonTextColor};
-  font-size: 16px;
+  font-size: 18px;
+  padding: 18px;
   &:focus {
     box-shadow: 0 0 0 1pt ${({ theme }) => theme.buttonBGHover};
     background: ${({ theme }) => theme.buttonBGHover};
@@ -71,7 +72,7 @@ export const ButtonPrimary = styled(Base)`
 export const ButtonLight = styled(Base)`
   background: ${({ theme }) => theme.buttonSecondaryBG};
   color: ${({ theme }) => theme.buttonSecondaryTextColor};
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 500;
   &:focus {
     box-shadow: 0 0 0 1pt ${({ theme, disabled }) => !disabled && darken(0.03, theme.buttonSecondaryBG)};
@@ -99,7 +100,7 @@ export const ButtonLight = styled(Base)`
 export const ButtonGray = styled(Base)`
   background: ${({ theme }) => theme.buttonNavigationBG};
   color: ${({ theme }) => theme.buttonNavigationTextColor};
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 500;
   &:focus {
     box-shadow: 0 0 0 1pt ${({ theme, disabled }) => !disabled && darken(0.05, theme.buttonNavigationBGHover)};
@@ -118,8 +119,8 @@ export const ButtonSecondary = styled(Base)`
   background: ${({ theme }) => theme.buttonSecondaryBG};
   border: 1px solid ${({ theme }) => theme.buttonSecondaryBorder};
   color: ${({ theme }) => theme.buttonSecondaryTextColor};
-  font-size: 16px;
-  border-radius: 6px;
+  font-size: 18px;
+  border-radius: ${({ theme }) => theme.borderRadius};
   padding: ${({ padding }) => (padding ? padding : '10px')};
 
   &:focus {
@@ -171,6 +172,7 @@ export const ButtonOutlined = styled(Base)`
   border: 1px solid ${({ theme }) => theme.buttonOutlinedBorder};
   background: transparent;
   color: ${({ theme }) => theme.buttonOutlinedTextColor};
+  font-size: 18px;
 
   &:focus,
   &:hover,
@@ -237,6 +239,7 @@ const ButtonConfirmedStyle = styled(Base)`
 const ButtonErrorStyle = styled(Base)`
   background: ${({ theme }) => theme.red1};
   border: 1px solid ${({ theme }) => theme.red1};
+  font-size: 18px;
 
   &:focus {
     box-shadow: 0 0 0 1pt ${({ theme }) => darken(0.05, theme.red1)};

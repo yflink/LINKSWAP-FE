@@ -63,7 +63,7 @@ export default function PreviewListing() {
           padding: '24px',
           marginTop: '-6px',
           zIndex: 2,
-          borderRadius: '0px 0px 6px 6px'
+          borderRadius: `0px 0px ${theme.borderRadius} ${theme.borderRadius}`
         }}
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '32px' }}>
@@ -75,7 +75,7 @@ export default function PreviewListing() {
             </Text>
           </div>
         </div>
-        <ButtonPrimary>{ t('createPool') }</ButtonPrimary>
+        <ButtonPrimary>{t('createPool')}</ButtonPrimary>
       </div>
     </>
   )

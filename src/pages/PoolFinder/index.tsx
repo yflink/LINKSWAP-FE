@@ -1,5 +1,5 @@
 import { Currency, ETHER, JSBI, TokenAmount } from '@uniswap/sdk'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { Plus } from 'react-feather'
 import { Text } from 'rebass'
 import { ButtonDropdownLight } from '../../components/Button'
@@ -20,6 +20,7 @@ import AppBody from '../AppBody'
 import { Dots } from '../Pool/styleds'
 import { useTranslation } from 'react-i18next'
 import { useNavigationActiveItemManager } from '../../state/navigation/hooks'
+import { ThemeContext } from 'styled-components'
 
 enum Fields {
   TOKEN0 = 0,
@@ -78,6 +79,8 @@ export default function PoolFinder() {
     </LightCard>
   )
   const newActive = useNavigationActiveItemManager()
+  const theme = useContext(ThemeContext)
+
   newActive('liquidity-import')
   return (
     <AppBody>
@@ -92,12 +95,12 @@ export default function PoolFinder() {
           {currency0 ? (
             <Row>
               <CurrencyLogo currency={currency0} />
-              <Text fontWeight={500} fontSize={20} style={{ marginInlineStart: '6px' }}>
+              <Text fontWeight={500} fontSize={16} style={{ marginInlineStart: '6px' }}>
                 {currency0.symbol}
               </Text>
             </Row>
           ) : (
-            <Text fontWeight={500} fontSize={20} style={{ marginInlineStart: '6px' }}>
+            <Text fontWeight={500} fontSize={16} style={{ marginInlineStart: '6px' }}>
               {t('selectToken')}
             </Text>
           )}
@@ -116,12 +119,12 @@ export default function PoolFinder() {
           {currency1 ? (
             <Row>
               <CurrencyLogo currency={currency1} />
-              <Text fontWeight={500} fontSize={20} style={{ marginInlineStart: '12px' }}>
+              <Text fontWeight={500} fontSize={16} style={{ marginInlineStart: '12px' }}>
                 {currency1.symbol}
               </Text>
             </Row>
           ) : (
-            <Text fontWeight={500} fontSize={20} style={{ marginInlineStart: '6px' }}>
+            <Text fontWeight={500} fontSize={16} style={{ marginInlineStart: '6px' }}>
               {t('selectToken')}
             </Text>
           )}
@@ -129,7 +132,12 @@ export default function PoolFinder() {
 
         {hasPosition && (
           <ColumnCenter
-            style={{ justifyItems: 'center', backgroundColor: '', padding: '12px 0px', borderRadius: '12px' }}
+            style={{
+              justifyItems: 'center',
+              backgroundColor: '',
+              padding: '12px 0px',
+              borderRadius: theme.borderRadius
+            }}
           >
             <Text textAlign="center" fontWeight={500}>
               {t('poolFound')}

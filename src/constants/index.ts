@@ -211,7 +211,7 @@ const WETH_ONLY: ChainTokenList = {
 // used to construct intermediary pairs for trading
 export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   ...WETH_ONLY,
-  [ChainId.MAINNET]: [WETH[ChainId.MAINNET], LINK, YFLUSD, vETH, vUSDC, stETH, ibETH, YFL]
+  [ChainId.MAINNET]: [WETH[ChainId.MAINNET], LINK, YFLUSD, YFL]
 }
 
 /**
@@ -260,7 +260,8 @@ export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } 
     [DRC, WETHER],
     [renDOGE, WETHER],
     [renDOGE, LINK],
-    [MPH, LINK]
+    [MPH, LINK],
+    [renDGB, WETHER]
   ]
 }
 
@@ -318,6 +319,12 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
 }
 
 export const ACTIVE_REWARD_POOLS = [
+  {
+    address: '0xCac7092dE2D6aF9DFad327dc0EBEF4e099b2777e',
+    rewardsAddress: '0xB74071fBdc9574981bf85f5abd7967e3d3C20387',
+    abi: 'StakingRewards',
+    type: 'default'
+  },
   {
     address: '0x21dee38170F1e1F26baFf2C30C0fc8F8362b6961',
     rewardsAddress: '0x05C75D74197F44425059d71C4679E8Ae1D8F83f9',
@@ -454,6 +461,15 @@ export const SINGLE_POOLS: Record<string, any> = {
     abi: 'governancePool',
     type: 'gov'
   },
+  MASQMASQ: {
+    rewardsAddress: '0x75A43cFA0C104B021D4359B01a6dd611795e55c0',
+    tokens: [MASQ, WETHER],
+    stakedToken: MASQ,
+    rewardsToken: MASQ,
+    balance: 0,
+    abi: 'singlePool',
+    type: 'single'
+  },
   ALINKV1: {
     rewardsAddress: '0x904f81eff3c35877865810cca9a63f2d9cb7d4dd',
     poolAddress: '0x904f81eff3c35877865810cca9a63f2d9cb7d4dd',
@@ -514,15 +530,6 @@ export const SINGLE_POOLS: Record<string, any> = {
     rewardsAddress: '0xEB94b4a6700F5b5DaDB9ecb2973bEACB71A17bCD',
     tokens: [SYAX, WETHER],
     stakedToken: SYAX,
-    rewardsToken: YFLUSD,
-    balance: 0,
-    abi: 'singlePool',
-    type: 'single'
-  },
-  MASQYFLUSD: {
-    rewardsAddress: '0x77eAddB37d116D0272fda5d6441e4423950C8427',
-    tokens: [MASQ, WETHER],
-    stakedToken: MASQ,
     rewardsToken: YFLUSD,
     balance: 0,
     abi: 'singlePool',

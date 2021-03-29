@@ -9,7 +9,7 @@ import { AutoColumn } from '../../components/Column'
 import { RowBetween } from '../../components/Row'
 import Question from '../../components/QuestionHelper'
 import { useNavigationActiveItemManager } from '../../state/navigation/hooks'
-import { numberToPercent, numberToSignificant, numberToUsd } from '../../utils/numberUtils'
+import { displayNumber, numberToPercent, numberToSignificant, numberToUsd } from '../../utils/numberUtils'
 import { ButtonSecondary } from '../../components/Button'
 import { Link } from 'react-router-dom'
 import { useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks'
@@ -78,7 +78,7 @@ const VotingButton = styled.a`
   width: 100%;
   font-weight: 500;
   text-align: center;
-  border-radius: 6px;
+  border-radius: ${({ theme }) => theme.borderRadius};
   outline: none;
   border: 1px solid transparent;
   text-decoration: none;
@@ -89,7 +89,7 @@ const VotingButton = styled.a`
   position: relative;
   background: ${({ theme }) => theme.buttonBG};
   color: ${({ theme }) => theme.buttonTextColor};
-  font-size: 16px;
+  font-size: 18px;
   &:focus {
     box-shadow: 0 0 0 1pt ${({ theme }) => theme.buttonBGHover};
     background: ${({ theme }) => theme.buttonBGHover};
@@ -394,7 +394,7 @@ export default function StakeGovernance() {
                 <Loader />
               ) : (
                 <BalanceText>
-                  {totalStaked.toLocaleString('en-US') + ' ' + YFL.symbol}
+                  {displayNumber(totalStaked) + ' ' + YFL.symbol}
                   <br />
                   {numberToUsd(Number(govBalances[YFL.address]?.toSignificant(8)) * yflPriceUsd)}
                   <br />
@@ -483,7 +483,7 @@ export default function StakeGovernance() {
                     <Question text={t('stakeGovernanceVotingDescription')} />
                   </RowBetween>
                   <RowBetween>
-                    <VotingButton href="https://yflink.io/#/stake">{t('stakeGovernanceVoting')}</VotingButton>
+                    <VotingButton href="https://snapshot.page/#/yflink">{t('stakeGovernanceVoting')}</VotingButton>
                   </RowBetween>
                 </AutoColumn>
               </UserBalance>

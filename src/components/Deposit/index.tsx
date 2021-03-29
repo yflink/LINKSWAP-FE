@@ -41,7 +41,7 @@ const AddLiquidity = styled(NavLink)`
   background: ${({ theme }) => theme.buttonBG};
   max-width: 100%;
   text-align: center;
-  border-radius: 6px;
+  border-radius: ${({ theme }) => theme.borderRadius};
 
   &:hover {
     text-decoration: none;

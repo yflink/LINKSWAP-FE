@@ -13,7 +13,7 @@ import { BigNumber } from '@ethersproject/bignumber'
 import ReactGA from 'react-ga'
 import hexStringToNumber from '../../utils/hexStringToNumber'
 import { AutoColumn } from '../Column'
-import { numberToPercent, numberToSignificant, numberToUsd } from '../../utils/numberUtils'
+import { displayNumber, numberToPercent, numberToSignificant, numberToUsd } from '../../utils/numberUtils'
 import { Dots } from '../swap/styleds'
 import { RowBetween, RowFixed } from '../Row'
 import DoubleCurrencyLogo from '../DoubleLogo'
@@ -105,6 +105,7 @@ export default function FullStakingCard({
     totalLPSupply: 0,
     poolType: values.type,
     apy: 0,
+    notStarted: false,
     userShare: 0,
     lpTokenPrice: 0,
     stakePoolTotalDeposited: 0,
@@ -455,14 +456,14 @@ export default function FullStakingCard({
                 {information.apy > 0 ? (
                   <p style={{ margin: 0 }}>{t('apy', { apy: numberToPercent(information.apy) })}</p>
                 ) : (
-                  <Dots>{t('loading')}</Dots>
+                  <>{!information.notStarted && <Dots>{t('loading')}</Dots>}</>
                 )}
               </div>
             )}
             <RowFixed>
               <DoubleCurrencyLogo currency0={currencyA} currency1={currencyB} margin={true} size={22} />
               {!information.updated ? (
-                <Text fontWeight={500} fontSize={20}>
+                <Text fontWeight={500} fontSize={16}>
                   <Dots>{t('loading')}</Dots>
                 </Text>
               ) : (
@@ -488,12 +489,12 @@ export default function FullStakingCard({
               {Number(balance?.toSignificant(1)) > 0 && (
                 <RowBetween>
                   <Text>{t('stakableTokenAmount')}</Text>
-                  {Number(balance?.toSignificant(6))}
+                  {displayNumber(balance?.toSignificant(6))}
                 </RowBetween>
               )}
               {information.userBalance > 0 && (
                 <RowBetween>
-                  <Text>{t('stakedTokenAmount').toLocaleString('en-US')}</Text>
+                  <Text>{t('stakedTokenAmount')}</Text>
                   {numberToSignificant(information.userBalance)}
                 </RowBetween>
               )}
@@ -569,14 +570,14 @@ export default function FullStakingCard({
                   <Text>{numberToUsd(information.stakePoolTotalDeposited)}</Text>
                 </RowBetween>
               )}
-              {information.rewardInfo.length > 0 && !information.isInactive && (
+              {!information.notStarted && information.rewardInfo.length > 0 && !information.isInactive && (
                 <RowBetween style={{ alignItems: 'flex-start' }}>
                   <Text>{t('stakePoolRewards')}</Text>
                   <Text style={{ textAlign: 'end' }}>
                     {information.rewardInfo[0]['rate'] > 0 && (
                       <div>
                         {t('stakeRewardPerDay', {
-                          rate: information.rewardInfo[0].rate,
+                          rate: displayNumber(information.rewardInfo[0].rate),
                           currencySymbol: information.rewardInfo[0].symbol
                         })}
                       </div>
@@ -584,7 +585,7 @@ export default function FullStakingCard({
                     {information.rewardInfo.length > 1 && information.rewardInfo[1]['rate'] > 0 && (
                       <div style={{ textAlign: 'end' }}>
                         {t('stakeRewardPerDay', {
-                          rate: information.rewardInfo[1].rate,
+                          rate: displayNumber(information.rewardInfo[1].rate),
                           currencySymbol: information.rewardInfo[1].symbol
                         })}
                       </div>
@@ -598,11 +599,21 @@ export default function FullStakingCard({
                 </RowBetween>
               )}
               <RowBetween>
-                <Text>{t('timeRemaining')}</Text>
-                {information.poolType === 'syflPool' && isYFLUSD ? (
-                  <Countdown ends={information.periodFinish} format="DD[d] HH[h] mm[m] ss[s]" string="emissionDropIn" />
+                {information.notStarted ? (
+                  <Text>{t('notStarted')}</Text>
                 ) : (
-                  <Countdown ends={information.periodFinish} format="DD[d] HH[h] mm[m] ss[s]" string="endsIn" />
+                  <>
+                    <Text>{t('timeRemaining')}</Text>
+                    {information.poolType === 'syflPool' && isYFLUSD ? (
+                      <Countdown
+                        ends={information.periodFinish}
+                        format="DD[d] HH[h] mm[m] ss[s]"
+                        string="emissionDropIn"
+                      />
+                    ) : (
+                      <Countdown ends={information.periodFinish} format="DD[d] HH[h] mm[m] ss[s]" string="endsIn" />
+                    )}
+                  </>
                 )}
               </RowBetween>
               <RowBetween marginTop="10px">

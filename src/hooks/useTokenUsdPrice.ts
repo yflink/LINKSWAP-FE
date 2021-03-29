@@ -36,7 +36,10 @@ export function useTokenUsdPrices(): any {
                 decimals: token.token.decimals,
                 price: token.priceUSD
               }
-              tokenPrices[token.token.id] = tokenObject
+
+              if (tokenObject.price !== '0') {
+                tokenPrices[token.token.id] = tokenObject
+              }
             })
             return tokenPrices
           } else {

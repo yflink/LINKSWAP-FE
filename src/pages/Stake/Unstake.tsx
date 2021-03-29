@@ -1,18 +1,17 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
 import { TokenAmount, WETH } from '@uniswap/sdk'
-import React, { useContext, useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
-import { Text } from 'rebass'
-import styled, { ThemeContext } from 'styled-components'
+import styled from 'styled-components'
 import { ButtonLight, ButtonPrimary } from '../../components/Button'
-import Card from '../../components/Card'
+import { NavigationCard } from '../../components/Card'
 import { AutoColumn } from '../../components/Column'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import { SwapPoolTabs } from '../../components/NavigationTabs'
 import { RowBetween } from '../../components/Row'
 import { useTranslation } from 'react-i18next'
-import { ACTIVE_REWARD_POOLS, SINGLE_POOLS, UNI_POOLS, YFL } from '../../constants'
+import { ACTIVE_REWARD_POOLS, SINGLE_POOLS, UNI_POOLS, YFL, yYFL } from '../../constants'
 import { useActiveWeb3React } from '../../hooks'
 import { useCurrency, useToken } from '../../hooks/Tokens'
 import { useWalletModalToggle } from '../../state/application/hooks'
@@ -27,7 +26,7 @@ import QuestionHelper from '../../components/QuestionHelper'
 import { WrappedTokenInfo } from '../../state/lists/hooks'
 import ReactGA from 'react-ga'
 import FullStakingCard from '../../components/PositionCard/fullStakingCard'
-import { useCurrencyBalance } from '../../state/wallet/hooks'
+import { useCurrencyBalance, useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks'
 import { useTransactionAdder } from '../../state/transactions/hooks'
 import hexStringToNumber from '../../utils/hexStringToNumber'
 import SingleStakingCard from '../../components/PositionCard/singleStakingCard'
@@ -35,7 +34,7 @@ import SingleStakingCard from '../../components/PositionCard/singleStakingCard'
 const Tabs = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
   align-items: center;
-  border-radius: 6px;
+  border-radius: ${({ theme }) => theme.borderRadius};
   justify-content: space-evenly;
 `
 
@@ -53,7 +52,6 @@ export default function Unstake({
   const [userBalance, setUserBalance] = useState(0)
   const [unstaking, setUnstaking] = useState(false)
   const { account, chainId, library } = useActiveWeb3React()
-  const theme = useContext(ThemeContext)
   const currencyA = useCurrency(currencyIdA)
   const currencyB = useCurrency(currencyIdB)
   const [pool, setPool] = useState({
@@ -188,6 +186,7 @@ export default function Unstake({
 
   const addTransaction = useTransactionAdder()
   const { t } = useTranslation()
+  const [yYflBalance, fetchingyYflBalance] = useTokenBalancesWithLoadingIndicator(account ?? undefined, [yYFL])
 
   const { [Field.CURRENCY_A]: parsedAmountA } = parsedAmounts
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, liquidityToken ?? undefined)
@@ -197,16 +196,10 @@ export default function Unstake({
     if (!chainId || !library || !account || !parsedAmountA) return
     const router = getContract(rewardsContractAddress, currentAbi, library, account)
     const isDefault = currentAbi === StakingRewards
-    const estimate = isDefault
-      ? router.estimateGas.unstakeAndClaimRewards
-      : isGov
-      ? router.estimateGas.withdraw
-      : router.estimateGas.exit
+    const estimate = isDefault ? router.estimateGas.unstakeAndClaimRewards : router.estimateGas.withdraw
     const method: (...args: any) => Promise<TransactionResponse> = isDefault
       ? router.unstakeAndClaimRewards
-      : isGov
-      ? router.withdraw
-      : router.exit
+      : router.withdraw
     const args: Array<string> = isDefault || isGov ? [parsedAmountA.raw.toString()] : []
 
     const value: BigNumber | null = null
@@ -225,7 +218,7 @@ export default function Unstake({
               })
             } else {
               addTransaction(response, {
-                summary: t('unstakeAndClaimRewardsOnSingle', {
+                summary: t('unstakeOnSinglePool', {
                   currencyASymbol: currencyAsymbol,
                   amount: parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)
                 })
@@ -295,16 +288,25 @@ export default function Unstake({
   const stakingValues = pool
 
   useMemo(() => {
-    if (!found || !chainId || !library || !account || !liquidityToken) return
-    const rewardsContract = getContract(pool.rewardsAddress, currentAbi, library, account)
-    const method: (...args: any) => Promise<BigNumber> = rewardsContract.balanceOf
-    const args: Array<string | string[] | number> = [account]
-    method(...args).then(response => {
-      if (BigNumber.isBigNumber(response)) {
-        setUserBalance(hexStringToNumber(response.toHexString(), liquidityToken.decimals))
-      }
-    })
-  }, [account, liquidityToken, chainId, library, currentAbi, pool.rewardsAddress, found])
+    if (!isGov) {
+      if (!found || !chainId || !library || !account || !liquidityToken) return
+      const rewardsContract = getContract(pool.rewardsAddress, currentAbi, library, account)
+      const method: (...args: any) => Promise<BigNumber> = rewardsContract.balanceOf
+      const args: Array<string | string[] | number> = [account]
+      method(...args).then(response => {
+        if (BigNumber.isBigNumber(response)) {
+          setUserBalance(hexStringToNumber(response.toHexString(), liquidityToken.decimals))
+        }
+      })
+    }
+  }, [account, liquidityToken, chainId, library, currentAbi, pool.rewardsAddress, found, isGov])
+
+  if (userBalance === 0 && !fetchingyYflBalance) {
+    if (typeof yYflBalance[yYFL.address] !== 'undefined') {
+      const currentYYflBalance = yYflBalance[yYFL.address]?.toSignificant(6) ?? 0
+      setUserBalance(Number(currentYYflBalance))
+    }
+  }
 
   useMemo(() => {
     if (balance !== userBalance) {
@@ -318,9 +320,9 @@ export default function Unstake({
   } else {
     return (
       <>
-        <Card style={{ maxWidth: '420px', padding: '12px', backgroundColor: theme.navigationBG, marginBottom: '16px' }}>
+        <NavigationCard>
           <SwapPoolTabs active={'stake'} />
-        </Card>
+        </NavigationCard>
         <AppBody>
           <Tabs>
             {!isSingle ? (
@@ -362,7 +364,7 @@ export default function Unstake({
                 value={formattedAmounts[Field.CURRENCY_A]}
                 onUserInput={onFieldAInput}
                 onMax={() => {
-                  onFieldAInput(String(userBalance) ?? '')
+                  onFieldAInput(userBalance.toPrecision(6) ?? '')
                 }}
                 showMaxButton={!atMaxAmounts[Field.CURRENCY_A]}
                 currency={currencies[Field.CURRENCY_A]}
@@ -378,20 +380,17 @@ export default function Unstake({
           ) : (
             <AutoColumn gap={'md'}>
               {unstaking ? (
-                <ButtonPrimary style={{ fontSize: '20px' }} disabled={true}>
+                <ButtonPrimary disabled={true}>
                   <Dots>{t('unstaking')}</Dots>
                 </ButtonPrimary>
               ) : (
                 <ButtonPrimary
-                  style={{ fontSize: '20px' }}
                   onClick={() => {
                     unstakeAndClaimRewards(rewardsContractAddress)
                   }}
                   disabled={hasError || !parsedAmountA}
                 >
-                  <Text fontSize={20} fontWeight={500}>
-                    {buttonString}
-                  </Text>
+                  {buttonString}
                 </ButtonPrimary>
               )}
             </AutoColumn>

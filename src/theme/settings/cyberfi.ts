@@ -87,6 +87,7 @@ export function cyberFiTheme() {
     layerBGMobile:
       'transparent url("../images/themes/cyberfi/background-layer_mobile.png") top right / cover no-repeat',
     bodyBGColor: bodyBGColor,
+    borderRadius: '2px',
     linkColor: mainColor,
     linkColorHover: mainColor,
     lineColor: '#5F656D',

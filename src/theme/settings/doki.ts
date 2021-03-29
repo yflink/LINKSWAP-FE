@@ -88,6 +88,7 @@ export function dokiDokiTheme() {
     layerBGTablet: 'transparent url("../images/themes/dokidoki/background_large.gif") center center / cover no-repeat',
     layerBGMobile: transparent,
     bodyBGColor: bodyBGColor,
+    borderRadius: '0px',
     linkColor: mainColor,
     linkColorHover: mainColor,
     lineColor: mainColor,

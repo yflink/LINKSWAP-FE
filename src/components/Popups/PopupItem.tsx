@@ -23,7 +23,7 @@ export const Popup = styled.div`
   padding: 1em;
   background: ${({ theme }) => theme.modalBG};
   position: relative;
-  border-radius: 6px;
+  border-radius: ${({ theme }) => theme.borderRadius};
   padding: 20px;
   padding-inline-end: 35px;
   overflow: hidden;

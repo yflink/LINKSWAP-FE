@@ -9,12 +9,12 @@ import { AutoColumn } from '../../components/Column'
 import { RowBetween } from '../../components/Row'
 import Question from '../../components/QuestionHelper'
 import { TYPE } from '../../theme'
-import { renBCH, renBTC, renDGB, renDOGE, renFIL, renLUNA, renZEC } from '../../constants'
+import { renBCH, renBTC, renDGB, renDOGE, renFIL, renZEC } from '../../constants'
 import BridgeCurrencyLogo from '../../components/BridgeLogo'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
 import { useNavigationActiveItemManager } from '../../state/navigation/hooks'
 
-export default function Ren() {
+export default function Bridges() {
   const theme = useContext(ThemeContext)
   const { t } = useTranslation()
   const bridges = [
@@ -37,11 +37,6 @@ export default function Ren() {
       type: 'ren'
     },
     {
-      url: 'bridges/ren/dgb',
-      currency0: { symbol: 'DGB', decimals: renDGB.decimals },
-      currency1: unwrappedToken(renDGB)
-    },
-    {
       url: 'bridges/ren/doge',
       currency0: { symbol: 'DOGE', decimals: renDOGE.decimals },
       currency1: unwrappedToken(renDOGE),
@@ -54,11 +49,6 @@ export default function Ren() {
       type: 'ren'
     },
     {
-      url: 'bridges/ren/luna',
-      currency0: { symbol: 'LUNA', decimals: renLUNA.decimals },
-      currency1: unwrappedToken(renLUNA)
-    },
-    {
       url: 'bridges/ren/zec',
       currency0: { symbol: 'ZEC', decimals: renZEC.decimals },
       currency1: unwrappedToken(renZEC),
@@ -66,7 +56,7 @@ export default function Ren() {
     }
   ]
   const newActive = useNavigationActiveItemManager()
-  newActive('bridges-ren')
+  newActive('bridges')
   return (
     <>
       <NavigationCard>
@@ -76,9 +66,9 @@ export default function Ren() {
         <AutoColumn gap={'12px'}>
           <RowBetween>
             <Text color={theme.textPrimary} fontWeight={500}>
-              {t('bridgesRen')}
+              {t('bridgesAll')}
             </Text>
-            <Question text={t('bridgesRenDescription')} />
+            <Question text={t('bridgesDescription')} />
           </RowBetween>
         </AutoColumn>
         <BlueCard style={{ margin: '12px 0 12px' }}>

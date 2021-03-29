@@ -49,7 +49,7 @@ export const SearchInput = styled.input`
   background: transparent;
   border: none;
   outline: none;
-  border-radius: 6px;
+  border-radius: ${({ theme }) => theme.borderRadius};
   color: ${({ theme }) => theme.textPrimary};
   border-style: solid;
   border: 1px solid ${({ theme }) => theme.modalInputBorder};

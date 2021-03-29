@@ -50,7 +50,7 @@ function ConfirmationPendingContent({ onDismiss, pendingText }: { onDismiss: () 
           <CustomLightSpinner src={Circle} alt="loader" size={'90px'} />
         </ConfirmedIcon>
         <AutoColumn gap="12px" justify={'center'}>
-          <Text fontWeight={500} fontSize={20}>
+          <Text fontWeight={500} fontSize={16}>
             {t('waitingForConfirmation')}
           </Text>
           <AutoColumn gap="12px" justify={'center'}>
@@ -90,7 +90,7 @@ function TransactionSubmittedContent({
           <ArrowUpCircle strokeWidth={0.5} size={90} color={theme.textHighlight} />
         </ConfirmedIcon>
         <AutoColumn gap="12px" justify={'center'}>
-          <Text fontWeight={500} fontSize={20}>
+          <Text fontWeight={500} fontSize={16}>
             {t('transactionSubmitted')}
           </Text>
 
@@ -102,9 +102,7 @@ function TransactionSubmittedContent({
             </ExternalLink>
           )}
           <ButtonPrimary onClick={onDismiss} style={{ margin: '20px 0 0 0' }}>
-            <Text fontWeight={500} fontSize={20}>
-              {t('close')}
-            </Text>
+            {t('close')}
           </ButtonPrimary>
         </AutoColumn>
       </Section>
@@ -127,7 +125,7 @@ export function ConfirmationModalContent({
     <Wrapper>
       <Section>
         <RowBetween>
-          <Text fontWeight={500} fontSize={20}>
+          <Text fontWeight={500} fontSize={16}>
             {title}
           </Text>
           <CloseIcon onClick={onDismiss} />
@@ -146,7 +144,7 @@ export function TransactionErrorContent({ message, onDismiss }: { message: strin
     <Wrapper>
       <Section>
         <RowBetween>
-          <Text fontWeight={500} fontSize={20}>
+          <Text fontWeight={500} fontSize={16}>
             {t('error')}
           </Text>
           <CloseIcon onClick={onDismiss} />

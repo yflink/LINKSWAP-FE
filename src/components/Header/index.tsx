@@ -86,7 +86,7 @@ const AccountElement = styled.div<{ active: boolean }>`
   flex-direction: row;
   align-items: center;
   background: ${({ theme, active }) => (!active ? theme.modalBG : theme.headerButtonBG)};
-  border-radius: 6px;
+  border-radius: ${({ theme }) => theme.borderRadius};
   white-space: nowrap;
   width: 100%;
 
@@ -114,7 +114,7 @@ const TestnetWrapper = styled.div`
 const NetworkCard = styled(YellowCard)`
   width: fit-content;
   margin-inline-end: 10px;
-  border-radius: 6px;
+  border-radius: ${({ theme }) => theme.borderRadius};
   padding: 8px 12px;
 `
 
