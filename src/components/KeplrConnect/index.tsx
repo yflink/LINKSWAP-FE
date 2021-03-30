@@ -14,9 +14,25 @@ export function getKeplrClient(address: string): SigningCosmWasmClient {
   return new SigningCosmWasmClient('https://lcd-secret.keplr.app/rest', address, offlineSigner, enigmaUtils)
 }
 
-export async function getKeplr(): Promise<Keplr | undefined> {
+export function getKeplrObject(): Keplr | undefined {
   const { keplr } = window
   if (keplr) {
+    return keplr
+  }
+
+  if (document.readyState === 'complete') {
+    return keplr
+  }
+
+  return undefined
+}
+
+export async function getKeplr(): Promise<Keplr | undefined> {
+  const { keplr } = window
+  const chainId = 'secret-2'
+
+  if (keplr) {
+    await keplr.enable(chainId)
     return keplr
   }
 

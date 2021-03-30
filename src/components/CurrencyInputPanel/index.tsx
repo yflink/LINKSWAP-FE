@@ -123,7 +123,7 @@ const StyledBalanceMax = styled.button`
 
   font-weight: 500;
   cursor: pointer;
-  margin-inline-end: 0.5rem;
+  margin: 0;
   color: ${({ theme }) => theme.buttonSecondaryTextColor};
   :hover {
     border: 1px solid ${({ theme }) => theme.buttonSecondaryBorderHover};

@@ -485,7 +485,9 @@
   "yourTokenBalance": "Your {{currency}} balance: {{balance}} {{currency}}",
   "connectKeplrWallet": "Connect Keplr Wallet",
   "walletConnectDisclaimerScrtMintKeplr": "To mint <1>{{outputCurrency}}</1> you need to connect your <3>Keplr Wallet</3> and select the \"Secret Network\".",
-  "scrtAddress": "Recipient address:",
-  "scrtAddressDescription": "Your wallet address detected from the connected Keplr wallet, will be used as the recipient of the minted SNIP-20 tokens."
-
+  "scrtAddressDescription": "Your SNIP-20 wallet address (detected from the connected Keplr wallet) will be used as the recipient of the minted SNIP-20 tokens.",
+  "swapERC20toSNIP20": "Mint {{amount}} {{snip20Symbol}} with {{erc20Symbol}}",
+  "minting": "Minting",
+  "burning": "Burning",
+  "web3AddressDescription": "Your ERC-20 wallet address (detected from the connected Web3 wallet) will be used as the recipient of the minted ERC-20 tokens."
 }

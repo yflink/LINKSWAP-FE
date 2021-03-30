@@ -922,7 +922,7 @@ export default function Navigation() {
                 <StyledNavLink
                   id={'bridges-secretyfl'}
                   to={'/bridges/scrt/yfl'}
-                  isActive={() => active === 'bridges-scrtyfl'}
+                  isActive={() => active === 'bridges-secretyfl'}
                 >
                   <NavLabel>secretYFL</NavLabel>
                 </StyledNavLink>

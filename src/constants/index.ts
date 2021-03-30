@@ -6,6 +6,9 @@ import { injected, walletconnect, walletlink } from '../connectors'
 // LINKSWAP
 export const ROUTER_ADDRESS = '0xA7eCe0911FE8C60bff9e99f8fAFcDBE56e07afF1'
 
+// SCRT
+export const SRCT_BRIDGE = '0xf4B00C937b4ec4Bb5AC051c3c719036c668a31EC'
+
 // a list of tokens by chain
 type ChainTokenList = {
   readonly [chainId in ChainId]: Token[]
