@@ -45,7 +45,7 @@ export default function Transaction({ hash, callback }: { hash: string; callback
   const pending = !tx?.receipt
   const success = !pending && tx && (tx.receipt?.status === 1 || typeof tx.receipt?.status === 'undefined')
 
-  if (success) {
+  if (success && callback) {
     callback()
   }
 

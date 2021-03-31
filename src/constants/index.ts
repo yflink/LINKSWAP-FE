@@ -174,28 +174,32 @@ export const secretETH = {
   address: 'secret1wuzzjsdhthpvuyeeyhfq2ftsn3mvwf9rxy6ykw',
   decimals: 18,
   symbol: 'secretETH',
-  name: 'Secret Ethereum'
+  name: 'Secret Ethereum',
+  proxy: false
 }
 
 export const secretLINK = {
   address: 'secret1xcrf2vvxcz8dhtgzgsd0zmzlf9g320ea2rhdjw',
   decimals: 18,
   symbol: 'secretLINK',
-  name: 'Secret ChainLink Token'
+  name: 'Secret ChainLink Token',
+  proxy: false
 }
 
 export const secretYFL = {
   address: 'secret1jk0tw00vs23n8jwqdzrxtln6ww2a3k6em7s0p2',
   decimals: 18,
   symbol: 'secretYFL',
-  name: 'Secret YFLink'
+  name: 'Secret YFLink',
+  proxy: false
 }
 
 export const secretSCRT = {
   address: 'secret1k0jntykt7e4g3y88ltc60czgjuqdy4c9e8fzek',
   decimals: 18,
   symbol: 'secretSCRT',
-  name: 'Secret Secret Token'
+  name: 'Secret Secret Token',
+  proxy: true
 }
 
 export const stETH = new Token(ChainId.MAINNET, '0xDFe66B14D37C77F4E9b180cEb433d1b164f0281D', 18, 'stETH', 'Staked ETH')

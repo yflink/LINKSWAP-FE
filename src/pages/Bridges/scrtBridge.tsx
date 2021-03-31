@@ -1,29 +1,28 @@
-import React, { SetStateAction, useCallback, useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { Link, Text } from 'rebass'
 import { BlueCard, NavigationCard } from '../../components/Card'
 import { SwapPoolTabs } from '../../components/NavigationTabs'
 import AppBody from '../AppBody'
 import styled, { ThemeContext } from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
-import { ButtonLight, ButtonPrimary } from '../../components/Button'
+import { ButtonLight, ButtonPrimary, ButtonSecondary } from '../../components/Button'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { Trans, useTranslation } from 'react-i18next'
 import { AutoColumn } from '../../components/Column'
 import { RowBetween } from '../../components/Row'
 import Question from '../../components/QuestionHelper'
-import { useTokenBalances } from '../../state/wallet/hooks'
 import { LINK, secretETH, secretLINK, secretYFL, SRCT_BRIDGE, WETHER, YFL } from '../../constants'
 import { TYPE } from '../../theme'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
-import { Field, typeInput } from '../../state/mint/actions'
+import { Field } from '../../state/mint/actions'
 import { useDerivedMintInfo, useMintActionHandlers, useMintState } from '../../state/mint/hooks'
 import { TokenAmount, Token, ETHER } from '@uniswap/sdk'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import { Link as HistoryLink, RouteComponentProps } from 'react-router-dom'
-import { ArrowLeft } from 'react-feather'
+import { AlertTriangle, ArrowLeft } from 'react-feather'
 import { useNavigationActiveItemManager } from '../../state/navigation/hooks'
 import { useGetKplrConnect } from '../../state/keplr/hooks'
-import KeplrConnect, { getKeplr, getKeplrClient, getKeplrObject } from '../../components/KeplrConnect'
+import KeplrConnect, { getKeplrClient, getKeplrObject, getViewingKey } from '../../components/KeplrConnect'
 import BigNumber from 'bignumber.js'
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
 import { Dots } from '../Pool/styleds'
@@ -34,11 +33,15 @@ import { SrctBridge } from '../../components/ABI'
 import { useTransactionAdder } from '../../state/transactions/hooks'
 import Web3 from 'web3'
 import Transaction from '../../components/AccountDetails/Transaction'
-import { Input as NumericalInput } from '../../components/NumericalInput'
 import { useDispatch } from 'react-redux'
 import { AppDispatch } from '../../state'
-import { AnyAction, Dispatch } from 'redux'
-import { Keplr } from '@keplr-wallet/types'
+import { Snip20GetBalance, Snip20SendToBridge, Snip20SwapHash } from '../../components/KeplrConnect/snip20'
+import { divDecimals, mulDecimals, numberToSignificant, numberToUsd } from '../../utils/numberUtils'
+import { CosmWasmClient, SigningCosmWasmClient } from 'secretjs'
+import { sleep } from '../../utils/sleep'
+import { FormErrorInner, FormErrorInnerAlertTriangle } from '../../components/Form/error'
+import { useGetPriceBase } from '../../state/price/hooks'
+import { useGetGasPrices } from '../../state/gas/hooks'
 
 const NavigationWrapper = styled.div`
   display: flex;
@@ -155,6 +158,7 @@ export default function ScrtBridge({
       decimals: number
       symbol: string
       name: string
+      proxy?: boolean
     }
   ]
   switch (inputCurrency) {
@@ -171,16 +175,22 @@ export default function ScrtBridge({
   const scrtChainId = 'secret-2'
   const { account, chainId, library } = useWeb3React()
   const { keplrConnected, keplrAccount } = useGetKplrConnect()
-  const keplrObject = getKeplrObject()
+  let keplrObject = getKeplrObject()
   const theme = useContext(ThemeContext)
   const toggleWalletModal = useWalletModalToggle()
   const { t } = useTranslation()
   const [txHash, setTxHash] = useState<string>('')
+  const [status, setStatus] = useState('Unlock')
   const [minting, setMinting] = useState(false)
   const [burning, setBurning] = useState(false)
   const [burnInput, setBurnInput] = useState('')
-  const [burnBalance, setBurnBalance] = useState('3.1234123')
+  const [burnBalance, setBurnBalance] = useState<any>(undefined)
+  const [scrtTx, setScrtTx] = useState<string>('')
+  const [scrtTxHash, setScrtTxHash] = useState<string>('')
+  const [keplrClient, setKeplrClient] = useState<SigningCosmWasmClient | undefined>(undefined)
   const { independentField, typedValue } = useMintState()
+  const priceObject = useGetPriceBase()
+  const gasObject = useGetGasPrices()
   const { dependentField, currencies, parsedAmounts, noLiquidity, currencyBalances } = useDerivedMintInfo(
     inputCurrency === 'ETH' ? ETHER ?? undefined : tokens[0] ?? undefined,
     undefined
@@ -220,22 +230,120 @@ export default function ScrtBridge({
     newActive(acitveId)
   })
 
-  async function getBalances() {
-    if (keplrObject) {
-      await keplrObject.suggestToken(scrtChainId, tokens[1].address).then((result: any) => {
-        console.log(result)
-      })
+  async function getSnip20Balance(snip20Address: string, decimals?: string | number): Promise<string> {
+    if (!keplrClient) {
+      return '0'
     }
+
+    const viewingKey = await getViewingKey({
+      keplr: keplrObject,
+      chainId: scrtChainId,
+      address: snip20Address
+    })
+
+    if (!viewingKey) {
+      return 'Unlock'
+    }
+
+    const rawBalance = await Snip20GetBalance({
+      secretjs: keplrClient,
+      token: snip20Address,
+      address: keplrAccount,
+      key: viewingKey
+    })
+
+    if (isNaN(Number(rawBalance))) {
+      return 'Fix Unlock'
+    }
+
+    if (decimals) {
+      const decimalsNum = Number(decimals)
+      return divDecimals(rawBalance, decimalsNum)
+    }
+
+    return rawBalance
+  }
+
+  async function getBalance() {
+    getSnip20Balance(tokens[1].address, tokens[1].decimals).then(balance => {
+      if (balance !== 'Fix Unlock' && balance !== 'Unlock') {
+        setStatus('Burn')
+        if (!burnBalance) {
+          setBurnBalance(String(balance))
+        }
+      } else {
+        setStatus(balance)
+      }
+    })
   }
 
   if (!keplrObject) {
-    getKeplrObject()
+    keplrObject = getKeplrObject()
   } else {
-    getBalances()
+    if (keplrAccount) {
+      if (!keplrClient) {
+        setKeplrClient(getKeplrClient(keplrAccount))
+      }
+      getBalance()
+    }
+  }
+
+  async function unlockToken() {
+    if (!keplrObject) {
+      keplrObject = getKeplrObject()
+    } else {
+      try {
+        await keplrObject.suggestToken(scrtChainId, tokens[1].address)
+        await sleep(1000)
+        getBalance()
+      } catch (error) {
+        console.error(error)
+      }
+    }
   }
 
   async function burnTokens() {
-    console.log('BURN')
+    if (!account || !keplrClient) return
+
+    const isEth = inputCurrency === 'ETH'
+    const decimals = tokens[1].decimals
+    let snip20Address = tokens[1].address
+    let recipient = 'secret1tmm5xxxe0ltg6df3q2d69dq770030a2syydc9u'
+    let proxyContract = ''
+
+    if (!isEth) {
+      if (tokens[1].proxy) {
+        proxyContract = 'secret1zxt48uqzquvjsp2a7suzxlyd9n3jfpdw4k5zve'
+        recipient = 'secret1zxt48uqzquvjsp2a7suzxlyd9n3jfpdw4k5zve'
+        snip20Address = 'secret1k0jntykt7e4g3y88ltc60czgjuqdy4c9e8fzek'
+      }
+    }
+
+    const amount = mulDecimals(burnInput, decimals).toString()
+    let txId = ''
+
+    try {
+      txId = await Snip20SendToBridge({
+        recipient,
+        secretjs: keplrClient,
+        address: snip20Address,
+        amount,
+        msg: btoa(account)
+      })
+      setScrtTx(txId)
+      setBurning(true)
+    } catch (e) {
+      setScrtTx('')
+      setBurning(false)
+      console.log(e)
+    }
+
+    setScrtTxHash(
+      Snip20SwapHash({
+        txId,
+        address: proxyContract !== '' ? proxyContract : snip20Address
+      })
+    )
   }
 
   async function mintTokens() {
@@ -338,9 +446,9 @@ export default function ScrtBridge({
             {action === 'mint' ? (
               <AutoColumn gap={'12px'}>
                 <BlueCard style={{ margin: '12px 0 0' }}>
-                  <TYPE.link textAlign="center" fontWeight={400}>
+                  <Text textAlign="center">
                     {t('mintScrtDescription', { inputCurrency: inputCurrency, outputCurrency: outputCurrency })}
-                  </TYPE.link>
+                  </Text>
                 </BlueCard>
                 <CurrencyInputPanel
                   label={tokens[0].symbol}
@@ -429,24 +537,37 @@ export default function ScrtBridge({
             ) : (
               <AutoColumn gap={'12px'}>
                 <BlueCard style={{ margin: '12px 0' }}>
-                  <TYPE.link textAlign="center" fontWeight={400}>
+                  <Text textAlign="center">
                     {t('burnScrtDescription', { inputCurrency: outputCurrency, outputCurrency: inputCurrency })}
-                  </TYPE.link>
+                  </Text>
                 </BlueCard>
-                <CurrencyInputPanel
-                  label={tokens[1].symbol}
-                  hideCurrencySelect={true}
-                  value={burnInput}
-                  onUserInput={onFieldBInput}
-                  onMax={() => {
-                    setBurnInput(burnBalance)
-                  }}
-                  currency={currencies[Field.CURRENCY_A]}
-                  balanceOveride
-                  newBalance={Number(burnBalance)}
-                  showMaxButton={!burnInput || parseFloat(burnInput) < parseFloat(burnBalance)}
-                  id={`burn-${tokens[1].symbol.toLowerCase()}-src-token`}
-                />
+                {status === 'Burn' ? (
+                  <CurrencyInputPanel
+                    label={tokens[1].symbol}
+                    hideCurrencySelect={true}
+                    value={burnInput}
+                    onUserInput={onFieldBInput}
+                    onMax={() => {
+                      setBurnInput(burnBalance)
+                    }}
+                    currency={currencies[Field.CURRENCY_A]}
+                    balanceOveride
+                    newBalance={Number(burnBalance)}
+                    showMaxButton={!burnInput || parseFloat(burnInput) < parseFloat(burnBalance)}
+                    id={`burn-${tokens[1].symbol.toLowerCase()}-src-token`}
+                  />
+                ) : (
+                  <>
+                    <Text fontSize={14}>{t('unlockScrtTokenDescription', { tokenSymbol: tokens[1].symbol })}</Text>
+                    <ButtonSecondary
+                      onClick={() => {
+                        unlockToken()
+                      }}
+                    >
+                      {t('unlockScrtToken', { tokenSymbol: tokens[1].symbol })}
+                    </ButtonSecondary>
+                  </>
+                )}
                 {keplrConnected ? (
                   <>
                     <RowBetween>
@@ -457,6 +578,7 @@ export default function ScrtBridge({
                       </Text>
                       <Question text={t('web3AddressDescription')} />
                     </RowBetween>
+
                     {burnInput ? (
                       <>
                         {parseFloat(burnInput) > parseFloat(burnBalance) ? (
@@ -475,9 +597,46 @@ export default function ScrtBridge({
                             {burning ? <Dots>{t('burning')}</Dots> : t('burn')}
                           </ButtonPrimary>
                         )}
+                        {scrtTx && burning ? (
+                          <MintStatus>
+                            <Text fontSize={14}>
+                              {t('burningInProgress', {
+                                inputToken: tokens[1].symbol,
+                                outputToken: tokens[0].symbol,
+                                amount: numberToSignificant(burnInput)
+                              })}
+                            </Text>
+                            <Text style={{ marginTop: '12px' }} fontWeight={600}>
+                              Your Transaction ID:
+                            </Text>
+                            <Text>{scrtTx}</Text>
+                            {scrtTxHash && (
+                              <>
+                                <Text style={{ marginTop: '12px' }} fontWeight={600}>
+                                  Your Secret Transaction Hash:
+                                </Text>
+                                <Text>{scrtTx}</Text>
+                              </>
+                            )}
+                          </MintStatus>
+                        ) : (
+                          <FormErrorInner>
+                            <FormErrorInnerAlertTriangle>
+                              <AlertTriangle size={24} />
+                            </FormErrorInnerAlertTriangle>
+                            <p>
+                              {t('scrtFeeDisclaimer', {
+                                gasCosts: numberToUsd(
+                                  (Number(priceObject['ethPriceBase']) / Math.pow(10, 17)) *
+                                    (500000 * Number(mulDecimals(gasObject['averageGas'], 8)))
+                                )
+                              })}
+                            </p>
+                          </FormErrorInner>
+                        )}
                       </>
                     ) : (
-                      <ButtonPrimary disabled={true}>{t('enterAmount')}</ButtonPrimary>
+                      <>{status === 'Burn' && <ButtonPrimary disabled={true}>{t('enterAmount')}</ButtonPrimary>}</>
                     )}
                   </>
                 ) : (

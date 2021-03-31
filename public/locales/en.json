@@ -489,5 +489,10 @@
   "swapERC20toSNIP20": "Mint {{amount}} {{snip20Symbol}} with {{erc20Symbol}}",
   "minting": "Minting",
   "burning": "Burning",
-  "web3AddressDescription": "Your ERC-20 wallet address (detected from the connected Web3 wallet) will be used as the recipient of the minted ERC-20 tokens."
+  "web3AddressDescription": "Your ERC-20 wallet address (detected from the connected Web3 wallet) will be used as the recipient of the minted ERC-20 tokens.",
+  "installKeplr": "Install Keplr Wallet",
+  "unlockScrtToken": "Unlock {{tokenSymbol}}",
+  "unlockScrtTokenDescription": "To read your availible {{tokenSymbol}} from your Keplr wallet, you need to add and unlock it first. This one of the many privacy features of the Keplr Wallet",
+  "scrtFeeDisclaimer": "Be aware, that the Secret Bridge is an autonomous bridge, which initiates the transactions on the Ethereum blockhain automatically. Therefore it will subtract a certain amount of your burned tokens to get back the transaction fee (estimated: ~{{gasCosts}})",
+  "burningInProgress": "The burning of {{amount}} {{inputToken}} for {{outputToken}} was initiated. This may take a while (up to 30 minutes). Please check your {{outputToken}} balance."
 }
