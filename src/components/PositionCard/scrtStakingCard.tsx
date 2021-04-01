@@ -1,17 +1,25 @@
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { AutoColumn } from '../Column'
-import { numberToPercent, numberToUsd } from '../../utils/numberUtils'
+import { displayNumber, divDecimals, numberToPercent, numberToSignificant, numberToUsd } from '../../utils/numberUtils'
 import { RowBetween, RowFixed } from '../Row'
 import { Text } from 'rebass'
 import { ChevronDown, ChevronUp } from 'react-feather'
-import { ButtonLight } from '../Button'
+import { ButtonSecondary } from '../Button'
 import { FixedHeightRow } from './index'
 import styled from 'styled-components'
 import Card from '../Card'
 import { SCRTSVG } from '../SVG'
-import { useWalletModalToggle } from '../../state/application/hooks'
-import KeplrConnect from '../KeplrConnect'
+import KeplrConnect, { getKeplrClient, getKeplrObject, getViewingKey } from '../KeplrConnect'
+import { useGetKplrConnect } from '../../state/keplr/hooks'
+import { Snip20GetBalance } from '../KeplrConnect/snip20'
+import { SigningCosmWasmClient } from 'secretjs'
+import { sleep } from '../../utils/sleep'
+import { Link } from 'react-router-dom'
+import { QueryDeposit, QueryRewards } from '../KeplrConnect/scrtVault'
+import Loader from '../Loader'
+import { Dots } from '../swap/styleds'
+
 const StakingCard = styled(Card)<{ highlight?: boolean; show?: boolean }>`
   font-size: 14px;
   line-height: 18px;
@@ -38,16 +46,6 @@ const PlatformIcon = styled.div`
     fill: ${({ theme }) => theme.textPrimary};
   }
 `
-
-const ExternalLink = styled.a`
-  color: ${({ theme }) => theme.textPrimary};
-  text-decoration: underline;
-
-  &:hover {
-    text-decoration: none;
-  }
-`
-
 const ScrtTokenLogo = styled.img`
   width: 24px;
   height: 24px;
@@ -68,14 +66,158 @@ export default function ScrtStakingCard({
   index: number
 }) {
   const [showMore, setShowMore] = useState(show)
+  const scrtChainId = 'secret-2'
   const { t } = useTranslation()
   const headerRowStyles = show ? 'default' : 'pointer'
-  const toggleWalletModal = useWalletModalToggle()
-  console.log(values)
-  const { stakedToken, rewardsToken } = values
+  let keplrObject = getKeplrObject()
+  const [status, setStatus] = useState('Unlock')
+  const [tokenBalance, setTokenBalance] = useState<any>(undefined)
+  const [depositTokenBalance, setDepositTokenBalance] = useState<any>(undefined)
+  const [rewardsTokenBalance, setRewardsTokenBalance] = useState<any>(undefined)
+  const { keplrConnected, keplrAccount } = useGetKplrConnect()
+  const [keplrClient, setKeplrClient] = useState<SigningCosmWasmClient | undefined>(undefined)
+  const { stakedToken, rewardsToken, rewardsAddress } = values
+
+  async function getSnip20Balance(snip20Address: string, decimals?: string | number): Promise<string | boolean> {
+    if (!keplrClient) {
+      return false
+    }
+
+    const viewingKey = await getViewingKey({
+      keplr: keplrObject,
+      chainId: scrtChainId,
+      address: snip20Address
+    })
+
+    if (!viewingKey) {
+      return 'Unlock'
+    }
+
+    const rawBalance = await Snip20GetBalance({
+      secretjs: keplrClient,
+      token: snip20Address,
+      address: keplrAccount,
+      key: viewingKey
+    })
+
+    if (isNaN(Number(rawBalance))) {
+      return 'Fix Unlock'
+    }
+
+    if (decimals) {
+      const decimalsNum = Number(decimals)
+      return divDecimals(rawBalance, decimalsNum)
+    }
+
+    return rawBalance
+  }
+
+  async function getBridgeRewardsBalance(snip20Address: string): Promise<string | boolean> {
+    if (!keplrClient) {
+      return false
+    }
+
+    const height = await keplrClient.getHeight()
+
+    const viewingKey = await getViewingKey({
+      keplr: keplrObject,
+      chainId: scrtChainId,
+      address: snip20Address
+    })
+
+    return await QueryRewards({
+      cosmJS: keplrClient,
+      contract: snip20Address,
+      address: keplrAccount,
+      key: viewingKey,
+      height: String(height)
+    })
+  }
+
+  async function getBridgeDepositBalance(snip20Address: string): Promise<string | boolean> {
+    if (!keplrClient) {
+      return false
+    }
+
+    const viewingKey = await getViewingKey({
+      keplr: keplrObject,
+      chainId: scrtChainId,
+      address: snip20Address
+    })
+
+    return await QueryDeposit({
+      cosmJS: keplrClient,
+      contract: snip20Address,
+      address: keplrAccount,
+      key: viewingKey
+    })
+  }
+
+  async function getBalance() {
+    if (!tokenBalance) {
+      getSnip20Balance(stakedToken.address, stakedToken.decimals).then(balance => {
+        if (balance !== 'Fix Unlock' && balance !== 'Unlock') {
+          if (balance) {
+            setStatus('Unlocked')
+            setTokenBalance(Number(balance))
+          }
+        } else {
+          if (balance) {
+            setStatus(balance)
+          }
+        }
+      })
+    }
+  }
+
+  async function getBridgeData() {
+    if (!rewardsTokenBalance) {
+      getBridgeRewardsBalance(rewardsAddress).then(rewardBalance => {
+        if (rewardBalance) {
+          setRewardsTokenBalance(Number(rewardBalance))
+        }
+      })
+    }
+
+    if (!depositTokenBalance) {
+      getBridgeDepositBalance(rewardsAddress).then(depositBalance => {
+        if (depositBalance) {
+          setDepositTokenBalance(Number(depositBalance))
+        }
+      })
+    }
+  }
+
+  async function unlockToken() {
+    if (!keplrObject) {
+      keplrObject = getKeplrObject()
+    } else {
+      try {
+        await keplrObject.suggestToken(scrtChainId, stakedToken.address)
+        await sleep(1000)
+        getBalance()
+      } catch (error) {
+        console.error(error)
+      }
+    }
+  }
+
+  if (!keplrObject) {
+    keplrObject = getKeplrObject()
+  } else {
+    if (keplrAccount) {
+      if (!keplrClient) {
+        setKeplrClient(getKeplrClient(keplrAccount))
+      }
+      getBridgeData()
+      getBalance()
+    }
+  }
+
+  console.log(tokenBalance, rewardsTokenBalance, depositTokenBalance)
 
   return (
-    <StakingCard highlight={false} show={show}>
+    <StakingCard highlight={depositTokenBalance && depositTokenBalance !== 0} show={show}>
       <PlatformIcon>
         <SCRTSVG />
       </PlatformIcon>
@@ -109,9 +251,75 @@ export default function ScrtStakingCard({
         </FixedHeightRow>
         {showMore && (
           <AutoColumn gap="8px">
-            <RowBetween marginTop="10px">
-              <KeplrConnect />
-            </RowBetween>
+            {keplrConnected ? (
+              <>
+                {status === 'Unlocked' ? (
+                  <>
+                    <RowBetween>
+                      <Text>{t('stakableTokenAmount')}</Text>
+                      {!tokenBalance ? (
+                        <Loader />
+                      ) : (
+                        <Text>
+                          {displayNumber(numberToSignificant(tokenBalance))} {stakedToken.symbol}
+                        </Text>
+                      )}
+                    </RowBetween>
+                    {depositTokenBalance > 0 && (
+                      <RowBetween>
+                        <Text>{t('stakedTokenAmount')}</Text>
+                        {numberToSignificant(depositTokenBalance)} {stakedToken.symbol}
+                      </RowBetween>
+                    )}
+                    {depositTokenBalance > 0 && (
+                      <>
+                        <RowBetween>
+                          <Text>{t('yourPoolShare')}</Text>
+                          {numberToUsd(0)} ({numberToPercent(0)})
+                        </RowBetween>
+
+                        {rewardsTokenBalance > 0 ? (
+                          <RowBetween style={{ alignItems: 'flex-start' }}>
+                            <Text>{t('claimableRewards')}</Text>
+                            <Text style={{ textAlign: 'end' }}>
+                              <div>
+                                {numberToSignificant(rewardsTokenBalance)} {rewardsToken.symbol}
+                              </div>
+                            </Text>
+                          </RowBetween>
+                        ) : (
+                          <RowBetween style={{ alignItems: 'flex-start' }}>
+                            <Text>{t('claimableRewards')}</Text>
+                            <Dots>{t('loading')}</Dots>
+                          </RowBetween>
+                        )}
+                      </>
+                    )}
+
+                    {tokenBalance && tokenBalance !== 0 && (
+                      <ButtonSecondary as={Link} width="100%" to={`/stake/scrt/${stakedToken.symbol.toLowerCase()}`}>
+                        {t('stake')}
+                      </ButtonSecondary>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <Text fontSize={14}>{t('unlockScrtTokenDescription', { tokenSymbol: stakedToken.symbol })}</Text>
+                    <ButtonSecondary
+                      onClick={() => {
+                        unlockToken()
+                      }}
+                    >
+                      {t('unlockScrtToken', { tokenSymbol: stakedToken.symbol })}
+                    </ButtonSecondary>
+                  </>
+                )}
+              </>
+            ) : (
+              <RowBetween marginTop="10px">
+                <KeplrConnect />
+              </RowBetween>
+            )}
             <RowBetween>
               <Text style={{ margin: '12px 0 0' }} fontSize="16px" fontWeight={600}>
                 {t('stakePoolStats')}
