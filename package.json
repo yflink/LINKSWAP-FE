@@ -1,6 +1,6 @@
 {
   "name": "linkswap",
-  "description": "LINKSWAP FE",
+  "description": "LINKSWAP Frontend",
   "homepage": ".",
   "private": true,
   "devDependencies": {
