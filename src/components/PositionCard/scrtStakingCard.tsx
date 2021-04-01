@@ -16,7 +16,7 @@ import { Snip20GetBalance } from '../KeplrConnect/snip20'
 import { SigningCosmWasmClient } from 'secretjs'
 import { sleep } from '../../utils/sleep'
 import { Link } from 'react-router-dom'
-import { QueryDeposit, QueryRewardPoolBalance, QueryRewards, Redeem } from '../KeplrConnect/scrtVault'
+import { QueryDeposit, QueryRewards, Redeem } from '../KeplrConnect/scrtVault'
 import Loader from '../Loader'
 import { useGetTokenPrices } from '../../state/price/hooks'
 
@@ -124,7 +124,7 @@ export default function ScrtStakingCard({ values, show }: { values: any; show?: 
       return false
     }
 
-    if (!rewardsFetching) {
+    if (!rewardsFetching && status === 'Unlocked') {
       setRewardsFetching(true)
 
       const height = await keplrClient.getHeight()
@@ -134,6 +134,10 @@ export default function ScrtStakingCard({ values, show }: { values: any; show?: 
         chainId: scrtChainId,
         address: snip20Address
       })
+
+      if (!viewingKey) {
+        return false
+      }
 
       return await QueryRewards({
         cosmJS: keplrClient,
@@ -151,7 +155,7 @@ export default function ScrtStakingCard({ values, show }: { values: any; show?: 
     if (!keplrClient) {
       return false
     }
-    if (!depositFetching) {
+    if (!depositFetching && status === 'Unlocked') {
       setDepositFetching(true)
 
       const viewingKey = await getViewingKey({
@@ -159,6 +163,11 @@ export default function ScrtStakingCard({ values, show }: { values: any; show?: 
         chainId: scrtChainId,
         address: snip20Address
       })
+
+      if (!viewingKey) {
+        setDepositFetching(false)
+        return false
+      }
 
       return await QueryDeposit({
         cosmJS: keplrClient,
@@ -216,7 +225,15 @@ export default function ScrtStakingCard({ values, show }: { values: any; show?: 
       try {
         await keplrObject.suggestToken(scrtChainId, stakedToken.address)
         await sleep(1000)
+        setDepositTokenBalance(undefined)
+        setRewardsTokenBalance(undefined)
+        setTokenBalance(undefined)
+        setDepositFetching(false)
+        setRewardsFetching(false)
+        setBalanceFetching(false)
+        setClaimingAll(false)
         getBalance()
+        getBridgeData()
       } catch (error) {
         console.error(error)
       }
@@ -233,7 +250,7 @@ export default function ScrtStakingCard({ values, show }: { values: any; show?: 
         amount: '0'
       })
       setTimeout(() => {
-        setRewardsTokenBalance(0)
+        setRewardsTokenBalance(undefined)
         setRewardsFetching(false)
         setClaiming(false)
         getBridgeData()
@@ -258,8 +275,8 @@ export default function ScrtStakingCard({ values, show }: { values: any; show?: 
         address: rewardsAddress,
         amount: depositTokenBalance
       })
-      setDepositTokenBalance(0)
-      setRewardsTokenBalance(0)
+      setDepositTokenBalance(undefined)
+      setRewardsTokenBalance(undefined)
       setTokenBalance(undefined)
       setDepositFetching(false)
       setRewardsFetching(false)
@@ -268,8 +285,8 @@ export default function ScrtStakingCard({ values, show }: { values: any; show?: 
       getBalance()
       getBridgeData()
     } catch (reason) {
-      setDepositTokenBalance(0)
-      setRewardsTokenBalance(0)
+      setDepositTokenBalance(undefined)
+      setRewardsTokenBalance(undefined)
       setTokenBalance(undefined)
       setDepositFetching(false)
       setRewardsFetching(false)
