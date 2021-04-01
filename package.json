@@ -1,6 +1,6 @@
 {
   "name": "linkswap",
-  "description": "LINKSWAP Frontend",
+  "description": "LINKSWAP FE",
   "homepage": ".",
   "private": true,
   "devDependencies": {
@@ -118,11 +118,6 @@
   "license": "GPL-3.0-or-later",
   "dependencies": {
     "@babel/core": "^7.13.10",
-    "@ethersproject/address": "^5.0.0-beta",
-    "@ethersproject/contracts": "^5.0.0-beta",
-    "@ethersproject/networks": "^5.0.0-beta",
-    "@ethersproject/providers": "^5.0.0-beta",
-    "@ethersproject/solidity": "^5.0.0-beta",
     "@renproject/chains": "^2.1.7",
     "@renproject/ren": "^2.1.7",
     "@types/crypto-js": "^4.0.1",
