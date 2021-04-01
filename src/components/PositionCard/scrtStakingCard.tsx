@@ -16,7 +16,7 @@ import { Snip20GetBalance } from '../KeplrConnect/snip20'
 import { SigningCosmWasmClient } from 'secretjs'
 import { sleep } from '../../utils/sleep'
 import { Link } from 'react-router-dom'
-import { QueryDeposit, QueryRewards } from '../KeplrConnect/scrtVault'
+import { QueryDeposit, QueryRewardPoolBalance, QueryRewards } from '../KeplrConnect/scrtVault'
 import Loader from '../Loader'
 import { Dots } from '../swap/styleds'
 
@@ -72,8 +72,13 @@ export default function ScrtStakingCard({
   let keplrObject = getKeplrObject()
   const [status, setStatus] = useState('Unlock')
   const [tokenBalance, setTokenBalance] = useState<any>(undefined)
+  const [balanceFetching, setBalanceFetching] = useState<boolean>(false)
   const [depositTokenBalance, setDepositTokenBalance] = useState<any>(undefined)
+  const [depositFetching, setDepositFetching] = useState<boolean>(false)
+  const [rewardsFetching, setRewardsFetching] = useState<boolean>(false)
   const [rewardsTokenBalance, setRewardsTokenBalance] = useState<any>(undefined)
+  const [supplyFetching, setSupplyFetching] = useState<boolean>(false)
+  const [supplyBalance, setSupplyBalance] = useState<any>(undefined)
   const { keplrConnected, keplrAccount } = useGetKplrConnect()
   const [keplrClient, setKeplrClient] = useState<SigningCosmWasmClient | undefined>(undefined)
   const { stakedToken, rewardsToken, rewardsAddress } = values
@@ -83,33 +88,39 @@ export default function ScrtStakingCard({
       return false
     }
 
-    const viewingKey = await getViewingKey({
-      keplr: keplrObject,
-      chainId: scrtChainId,
-      address: snip20Address
-    })
+    if (!balanceFetching) {
+      setBalanceFetching(true)
 
-    if (!viewingKey) {
-      return 'Unlock'
+      const viewingKey = await getViewingKey({
+        keplr: keplrObject,
+        chainId: scrtChainId,
+        address: snip20Address
+      })
+
+      if (!viewingKey) {
+        return 'Unlock'
+      }
+
+      const rawBalance = await Snip20GetBalance({
+        secretjs: keplrClient,
+        token: snip20Address,
+        address: keplrAccount,
+        key: viewingKey
+      })
+
+      if (isNaN(Number(rawBalance))) {
+        return 'Fix Unlock'
+      }
+
+      if (decimals) {
+        const decimalsNum = Number(decimals)
+        return divDecimals(rawBalance, decimalsNum)
+      }
+
+      return rawBalance
+    } else {
+      return false
     }
-
-    const rawBalance = await Snip20GetBalance({
-      secretjs: keplrClient,
-      token: snip20Address,
-      address: keplrAccount,
-      key: viewingKey
-    })
-
-    if (isNaN(Number(rawBalance))) {
-      return 'Fix Unlock'
-    }
-
-    if (decimals) {
-      const decimalsNum = Number(decimals)
-      return divDecimals(rawBalance, decimalsNum)
-    }
-
-    return rawBalance
   }
 
   async function getBridgeRewardsBalance(snip20Address: string): Promise<string | boolean> {
@@ -117,44 +128,72 @@ export default function ScrtStakingCard({
       return false
     }
 
-    const height = await keplrClient.getHeight()
+    if (!rewardsFetching) {
+      setRewardsFetching(true)
 
-    const viewingKey = await getViewingKey({
-      keplr: keplrObject,
-      chainId: scrtChainId,
-      address: snip20Address
-    })
+      const height = await keplrClient.getHeight()
 
-    return await QueryRewards({
-      cosmJS: keplrClient,
-      contract: snip20Address,
-      address: keplrAccount,
-      key: viewingKey,
-      height: String(height)
-    })
+      const viewingKey = await getViewingKey({
+        keplr: keplrObject,
+        chainId: scrtChainId,
+        address: snip20Address
+      })
+
+      return await QueryRewards({
+        cosmJS: keplrClient,
+        contract: snip20Address,
+        address: keplrAccount,
+        key: viewingKey,
+        height: String(height)
+      })
+    } else {
+      return false
+    }
   }
 
   async function getBridgeDepositBalance(snip20Address: string): Promise<string | boolean> {
     if (!keplrClient) {
       return false
     }
+    if (!depositFetching) {
+      setDepositFetching(true)
 
-    const viewingKey = await getViewingKey({
-      keplr: keplrObject,
-      chainId: scrtChainId,
-      address: snip20Address
-    })
+      const viewingKey = await getViewingKey({
+        keplr: keplrObject,
+        chainId: scrtChainId,
+        address: snip20Address
+      })
 
-    return await QueryDeposit({
-      cosmJS: keplrClient,
-      contract: snip20Address,
-      address: keplrAccount,
-      key: viewingKey
-    })
+      return await QueryDeposit({
+        cosmJS: keplrClient,
+        contract: snip20Address,
+        address: keplrAccount,
+        key: viewingKey
+      })
+    } else {
+      return false
+    }
+  }
+
+  async function getBridgeSupply(snip20Address: string): Promise<string | boolean> {
+    if (!keplrClient) {
+      return false
+    }
+    if (!supplyFetching) {
+      setSupplyFetching(true)
+
+      //return await QueryRewardPoolBalance({
+      //  cosmJS: keplrClient,
+      //  contract: snip20Address
+      //})
+      return false
+    } else {
+      return false
+    }
   }
 
   async function getBalance() {
-    if (!tokenBalance) {
+    if (typeof tokenBalance === 'undefined') {
       getSnip20Balance(stakedToken.address, stakedToken.decimals).then(balance => {
         if (balance !== 'Fix Unlock' && balance !== 'Unlock') {
           if (balance) {
@@ -171,18 +210,26 @@ export default function ScrtStakingCard({
   }
 
   async function getBridgeData() {
-    if (!rewardsTokenBalance) {
+    if (typeof rewardsTokenBalance === 'undefined') {
       getBridgeRewardsBalance(rewardsAddress).then(rewardBalance => {
         if (rewardBalance) {
-          setRewardsTokenBalance(Number(rewardBalance))
+          setRewardsTokenBalance(divDecimals(Number(rewardBalance), rewardsToken.decimals))
         }
       })
     }
 
-    if (!depositTokenBalance) {
+    if (typeof depositTokenBalance === 'undefined') {
       getBridgeDepositBalance(rewardsAddress).then(depositBalance => {
         if (depositBalance) {
-          setDepositTokenBalance(Number(depositBalance))
+          setDepositTokenBalance(divDecimals(Number(depositBalance), stakedToken.decimals))
+        }
+      })
+    }
+
+    if (typeof supplyBalance === 'undefined') {
+      getBridgeSupply(rewardsAddress).then(supplyBalance => {
+        if (supplyBalance) {
+          setSupplyBalance(divDecimals(Number(supplyBalance), stakedToken.decimals))
         }
       })
     }
@@ -214,10 +261,8 @@ export default function ScrtStakingCard({
     }
   }
 
-  console.log(tokenBalance, rewardsTokenBalance, depositTokenBalance)
-
   return (
-    <StakingCard highlight={depositTokenBalance && depositTokenBalance !== 0} show={show}>
+    <StakingCard highlight={depositTokenBalance > 0} show={show}>
       <PlatformIcon>
         <SCRTSVG />
       </PlatformIcon>
@@ -257,7 +302,7 @@ export default function ScrtStakingCard({
                   <>
                     <RowBetween>
                       <Text>{t('stakableTokenAmount')}</Text>
-                      {!tokenBalance ? (
+                      {typeof tokenBalance === 'undefined' ? (
                         <Loader />
                       ) : (
                         <Text>
@@ -296,7 +341,7 @@ export default function ScrtStakingCard({
                       </>
                     )}
 
-                    {tokenBalance && tokenBalance !== 0 && (
+                    {tokenBalance !== 0 && (
                       <ButtonSecondary as={Link} width="100%" to={`/stake/scrt/${stakedToken.symbol.toLowerCase()}`}>
                         {t('stake')}
                       </ButtonSecondary>
@@ -328,7 +373,9 @@ export default function ScrtStakingCard({
 
             <RowBetween style={{ alignItems: 'flex-start' }}>
               <Text>{t('stakePoolTotalLiq')}</Text>
-              <Text>{numberToUsd(9197829.42)}</Text>
+              <Text>
+                {supplyBalance} {numberToUsd(9197829.42)}
+              </Text>
             </RowBetween>
             <RowBetween style={{ alignItems: 'flex-start' }}>
               <Text>{t('stakePoolRewards')}</Text>
