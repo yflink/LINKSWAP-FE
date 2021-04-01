@@ -376,7 +376,7 @@ export default function ScrtStakingCard({ values, show }: { values: any; show?: 
               <>
                 {status === 'Unlocked' ? (
                   <>
-                    {tokenBalance > 0 && (
+                    {tokenBalance > 0.05 && (
                       <RowBetween>
                         <Text>{t('stakableTokenAmount')}</Text>
                         <Text>
@@ -416,7 +416,7 @@ export default function ScrtStakingCard({ values, show }: { values: any; show?: 
                       </>
                     )}
 
-                    {tokenBalance !== 0 && !show && (
+                    {tokenBalance > 0.05 && !show && (
                       <ButtonSecondary as={Link} width="100%" to={`/stake-scrt/${stakedToken.symbol.toLowerCase()}`}>
                         {t('stake')}
                       </ButtonSecondary>
