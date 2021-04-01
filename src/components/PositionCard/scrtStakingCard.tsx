@@ -263,6 +263,7 @@ export default function ScrtStakingCard({
         address: rewardsAddress,
         amount: '0'
       })
+      setRewardsTokenBalance(0)
       setClaiming(false)
     } catch (reason) {
       setClaiming(false)
@@ -279,6 +280,8 @@ export default function ScrtStakingCard({
         address: rewardsAddress,
         amount: depositTokenBalance
       })
+      setDepositTokenBalance(0)
+      setRewardsTokenBalance(0)
       setClaimingAll(false)
     } catch (reason) {
       setClaimingAll(false)
