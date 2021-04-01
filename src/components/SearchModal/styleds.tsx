@@ -29,6 +29,7 @@ export const MenuItem = styled(RowBetween)`
   grid-template-columns: auto minmax(auto, 1fr) auto minmax(0, 72px);
   grid-gap: 16px;
   cursor: ${({ disabled }) => !disabled && 'pointer'};
+  align-items: center;
   pointer-events: ${({ disabled }) => disabled && 'none'};
   :hover {
     background: ${({ theme, disabled }) => !disabled && theme.modalSecondaryBG};

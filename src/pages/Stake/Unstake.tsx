@@ -1,7 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
 import { TokenAmount, WETH } from '@uniswap/sdk'
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import styled from 'styled-components'
 import { ButtonLight, ButtonPrimary } from '../../components/Button'
@@ -30,6 +30,7 @@ import { useCurrencyBalance, useTokenBalancesWithLoadingIndicator } from '../../
 import { useTransactionAdder } from '../../state/transactions/hooks'
 import hexStringToNumber from '../../utils/hexStringToNumber'
 import SingleStakingCard from '../../components/PositionCard/singleStakingCard'
+import { useNavigationActiveItemManager } from '../../state/navigation/hooks'
 
 const Tabs = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -315,6 +316,10 @@ export default function Unstake({
     }
   }, [balance, userBalance, setUnstaking, onFieldAInput])
 
+  const newActive = useNavigationActiveItemManager()
+  useEffect(() => {
+    newActive('stake')
+  })
   if (!found) {
     return null
   } else {

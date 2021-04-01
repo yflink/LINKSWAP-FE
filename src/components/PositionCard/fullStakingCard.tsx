@@ -89,9 +89,6 @@ export default function FullStakingCard({
   const balance = useTokenBalance(account ?? undefined, values.liquidityToken)
   let currencyA = currency0
   let currencyB = currency1
-  const isYFLUSD =
-    values.liquidityToken.address === '0x195734d862DFb5380eeDa0ACD8acf697eA95D370' ||
-    values.liquidityToken.address === '0x6cD7817e6f3f52123df529E1eDF5830240Ce48c1'
   const [information, setInformation] = useState<any>({
     poolReserves: [0, 0],
     poolTokenPrices: [0, 0],

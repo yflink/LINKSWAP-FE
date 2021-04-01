@@ -1,7 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
 import { TokenAmount, WETH } from '@uniswap/sdk'
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Link, RouteComponentProps } from 'react-router-dom'
 import styled from 'styled-components'
 import { ButtonLight, ButtonPrimary } from '../../components/Button'
@@ -31,6 +31,7 @@ import FullStakingCard from '../../components/PositionCard/fullStakingCard'
 import { useCurrencyBalance } from '../../state/wallet/hooks'
 import { useTransactionAdder } from '../../state/transactions/hooks'
 import SingleStakingCard from '../../components/PositionCard/singleStakingCard'
+import { useNavigationActiveItemManager } from '../../state/navigation/hooks'
 
 const Tabs = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -357,6 +358,10 @@ export default function StakeIntoPool({
     }
   }, [balance, currentBalance, setStaking, onFieldAInput])
 
+  const newActive = useNavigationActiveItemManager()
+  useEffect(() => {
+    newActive('stake')
+  })
   if (!found) {
     return null
   } else {

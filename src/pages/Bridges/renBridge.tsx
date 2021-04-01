@@ -8,7 +8,7 @@ import RenJS from '@renproject/ren'
 import { Loading } from '@renproject/react-components'
 import { RenNetwork } from '@renproject/interfaces'
 import { useWeb3React } from '@web3-react/core'
-import { ButtonLight, ButtonPrimary, ButtonSecondary } from '../../components/Button'
+import { ButtonPrimary, ButtonSecondary } from '../../components/Button'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { useTranslation } from 'react-i18next'
 import { AutoColumn } from '../../components/Column'
@@ -514,7 +514,7 @@ export default function RenBridge({
               </AutoColumn>
             ) : (
               <AutoColumn gap={'12px'}>
-                <BlueCard style={{ margin: '12px 0 12px' }}>
+                <BlueCard style={{ margin: '12px 0 24px' }}>
                   <TYPE.link textAlign="center" fontWeight={400}>
                     {t('burnDescription', { inputCurrency: outputCurrency, outputCurrency: inputCurrency })}
                   </TYPE.link>

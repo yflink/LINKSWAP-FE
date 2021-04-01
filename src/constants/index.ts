@@ -6,6 +6,9 @@ import { injected, walletconnect, walletlink } from '../connectors'
 // LINKSWAP
 export const ROUTER_ADDRESS = '0xA7eCe0911FE8C60bff9e99f8fAFcDBE56e07afF1'
 
+// SCRT
+export const SRCT_BRIDGE = '0xf4B00C937b4ec4Bb5AC051c3c719036c668a31EC'
+
 // a list of tokens by chain
 type ChainTokenList = {
   readonly [chainId in ChainId]: Token[]
@@ -165,6 +168,39 @@ export const renLUNA = new Token(
   'renLUNA',
   'RenVM Terra'
 )
+
+//secretTokens
+export const secretETH = {
+  address: 'secret1wuzzjsdhthpvuyeeyhfq2ftsn3mvwf9rxy6ykw',
+  decimals: 18,
+  symbol: 'secretETH',
+  name: 'Secret Ethereum',
+  proxy: false
+}
+
+export const secretLINK = {
+  address: 'secret1xcrf2vvxcz8dhtgzgsd0zmzlf9g320ea2rhdjw',
+  decimals: 18,
+  symbol: 'secretLINK',
+  name: 'Secret ChainLink Token',
+  proxy: false
+}
+
+export const secretYFL = {
+  address: 'secret1jk0tw00vs23n8jwqdzrxtln6ww2a3k6em7s0p2',
+  decimals: 18,
+  symbol: 'secretYFL',
+  name: 'Secret YFLink',
+  proxy: false
+}
+
+export const secretSCRT = {
+  address: 'secret1k0jntykt7e4g3y88ltc60czgjuqdy4c9e8fzek',
+  decimals: 6,
+  symbol: 'secretSCRT',
+  name: 'Secret Secret Token',
+  proxy: true
+}
 
 export const stETH = new Token(ChainId.MAINNET, '0xDFe66B14D37C77F4E9b180cEb433d1b164f0281D', 18, 'stETH', 'Staked ETH')
 
@@ -525,6 +561,24 @@ export const SINGLE_POOLS: Record<string, any> = {
     balance: 0,
     abi: 'singlePool',
     type: 'single'
+  },
+  SECRETLINK: {
+    rewardsAddress: 'secret19y50xzywrz98g6ljxp43fd4q47sl40gkcpm03n',
+    tokens: [secretLINK, LINK],
+    stakedToken: secretLINK,
+    rewardsToken: secretSCRT,
+    balance: 0,
+    abi: 'scrtPool',
+    type: 'scrt'
+  },
+  SECRETYFL: {
+    rewardsAddress: 'secret1ra9l5p04sc4pu8vc5djr3c9ds7npmwmzvsee32',
+    tokens: [secretYFL, YFL],
+    stakedToken: secretYFL,
+    rewardsToken: secretSCRT,
+    balance: 0,
+    abi: 'scrtPool',
+    type: 'scrt'
   }
 }
 

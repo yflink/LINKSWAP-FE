@@ -1,11 +1,5 @@
 /// <reference types="react-scripts" />
 
-declare module 'jazzicon' {
-  export default function(diameter: number, seed: number): HTMLElement
-}
-
-declare module 'fortmatic'
-
 interface Window {
   ethereum?: {
     isMetaMask?: true
@@ -13,7 +7,16 @@ interface Window {
     removeListener?: (...args: any[]) => void
   }
   web3?: {}
+  keplr?: Keplr
+  getOfflineSigner?: (chainId: string) => OfflineSigner & OfflineDirectSigner
+  getEnigmaUtils?: (chainId: string) => SecretUtils
 }
+
+declare module 'jazzicon' {
+  export default function(diameter: number, seed: number): HTMLElement
+}
+
+declare module 'fortmatic'
 
 declare module 'content-hash' {
   declare function decode(x: string): string

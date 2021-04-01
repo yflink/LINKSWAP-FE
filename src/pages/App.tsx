@@ -29,16 +29,19 @@ import StakeOverview from './Stake'
 import {
   RedirectTo88mph,
   RedirectTo88mphWithdraw,
+  RedirectToScrtStake,
+  RedirectToScrtUnstake,
   RedirectToStake,
   RedirectToStakeWithParam,
   RedirectToUnstake
 } from './Stake/redirects'
 import { ExternalLink } from 'react-feather'
 import Navigation from '../components/Navigation'
-import { RedirectToRenBridge } from './Bridges/redirects'
+import { RedirectToRenBridge, RedirectToScrtBridge } from './Bridges/redirects'
 import Popups from '../components/Popups'
 import StakeGovernance from './Stake/Governance'
 import Bridges from './Bridges'
+import Scrt from './Bridges/scrt'
 
 const AppWrapper = styled.div`
   display: flex;
@@ -72,9 +75,11 @@ const BodyWrapper = styled.div`
   align-items: center;
   box-sizing: content-box;
   flex: 1;
-  z-index: 1;
+  z-index: 3;
+
   ${({ theme }) => theme.mediaWidth.upToMedium`
     width: 100%;
+    z-index: 1;
   `};
   ${({ theme }) => theme.mediaWidth.upToSmall`
     padding: 0 0 16px;
@@ -150,10 +155,12 @@ export default function App() {
                 <Route exact strict path="/stake" component={StakeOverview} />
                 <Route exact strict path="/unstake" component={StakeOverview} />
                 <Route exact path="/manage/mph88/:vaultName" component={RedirectTo88mphWithdraw} />
+                <Route exact path="/stake-scrt/:currency" component={RedirectToScrtStake} />
                 <Route exact path="/stake/mph88/:vaultName" component={RedirectTo88mph} />
                 <Route exact path="/stake/gov" component={StakeGovernance} />
                 <Route exact path="/stake/:param" component={RedirectToStakeWithParam} />
                 <Route exact path="/stake/:currencyIdA/:currencyIdB" component={RedirectToStake} />
+                <Route exact path="/unstake-scrt/:currency" component={RedirectToScrtUnstake} />
                 <Route exact path="/unstake/:currencyIdA/:currencyIdB" component={RedirectToUnstake} />
                 <Route exact path="/create/:currencyIdA" component={CreatePairRedirectOldPathStructure} />
                 <Route exact path="/create/:currencyIdA/:currencyIdB" component={CreatePairRedirectDuplicateTokenIds} />
@@ -163,6 +170,9 @@ export default function App() {
                 <Route exact strict path="/bridges/ren/:bridgeName" component={RedirectToRenBridge} />
                 <Route exact strict path="/ren" component={Ren} />
                 <Route exact strict path="/ren/:bridgeName" component={RedirectToRenBridge} />
+                <Route exact strict path="/scrt" component={Scrt} />
+                <Route exact strict path="/scrt/:bridgeName" component={RedirectToScrtBridge} />
+                <Route exact strict path="/bridges/scrt/:bridgeName" component={RedirectToScrtBridge} />
                 <Route component={RedirectPathToSwapOnly} />
               </Switch>
             </Web3ReactManager>

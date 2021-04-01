@@ -123,7 +123,7 @@ const StyledBalanceMax = styled.button`
 
   font-weight: 500;
   cursor: pointer;
-  margin-inline-end: 0.5rem;
+  margin: 0;
   color: ${({ theme }) => theme.buttonSecondaryTextColor};
   :hover {
     border: 1px solid ${({ theme }) => theme.buttonSecondaryBorderHover};
@@ -224,7 +224,7 @@ export default function CurrencyInputPanel({
                   <TYPE.body color={theme.textSecondary} fontWeight={500} fontSize={14}>
                     {label}
                   </TYPE.body>
-                  {account && (
+                  {(account || balanceOveride) && (
                     <TYPE.body
                       onClick={onMax}
                       color={theme.textPrimary}
@@ -232,10 +232,12 @@ export default function CurrencyInputPanel({
                       fontSize={14}
                       style={{ display: 'inline', cursor: 'pointer' }}
                     >
-                      {!hideBalance && !!currency && selectedCurrencyBalance && !balanceOveride
+                      {balanceOveride
+                        ? numberToSignificant(newBalance) !== 'NaN'
+                          ? numberToSignificant(newBalance)
+                          : ' -'
+                        : !hideBalance && !!currency && selectedCurrencyBalance && !balanceOveride
                         ? t('balance', { balanceInput: selectedCurrencyBalance?.toSignificant(6) })
-                        : balanceOveride
-                        ? numberToSignificant(newBalance)
                         : ' -'}
                     </TYPE.body>
                   )}
@@ -255,7 +257,7 @@ export default function CurrencyInputPanel({
                       onUserInput(val)
                     }}
                   />
-                  {account && currency && showMaxButton && label !== 'To' && (
+                  {(account || balanceOveride) && currency && showMaxButton && label !== 'To' && (
                     <StyledBalanceMax onClick={onMax}>MAX</StyledBalanceMax>
                   )}
                 </>

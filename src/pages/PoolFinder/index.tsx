@@ -80,8 +80,10 @@ export default function PoolFinder() {
   )
   const newActive = useNavigationActiveItemManager()
   const theme = useContext(ThemeContext)
+  useEffect(() => {
+    newActive('liquidity-import')
+  })
 
-  newActive('liquidity-import')
   return (
     <AppBody>
       <FindPoolTabs />

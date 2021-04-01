@@ -18,6 +18,7 @@ import { useCurrencyUsdPrice } from '../../hooks/useCurrencyUsdPrice'
 import { useTokenUsdPrices } from '../../hooks/useTokenUsdPrice'
 import { useLPTokenUsdPrices } from '../../hooks/useLPTokenUsdPrice'
 import { useMphPools } from '../../hooks/useMphPools'
+import { useSecretPools } from '../../hooks/useSecretPools'
 
 const HeaderFrame = styled.div`
   display: flex;
@@ -157,6 +158,7 @@ export default function Header() {
   useCurrencyUsdPrice()
   useTokenUsdPrices()
   useLPTokenUsdPrices()
+  useSecretPools()
   useMphPools()
   return (
     <HeaderFrame>

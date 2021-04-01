@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Text } from 'rebass'
 import Card, { BlueCard } from '../../components/Card'
 import { SwapPoolTabs } from '../../components/NavigationTabs'
@@ -216,7 +216,6 @@ export default function StakeGovernance() {
   const toggleWalletModal = useWalletModalToggle()
   const { t } = useTranslation()
   const newActive = useNavigationActiveItemManager()
-  newActive('stake-governance')
   const [userBalances, fetchingUserBalances] = useTokenBalancesWithLoadingIndicator(account ?? undefined, [YFL, yYFL])
   const [govBalances, fetchingGovBalances] = useTokenBalancesWithLoadingIndicator(governanceAddress ?? undefined, [YFL])
   const [feeCountdownFetched, setFeeCountdownFetched] = useState(false)
@@ -236,6 +235,9 @@ export default function StakeGovernance() {
   const hasYyfl = Number(userBalances[yYFL.address]?.toSignificant(1)) > 0
   const totalStaked = Number(govBalances[YFL.address]?.toSignificant(8))
   const percentageStakedTVL = totalStaked / (MARKETCAPS.YFL * 0.01)
+  useEffect(() => {
+    newActive('stake-governance')
+  })
 
   if (!govBalanceFetching && govBalance === 0) {
     setGovBalanceFetching(true)

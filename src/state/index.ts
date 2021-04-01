@@ -2,37 +2,39 @@ import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
 import { save, load } from 'redux-localstorage-simple'
 
 import application from './application/reducer'
-import { updateVersion } from './global/actions'
-import user from './user/reducer'
-import transactions from './transactions/reducer'
-import swap from './swap/reducer'
+import burn from './burn/reducer'
+import gas from './gas/reducer'
+import keplr from './keplr/reducer'
+import lists from './lists/reducer'
 import mint from './mint/reducer'
 import mph from './mph/reducer'
-import lists from './lists/reducer'
-import burn from './burn/reducer'
 import multicall from './multicall/reducer'
-import price from './price/reducer'
-import gas from './gas/reducer'
 import navigation from './navigation/reducer'
+import price from './price/reducer'
 import ren from './ren/reducer'
+import swap from './swap/reducer'
+import transactions from './transactions/reducer'
+import user from './user/reducer'
+import { updateVersion } from './global/actions'
 
-const PERSISTED_KEYS: string[] = ['user', 'transactions', 'lists', 'ren']
+const PERSISTED_KEYS: string[] = ['user', 'transactions', 'lists', 'ren', 'keplr']
 
 const store = configureStore({
   reducer: {
     application,
-    user,
-    transactions,
-    swap,
+    burn,
+    gas,
+    keplr,
+    lists,
     mint,
     mph,
-    burn,
     multicall,
-    lists,
-    price,
-    gas,
     navigation,
-    ren
+    price,
+    ren,
+    swap,
+    transactions,
+    user
   },
   middleware: [...getDefaultMiddleware({ thunk: false }), save({ states: PERSISTED_KEYS })],
   preloadedState: load({ states: PERSISTED_KEYS })

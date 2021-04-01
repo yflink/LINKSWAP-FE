@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from 'react'
+import React, { useContext, useEffect, useMemo } from 'react'
 import { ThemeContext } from 'styled-components'
 import { Pair } from '@uniswap/sdk'
 import { Link } from 'react-router-dom'
@@ -64,7 +64,9 @@ export default function Pool() {
 
   const tokenPairAddress = account ? 'https://info.linkswap.app/account/' + account : false
   const newActive = useNavigationActiveItemManager()
-  newActive('liquidity-pool')
+  useEffect(() => {
+    newActive('liquidity-pool')
+  })
   const { t } = useTranslation()
   return (
     <>
