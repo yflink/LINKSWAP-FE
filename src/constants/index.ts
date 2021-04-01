@@ -562,7 +562,7 @@ export const SINGLE_POOLS: Record<string, any> = {
     abi: 'singlePool',
     type: 'single'
   },
-  SCRTLINK: {
+  SECRETLINK: {
     rewardsAddress: 'secret19y50xzywrz98g6ljxp43fd4q47sl40gkcpm03n',
     tokens: [secretLINK, LINK],
     stakedToken: secretLINK,
@@ -571,7 +571,7 @@ export const SINGLE_POOLS: Record<string, any> = {
     abi: 'scrtPool',
     type: 'scrt'
   },
-  SCRTYFL: {
+  SECRETYFL: {
     rewardsAddress: 'secret1ra9l5p04sc4pu8vc5djr3c9ds7npmwmzvsee32',
     tokens: [secretYFL, YFL],
     stakedToken: secretYFL,
