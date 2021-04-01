@@ -11,9 +11,9 @@ export function useSecretPools(): any {
 
   if ((timeDiff > 300000 && !fetching) || !initial) {
     setInitial(true)
-    const getSecretPools = async ({ fetching }: { fetching: boolean }) => {
-      if (!fetching) {
-        setFetching(true)
+    if (!fetching) {
+      setFetching(true)
+      const getSecretPools = async ({ fetching }: { fetching: boolean }) => {
         try {
           const response = await fetch('https://api-bridge-mainnet.azurewebsites.net/rewards/?page=0&size=1000', {
             headers: {
@@ -48,15 +48,15 @@ export function useSecretPools(): any {
         } finally {
           //console.log('fetched secretPools')
         }
-      } else {
-        return false
       }
+      getSecretPools({ fetching: fetching }).then(secretPools => {
+        if (secretPools) {
+          newSecretPools(secretPools)
+        }
+      })
+    } else {
+      return false
     }
-    getSecretPools({ fetching: fetching }).then(secretPools => {
-      if (secretPools) {
-        newSecretPools(secretPools)
-      }
-    })
   } else {
     return false
   }
