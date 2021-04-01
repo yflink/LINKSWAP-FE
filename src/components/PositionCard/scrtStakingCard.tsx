@@ -18,7 +18,6 @@ import { sleep } from '../../utils/sleep'
 import { Link } from 'react-router-dom'
 import { QueryDeposit, QueryRewardPoolBalance, QueryRewards, Redeem } from '../KeplrConnect/scrtVault'
 import Loader from '../Loader'
-import { Dots } from '../swap/styleds'
 import { useGetTokenPrices } from '../../state/price/hooks'
 
 const StakingCard = styled(Card)<{ highlight?: boolean; show?: boolean }>`

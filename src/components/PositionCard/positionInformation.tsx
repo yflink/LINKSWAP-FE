@@ -85,9 +85,9 @@ export default async function positionInformation(
       positionOutput.updated = true
     } else if (positionOutput.poolType === 'syflPool') {
       positionOutput.periodFinish = 1643587200
-      const thenYFL: any = positionOutput.periodFinish > 0 ? moment.unix(positionOutput.periodFinish) : 0
+      const thenYFL: any = moment.unix(1643587200)
       const nowYFL: any = moment()
-      const remainingYFL = positionOutput.periodFinish > 0 ? moment(thenYFL - nowYFL).unix() : 1
+      const remainingYFL = moment(thenYFL - nowYFL).unix()
       positionOutput.isInactive = remainingYFL < 1
       positionOutput.updated = true
       positionOutput.notStarted = remainingYFL === 1
