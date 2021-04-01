@@ -16,9 +16,10 @@ import { Snip20GetBalance } from '../KeplrConnect/snip20'
 import { SigningCosmWasmClient } from 'secretjs'
 import { sleep } from '../../utils/sleep'
 import { Link } from 'react-router-dom'
-import { QueryDeposit, QueryRewardPoolBalance, QueryRewards } from '../KeplrConnect/scrtVault'
+import { QueryDeposit, QueryRewardPoolBalance, QueryRewards, Redeem } from '../KeplrConnect/scrtVault'
 import Loader from '../Loader'
 import { Dots } from '../swap/styleds'
+import { useGetTokenPrices } from '../../state/price/hooks'
 
 const StakingCard = styled(Card)<{ highlight?: boolean; show?: boolean }>`
   font-size: 14px;
@@ -68,6 +69,7 @@ export default function ScrtStakingCard({
   const [showMore, setShowMore] = useState(show)
   const scrtChainId = 'secret-2'
   const { t } = useTranslation()
+  const { tokenPrices } = useGetTokenPrices()
   const headerRowStyles = show ? 'default' : 'pointer'
   let keplrObject = getKeplrObject()
   const [status, setStatus] = useState('Unlock')
@@ -81,7 +83,9 @@ export default function ScrtStakingCard({
   const [supplyBalance, setSupplyBalance] = useState<any>(undefined)
   const { keplrConnected, keplrAccount } = useGetKplrConnect()
   const [keplrClient, setKeplrClient] = useState<SigningCosmWasmClient | undefined>(undefined)
-  const { stakedToken, rewardsToken, rewardsAddress } = values
+  const [claiming, setClaiming] = useState<boolean>(false)
+  const { stakedToken, rewardsToken, rewardsAddress, tokens } = values
+  let tokenPrice = 0
 
   async function getSnip20Balance(snip20Address: string, decimals?: string | number): Promise<string | boolean> {
     if (!keplrClient) {
@@ -182,11 +186,10 @@ export default function ScrtStakingCard({
     if (!supplyFetching) {
       setSupplyFetching(true)
 
-      //return await QueryRewardPoolBalance({
-      //  cosmJS: keplrClient,
-      //  contract: snip20Address
-      //})
-      return false
+      return await QueryRewardPoolBalance({
+        cosmJS: keplrClient,
+        contract: snip20Address
+      })
     } else {
       return false
     }
@@ -229,7 +232,8 @@ export default function ScrtStakingCard({
     if (typeof supplyBalance === 'undefined') {
       getBridgeSupply(rewardsAddress).then(supplyBalance => {
         if (supplyBalance) {
-          setSupplyBalance(divDecimals(Number(supplyBalance), stakedToken.decimals))
+          console.log(supplyBalance)
+          setSupplyBalance(Number(supplyBalance))
         }
       })
     }
@@ -249,6 +253,24 @@ export default function ScrtStakingCard({
     }
   }
 
+  async function claimRewards() {
+    if (!keplrClient) return
+    setClaiming(true)
+    try {
+      await Redeem({
+        secretjs: keplrClient,
+        address: rewardsAddress,
+        amount: '0'
+      })
+      setClaiming(false)
+    } catch (reason) {
+      setClaiming(false)
+      console.error(`Failed to claim: ${reason}`)
+    }
+  }
+
+  async function unstakeAndClaimRewards() {}
+
   if (!keplrObject) {
     keplrObject = getKeplrObject()
   } else {
@@ -259,6 +281,10 @@ export default function ScrtStakingCard({
       getBridgeData()
       getBalance()
     }
+  }
+
+  if (tokenPrices) {
+    tokenPrice = tokenPrices[tokens[1].address.toLowerCase()] ? tokenPrices[tokens[1].address.toLowerCase()].price : 0
   }
 
   return (
@@ -276,7 +302,7 @@ export default function ScrtStakingCard({
           style={{ cursor: headerRowStyles, position: 'relative' }}
         >
           <div style={{ position: 'absolute', right: '-13px', top: '-16px', fontSize: '12px' }}>
-            <p style={{ margin: 0 }}>{t('apy', { apy: numberToPercent(33) })}</p>
+            <p style={{ margin: 0 }}>{t('apy', { apy: numberToPercent(0) })}</p>
           </div>
           <RowFixed>
             <ScrtTokenLogo src="//logos.linkswap.app/scrt.png" />
@@ -320,7 +346,7 @@ export default function ScrtStakingCard({
                       <>
                         <RowBetween>
                           <Text>{t('yourPoolShare')}</Text>
-                          {numberToUsd(0)} ({numberToPercent(0)})
+                          {numberToUsd(depositTokenBalance * tokenPrice)} ({numberToPercent(0)})
                         </RowBetween>
 
                         {rewardsTokenBalance > 0 ? (
@@ -373,23 +399,58 @@ export default function ScrtStakingCard({
 
             <RowBetween style={{ alignItems: 'flex-start' }}>
               <Text>{t('stakePoolTotalLiq')}</Text>
-              <Text>
-                {supplyBalance} {numberToUsd(9197829.42)}
-              </Text>
+              <Text>{numberToUsd(0)}</Text>
             </RowBetween>
             <RowBetween style={{ alignItems: 'flex-start' }}>
               <Text>{t('stakePoolRewards')}</Text>
               <Text style={{ textAlign: 'end' }}>
                 <div>
                   {t('stakeRewardPerDay', {
-                    rate: 100,
+                    rate: 0,
                     currencySymbol: 'sSCRT'
                   })}
                 </div>
 
-                <div style={{ textAlign: 'end', marginTop: '8px' }}>{t('apy', { apy: numberToPercent(33) })}</div>
+                <div style={{ textAlign: 'end', marginTop: '8px' }}>{t('apy', { apy: numberToPercent(0) })}</div>
               </Text>
             </RowBetween>
+            <RowBetween marginTop="10px">
+              {!show && rewardsTokenBalance && (
+                <ButtonSecondary
+                  disabled={claiming}
+                  onClick={() => {
+                    claimRewards()
+                  }}
+                  width="48%"
+                  style={{ marginInlineEnd: '1%' }}
+                >
+                  {claiming ? <Loader /> : t('claimRewards')}
+                </ButtonSecondary>
+              )}
+              {!show && depositTokenBalance && (
+                <ButtonSecondary
+                  as={Link}
+                  width={'48%'}
+                  style={{ marginInlineStart: '1%' }}
+                  to={`/unstake/scrt/${stakedToken.symbol.toLowerCase()}`}
+                >
+                  {t('unstake')}
+                </ButtonSecondary>
+              )}
+            </RowBetween>
+            {!show && depositTokenBalance && (
+              <RowBetween marginTop="10px">
+                <ButtonSecondary
+                  onClick={() => {
+                    unstakeAndClaimRewards()
+                  }}
+                  width="100%"
+                  style={{ marginInlineEnd: '1%' }}
+                >
+                  {t('unstakeAndClaim')}
+                </ButtonSecondary>
+              </RowBetween>
+            )}
           </AutoColumn>
         )}
       </AutoColumn>

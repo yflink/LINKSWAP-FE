@@ -564,7 +564,7 @@ export const SINGLE_POOLS: Record<string, any> = {
   },
   SCRTLINK: {
     rewardsAddress: 'secret19y50xzywrz98g6ljxp43fd4q47sl40gkcpm03n',
-    tokens: [secretLINK, WETHER],
+    tokens: [secretLINK, LINK],
     stakedToken: secretLINK,
     rewardsToken: secretSCRT,
     balance: 0,
@@ -573,7 +573,7 @@ export const SINGLE_POOLS: Record<string, any> = {
   },
   SCRTYFL: {
     rewardsAddress: 'secret1ra9l5p04sc4pu8vc5djr3c9ds7npmwmzvsee32',
-    tokens: [secretYFL, WETHER],
+    tokens: [secretYFL, YFL],
     stakedToken: secretYFL,
     rewardsToken: secretSCRT,
     balance: 0,

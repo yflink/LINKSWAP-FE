@@ -64,9 +64,12 @@ export const QueryRewardPoolBalance = async (params: {
 }): Promise<JsonObject> => {
   const { cosmJS, contract } = params
 
-  return await cosmJS.queryContractSmart(contract, {
-    deposit: {}
+  const result: QueryRewardPoolBalance = await cosmJS.queryContractSmart(contract, {
+    // eslint-disable-next-line @typescript-eslint/camelcase
+    reward_pool_balance: {}
   })
+
+  return result.reward_pool_balance.balance
 }
 
 export const DepositRewards = async (params: {
