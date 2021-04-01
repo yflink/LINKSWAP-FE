@@ -362,7 +362,8 @@ export default function ScrtStakingCard({
                       <>
                         <RowBetween>
                           <Text>{t('yourPoolShare')}</Text>
-                          {numberToUsd(depositTokenBalance * tokenPrice)} ({numberToPercent(0)})
+                          {numberToUsd(divDecimals(Number(depositTokenBalance), stakedToken.decimals) * tokenPrice)} (
+                          {numberToPercent(0)})
                         </RowBetween>
 
                         {rewardsTokenBalance > 0 ? (
