@@ -302,6 +302,10 @@ export default function ScrtStakingCard({
     tokenPrice = tokenPrices[tokens[1].address.toLowerCase()] ? tokenPrices[tokens[1].address.toLowerCase()].price : 0
   }
 
+  const depositedTokens = depositTokenBalance
+    ? Number(divDecimals(Number(depositTokenBalance), stakedToken.decimals))
+    : 0
+
   return (
     <StakingCard highlight={depositTokenBalance > 0} show={show}>
       <PlatformIcon>
@@ -354,16 +358,14 @@ export default function ScrtStakingCard({
                     {depositTokenBalance > 0 && (
                       <RowBetween>
                         <Text>{t('stakedTokenAmount')}</Text>
-                        {numberToSignificant(divDecimals(Number(depositTokenBalance), stakedToken.decimals))}{' '}
-                        {stakedToken.symbol}
+                        {numberToSignificant(depositedTokens)} {stakedToken.symbol}
                       </RowBetween>
                     )}
                     {depositTokenBalance > 0 && (
                       <>
                         <RowBetween>
                           <Text>{t('yourPoolShare')}</Text>
-                          {numberToUsd(divDecimals(Number(depositTokenBalance), stakedToken.decimals) * tokenPrice)} (
-                          {numberToPercent(0)})
+                          {numberToUsd(tokenPrice * depositedTokens)} ({numberToPercent(0)})
                         </RowBetween>
 
                         {rewardsTokenBalance > 0 ? (
