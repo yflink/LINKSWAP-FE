@@ -71,6 +71,8 @@ export default function ScrtStakingCard({
   const { t } = useTranslation()
   const headerRowStyles = show ? 'default' : 'pointer'
   const toggleWalletModal = useWalletModalToggle()
+  console.log(values)
+  const { stakedToken, rewardsToken } = values
 
   return (
     <StakingCard highlight={false} show={show}>
@@ -92,7 +94,7 @@ export default function ScrtStakingCard({
           <RowFixed>
             <ScrtTokenLogo src="//logos.linkswap.app/scrt.png" />
             <div style={{ display: 'flex', position: 'relative' }}>
-              <p style={{ fontWeight: 500, fontSize: 18, margin: '0 4px' }}>secretLINK</p>
+              <p style={{ fontWeight: 500, fontSize: 18, margin: '0 4px' }}>{stakedToken.symbol}</p>
             </div>
           </RowFixed>
           {!show && (

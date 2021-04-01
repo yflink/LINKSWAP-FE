@@ -322,6 +322,7 @@ export default function ScrtBridge({
     const amount = mulDecimals(burnInput, decimals).toString()
     let txId = ''
 
+    setBurning(true)
     try {
       txId = await Snip20SendToBridge({
         recipient,
@@ -331,7 +332,6 @@ export default function ScrtBridge({
         msg: btoa(account)
       })
       setScrtTx(txId)
-      setBurning(true)
     } catch (e) {
       setScrtTx('')
       setBurning(false)
@@ -597,7 +597,7 @@ export default function ScrtBridge({
                             {burning ? <Dots>{t('burning')}</Dots> : t('burn')}
                           </ButtonPrimary>
                         )}
-                        {scrtTx && burning ? (
+                        {burning ? (
                           <MintStatus>
                             <Text fontSize={14}>
                               {t('burningInProgress', {
@@ -606,14 +606,18 @@ export default function ScrtBridge({
                                 amount: numberToSignificant(burnInput)
                               })}
                             </Text>
-                            <Text style={{ marginTop: '12px' }} fontWeight={600}>
-                              Your Transaction ID:
-                            </Text>
-                            <Text>{scrtTx}</Text>
+                            {scrtTx && (
+                              <>
+                                <Text style={{ marginTop: '12px' }} fontWeight={600}>
+                                  {t('scrtTxId')}:
+                                </Text>
+                                <Text>{scrtTx}</Text>
+                              </>
+                            )}
                             {scrtTxHash && (
                               <>
                                 <Text style={{ marginTop: '12px' }} fontWeight={600}>
-                                  Your Secret Transaction Hash:
+                                  {t('scrtTxHash')}:
                                 </Text>
                                 <Text>{scrtTx}</Text>
                               </>

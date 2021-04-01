@@ -570,6 +570,24 @@ export const SINGLE_POOLS: Record<string, any> = {
     balance: 0,
     abi: 'scrtPool',
     type: 'scrt'
+  },
+  SCRTYFL: {
+    rewardsAddress: 'secret1ra9l5p04sc4pu8vc5djr3c9ds7npmwmzvsee32',
+    tokens: [secretYFL, WETHER],
+    stakedToken: secretYFL,
+    rewardsToken: secretSCRT,
+    balance: 0,
+    abi: 'scrtPool',
+    type: 'scrt'
+  },
+  SCRTETH: {
+    rewardsAddress: 'secret1q6y7wz6pev80aadyjsejk5xr2yj4mkrj40zrvn',
+    tokens: [secretETH, WETHER],
+    stakedToken: secretETH,
+    rewardsToken: secretSCRT,
+    balance: 0,
+    abi: 'scrtPool',
+    type: 'scrt'
   }
 }
 
