@@ -126,6 +126,11 @@ export default function ScrtStake({
         address: snip20Address
       })
 
+      if (!viewingKey) {
+        setBalanceFetching(false)
+        return false
+      }
+
       return await QueryDeposit({
         cosmJS: keplrClient,
         contract: snip20Address,
