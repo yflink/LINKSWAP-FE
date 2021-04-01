@@ -184,6 +184,8 @@ export function useSingleContractMultipleData(
   const latestBlockNumber = useBlockNumber()
 
   return useMemo(() => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    //@ts-ignore
     return results.map(result => toCallState(result, contract?.interface, fragment, latestBlockNumber))
   }, [fragment, contract, results, latestBlockNumber])
 }
@@ -224,6 +226,8 @@ export function useMultipleContractSingleData(
   const latestBlockNumber = useBlockNumber()
 
   return useMemo(() => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    //@ts-ignore
     return results.map(result => toCallState(result, contractInterface, fragment, latestBlockNumber))
   }, [fragment, results, contractInterface, latestBlockNumber])
 }
@@ -234,6 +238,8 @@ export function useSingleCallResult(
   inputs?: OptionalMethodInputs,
   options?: ListenerOptions
 ): CallState {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+  //@ts-ignore
   const fragment = useMemo(() => contract?.interface?.getFunction(methodName), [contract, methodName])
 
   const calls = useMemo<Call[]>(() => {
@@ -251,6 +257,8 @@ export function useSingleCallResult(
   const latestBlockNumber = useBlockNumber()
 
   return useMemo(() => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    //@ts-ignore
     return toCallState(result, contract?.interface, fragment, latestBlockNumber)
   }, [result, contract, fragment, latestBlockNumber])
 }
