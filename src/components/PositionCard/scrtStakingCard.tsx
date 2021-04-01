@@ -264,9 +264,14 @@ export default function ScrtStakingCard({
         amount: '0'
       })
       setRewardsTokenBalance(0)
+      setRewardsFetching(false)
       setClaiming(false)
+      getBridgeData()
     } catch (reason) {
+      setRewardsTokenBalance(0)
+      setRewardsFetching(false)
       setClaiming(false)
+      getBridgeData()
       console.error(`Failed to claim: ${reason}`)
     }
   }
@@ -282,9 +287,23 @@ export default function ScrtStakingCard({
       })
       setDepositTokenBalance(0)
       setRewardsTokenBalance(0)
+      setTokenBalance(undefined)
+      setDepositFetching(false)
+      setRewardsFetching(false)
+      setBalanceFetching(false)
       setClaimingAll(false)
+      getBalance()
+      getBridgeData()
     } catch (reason) {
+      setDepositTokenBalance(0)
+      setRewardsTokenBalance(0)
+      setTokenBalance(undefined)
+      setDepositFetching(false)
+      setRewardsFetching(false)
+      setBalanceFetching(false)
       setClaimingAll(false)
+      getBalance()
+      getBridgeData()
       console.error(`Failed to claim: ${reason}`)
     }
   }
@@ -437,30 +456,30 @@ export default function ScrtStakingCard({
               </Text>
             </RowBetween>
             <RowBetween marginTop="10px">
-              {!show && rewardsTokenBalance && (
+              {!show && rewardsTokenBalance > 0 && (
                 <ButtonSecondary
                   disabled={claiming}
                   onClick={() => {
                     claimRewards()
                   }}
-                  width="48%"
-                  style={{ marginInlineEnd: '1%' }}
+                  width={rewardsTokenBalance > 0 ? '48%' : '100%'}
+                  style={{ marginInlineStart: rewardsTokenBalance > 0 ? '1%' : '0' }}
                 >
                   {claiming ? <Loader /> : t('claimRewards')}
                 </ButtonSecondary>
               )}
-              {!show && depositTokenBalance && (
+              {!show && depositTokenBalance > 0 && (
                 <ButtonSecondary
                   as={Link}
-                  width={'48%'}
-                  style={{ marginInlineStart: '1%' }}
+                  width={rewardsTokenBalance > 0 ? '48%' : '100%'}
+                  style={{ marginInlineStart: rewardsTokenBalance > 0 ? '1%' : '0' }}
                   to={`/unstake/scrt/${stakedToken.symbol.toLowerCase()}`}
                 >
                   {t('unstake')}
                 </ButtonSecondary>
               )}
             </RowBetween>
-            {!show && depositTokenBalance && (
+            {!show && depositTokenBalance > 0 && (
               <RowBetween marginTop="10px">
                 <ButtonSecondary
                   disabled={claimingAll}
