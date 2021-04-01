@@ -604,15 +604,7 @@ export default function FullStakingCard({
                 ) : (
                   <>
                     <Text>{t('timeRemaining')}</Text>
-                    {information.poolType === 'syflPool' && isYFLUSD ? (
-                      <Countdown
-                        ends={information.periodFinish}
-                        format="DD[d] HH[h] mm[m] ss[s]"
-                        string="emissionDropIn"
-                      />
-                    ) : (
-                      <Countdown ends={information.periodFinish} format="DD[d] HH[h] mm[m] ss[s]" string="endsIn" />
-                    )}
+                    <Countdown ends={information.periodFinish} format="DD[d] HH[h] mm[m] ss[s]" string="endsIn" />
                   </>
                 )}
               </RowBetween>
