@@ -84,6 +84,7 @@ export default function ScrtStakingCard({
   const { keplrConnected, keplrAccount } = useGetKplrConnect()
   const [keplrClient, setKeplrClient] = useState<SigningCosmWasmClient | undefined>(undefined)
   const [claiming, setClaiming] = useState<boolean>(false)
+  const [claimingAll, setClaimingAll] = useState<boolean>(false)
   const { stakedToken, rewardsToken, rewardsAddress, tokens } = values
   let tokenPrice = 0
 
@@ -224,7 +225,7 @@ export default function ScrtStakingCard({
     if (typeof depositTokenBalance === 'undefined') {
       getBridgeDepositBalance(rewardsAddress).then(depositBalance => {
         if (depositBalance) {
-          setDepositTokenBalance(divDecimals(Number(depositBalance), stakedToken.decimals))
+          setDepositTokenBalance(depositBalance)
         }
       })
     }
@@ -269,7 +270,21 @@ export default function ScrtStakingCard({
     }
   }
 
-  async function unstakeAndClaimRewards() {}
+  async function unstakeAndClaimRewards() {
+    if (!keplrClient) return
+    setClaimingAll(true)
+    try {
+      await Redeem({
+        secretjs: keplrClient,
+        address: rewardsAddress,
+        amount: depositTokenBalance
+      })
+      setClaimingAll(false)
+    } catch (reason) {
+      setClaimingAll(false)
+      console.error(`Failed to claim: ${reason}`)
+    }
+  }
 
   if (!keplrObject) {
     keplrObject = getKeplrObject()
@@ -339,7 +354,8 @@ export default function ScrtStakingCard({
                     {depositTokenBalance > 0 && (
                       <RowBetween>
                         <Text>{t('stakedTokenAmount')}</Text>
-                        {numberToSignificant(depositTokenBalance)} {stakedToken.symbol}
+                        {numberToSignificant(divDecimals(Number(depositTokenBalance), stakedToken.decimals))}{' '}
+                        {stakedToken.symbol}
                       </RowBetween>
                     )}
                     {depositTokenBalance > 0 && (
@@ -361,7 +377,7 @@ export default function ScrtStakingCard({
                         ) : (
                           <RowBetween style={{ alignItems: 'flex-start' }}>
                             <Text>{t('claimableRewards')}</Text>
-                            <Dots>{t('loading')}</Dots>
+                            <Text>{t('none')}</Text>
                           </RowBetween>
                         )}
                       </>
@@ -441,13 +457,14 @@ export default function ScrtStakingCard({
             {!show && depositTokenBalance && (
               <RowBetween marginTop="10px">
                 <ButtonSecondary
+                  disabled={claimingAll}
                   onClick={() => {
                     unstakeAndClaimRewards()
                   }}
                   width="100%"
                   style={{ marginInlineEnd: '1%' }}
                 >
-                  {t('unstakeAndClaim')}
+                  {claimingAll ? <Loader /> : t('unstakeAndClaim')}
                 </ButtonSecondary>
               </RowBetween>
             )}

@@ -496,5 +496,6 @@
   "scrtFeeDisclaimer": "Be aware, that the Secret Bridge is an autonomous bridge, which initiates the transactions on the Ethereum blockhain automatically. Therefore it will subtract a certain amount of your burned tokens to get back the transaction fee (estimated: ~{{gasCosts}})",
   "burningInProgress": "The burning of {{amount}} {{inputToken}} for {{outputToken}} was initiated. This may take a while (up to 30 minutes). Please check your {{outputToken}} balance.",
   "scrtTxHash": "Your Secret Transaction Hash",
-  "scrtTxId": "Your Transaction ID"
+  "scrtTxId": "Your Transaction ID",
+  "none": "none"
 }
