@@ -32,8 +32,6 @@ import { SrctBridge } from '../../components/ABI'
 import { useTransactionAdder } from '../../state/transactions/hooks'
 import Web3 from 'web3'
 import Transaction from '../../components/AccountDetails/Transaction'
-import { useDispatch } from 'react-redux'
-import { AppDispatch } from '../../state'
 import { Snip20GetBalance, Snip20SendToBridge, Snip20SwapHash } from '../../components/KeplrConnect/snip20'
 import { divDecimals, mulDecimals, numberToSignificant, numberToUsd } from '../../utils/numberUtils'
 import { SigningCosmWasmClient } from 'secretjs'
@@ -194,13 +192,12 @@ export default function ScrtBridge({
     inputCurrency === 'ETH' ? ETHER ?? undefined : tokens[0] ?? undefined,
     undefined
   )
-  const dispatch = useDispatch<AppDispatch>()
   const { onFieldAInput } = useMintActionHandlers(noLiquidity)
   const onFieldBInput = useCallback(
     (typedValue: string) => {
       setBurnInput(typedValue)
     },
-    [dispatch, setBurnInput]
+    [setBurnInput]
   )
 
   const formattedAmounts = {
