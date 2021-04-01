@@ -5,6 +5,8 @@ import Unstake from './Unstake'
 import MphVault from './MphVault'
 import MphManage from './MphManage'
 import StakeOverview from './index'
+import ScrtStake from './ScrtStake'
+import ScrtUnstake from './ScrtUnstake'
 
 export function RedirectToStake(props: RouteComponentProps<{ currencyIdA: string; currencyIdB: string }>) {
   const {
@@ -50,6 +52,26 @@ export function RedirectTo88mph(props: RouteComponentProps<{ vaultName: string }
   } = props
 
   return <MphVault {...props} />
+}
+
+export function RedirectToScrtStake(props: RouteComponentProps<{ currency: string }>) {
+  const {
+    match: {
+      params: { currency }
+    }
+  } = props
+
+  return <ScrtStake {...props} />
+}
+
+export function RedirectToScrtUnstake(props: RouteComponentProps<{ currency: string }>) {
+  const {
+    match: {
+      params: { currency }
+    }
+  } = props
+
+  return <ScrtUnstake {...props} />
 }
 
 export function RedirectTo88mphWithdraw(props: RouteComponentProps<{ vaultName: string }>) {

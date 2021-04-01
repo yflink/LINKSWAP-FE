@@ -29,6 +29,8 @@ import StakeOverview from './Stake'
 import {
   RedirectTo88mph,
   RedirectTo88mphWithdraw,
+  RedirectToScrtStake,
+  RedirectToScrtUnstake,
   RedirectToStake,
   RedirectToStakeWithParam,
   RedirectToUnstake
@@ -153,10 +155,12 @@ export default function App() {
                 <Route exact strict path="/stake" component={StakeOverview} />
                 <Route exact strict path="/unstake" component={StakeOverview} />
                 <Route exact path="/manage/mph88/:vaultName" component={RedirectTo88mphWithdraw} />
+                <Route exact path="/stake-scrt/:currency" component={RedirectToScrtStake} />
                 <Route exact path="/stake/mph88/:vaultName" component={RedirectTo88mph} />
                 <Route exact path="/stake/gov" component={StakeGovernance} />
                 <Route exact path="/stake/:param" component={RedirectToStakeWithParam} />
                 <Route exact path="/stake/:currencyIdA/:currencyIdB" component={RedirectToStake} />
+                <Route exact path="/unstake-scrt/:currency" component={RedirectToScrtUnstake} />
                 <Route exact path="/unstake/:currencyIdA/:currencyIdB" component={RedirectToUnstake} />
                 <Route exact path="/create/:currencyIdA" component={CreatePairRedirectOldPathStructure} />
                 <Route exact path="/create/:currencyIdA/:currencyIdB" component={CreatePairRedirectDuplicateTokenIds} />

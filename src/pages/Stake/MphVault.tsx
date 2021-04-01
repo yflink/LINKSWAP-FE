@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import styled from 'styled-components'
 import { BlueCard, NavigationCard } from '../../components/Card'
@@ -28,6 +28,7 @@ import ReactGA from 'react-ga'
 import { mphPool } from '../../components/ABI'
 import { Input as NumericalInput } from '../../components/NumericalInput'
 import { useTransactionAdder } from '../../state/transactions/hooks'
+import { useNavigationActiveItemManager } from '../../state/navigation/hooks'
 
 const Tabs = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -196,6 +197,10 @@ export default function MphVault({
       })
   }
 
+  const newActive = useNavigationActiveItemManager()
+  useEffect(() => {
+    newActive('stake')
+  })
   if (!vaultName || !currentVault || !vaultAddress) {
     return null
   } else {

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import styled, { ThemeContext } from 'styled-components'
 import Card, { BlueCard, LightCard, NavigationCard } from '../../components/Card'
@@ -28,6 +28,7 @@ import { SingleCurrencyLogo } from '../../components/DoubleLogo'
 import Countdown from '../../components/Countdown'
 import { useGetMphPools } from '../../state/mph/hooks'
 import moment from 'moment'
+import { useNavigationActiveItemManager } from '../../state/navigation/hooks'
 
 const Tabs = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -182,6 +183,10 @@ export default function MphManage({
       })
   }
 
+  const newActive = useNavigationActiveItemManager()
+  useEffect(() => {
+    newActive('stake')
+  })
   if (!vaultName || !currentVault || !vaultAddress) {
     return null
   } else {

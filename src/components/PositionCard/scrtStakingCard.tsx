@@ -232,7 +232,6 @@ export default function ScrtStakingCard({
     if (typeof supplyBalance === 'undefined') {
       getBridgeSupply(rewardsAddress).then(supplyBalance => {
         if (supplyBalance) {
-          console.log(supplyBalance)
           setSupplyBalance(Number(supplyBalance))
         }
       })
@@ -407,8 +406,8 @@ export default function ScrtStakingCard({
                       </>
                     )}
 
-                    {tokenBalance !== 0 && (
-                      <ButtonSecondary as={Link} width="100%" to={`/stake/scrt/${stakedToken.symbol.toLowerCase()}`}>
+                    {tokenBalance !== 0 && !show && (
+                      <ButtonSecondary as={Link} width="100%" to={`/stake-scrt/${stakedToken.symbol.toLowerCase()}`}>
                         {t('stake')}
                       </ButtonSecondary>
                     )}
@@ -472,7 +471,7 @@ export default function ScrtStakingCard({
                   as={Link}
                   width={rewardsTokenBalance > 0 ? '48%' : '100%'}
                   style={{ marginInlineStart: rewardsTokenBalance > 0 ? '1%' : '0' }}
-                  to={`/unstake/scrt/${stakedToken.symbol.toLowerCase()}`}
+                  to={`/unstake-scrt/${stakedToken.symbol.toLowerCase()}`}
                 >
                   {t('unstake')}
                 </ButtonSecondary>
