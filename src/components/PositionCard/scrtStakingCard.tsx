@@ -11,7 +11,7 @@ import styled from 'styled-components'
 import Card from '../Card'
 import { SCRTSVG } from '../SVG'
 import KeplrConnect, { getKeplrClient, getKeplrObject, getViewingKey } from '../KeplrConnect'
-import { useGetKplrConnect } from '../../state/keplr/hooks'
+import { useGetKplrConnect, useGetSecretPools } from '../../state/keplr/hooks'
 import { Snip20GetBalance } from '../KeplrConnect/snip20'
 import { SigningCosmWasmClient } from 'secretjs'
 import { sleep } from '../../utils/sleep'
@@ -53,22 +53,12 @@ const ScrtTokenLogo = styled.img`
   display: inline-block;
 `
 
-export default function ScrtStakingCard({
-  values,
-  show,
-  showOwn,
-  showExpired
-}: {
-  values: any
-  show?: boolean | false
-  showOwn?: boolean | false
-  showExpired?: boolean | true
-  index: number
-}) {
+export default function ScrtStakingCard({ values, show }: { values: any; show?: boolean | false; index: number }) {
   const [showMore, setShowMore] = useState(show)
   const scrtChainId = 'secret-2'
   const { t } = useTranslation()
   const { tokenPrices } = useGetTokenPrices()
+  const { secretPools } = useGetSecretPools()
   const headerRowStyles = show ? 'default' : 'pointer'
   let keplrObject = getKeplrObject()
   const [status, setStatus] = useState('Unlock')
@@ -78,14 +68,16 @@ export default function ScrtStakingCard({
   const [depositFetching, setDepositFetching] = useState<boolean>(false)
   const [rewardsFetching, setRewardsFetching] = useState<boolean>(false)
   const [rewardsTokenBalance, setRewardsTokenBalance] = useState<any>(undefined)
-  const [supplyFetching, setSupplyFetching] = useState<boolean>(false)
-  const [supplyBalance, setSupplyBalance] = useState<any>(undefined)
+  const [unlock, setUnlock] = useState(false)
   const { keplrConnected, keplrAccount } = useGetKplrConnect()
   const [keplrClient, setKeplrClient] = useState<SigningCosmWasmClient | undefined>(undefined)
   const [claiming, setClaiming] = useState<boolean>(false)
   const [claimingAll, setClaimingAll] = useState<boolean>(false)
   const { stakedToken, rewardsToken, rewardsAddress, tokens } = values
+  let totalSupply = 0
   let tokenPrice = 0
+  let totalLocked = 0
+  let apy = 0
 
   async function getSnip20Balance(snip20Address: string, decimals?: string | number): Promise<string | boolean> {
     if (!keplrClient) {
@@ -179,22 +171,6 @@ export default function ScrtStakingCard({
     }
   }
 
-  async function getBridgeSupply(snip20Address: string): Promise<string | boolean> {
-    if (!keplrClient) {
-      return false
-    }
-    if (!supplyFetching) {
-      setSupplyFetching(true)
-
-      return await QueryRewardPoolBalance({
-        cosmJS: keplrClient,
-        contract: snip20Address
-      })
-    } else {
-      return false
-    }
-  }
-
   async function getBalance() {
     if (typeof tokenBalance === 'undefined') {
       getSnip20Balance(stakedToken.address, stakedToken.decimals).then(balance => {
@@ -216,6 +192,7 @@ export default function ScrtStakingCard({
     if (typeof rewardsTokenBalance === 'undefined') {
       getBridgeRewardsBalance(rewardsAddress).then(rewardBalance => {
         if (rewardBalance) {
+          setRewardsFetching(false)
           setRewardsTokenBalance(divDecimals(Number(rewardBalance), rewardsToken.decimals))
         }
       })
@@ -224,21 +201,15 @@ export default function ScrtStakingCard({
     if (typeof depositTokenBalance === 'undefined') {
       getBridgeDepositBalance(rewardsAddress).then(depositBalance => {
         if (depositBalance) {
+          setDepositFetching(false)
           setDepositTokenBalance(depositBalance)
-        }
-      })
-    }
-
-    if (typeof supplyBalance === 'undefined') {
-      getBridgeSupply(rewardsAddress).then(supplyBalance => {
-        if (supplyBalance) {
-          setSupplyBalance(Number(supplyBalance))
         }
       })
     }
   }
 
   async function unlockToken() {
+    setUnlock(!unlock)
     if (!keplrObject) {
       keplrObject = getKeplrObject()
     } else {
@@ -261,15 +232,19 @@ export default function ScrtStakingCard({
         address: rewardsAddress,
         amount: '0'
       })
-      setRewardsTokenBalance(0)
-      setRewardsFetching(false)
-      setClaiming(false)
-      getBridgeData()
+      setTimeout(() => {
+        setRewardsTokenBalance(0)
+        setRewardsFetching(false)
+        setClaiming(false)
+        getBridgeData()
+      }, 2000)
     } catch (reason) {
-      setRewardsTokenBalance(0)
-      setRewardsFetching(false)
-      setClaiming(false)
-      getBridgeData()
+      setTimeout(() => {
+        setRewardsTokenBalance(0)
+        setRewardsFetching(false)
+        setClaiming(false)
+        getBridgeData()
+      }, 2000)
       console.error(`Failed to claim: ${reason}`)
     }
   }
@@ -320,6 +295,25 @@ export default function ScrtStakingCard({
 
   if (tokenPrices) {
     tokenPrice = tokenPrices[tokens[1].address.toLowerCase()] ? tokenPrices[tokens[1].address.toLowerCase()].price : 0
+
+    if (secretPools) {
+      totalLocked =
+        Number(divDecimals(Number(secretPools[rewardsAddress.toLowerCase()].totalSupply), stakedToken.decimals)) ?? 0
+      if (totalSupply === 0) {
+        totalSupply = totalLocked * Number(tokenPrice)
+      }
+
+      const timeRemaining =
+        (secretPools[rewardsAddress.toLowerCase()].deadline - 2424433) * 6.22 +
+        1614681910 -
+        Math.round(Date.now() / 1000)
+
+      const pending =
+        Number(divDecimals(secretPools[rewardsAddress.toLowerCase()].rewardsLeft, rewardsToken.decimals)) *
+        secretPools[rewardsAddress.toLowerCase()].rewardsPrice
+      const locked = Number(totalSupply)
+      apy = ((pending * 100) / locked) * (3.154e7 / timeRemaining)
+    }
   }
 
   const depositedTokens = depositTokenBalance
@@ -341,7 +335,7 @@ export default function ScrtStakingCard({
           style={{ cursor: headerRowStyles, position: 'relative' }}
         >
           <div style={{ position: 'absolute', right: '-13px', top: '-16px', fontSize: '12px' }}>
-            <p style={{ margin: 0 }}>{t('apy', { apy: numberToPercent(0) })}</p>
+            <p style={{ margin: 0 }}>{t('apy', { apy: numberToPercent(apy) })}</p>
           </div>
           <RowFixed>
             <ScrtTokenLogo src="//logos.linkswap.app/scrt.png" />
@@ -365,16 +359,14 @@ export default function ScrtStakingCard({
               <>
                 {status === 'Unlocked' ? (
                   <>
-                    <RowBetween>
-                      <Text>{t('stakableTokenAmount')}</Text>
-                      {typeof tokenBalance === 'undefined' ? (
-                        <Loader />
-                      ) : (
+                    {tokenBalance > 0 && (
+                      <RowBetween>
+                        <Text>{t('stakableTokenAmount')}</Text>
                         <Text>
                           {displayNumber(numberToSignificant(tokenBalance))} {stakedToken.symbol}
                         </Text>
-                      )}
-                    </RowBetween>
+                      </RowBetween>
+                    )}
                     {depositTokenBalance > 0 && (
                       <RowBetween>
                         <Text>{t('stakedTokenAmount')}</Text>
@@ -385,7 +377,8 @@ export default function ScrtStakingCard({
                       <>
                         <RowBetween>
                           <Text>{t('yourPoolShare')}</Text>
-                          {numberToUsd(tokenPrice * depositedTokens)} ({numberToPercent(0)})
+                          {numberToUsd(tokenPrice * depositedTokens)} (
+                          {numberToPercent(depositedTokens / (totalLocked / 100))})
                         </RowBetween>
 
                         {rewardsTokenBalance > 0 ? (
@@ -438,20 +431,7 @@ export default function ScrtStakingCard({
 
             <RowBetween style={{ alignItems: 'flex-start' }}>
               <Text>{t('stakePoolTotalLiq')}</Text>
-              <Text>{numberToUsd(0)}</Text>
-            </RowBetween>
-            <RowBetween style={{ alignItems: 'flex-start' }}>
-              <Text>{t('stakePoolRewards')}</Text>
-              <Text style={{ textAlign: 'end' }}>
-                <div>
-                  {t('stakeRewardPerDay', {
-                    rate: 0,
-                    currencySymbol: 'sSCRT'
-                  })}
-                </div>
-
-                <div style={{ textAlign: 'end', marginTop: '8px' }}>{t('apy', { apy: numberToPercent(0) })}</div>
-              </Text>
+              <Text>{numberToUsd(Number(totalSupply))}</Text>
             </RowBetween>
             <RowBetween marginTop="10px">
               {!show && rewardsTokenBalance > 0 && (

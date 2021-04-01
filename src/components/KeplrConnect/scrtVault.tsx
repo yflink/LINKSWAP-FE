@@ -1,5 +1,6 @@
 import { ExecuteResult, SigningCosmWasmClient } from 'secretjs'
 import { JsonObject } from 'secretjs/types/types'
+import { Snip20Send } from './snip20'
 
 interface QueryRewards {
   rewards: {
@@ -69,6 +70,20 @@ export const QueryRewardPoolBalance = async (params: {
   })
 
   return result.reward_pool_balance.balance
+}
+
+export const DepositRewards = async (params: {
+  secretjs: SigningCosmWasmClient
+  recipient: string
+  address: string
+  amount: string
+}): Promise<string> => {
+  await Snip20Send({
+    msg: 'eyJkZXBvc2l0Ijp7fX0K', // '{"lock_tokens":{}}' -> base64
+    ...params
+  })
+
+  return 'done'
 }
 
 export const Redeem = async (params: {

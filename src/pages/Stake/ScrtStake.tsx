@@ -13,16 +13,16 @@ import AppBody from '../AppBody'
 import { Dots, Wrapper } from '../Pool/styleds'
 import QuestionHelper from '../../components/QuestionHelper'
 import { Text } from 'rebass'
-import { divDecimals } from '../../utils/numberUtils'
+import { divDecimals, mulDecimals } from '../../utils/numberUtils'
 import KeplrConnect, { getKeplrClient, getKeplrObject, getViewingKey } from '../../components/KeplrConnect'
 import { useGetKplrConnect } from '../../state/keplr/hooks'
 import { SigningCosmWasmClient } from 'secretjs'
 import { Snip20GetBalance } from '../../components/KeplrConnect/snip20'
 import { sleep } from '../../utils/sleep'
-import { unwrappedToken } from '../../utils/wrappedCurrency'
 import ScrtStakingCard from '../../components/PositionCard/scrtStakingCard'
 import { ETHER } from '@uniswap/sdk'
 import { useNavigationActiveItemManager } from '../../state/navigation/hooks'
+import { DepositRewards } from '../../components/KeplrConnect/scrtVault'
 
 const Tabs = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -88,11 +88,13 @@ export default function ScrtStake({
   const { keplrConnected, keplrAccount } = useGetKplrConnect()
   let keplrObject = getKeplrObject()
   const [status, setStatus] = useState('Unlock')
-  const [unstaking, setUnstaking] = useState(false)
+  const [staking, setStaking] = useState(false)
   const [found, setFound] = useState(false)
   const [poolDetails, setPoolDetails] = useState<any>(undefined)
   const [input, setInput] = useState('')
   const [balance, setBalance] = useState<any>(undefined)
+  const [unlock, setUnlock] = useState(false)
+  const [balanceFetching, setBalanceFetching] = useState(false)
   const [keplrClient, setKeplrClient] = useState<SigningCosmWasmClient | undefined>(undefined)
   const onFieldInput = useCallback(
     (typedValue: string) => {
@@ -110,39 +112,45 @@ export default function ScrtStake({
     }
     stakedToken = pool.stakedToken
   }
+  const rewardsAddress = found ? pool.rewardsAddress : ''
 
   async function getSnip20Balance(snip20Address: string, decimals?: string | number): Promise<boolean | string> {
     if (!keplrClient) {
       return false
     }
+    if (!balanceFetching) {
+      setBalanceFetching(true)
 
-    const viewingKey = await getViewingKey({
-      keplr: keplrObject,
-      chainId: scrtChainId,
-      address: snip20Address
-    })
+      const viewingKey = await getViewingKey({
+        keplr: keplrObject,
+        chainId: scrtChainId,
+        address: snip20Address
+      })
 
-    if (!viewingKey) {
-      return 'Unlock'
+      if (!viewingKey) {
+        return 'Unlock'
+      }
+
+      const rawBalance = await Snip20GetBalance({
+        secretjs: keplrClient,
+        token: snip20Address,
+        address: keplrAccount,
+        key: viewingKey
+      })
+
+      if (isNaN(Number(rawBalance))) {
+        return 'Fix Unlock'
+      }
+
+      if (decimals) {
+        const decimalsNum = Number(decimals)
+        return divDecimals(rawBalance, decimalsNum)
+      }
+
+      return rawBalance
+    } else {
+      return false
     }
-
-    const rawBalance = await Snip20GetBalance({
-      secretjs: keplrClient,
-      token: snip20Address,
-      address: keplrAccount,
-      key: viewingKey
-    })
-
-    if (isNaN(Number(rawBalance))) {
-      return 'Fix Unlock'
-    }
-
-    if (decimals) {
-      const decimalsNum = Number(decimals)
-      return divDecimals(rawBalance, decimalsNum)
-    }
-
-    return rawBalance
   }
 
   async function getBalance() {
@@ -152,6 +160,7 @@ export default function ScrtStake({
           setStatus('Unlocked')
           if (tokenBalance) {
             setBalance(String(tokenBalance))
+            setBalanceFetching(false)
           }
         } else {
           setStatus(tokenBalance)
@@ -172,6 +181,7 @@ export default function ScrtStake({
   }
 
   async function unlockToken() {
+    setUnlock(!unlock)
     if (!keplrObject) {
       keplrObject = getKeplrObject()
     } else {
@@ -186,7 +196,32 @@ export default function ScrtStake({
   }
 
   async function stakeTokens() {
-    setUnstaking(true)
+    if (!keplrClient) return
+    setStaking(true)
+    try {
+      await DepositRewards({
+        secretjs: keplrClient,
+        recipient: rewardsAddress,
+        address: stakedToken.address,
+        amount: String(mulDecimals(input, stakedToken.decimals))
+      })
+      setTimeout(() => {
+        setStaking(false)
+        setBalance(undefined)
+        setBalanceFetching(false)
+        setInput('')
+        getBalance()
+      }, 2000)
+    } catch (reason) {
+      setTimeout(() => {
+        setStaking(false)
+        setBalance(undefined)
+        setBalanceFetching(false)
+        setInput('')
+        getBalance()
+      }, 2000)
+      console.error(`Failed to deposit: ${reason}`)
+    }
   }
 
   const newActive = useNavigationActiveItemManager()
@@ -261,9 +296,9 @@ export default function ScrtStake({
                           onClick={() => {
                             stakeTokens()
                           }}
-                          disabled={unstaking}
+                          disabled={staking}
                         >
-                          {unstaking ? <Dots>{t('staking')}</Dots> : t('stake')}
+                          {staking ? <Dots>{t('staking')}</Dots> : t('stake')}
                         </ButtonPrimary>
                       )}
                     </>

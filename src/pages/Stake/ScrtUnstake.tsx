@@ -13,17 +13,15 @@ import AppBody from '../AppBody'
 import { Dots, Wrapper } from '../Pool/styleds'
 import QuestionHelper from '../../components/QuestionHelper'
 import { Text } from 'rebass'
-import { divDecimals } from '../../utils/numberUtils'
+import { divDecimals, mulDecimals } from '../../utils/numberUtils'
 import KeplrConnect, { getKeplrClient, getKeplrObject, getViewingKey } from '../../components/KeplrConnect'
 import { useGetKplrConnect } from '../../state/keplr/hooks'
 import { SigningCosmWasmClient } from 'secretjs'
-import { Snip20GetBalance } from '../../components/KeplrConnect/snip20'
 import { sleep } from '../../utils/sleep'
-import { unwrappedToken } from '../../utils/wrappedCurrency'
 import ScrtStakingCard from '../../components/PositionCard/scrtStakingCard'
 import { ETHER } from '@uniswap/sdk'
 import { useNavigationActiveItemManager } from '../../state/navigation/hooks'
-import { QueryDeposit } from '../../components/KeplrConnect/scrtVault'
+import { QueryDeposit, Redeem } from '../../components/KeplrConnect/scrtVault'
 
 const Tabs = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -92,8 +90,10 @@ export default function ScrtStake({
   const [unstaking, setUnstaking] = useState(false)
   const [found, setFound] = useState(false)
   const [poolDetails, setPoolDetails] = useState<any>(undefined)
+  const [balanceFetching, setBalanceFetching] = useState(false)
   const [input, setInput] = useState('')
   const [balance, setBalance] = useState<any>(undefined)
+  const [unlock, setUnlock] = useState(false)
   const [keplrClient, setKeplrClient] = useState<SigningCosmWasmClient | undefined>(undefined)
   const onFieldInput = useCallback(
     (typedValue: string) => {
@@ -113,23 +113,28 @@ export default function ScrtStake({
   }
   const rewardsAddress = found ? pool.rewardsAddress : ''
 
-  async function getSnip20Balance(snip20Address: string, decimals?: string | number): Promise<boolean | string> {
+  async function getSnip20Balance(snip20Address: string): Promise<boolean | string> {
     if (!keplrClient) {
       return false
     }
+    if (!balanceFetching) {
+      setBalanceFetching(true)
 
-    const viewingKey = await getViewingKey({
-      keplr: keplrObject,
-      chainId: scrtChainId,
-      address: snip20Address
-    })
+      const viewingKey = await getViewingKey({
+        keplr: keplrObject,
+        chainId: scrtChainId,
+        address: snip20Address
+      })
 
-    return await QueryDeposit({
-      cosmJS: keplrClient,
-      contract: snip20Address,
-      address: keplrAccount,
-      key: viewingKey
-    })
+      return await QueryDeposit({
+        cosmJS: keplrClient,
+        contract: snip20Address,
+        address: keplrAccount,
+        key: viewingKey
+      })
+    } else {
+      return false
+    }
   }
 
   async function getBalance() {
@@ -139,6 +144,7 @@ export default function ScrtStake({
           setStatus('Unlocked')
           if (tokenBalance) {
             setBalance(String(tokenBalance))
+            setBalanceFetching(false)
           }
         } else {
           setStatus(tokenBalance)
@@ -159,6 +165,7 @@ export default function ScrtStake({
   }
 
   async function unlockToken() {
+    setUnlock(!unlock)
     if (!keplrObject) {
       keplrObject = getKeplrObject()
     } else {
@@ -173,7 +180,31 @@ export default function ScrtStake({
   }
 
   async function unstakeTokens() {
+    if (!keplrClient) return
     setUnstaking(true)
+    try {
+      await Redeem({
+        secretjs: keplrClient,
+        address: rewardsAddress,
+        amount: String(mulDecimals(input, stakedToken.decimals))
+      })
+      setTimeout(() => {
+        setUnstaking(false)
+        setBalance(undefined)
+        setBalanceFetching(false)
+        setInput('')
+        getBalance()
+      }, 2000)
+    } catch (reason) {
+      setTimeout(() => {
+        setUnstaking(false)
+        setBalance(undefined)
+        setBalanceFetching(false)
+        setInput('')
+        getBalance()
+      }, 2000)
+      console.error(`Failed to claim: ${reason}`)
+    }
   }
 
   const stakedBalance = divDecimals(Number(balance), stakedToken.decimals) ?? 0

@@ -19,7 +19,7 @@ export default function StakingCard({ type, values, showOwn, showExpired, index 
       ) : (
         <>
           {type === 'scrt' ? (
-            <ScrtStakingCard values={values} showOwn={showOwn} showExpired={showExpired} index={index} />
+            <ScrtStakingCard values={values} index={index} />
           ) : (
             <FullStakingCard values={values} showOwn={showOwn} showExpired={showExpired} index={index} />
           )}
