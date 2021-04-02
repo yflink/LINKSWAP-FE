@@ -178,7 +178,7 @@ export default function ScrtBridge({
   const toggleWalletModal = useWalletModalToggle()
   const { t } = useTranslation()
   const [txHash, setTxHash] = useState<string>('')
-  const [status, setStatus] = useState('Unlock')
+  const [status, setStatus] = useState('Loading')
   const [minting, setMinting] = useState(false)
   const [burning, setBurning] = useState(false)
   const [burnInput, setBurnInput] = useState('')
