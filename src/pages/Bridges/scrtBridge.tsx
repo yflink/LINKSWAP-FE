@@ -15,7 +15,7 @@ import { LINK, secretETH, secretLINK, secretYFL, SRCT_BRIDGE, WETHER, YFL } from
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import { Field } from '../../state/mint/actions'
 import { useDerivedMintInfo, useMintActionHandlers, useMintState } from '../../state/mint/hooks'
-import { TokenAmount, Token, ETHER } from '@uniswap/sdk'
+import { TokenAmount, Token } from '@uniswap/sdk'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import { Link as HistoryLink, RouteComponentProps } from 'react-router-dom'
 import { AlertTriangle, ArrowLeft } from 'react-feather'
@@ -39,6 +39,7 @@ import { sleep } from '../../utils/sleep'
 import { FormErrorInner, FormErrorInnerAlertTriangle } from '../../components/Form/error'
 import { useGetPriceBase } from '../../state/price/hooks'
 import { useGetGasPrices } from '../../state/gas/hooks'
+import Loader from '../../components/Loader'
 
 const NavigationWrapper = styled.div`
   display: flex;
@@ -552,6 +553,15 @@ export default function ScrtBridge({
                     showMaxButton={!burnInput || parseFloat(burnInput) < parseFloat(burnBalance)}
                     id={`burn-${tokens[1].symbol.toLowerCase()}-src-token`}
                   />
+                ) : status === 'Loading' ? (
+                  <RowBetween style={{ alignItems: 'center' }}>
+                    <Text textAlign="center" fontSize={16}>
+                      <Dots>{t('loading')}</Dots>
+                    </Text>
+                    <Text>
+                      <Loader />
+                    </Text>
+                  </RowBetween>
                 ) : (
                   <>
                     <Text fontSize={14}>{t('unlockScrtTokenDescription', { tokenSymbol: tokens[1].symbol })}</Text>
