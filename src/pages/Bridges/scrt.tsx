@@ -19,8 +19,8 @@ export default function Scrt() {
   const { t } = useTranslation()
   const bridges = [
     {
-      url: 'bridges/scrt/eth',
-      currency0: unwrappedToken(WETHER),
+      url: 'bridges/scrt/weth',
+      currency0: WETHER,
       currency1: { symbol: 'secretETH', decimals: 18 },
       inverse: true,
       type: 'scrt'

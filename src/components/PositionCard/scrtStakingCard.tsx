@@ -19,6 +19,7 @@ import { Link } from 'react-router-dom'
 import { QueryDeposit, QueryRewards, Redeem } from '../KeplrConnect/scrtVault'
 import Loader from '../Loader'
 import { useGetTokenPrices } from '../../state/price/hooks'
+import { Dots } from '../swap/styleds'
 
 const StakingCard = styled(Card)<{ highlight?: boolean; show?: boolean }>`
   font-size: 14px;
@@ -61,7 +62,7 @@ export default function ScrtStakingCard({ values, show }: { values: any; show?: 
   const { secretPools } = useGetSecretPools()
   const headerRowStyles = show ? 'default' : 'pointer'
   let keplrObject = getKeplrObject()
-  const [status, setStatus] = useState('Unlock')
+  const [status, setStatus] = useState('Loading')
   const [tokenBalance, setTokenBalance] = useState<any>(undefined)
   const [balanceFetching, setBalanceFetching] = useState<boolean>(false)
   const [depositTokenBalance, setDepositTokenBalance] = useState<any>(undefined)
@@ -422,6 +423,15 @@ export default function ScrtStakingCard({ values, show }: { values: any; show?: 
                       </ButtonSecondary>
                     )}
                   </>
+                ) : status === 'Loading' ? (
+                  <RowBetween style={{ alignItems: 'center' }}>
+                    <Text textAlign="center" fontSize={16}>
+                      <Dots>{t('loading')}</Dots>
+                    </Text>
+                    <Text>
+                      <Loader />
+                    </Text>
+                  </RowBetween>
                 ) : (
                   <>
                     <Text fontSize={14}>{t('unlockScrtTokenDescription', { tokenSymbol: stakedToken.symbol })}</Text>

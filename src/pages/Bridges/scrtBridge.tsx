@@ -147,7 +147,7 @@ export default function ScrtBridge({
 }: RouteComponentProps<{ bridgeName?: string }>) {
   const [action, setAction] = useState('mint')
   const inputCurrency = bridgeName ? bridgeName.toUpperCase() : 'YFL'
-  const outputCurrency = 'secret' + inputCurrency
+  const outputCurrency = inputCurrency === 'WETH' ? 'secretETH' : 'secret' + inputCurrency
   let tokens: [
     Token,
     {
@@ -159,7 +159,7 @@ export default function ScrtBridge({
     }
   ]
   switch (inputCurrency) {
-    case 'ETH':
+    case 'WETH':
       tokens = [WETHER, secretETH]
       break
     case 'LINK':
@@ -189,7 +189,7 @@ export default function ScrtBridge({
   const priceObject = useGetPriceBase()
   const gasObject = useGetGasPrices()
   const { dependentField, currencies, parsedAmounts, noLiquidity, currencyBalances } = useDerivedMintInfo(
-    inputCurrency === 'ETH' ? ETHER ?? undefined : tokens[0] ?? undefined,
+    tokens[0] ?? undefined,
     undefined
   )
   const { onFieldAInput } = useMintActionHandlers(noLiquidity)
@@ -301,7 +301,7 @@ export default function ScrtBridge({
   async function burnTokens() {
     if (!account || !keplrClient) return
 
-    const isEth = inputCurrency === 'ETH'
+    const isEth = inputCurrency === 'WETH'
     const decimals = tokens[1].decimals
     let snip20Address = tokens[1].address
     let recipient = 'secret1tmm5xxxe0ltg6df3q2d69dq770030a2syydc9u'
