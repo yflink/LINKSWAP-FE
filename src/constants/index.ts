@@ -186,11 +186,27 @@ export const secretLINK = {
   proxy: false
 }
 
+export const stakedSecretLINK = {
+  address: 'secret19y50xzywrz98g6ljxp43fd4q47sl40gkcpm03n',
+  decimals: 18,
+  symbol: 'staked secretLINK',
+  name: 'Staked Secret ChainLink Token',
+  proxy: false
+}
+
 export const secretYFL = {
   address: 'secret1jk0tw00vs23n8jwqdzrxtln6ww2a3k6em7s0p2',
   decimals: 18,
   symbol: 'secretYFL',
   name: 'Secret YFLink',
+  proxy: false
+}
+
+export const stakedSecretYFL = {
+  address: 'secret1ra9l5p04sc4pu8vc5djr3c9ds7npmwmzvsee32',
+  decimals: 18,
+  symbol: 'staked secretYFL',
+  name: 'Staked Secret YFLink',
   proxy: false
 }
 
@@ -565,7 +581,7 @@ export const SINGLE_POOLS: Record<string, any> = {
   SECRETLINK: {
     rewardsAddress: 'secret19y50xzywrz98g6ljxp43fd4q47sl40gkcpm03n',
     tokens: [secretLINK, LINK],
-    stakedToken: secretLINK,
+    stakedToken: stakedSecretLINK,
     rewardsToken: secretSCRT,
     balance: 0,
     abi: 'scrtPool',
@@ -574,7 +590,7 @@ export const SINGLE_POOLS: Record<string, any> = {
   SECRETYFL: {
     rewardsAddress: 'secret1ra9l5p04sc4pu8vc5djr3c9ds7npmwmzvsee32',
     tokens: [secretYFL, YFL],
-    stakedToken: secretYFL,
+    stakedToken: stakedSecretYFL,
     rewardsToken: secretSCRT,
     balance: 0,
     abi: 'scrtPool',
