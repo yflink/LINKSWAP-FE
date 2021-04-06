@@ -158,16 +158,6 @@ export default function ScrtStakingCard({ values, show }: { values: any; show?: 
       return false
     }
 
-    const viewingKey = await getViewingKey({
-      keplr: keplrObject,
-      chainId: scrtChainId,
-      address: snip20Address
-    })
-
-    if (!viewingKey) {
-      return 'Unlock'
-    }
-
     if (!depositFetching) {
       setDepositFetching(true)
 
@@ -178,8 +168,7 @@ export default function ScrtStakingCard({ values, show }: { values: any; show?: 
       })
 
       if (!viewingKey) {
-        setDepositFetching(false)
-        return false
+        return 'Unlock'
       }
 
       return await QueryDeposit({
@@ -225,7 +214,6 @@ export default function ScrtStakingCard({ values, show }: { values: any; show?: 
         if (depositBalance !== 'Fix Unlock' && depositBalance !== 'Unlock') {
           if (depositBalance) {
             setDepositStatus('Unlocked')
-            setDepositFetching(false)
             setDepositTokenBalance(depositBalance)
           }
         } else {
@@ -247,6 +235,8 @@ export default function ScrtStakingCard({ values, show }: { values: any; show?: 
         await sleep(1000)
         setDepositTokenBalance(undefined)
         setRewardsTokenBalance(undefined)
+        setStatus('Loading')
+        setDepositStatus('Loading')
         setTokenBalance(undefined)
         setDepositFetching(false)
         setRewardsFetching(false)
@@ -302,6 +292,8 @@ export default function ScrtStakingCard({ values, show }: { values: any; show?: 
       setRewardsFetching(false)
       setBalanceFetching(false)
       setClaimingAll(false)
+      setStatus('Loading')
+      setDepositStatus('Loading')
       getBalance()
       getBridgeData()
     } catch (reason) {
@@ -312,6 +304,8 @@ export default function ScrtStakingCard({ values, show }: { values: any; show?: 
       setRewardsFetching(false)
       setBalanceFetching(false)
       setClaimingAll(false)
+      setStatus('Loading')
+      setDepositStatus('Loading')
       getBalance()
       getBridgeData()
       console.error(`Failed to claim: ${reason}`)
