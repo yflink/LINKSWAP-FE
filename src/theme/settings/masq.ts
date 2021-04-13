@@ -3,11 +3,10 @@ export function masqTheme() {
   const mainColorHover = '#00A3FF'
   const mainButtonColor = '#00B2FF'
   const mainButtonColorHover = '#00A3FF'
-  const appBG = '#00334D'
+  const appBG = '#05161f'
   const bodyBGColor = '#000b11'
-  const inputBGColor = '#000b11'
+  const inputBGColor = '#00334D'
   const mainTextColor = '#FAFAFA'
-  const mainTextColorHover = '#c2bebc'
   const transparent = 'transparent'
   const buttonBG = '#00B2FF'
   const buttonBGHover = '#00A3FF'
@@ -82,9 +81,9 @@ export function masqTheme() {
     footerTextColor: mainTextColor,
 
     //Global
-    bodyBG: '#07050a url("../images/themes/masq/background_large.png") center center / cover no-repeat',
-    bodyBGTablet: '#07050a url("../images/themes/masq/background_tablet.png") center center / cover no-repeat',
-    bodyBGMobile: '#07050a url("../images/themes/masq/background_mobile.png") center center / cover no-repeat',
+    bodyBG: '#000b11 url("../images/themes/masq/background_large.png") center center / cover no-repeat',
+    bodyBGTablet: '#000b11 url("../images/themes/masq/background_tablet.png") center center / cover no-repeat',
+    bodyBGMobile: '#000b11 url("../images/themes/masq/background_mobile.png") center center / cover no-repeat',
     layerBG: transparent,
     layerBGTablet: transparent,
     layerBGMobile: transparent,
