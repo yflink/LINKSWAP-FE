@@ -70,14 +70,24 @@ const MenuFlyout = styled.span`
   display: flex;
   flex-direction: column;
   position: absolute;
-  top: 50px;
-  right: 0;
+  top: 30px;
+  right: -2px;
   z-index: 100;
 
   [dir='rtl'] & {
     right: unset;
-    left: 0;
+    left: -2px;
   }
+
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    top: 50px;
+    right: 0;
+    
+    [dir='rtl'] & {
+      right: unset;
+      left: 0;
+    }
+  `};
 `
 
 export default function GasTab() {
