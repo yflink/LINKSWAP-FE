@@ -350,9 +350,9 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
               </Text>
             ) : (
               <div style={{ display: 'flex' }}>
-                <p style={{ fontWeight: 500, fontSize: 18 }}>{currencyA.symbol}</p>
-                <p style={{ fontWeight: 100, fontSize: 18, margin: '18px 8px 0px 8px' }}> | </p>
-                <p style={{ fontWeight: 500, fontSize: 18 }}>{currencyB.symbol}</p>
+                <p style={{ fontWeight: 500, fontSize: 18, margin: '0' }}>{currencyA.symbol}</p>
+                <p style={{ fontWeight: 100, fontSize: 18, margin: '0 8px 0px 8px' }}> | </p>
+                <p style={{ fontWeight: 500, fontSize: 18, margin: '0' }}>{currencyB.symbol}</p>
               </div>
             )}
             {rewards && (
