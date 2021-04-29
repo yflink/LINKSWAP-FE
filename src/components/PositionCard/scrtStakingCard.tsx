@@ -19,6 +19,7 @@ import { Link } from 'react-router-dom'
 import { QueryDeposit, QueryRewards, Redeem } from '../KeplrConnect/scrtVault'
 import Loader from '../Loader'
 import { useGetTokenPrices } from '../../state/price/hooks'
+import { Dots } from '../swap/styleds'
 
 const StakingCard = styled(Card)<{ highlight?: boolean; show?: boolean }>`
   font-size: 14px;
@@ -61,7 +62,8 @@ export default function ScrtStakingCard({ values, show }: { values: any; show?: 
   const { secretPools } = useGetSecretPools()
   const headerRowStyles = show ? 'default' : 'pointer'
   let keplrObject = getKeplrObject()
-  const [status, setStatus] = useState('Unlock')
+  const [status, setStatus] = useState('Loading')
+  const [depositStatus, setDepositStatus] = useState('Loading')
   const [tokenBalance, setTokenBalance] = useState<any>(undefined)
   const [balanceFetching, setBalanceFetching] = useState<boolean>(false)
   const [depositTokenBalance, setDepositTokenBalance] = useState<any>(undefined)
@@ -155,7 +157,8 @@ export default function ScrtStakingCard({ values, show }: { values: any; show?: 
     if (!keplrClient) {
       return false
     }
-    if (!depositFetching && status === 'Unlocked') {
+
+    if (!depositFetching) {
       setDepositFetching(true)
 
       const viewingKey = await getViewingKey({
@@ -165,8 +168,7 @@ export default function ScrtStakingCard({ values, show }: { values: any; show?: 
       })
 
       if (!viewingKey) {
-        setDepositFetching(false)
-        return false
+        return 'Unlock'
       }
 
       return await QueryDeposit({
@@ -182,7 +184,7 @@ export default function ScrtStakingCard({ values, show }: { values: any; show?: 
 
   async function getBalance() {
     if (typeof tokenBalance === 'undefined') {
-      getSnip20Balance(stakedToken.address, stakedToken.decimals).then(balance => {
+      getSnip20Balance(tokens[0].address, tokens[0].decimals).then(balance => {
         if (balance !== 'Fix Unlock' && balance !== 'Unlock') {
           if (balance) {
             setStatus('Unlocked')
@@ -209,24 +211,32 @@ export default function ScrtStakingCard({ values, show }: { values: any; show?: 
 
     if (typeof depositTokenBalance === 'undefined') {
       getBridgeDepositBalance(rewardsAddress).then(depositBalance => {
-        if (depositBalance) {
-          setDepositFetching(false)
-          setDepositTokenBalance(depositBalance)
+        if (depositBalance !== 'Fix Unlock' && depositBalance !== 'Unlock') {
+          if (depositBalance) {
+            setDepositStatus('Unlocked')
+            setDepositTokenBalance(depositBalance)
+          }
+        } else {
+          if (depositBalance) {
+            setDepositStatus(depositBalance)
+          }
         }
       })
     }
   }
 
-  async function unlockToken() {
+  async function unlockToken(tokenAddress: string) {
     setUnlock(!unlock)
     if (!keplrObject) {
       keplrObject = getKeplrObject()
     } else {
       try {
-        await keplrObject.suggestToken(scrtChainId, stakedToken.address)
+        await keplrObject.suggestToken(scrtChainId, tokenAddress)
         await sleep(1000)
         setDepositTokenBalance(undefined)
         setRewardsTokenBalance(undefined)
+        setStatus('Loading')
+        setDepositStatus('Loading')
         setTokenBalance(undefined)
         setDepositFetching(false)
         setRewardsFetching(false)
@@ -282,6 +292,8 @@ export default function ScrtStakingCard({ values, show }: { values: any; show?: 
       setRewardsFetching(false)
       setBalanceFetching(false)
       setClaimingAll(false)
+      setStatus('Loading')
+      setDepositStatus('Loading')
       getBalance()
       getBridgeData()
     } catch (reason) {
@@ -292,6 +304,8 @@ export default function ScrtStakingCard({ values, show }: { values: any; show?: 
       setRewardsFetching(false)
       setBalanceFetching(false)
       setClaimingAll(false)
+      setStatus('Loading')
+      setDepositStatus('Loading')
       getBalance()
       getBridgeData()
       console.error(`Failed to claim: ${reason}`)
@@ -315,7 +329,7 @@ export default function ScrtStakingCard({ values, show }: { values: any; show?: 
 
     if (secretPools) {
       totalLocked =
-        Number(divDecimals(Number(secretPools[rewardsAddress.toLowerCase()].totalSupply), stakedToken.decimals)) ?? 0
+        Number(divDecimals(Number(secretPools[rewardsAddress.toLowerCase()].totalSupply), tokens[0].decimals)) ?? 0
       if (totalSupply === 0) {
         totalSupply = totalLocked * Number(tokenPrice)
       }
@@ -333,9 +347,7 @@ export default function ScrtStakingCard({ values, show }: { values: any; show?: 
     }
   }
 
-  const depositedTokens = depositTokenBalance
-    ? Number(divDecimals(Number(depositTokenBalance), stakedToken.decimals))
-    : 0
+  const depositedTokens = depositTokenBalance ? Number(divDecimals(Number(depositTokenBalance), tokens[0].decimals)) : 0
 
   return (
     <StakingCard highlight={depositTokenBalance > 0} show={show}>
@@ -357,7 +369,7 @@ export default function ScrtStakingCard({ values, show }: { values: any; show?: 
           <RowFixed>
             <ScrtTokenLogo src="//logos.linkswap.app/scrt.png" />
             <div style={{ display: 'flex', position: 'relative' }}>
-              <p style={{ fontWeight: 500, fontSize: 18, margin: '0 4px' }}>{stakedToken.symbol}</p>
+              <p style={{ fontWeight: 500, fontSize: 18, margin: '0 4px' }}>{tokens[0].symbol}</p>
             </div>
           </RowFixed>
           {!show && (
@@ -380,57 +392,86 @@ export default function ScrtStakingCard({ values, show }: { values: any; show?: 
                       <RowBetween>
                         <Text>{t('stakableTokenAmount')}</Text>
                         <Text>
-                          {displayNumber(numberToSignificant(tokenBalance))} {stakedToken.symbol}
+                          {displayNumber(numberToSignificant(tokenBalance))} {tokens[0].symbol}
                         </Text>
                       </RowBetween>
                     )}
-                    {depositTokenBalance > 0 && (
-                      <RowBetween>
-                        <Text>{t('stakedTokenAmount')}</Text>
-                        {numberToSignificant(depositedTokens)} {stakedToken.symbol}
-                      </RowBetween>
-                    )}
-                    {depositTokenBalance > 0 && (
+                    {depositStatus === 'Unlocked' ? (
                       <>
-                        <RowBetween>
-                          <Text>{t('yourPoolShare')}</Text>
-                          {numberToUsd(tokenPrice * depositedTokens)} (
-                          {numberToPercent(depositedTokens / (totalLocked / 100))})
-                        </RowBetween>
-
-                        {rewardsTokenBalance > 0 ? (
-                          <RowBetween style={{ alignItems: 'flex-start' }}>
-                            <Text>{t('claimableRewards')}</Text>
-                            <Text style={{ textAlign: 'end' }}>
-                              <div>
-                                {numberToSignificant(rewardsTokenBalance)} {rewardsToken.symbol}
-                              </div>
-                            </Text>
-                          </RowBetween>
-                        ) : (
-                          <RowBetween style={{ alignItems: 'flex-start' }}>
-                            <Text>{t('claimableRewards')}</Text>
-                            <Text>{t('none')}</Text>
+                        {depositTokenBalance > 0 && (
+                          <RowBetween>
+                            <Text>{t('stakedTokenAmount')}</Text>
+                            {numberToSignificant(depositedTokens)} {tokens[0].symbol}
                           </RowBetween>
                         )}
-                      </>
-                    )}
+                        {depositTokenBalance > 0 && (
+                          <>
+                            <RowBetween>
+                              <Text>{t('yourPoolShare')}</Text>
+                              {numberToUsd(tokenPrice * depositedTokens)} (
+                              {numberToPercent(depositedTokens / (totalLocked / 100))})
+                            </RowBetween>
 
+                            {rewardsTokenBalance > 0 ? (
+                              <RowBetween style={{ alignItems: 'flex-start' }}>
+                                <Text>{t('claimableRewards')}</Text>
+                                <Text style={{ textAlign: 'end' }}>
+                                  <div>
+                                    {numberToSignificant(rewardsTokenBalance)} {rewardsToken.symbol}
+                                  </div>
+                                </Text>
+                              </RowBetween>
+                            ) : (
+                              <RowBetween style={{ alignItems: 'flex-start' }}>
+                                <Text>{t('claimableRewards')}</Text>
+                                <Text>{t('none')}</Text>
+                              </RowBetween>
+                            )}
+                          </>
+                        )}
+                      </>
+                    ) : depositStatus === 'Loading' ? (
+                      <RowBetween style={{ alignItems: 'center' }}>
+                        <Text textAlign="center" fontSize={16}>
+                          <Dots>{t('loading')}</Dots>
+                        </Text>
+                        <Text>
+                          <Loader />
+                        </Text>
+                      </RowBetween>
+                    ) : (
+                      <ButtonSecondary
+                        onClick={() => {
+                          unlockToken(stakedToken.address)
+                        }}
+                      >
+                        {t('unlockScrtToken', { tokenSymbol: stakedToken.symbol })}
+                      </ButtonSecondary>
+                    )}
                     {tokenBalance > 0.05 && !show && (
-                      <ButtonSecondary as={Link} width="100%" to={`/stake-scrt/${stakedToken.symbol.toLowerCase()}`}>
+                      <ButtonSecondary as={Link} width="100%" to={`/stake-scrt/${tokens[0].symbol.toLowerCase()}`}>
                         {t('stake')}
                       </ButtonSecondary>
                     )}
                   </>
+                ) : status === 'Loading' ? (
+                  <RowBetween style={{ alignItems: 'center' }}>
+                    <Text textAlign="center" fontSize={16}>
+                      <Dots>{t('loading')}</Dots>
+                    </Text>
+                    <Text>
+                      <Loader />
+                    </Text>
+                  </RowBetween>
                 ) : (
                   <>
-                    <Text fontSize={14}>{t('unlockScrtTokenDescription', { tokenSymbol: stakedToken.symbol })}</Text>
+                    <Text fontSize={14}>{t('unlockScrtTokenDescription', { tokenSymbol: tokens[0].symbol })}</Text>
                     <ButtonSecondary
                       onClick={() => {
-                        unlockToken()
+                        unlockToken(tokens[0].address)
                       }}
                     >
-                      {t('unlockScrtToken', { tokenSymbol: stakedToken.symbol })}
+                      {t('unlockScrtToken', { tokenSymbol: tokens[0].symbol })}
                     </ButtonSecondary>
                   </>
                 )}
@@ -468,7 +509,7 @@ export default function ScrtStakingCard({ values, show }: { values: any; show?: 
                   as={Link}
                   width={rewardsTokenBalance > 0 ? '48%' : '100%'}
                   style={{ marginInlineStart: rewardsTokenBalance > 0 ? '1%' : '0' }}
-                  to={`/unstake-scrt/${stakedToken.symbol.toLowerCase()}`}
+                  to={`/unstake-scrt/${tokens[0].symbol.toLowerCase()}`}
                 >
                   {t('unstake')}
                 </ButtonSecondary>

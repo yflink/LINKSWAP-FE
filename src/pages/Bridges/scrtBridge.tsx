@@ -15,7 +15,7 @@ import { LINK, secretETH, secretLINK, secretYFL, SRCT_BRIDGE, WETHER, YFL } from
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import { Field } from '../../state/mint/actions'
 import { useDerivedMintInfo, useMintActionHandlers, useMintState } from '../../state/mint/hooks'
-import { TokenAmount, Token, ETHER } from '@uniswap/sdk'
+import { TokenAmount, Token } from '@uniswap/sdk'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import { Link as HistoryLink, RouteComponentProps } from 'react-router-dom'
 import { AlertTriangle, ArrowLeft } from 'react-feather'
@@ -39,6 +39,7 @@ import { sleep } from '../../utils/sleep'
 import { FormErrorInner, FormErrorInnerAlertTriangle } from '../../components/Form/error'
 import { useGetPriceBase } from '../../state/price/hooks'
 import { useGetGasPrices } from '../../state/gas/hooks'
+import Loader from '../../components/Loader'
 
 const NavigationWrapper = styled.div`
   display: flex;
@@ -147,7 +148,7 @@ export default function ScrtBridge({
 }: RouteComponentProps<{ bridgeName?: string }>) {
   const [action, setAction] = useState('mint')
   const inputCurrency = bridgeName ? bridgeName.toUpperCase() : 'YFL'
-  const outputCurrency = 'secret' + inputCurrency
+  const outputCurrency = inputCurrency === 'WETH' ? 'secretETH' : 'secret' + inputCurrency
   let tokens: [
     Token,
     {
@@ -159,7 +160,7 @@ export default function ScrtBridge({
     }
   ]
   switch (inputCurrency) {
-    case 'ETH':
+    case 'WETH':
       tokens = [WETHER, secretETH]
       break
     case 'LINK':
@@ -177,7 +178,7 @@ export default function ScrtBridge({
   const toggleWalletModal = useWalletModalToggle()
   const { t } = useTranslation()
   const [txHash, setTxHash] = useState<string>('')
-  const [status, setStatus] = useState('Unlock')
+  const [status, setStatus] = useState('Loading')
   const [minting, setMinting] = useState(false)
   const [burning, setBurning] = useState(false)
   const [burnInput, setBurnInput] = useState('')
@@ -189,7 +190,7 @@ export default function ScrtBridge({
   const priceObject = useGetPriceBase()
   const gasObject = useGetGasPrices()
   const { dependentField, currencies, parsedAmounts, noLiquidity, currencyBalances } = useDerivedMintInfo(
-    inputCurrency === 'ETH' ? ETHER ?? undefined : tokens[0] ?? undefined,
+    tokens[0] ?? undefined,
     undefined
   )
   const { onFieldAInput } = useMintActionHandlers(noLiquidity)
@@ -301,7 +302,7 @@ export default function ScrtBridge({
   async function burnTokens() {
     if (!account || !keplrClient) return
 
-    const isEth = inputCurrency === 'ETH'
+    const isEth = inputCurrency === 'WETH'
     const decimals = tokens[1].decimals
     let snip20Address = tokens[1].address
     let recipient = 'secret1tmm5xxxe0ltg6df3q2d69dq770030a2syydc9u'
@@ -552,6 +553,15 @@ export default function ScrtBridge({
                     showMaxButton={!burnInput || parseFloat(burnInput) < parseFloat(burnBalance)}
                     id={`burn-${tokens[1].symbol.toLowerCase()}-src-token`}
                   />
+                ) : status === 'Loading' ? (
+                  <RowBetween style={{ alignItems: 'center' }}>
+                    <Text textAlign="center" fontSize={16}>
+                      <Dots>{t('loading')}</Dots>
+                    </Text>
+                    <Text>
+                      <Loader />
+                    </Text>
+                  </RowBetween>
                 ) : (
                   <>
                     <Text fontSize={14}>{t('unlockScrtTokenDescription', { tokenSymbol: tokens[1].symbol })}</Text>

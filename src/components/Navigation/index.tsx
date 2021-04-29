@@ -903,7 +903,7 @@ export default function Navigation() {
               <SubNavigationElement>
                 <StyledNavLink
                   id={'bridges-secreteth'}
-                  to={'/bridges/scrt/eth'}
+                  to={'/bridges/scrt/weth'}
                   isActive={() => active === 'bridges-secreteth'}
                 >
                   <NavLabel>secretETH</NavLabel>

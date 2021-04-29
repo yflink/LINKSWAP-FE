@@ -110,7 +110,7 @@ export default function ScrtStake({
       setFound(true)
       setPoolDetails(pool)
     }
-    stakedToken = pool.stakedToken
+    stakedToken = pool.tokens[0]
   }
   const rewardsAddress = found ? pool.rewardsAddress : ''
 
