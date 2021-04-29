@@ -31,6 +31,7 @@ export default function ThemeTab() {
         <ThemeOption themeName="CyberFi" themeString="cyberfi" />
         <ThemeOption themeName="DOGE" themeString="doge" />
         <ThemeOption themeName="DOKI DOKI" themeString="dokidoki" />
+        <ThemeOption themeName="DRC" themeString="drc" />
         <ThemeOption themeName="MASQ" themeString="masq" />
         <ThemeOption themeName="ren" themeString="ren" />
       </AutoColumn>
