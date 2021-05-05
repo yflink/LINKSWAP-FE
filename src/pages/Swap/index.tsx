@@ -27,11 +27,11 @@ import {
 import TradePrice from '../../components/swap/TradePrice'
 import TokenWarningModal from '../../components/TokenWarningModal'
 import ProgressSteps from '../../components/ProgressSteps'
-import { INITIAL_ALLOWED_SLIPPAGE } from '../../constants'
+import { INITIAL_ALLOWED_SLIPPAGE, VRN, YFL } from '../../constants'
 import { getTradeVersion } from '../../data/V1'
 import { useActiveWeb3React } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
-import { ApprovalState, useApproveCallbackFromTrade } from '../../hooks/useApproveCallback'
+import { ApprovalState, useApproveCallback, useApproveCallbackFromTrade } from '../../hooks/useApproveCallback'
 import useENSAddress from '../../hooks/useENSAddress'
 import { useSwapCallback } from '../../hooks/useSwapCallback'
 import useToggledVersion, { Version } from '../../hooks/useToggledVersion'
@@ -55,6 +55,12 @@ import { useTranslation } from 'react-i18next'
 import { useTokenList } from '../../state/lists/hooks'
 import QuestionHelper from '../../components/QuestionHelper'
 import { wrappedCurrency } from '../../utils/wrappedCurrency'
+import { calculateGasMargin, getContract } from '../../utils'
+import { TransactionResponse } from '@ethersproject/providers'
+import { numberToSignificant } from '../../utils/numberUtils'
+import { useTransactionAdder } from '../../state/transactions/hooks'
+import { MigrationABI } from '../../components/ABI'
+import { ethers } from 'ethers'
 
 function containsKey(json: any, value: string) {
   let contains = false
@@ -68,9 +74,10 @@ function containsKey(json: any, value: string) {
 export default function Swap() {
   const loadedUrlParams = useDefaultsFromURLSearch()
 
+  const addTransaction = useTransactionAdder()
   const [inversed, setInversed] = useState(false)
   const [copied, setCopied] = useState('')
-
+  const migrationContractAddress = '0xf05336a9Bcc1805Fa6c9f9635300Ad43AC1B57Eb'
   // token warning stuff
   const [loadedInputCurrency, loadedOutputCurrency] = [
     useCurrency(loadedUrlParams?.inputCurrencyId),
@@ -91,7 +98,7 @@ export default function Swap() {
     setDismissTokenWarning(true)
   }, [])
 
-  const { account, chainId } = useActiveWeb3React()
+  const { account, chainId, library } = useActiveWeb3React()
   const theme = useContext(ThemeContext)
 
   // toggle wallet when disconnected
@@ -115,6 +122,14 @@ export default function Swap() {
     currencies,
     inputError: swapInputError
   } = useDerivedSwapInfo()
+  const isMigration =
+    wrappedCurrency(currencies[Field.INPUT], chainId)?.address.toLowerCase() === YFL.address.toLowerCase() &&
+    wrappedCurrency(currencies[Field.OUTPUT], chainId)?.address.toLowerCase() === VRN.address.toLowerCase()
+
+  const isCounterMigration =
+    wrappedCurrency(currencies[Field.OUTPUT], chainId)?.address.toLowerCase() === YFL.address.toLowerCase() &&
+    wrappedCurrency(currencies[Field.INPUT], chainId)?.address.toLowerCase() === VRN.address.toLowerCase()
+
   const { wrapType, execute: onWrap, inputError: wrapInputError } = useWrapCallback(
     currencies[Field.INPUT],
     currencies[Field.OUTPUT],
@@ -141,7 +156,7 @@ export default function Swap() {
       }
 
   const { onSwitchTokens, onCurrencySelection, onUserInput, onChangeRecipient } = useSwapActionHandlers()
-  const isValid = !swapInputError
+  const isValid = isMigration ? true : !swapInputError
   const dependentField: Field = independentField === Field.INPUT ? Field.OUTPUT : Field.INPUT
 
   const handleTypeInput = useCallback(
@@ -184,6 +199,11 @@ export default function Swap() {
     currencies[Field.INPUT] && currencies[Field.OUTPUT] && parsedAmounts[independentField]?.greaterThan(JSBI.BigInt(0))
   )
   const noRoute = !route
+
+  const [approvalMigration, approveMigrationCallback] = useApproveCallback(
+    parsedAmounts[independentField],
+    migrationContractAddress
+  )
 
   // check whether the user has approved the router on the input token
   const [approval, approveCallback] = useApproveCallbackFromTrade(trade, allowedSlippage)
@@ -249,18 +269,66 @@ export default function Swap() {
       })
   }, [tradeToConfirm, account, priceImpactWithoutFee, recipient, recipientAddress, showConfirm, swapCallback, trade])
 
+  const { t } = useTranslation()
+
+  async function handleMigration() {
+    if (!chainId || !library || !account) return
+    setSwapState({ attemptingTxn: true, tradeToConfirm, showConfirm, swapErrorMessage: undefined, txHash: undefined })
+
+    const migrateAmount = parsedAmounts[independentField]?.toExact() ?? '0'
+    const amount = ethers.utils.parseEther(migrateAmount)
+    const router = getContract(migrationContractAddress, MigrationABI, library, account)
+    const estimate = router.estimateGas.migrate
+    const method: (...args: any) => Promise<TransactionResponse> = router.migrate
+    const args: Array<any> = [amount]
+
+    const value: any | null = null
+    await estimate(...args, {})
+      .then(estimatedGasLimit =>
+        method(...args, {
+          ...(value ? { value } : {}),
+          gasLimit: calculateGasMargin(estimatedGasLimit)
+        }).then(response => {
+          addTransaction(response, {
+            summary: t('migrateYFLtoVRN', {
+              amount: numberToSignificant(Number(formattedAmounts[Field.INPUT]))
+            })
+          })
+
+          ReactGA.event({
+            category: 'Migration',
+            action: 'Migrate',
+            label: numberToSignificant(Number(formattedAmounts[Field.INPUT]))
+          })
+        })
+      )
+      .catch(error => {
+        setSwapState({
+          attemptingTxn: false,
+          tradeToConfirm,
+          showConfirm,
+          swapErrorMessage: error.message,
+          txHash: undefined
+        })
+      })
+  }
+
   // errors
   // warnings on slippage
   const priceImpactSeverity = warningSeverity(priceImpactWithoutFee)
 
   // show approve flow when: no error on inputs, not approved or pending, or approved in current session
   // never show if price impact is above threshold in non expert mode
-  const showApproveFlow =
-    !swapInputError &&
-    (approval === ApprovalState.NOT_APPROVED ||
-      approval === ApprovalState.PENDING ||
-      (approvalSubmitted && approval === ApprovalState.APPROVED)) &&
-    !(priceImpactSeverity > 3 && !isExpertMode)
+
+  const showApproveFlow = isMigration
+    ? approvalMigration === ApprovalState.NOT_APPROVED ||
+      approvalMigration === ApprovalState.PENDING ||
+      (approvalSubmitted && approvalMigration === ApprovalState.APPROVED)
+    : !swapInputError &&
+      (approval === ApprovalState.NOT_APPROVED ||
+        approval === ApprovalState.PENDING ||
+        (approvalSubmitted && approval === ApprovalState.APPROVED)) &&
+      !(priceImpactSeverity > 3 && !isExpertMode)
 
   const handleConfirmDismiss = useCallback(() => {
     setSwapState({ showConfirm: false, tradeToConfirm, attemptingTxn, swapErrorMessage, txHash })
@@ -289,8 +357,6 @@ export default function Swap() {
   const handleOutputSelect = useCallback(outputCurrency => onCurrencySelection(Field.OUTPUT, outputCurrency), [
     onCurrencySelection
   ])
-
-  const { t } = useTranslation()
 
   const currentInput =
     currencies[Field.INPUT]?.symbol === 'ETH' ? 'ETH' : wrappedCurrency(currencies[Field.INPUT], chainId)?.address
@@ -325,10 +391,17 @@ export default function Swap() {
     document.body.removeChild(selBox)
   }
 
+  const migrationLabel =
+    isMigration && !!formattedAmounts[Field.INPUT]
+      ? Number(formattedAmounts[Field.INPUT]) <= Number(maxAmountInput?.toExact())
+        ? t('migrate')
+        : t('insufficientCurrencyBalance', { inputCurrency: YFL.symbol })
+      : t('enterAmount')
+
   return (
     <>
       <TokenWarningModal
-        isOpen={urlLoadedTokens.length > 0 && !dismissTokenWarning}
+        isOpen={urlLoadedTokens.length > 0 && !dismissTokenWarning && !isMigration}
         tokens={urlLoadedTokens}
         onConfirm={handleConfirmTokenWarning}
       />
@@ -377,7 +450,7 @@ export default function Swap() {
                     }
                   />
                 </ArrowWrapper>
-                {recipient === null && !showWrap && isExpertMode ? (
+                {recipient === null && !showWrap && isExpertMode && !isMigration && !isCounterMigration ? (
                   <LinkStyledButton id="add-recipient-button" onClick={() => onChangeRecipient('')}>
                     {t('addASend')}
                   </LinkStyledButton>
@@ -385,7 +458,7 @@ export default function Swap() {
               </AutoRow>
             </AutoColumn>
             <CurrencyInputPanel
-              value={formattedAmounts[Field.OUTPUT]}
+              value={isMigration ? formattedAmounts[Field.INPUT] : formattedAmounts[Field.OUTPUT]}
               onUserInput={handleTypeOutput}
               label={independentField === Field.INPUT && !showWrap && trade ? t('toEstimated') : t('to')}
               showMaxButton={false}
@@ -394,7 +467,7 @@ export default function Swap() {
               otherCurrency={currencies[Field.INPUT]}
               id="swap-currency-output"
             />
-            {recipient !== null && !showWrap ? (
+            {recipient !== null && !showWrap && !isMigration && !isCounterMigration ? (
               <>
                 <AutoRow justify="space-between" style={{ padding: '0 1rem' }}>
                   <ArrowWrapper clickable={false}>
@@ -407,7 +480,7 @@ export default function Swap() {
                 <AddressInputPanel id="recipient" value={recipient} onChange={onChangeRecipient} />
               </>
             ) : null}
-            {showWrap ? null : (
+            {showWrap || isMigration || isCounterMigration ? null : (
               <Card padding={'.25rem .75rem 0 .75rem'} borderRadius={'20px'}>
                 <AutoColumn gap="4px">
                   {Boolean(trade) && (
@@ -463,31 +536,98 @@ export default function Swap() {
                 {wrapInputError ??
                   (wrapType === WrapType.WRAP ? t('wrap') : wrapType === WrapType.UNWRAP ? t('unwrap') : null)}
               </ButtonPrimary>
-            ) : noRoute && userHasSpecifiedInputOutput ? (
+            ) : noRoute && userHasSpecifiedInputOutput && !isMigration && !isCounterMigration ? (
               <GreyCard style={{ textAlign: 'center' }}>
                 <TYPE.main mb="4px">{t('insufficientLiquidity')}</TYPE.main>
               </GreyCard>
             ) : showApproveFlow ? (
-              <RowBetween>
-                <ButtonConfirmed
-                  onClick={approveCallback}
-                  disabled={approval !== ApprovalState.NOT_APPROVED || approvalSubmitted}
-                  width="48%"
-                  altDisabledStyle={approval === ApprovalState.PENDING} // show solid button while waiting
-                  confirmed={approval === ApprovalState.APPROVED}
-                >
-                  {approval === ApprovalState.PENDING ? (
-                    <AutoRow gap="6px" justify="center">
-                      Approving <Loader stroke="white" />
-                    </AutoRow>
-                  ) : approvalSubmitted && approval === ApprovalState.APPROVED ? (
-                    t('approved')
-                  ) : (
-                    t('approveCurrency', { inputCurrency: currencies[Field.INPUT]?.symbol })
-                  )}
-                </ButtonConfirmed>
-                <ButtonError
-                  onClick={() => {
+              isMigration ? (
+                <RowBetween>
+                  <ButtonConfirmed
+                    onClick={approveMigrationCallback}
+                    disabled={approvalMigration !== ApprovalState.NOT_APPROVED || approvalSubmitted}
+                    width="48%"
+                    altDisabledStyle={approvalMigration === ApprovalState.PENDING} // show solid button while waiting
+                    confirmed={approvalMigration === ApprovalState.APPROVED}
+                  >
+                    {approvalMigration === ApprovalState.PENDING ? (
+                      <AutoRow gap="6px" justify="center">
+                        Approving <Loader stroke="white" />
+                      </AutoRow>
+                    ) : approvalSubmitted && approvalMigration === ApprovalState.APPROVED ? (
+                      t('approved')
+                    ) : (
+                      t('approveCurrency', { inputCurrency: currencies[Field.INPUT]?.symbol })
+                    )}
+                  </ButtonConfirmed>
+                  <ButtonPrimary
+                    onClick={() => {
+                      handleMigration()
+                    }}
+                    width="48%"
+                    disabled={
+                      (isMigration && migrationLabel !== t('migrate')) || approvalMigration !== ApprovalState.APPROVED
+                    }
+                  >
+                    {migrationLabel}
+                  </ButtonPrimary>
+                </RowBetween>
+              ) : (
+                <RowBetween>
+                  <ButtonConfirmed
+                    onClick={approveCallback}
+                    disabled={approval !== ApprovalState.NOT_APPROVED || approvalSubmitted}
+                    width="48%"
+                    altDisabledStyle={approval === ApprovalState.PENDING} // show solid button while waiting
+                    confirmed={approval === ApprovalState.APPROVED}
+                  >
+                    {approval === ApprovalState.PENDING ? (
+                      <AutoRow gap="6px" justify="center">
+                        Approving <Loader stroke="white" />
+                      </AutoRow>
+                    ) : approvalSubmitted && approval === ApprovalState.APPROVED ? (
+                      t('approved')
+                    ) : (
+                      t('approveCurrency', { inputCurrency: currencies[Field.INPUT]?.symbol })
+                    )}
+                  </ButtonConfirmed>
+                  <ButtonError
+                    onClick={() => {
+                      if (isExpertMode) {
+                        handleSwap()
+                      } else {
+                        setSwapState({
+                          tradeToConfirm: trade,
+                          attemptingTxn: false,
+                          swapErrorMessage: undefined,
+                          showConfirm: true,
+                          txHash: undefined
+                        })
+                      }
+                    }}
+                    width="48%"
+                    id="swap-button"
+                    disabled={
+                      !isValid || approval !== ApprovalState.APPROVED || (priceImpactSeverity > 3 && !isExpertMode)
+                    }
+                    error={isValid && priceImpactSeverity > 2}
+                  >
+                    {isCounterMigration
+                      ? t('noTurningBack')
+                      : priceImpactSeverity > 3 && !isExpertMode
+                      ? t('priceImpactHigh')
+                      : priceImpactSeverity > 2
+                      ? t('swapAnyway')
+                      : t('swap')}
+                  </ButtonError>
+                </RowBetween>
+              )
+            ) : (
+              <ButtonError
+                onClick={() => {
+                  if (isMigration) {
+                    handleMigration()
+                  } else {
                     if (isExpertMode) {
                       handleSwap()
                     } else {
@@ -499,41 +639,22 @@ export default function Swap() {
                         txHash: undefined
                       })
                     }
-                  }}
-                  width="48%"
-                  id="swap-button"
-                  disabled={
-                    !isValid || approval !== ApprovalState.APPROVED || (priceImpactSeverity > 3 && !isExpertMode)
-                  }
-                  error={isValid && priceImpactSeverity > 2}
-                >
-                  {priceImpactSeverity > 3 && !isExpertMode
-                    ? t('priceImpactHigh')
-                    : priceImpactSeverity > 2
-                    ? t('swapAnyway')
-                    : t('swap')}
-                </ButtonError>
-              </RowBetween>
-            ) : (
-              <ButtonError
-                onClick={() => {
-                  if (isExpertMode) {
-                    handleSwap()
-                  } else {
-                    setSwapState({
-                      tradeToConfirm: trade,
-                      attemptingTxn: false,
-                      swapErrorMessage: undefined,
-                      showConfirm: true,
-                      txHash: undefined
-                    })
                   }
                 }}
                 id="swap-button"
-                disabled={!isValid || (priceImpactSeverity > 3 && !isExpertMode) || !!swapCallbackError}
+                disabled={
+                  (isMigration && migrationLabel !== t('migrate')) ||
+                  !isValid ||
+                  (priceImpactSeverity > 3 && !isExpertMode) ||
+                  (!!swapCallbackError && !isMigration)
+                }
                 error={isValid && priceImpactSeverity > 2 && !swapCallbackError}
               >
-                {swapInputError
+                {isCounterMigration
+                  ? t('noTurningBack')
+                  : isMigration
+                  ? migrationLabel
+                  : swapInputError
                   ? swapInputError
                   : priceImpactSeverity > 3 && !isExpertMode
                   ? t('priceImpactTooHigh')
@@ -542,7 +663,8 @@ export default function Swap() {
                   : t('swap')}
               </ButtonError>
             )}
-            {showApproveFlow && <ProgressSteps steps={[approval === ApprovalState.APPROVED]} />}
+            {showApproveFlow && isMigration && <ProgressSteps steps={[approvalMigration === ApprovalState.APPROVED]} />}
+            {showApproveFlow && !isMigration && <ProgressSteps steps={[approval === ApprovalState.APPROVED]} />}
             {isExpertMode && swapErrorMessage ? <SwapCallbackError error={swapErrorMessage} /> : null}
             <div style={{ marginTop: 12 }}>
               <Text textAlign="center" fontSize={14} style={{ padding: '.5rem 0 .5rem 0' }}>

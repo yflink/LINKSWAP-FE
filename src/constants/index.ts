@@ -252,6 +252,8 @@ export const vBTC = new Token(
   'Vesper Finance BTC'
 )
 
+export const VRN = new Token(ChainId.MAINNET, '0x72377f31e30a405282b522d588AEbbea202b4f23', 18, 'VRN', 'Varen')
+
 const WETH_ONLY: ChainTokenList = {
   [ChainId.MAINNET]: [WETH[ChainId.MAINNET]],
   [ChainId.ROPSTEN]: [WETH[ChainId.ROPSTEN]],

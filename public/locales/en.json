@@ -497,5 +497,8 @@
   "burningInProgress": "The burning of {{amount}} {{inputToken}} for {{outputToken}} was initiated. This may take a while (up to 30 minutes). Please check your {{outputToken}} balance.",
   "scrtTxHash": "Your Secret Transaction Hash",
   "scrtTxId": "Your Transaction ID",
-  "none": "none"
+  "none": "none",
+  "migrate": "Migrate",
+  "migrateYFLtoVRN": "Migrate {{amount}} YFL to VRN",
+  "noTurningBack": "No turning back!"
 }
