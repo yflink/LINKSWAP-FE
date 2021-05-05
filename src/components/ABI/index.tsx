@@ -968,6 +968,97 @@ export const ERC20 = [
     type: 'function'
   }
 ]
+export const MigrationABI = [
+  {
+    inputs: [
+      { internalType: 'address', name: 'migrateFromToken', type: 'address' },
+      { internalType: 'address', name: 'migrateToToken', type: 'address' }
+    ],
+    stateMutability: 'nonpayable',
+    type: 'constructor'
+  },
+  {
+    anonymous: false,
+    inputs: [{ indexed: false, internalType: 'uint256', name: 'epochTime', type: 'uint256' }],
+    name: 'CloseMigrationNotice',
+    type: 'event'
+  },
+  {
+    anonymous: false,
+    inputs: [
+      { indexed: true, internalType: 'address', name: 'previousOwner', type: 'address' },
+      { indexed: true, internalType: 'address', name: 'newOwner', type: 'address' }
+    ],
+    name: 'OwnershipTransferred',
+    type: 'event'
+  },
+  {
+    inputs: [],
+    name: 'BURN_ADDRESS',
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  { inputs: [], name: 'announceMigrationEnd', outputs: [], stateMutability: 'nonpayable', type: 'function' },
+  { inputs: [], name: 'closeMigration', outputs: [], stateMutability: 'nonpayable', type: 'function' },
+  {
+    inputs: [],
+    name: 'endMigrationDate',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'endMigrationNoticePeriod',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'fromToken',
+    outputs: [{ internalType: 'contract IERC20', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [{ internalType: 'uint256', name: 'amount', type: 'uint256' }],
+    name: 'migrate',
+    outputs: [{ internalType: 'bool', name: 'success', type: 'bool' }],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'migrationEnabled',
+    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'owner',
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  { inputs: [], name: 'startMigration', outputs: [], stateMutability: 'nonpayable', type: 'function' },
+  {
+    inputs: [],
+    name: 'toToken',
+    outputs: [{ internalType: 'contract IERC20', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [{ internalType: 'address', name: 'newOwner', type: 'address' }],
+    name: 'transferOwnership',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  }
+]
 export const ERC721 = [
   {
     inputs: [{ internalType: 'address', name: 'owner', type: 'address' }],

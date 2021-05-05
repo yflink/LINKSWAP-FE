@@ -2,7 +2,7 @@
   "name": "Linkcheck Verified",
   "logoURI": "https://logos.linkswap.app/linkcheck.png",
   "keywords": ["linkswap", "link", "swap"],
-  "timestamp": "2020-01-31T00:00:00+00:00",
+  "timestamp": "2020-05-5T00:00:00+00:00",
   "tags":{
     "base":{"name":"base","description":"baseDescription"},
     "stablecoin":{"name":"stablecoin","description":"stablecoinDescription"},
@@ -10,11 +10,19 @@
   },
   "tokens": [
     {
+      "address": "0x72377f31e30a405282b522d588AEbbea202b4f23",
+      "chainId": 1,
+      "name": "Varen",
+      "symbol": "VRN",
+      "decimals": 18,
+      "tags": ["base"],
+      "logoURI": "https://logos.linkswap.app/0x72377f31e30a405282b522d588aebbea202b4f23.png"
+    },
+    {
       "address": "0x28cb7e841ee97947a86B06fA4090C8451f64c0be",
       "chainId": 1,
       "name": "YFLink",
       "symbol": "YFL",
-      "tags": ["base"],
       "decimals": 18,
       "logoURI": "https://logos.linkswap.app/0x28cb7e841ee97947a86b06fa4090c8451f64c0be.png"
     },
@@ -46,7 +54,7 @@
     }
   ],
   "version": {
-    "major": 2,
+    "major": 3,
     "minor": 0,
     "patch": 0
   }
