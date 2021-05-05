@@ -2571,10 +2571,10 @@
     redux-thunk "^2.3.0"
     reselect "^4.0.0"
 
-"@renproject/chains-bitcoin@^2.1.7":
-  version "2.1.7"
-  resolved "https://registry.yarnpkg.com/@renproject/chains-bitcoin/-/chains-bitcoin-2.1.7.tgz#f5f079bed805641e85fd3231864ef28cff8c18c5"
-  integrity sha512-f81gtzbchPeGIFiccGgDn4RmZcii3/cwopLUo/lcjAN8WgTG5wufYKfQp4RmZPYMYVXuo+4+e5E3lu5YkyztFg==
+"@renproject/chains-bitcoin@^2.1.8":
+  version "2.1.8"
+  resolved "https://registry.yarnpkg.com/@renproject/chains-bitcoin/-/chains-bitcoin-2.1.8.tgz#c4fea7ebed0d545a13e8aa74c16798632b37ae8f"
+  integrity sha512-XlY/Vje/x1gHr7txMZ9ZPnHZj/P3/kkw208ydZaNVREIU/1o0od1/IvNEQEZyK3PjvHKO+VyWtJs5pUs0DAsHQ==
   dependencies:
     "@CoinSpace/bitcore-lib-dogecoin" CoinSpace/bitcore-lib-dogecoin
     "@renproject/interfaces" "^2.1.7"
@@ -2593,10 +2593,10 @@
     cashaddrjs "^0.4.4"
     wallet-address-validator "^0.2.4"
 
-"@renproject/chains-ethereum@^2.1.7":
-  version "2.1.7"
-  resolved "https://registry.yarnpkg.com/@renproject/chains-ethereum/-/chains-ethereum-2.1.7.tgz#3e2495d449f1ed91c5742070236aac902d53a43e"
-  integrity sha512-ZEy+DHM+kzxCVv3nX9ZWq2E0+amrJrkat+P0s0b0NxZQXGadYYHs3zez3CG+V4VWFamqf1li0zhbsu3Fr+N/bw==
+"@renproject/chains-ethereum@^2.1.8":
+  version "2.1.8"
+  resolved "https://registry.yarnpkg.com/@renproject/chains-ethereum/-/chains-ethereum-2.1.8.tgz#5eb1ff04a0241042e9723f33567555950ddd1108"
+  integrity sha512-09HOXmYo04vn+HcRJth2mnjaib6YfSmGklB3HhLPYNXKh2Payp24k6nY4D6cTN0RC4fQWGyFILFMgNTPHcCbcw==
   dependencies:
     "@renproject/interfaces" "^2.1.7"
     "@renproject/utils" "^2.1.7"
@@ -2646,13 +2646,13 @@
     blakejs "^1.1.0"
     elliptic "^6.5.3"
 
-"@renproject/chains@^2.1.7":
-  version "2.1.7"
-  resolved "https://registry.yarnpkg.com/@renproject/chains/-/chains-2.1.7.tgz#152603ffe02e1562a8b7669ce4b83dc2ba796727"
-  integrity sha512-v//NhN3dk2tQLiPVj4vFpl9BOK28GXmuqBdQkMWOMZrcddfyREy7qkbh3k5z7Ap0+ywONgXR4P37EW0v0VodKg==
+"@renproject/chains@^2.1.8":
+  version "2.1.8"
+  resolved "https://registry.yarnpkg.com/@renproject/chains/-/chains-2.1.8.tgz#e1787ced01fc577992b58e6a85f9228c8b459631"
+  integrity sha512-oGHEIuli5UKHAz0lBguT3a5RGvxtBg8c23/ZDxkkuoxUInSvZzAHQejrSkIGdZ44EiVX9YbmlEkgWOaKDS4MAA==
   dependencies:
-    "@renproject/chains-bitcoin" "^2.1.7"
-    "@renproject/chains-ethereum" "^2.1.7"
+    "@renproject/chains-bitcoin" "^2.1.8"
+    "@renproject/chains-ethereum" "^2.1.8"
     "@renproject/chains-filecoin" "^2.1.7"
     "@renproject/chains-terra" "^2.1.7"
     "@renproject/interfaces" "^2.1.7"

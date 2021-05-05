@@ -61,12 +61,6 @@ export default function Ren() {
       type: 'ren'
     },
     {
-      url: 'bridges/ren/luna',
-      currency0: { symbol: 'LUNA', decimals: renLUNA.decimals },
-      currency1: unwrappedToken(renLUNA),
-      type: 'ren'
-    },
-    {
       url: 'bridges/ren/zec',
       currency0: { symbol: 'ZEC', decimals: renZEC.decimals },
       currency1: unwrappedToken(renZEC),
