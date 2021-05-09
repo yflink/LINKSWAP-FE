@@ -644,8 +644,8 @@ export default function Swap() {
                 id="swap-button"
                 disabled={
                   (isMigration && migrationLabel !== t('migrate')) ||
-                  !isValid ||
-                  (priceImpactSeverity > 3 && !isExpertMode) ||
+                  (!isValid && !isMigration) ||
+                  (priceImpactSeverity > 3 && !isExpertMode && !isMigration) ||
                   (!!swapCallbackError && !isMigration)
                 }
                 error={isValid && priceImpactSeverity > 2 && !swapCallbackError}
