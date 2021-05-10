@@ -72,3 +72,15 @@ export function RedirectThemeInputOutputToSwap(
     />
   )
 }
+
+export function RedirectToMigration() {
+  return (
+    <Redirect
+      to={{
+        pathname: '/swap',
+        search:
+          '?inputCurrency=0x28cb7e841ee97947a86B06fA4090C8451f64c0be&outputCurrency=0x72377f31e30a405282b522d588AEbbea202b4f23'
+      }}
+    />
+  )
+}
