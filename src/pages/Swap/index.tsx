@@ -139,7 +139,7 @@ export default function Swap() {
   const { address: recipientAddress } = useENSAddress(recipient)
   const toggledVersion = useToggledVersion()
   const trade =
-    isMigration || showWrap
+    isCounterMigration || isMigration || showWrap
       ? undefined
       : {
           [Version.v1]: v1Trade,
