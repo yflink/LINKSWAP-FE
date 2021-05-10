@@ -265,7 +265,7 @@ const WETH_ONLY: ChainTokenList = {
 // used to construct intermediary pairs for trading
 export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   ...WETH_ONLY,
-  [ChainId.MAINNET]: [WETH[ChainId.MAINNET], LINK, YFLUSD, YFL]
+  [ChainId.MAINNET]: [WETH[ChainId.MAINNET], LINK, VRN]
 }
 
 /**
@@ -274,29 +274,28 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
  */
 export const CUSTOM_BASES: { [chainId in ChainId]?: { [tokenAddress: string]: Token[] } } = {
   [ChainId.MAINNET]: {
-    [AMPL.address]: [WETH[ChainId.MAINNET], LINK, YFLUSD]
+    [AMPL.address]: [WETH[ChainId.MAINNET], LINK, VRN]
   }
 }
 
 // used for display in the default list when adding liquidity
 export const SUGGESTED_BASES: ChainTokenList = {
   ...WETH_ONLY,
-  [ChainId.MAINNET]: [WETH[ChainId.MAINNET], LINK, YFLUSD]
+  [ChainId.MAINNET]: [WETH[ChainId.MAINNET], LINK, VRN]
 }
 
 // used to construct the list of all pairs we consider by default in the frontend
 export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   ...WETH_ONLY,
-  [ChainId.MAINNET]: [WETH[ChainId.MAINNET], LINK, YFLUSD, vETH, vUSDC, stETH, ibETH, YFL]
+  [ChainId.MAINNET]: [WETH[ChainId.MAINNET], LINK, VRN]
 }
 
 export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } = {
   [ChainId.MAINNET]: [
+    [VRN, WETHER],
+    [VRN, USDC],
     [YFLUSD, WETHER],
     [YFLUSD, LINK],
-    [sYFL, WETHER],
-    [sYFL, LINK],
-    [sYFL, YFLUSD],
     [YFL, WETHER],
     [YFL, YFLUSD],
     [LINK, WETHER],
@@ -306,8 +305,6 @@ export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } 
     [CEL, LINK],
     [MASQ, WETHER],
     [MASQ, LINK],
-    [LINK, YAX],
-    [YAX, WETHER],
     [LINK, GSWAP],
     [LINK, DOKI],
     [LINK, AZUKI],
