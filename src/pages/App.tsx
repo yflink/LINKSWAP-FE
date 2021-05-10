@@ -10,7 +10,8 @@ import {
   RedirectPathToSwapOnly,
   RedirectToSwap,
   RedirectThemeOutputToSwap,
-  RedirectThemeInputOutputToSwap
+  RedirectThemeInputOutputToSwap,
+  RedirectToMigration
 } from './Swap/redirects'
 import AddLiquidity from './AddLiquidity'
 import { RedirectDuplicateTokenIds, RedirectOldAddLiquidityPathStructure } from './AddLiquidity/redirects'
@@ -145,6 +146,7 @@ export default function App() {
                 />
                 <Route exact strict path="/send" component={RedirectPathToSwapOnly} />
                 <Route exact strict path="/find" component={PoolFinder} />
+                <Route exact strict path="/migrate" component={RedirectToMigration} />
                 <Route exact strict path="/pool" component={Pool} />
                 <Route exact path="/add" component={AddLiquidity} />
                 <Route exact path="/add/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
