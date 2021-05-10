@@ -138,12 +138,13 @@ export default function Swap() {
   const showWrap: boolean = wrapType !== WrapType.NOT_APPLICABLE
   const { address: recipientAddress } = useENSAddress(recipient)
   const toggledVersion = useToggledVersion()
-  const trade = showWrap
-    ? undefined
-    : {
-        [Version.v1]: v1Trade,
-        [Version.v2]: v2Trade
-      }[toggledVersion]
+  const trade =
+    isMigration || showWrap
+      ? undefined
+      : {
+          [Version.v1]: v1Trade,
+          [Version.v2]: v2Trade
+        }[toggledVersion]
 
   const parsedAmounts = showWrap
     ? {
