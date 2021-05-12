@@ -500,5 +500,6 @@
   "none": "none",
   "migrate": "Migrate",
   "migrateYFLtoVRN": "Migrate {{amount}} YFL to VRN",
-  "noTurningBack": "No turning back!"
+  "noTurningBack": "No turning back!",
+  "withdraw88Vault": "Withdraw ID #{depositId} from mph88 {vaultName}"
 }
